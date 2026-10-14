@@ -513,6 +513,15 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
 .sheet-head{touch-action:none}
 .sheet-grab{position:relative;touch-action:none}
 .sheet-grab::after{content:"";position:absolute;left:-90px;right:-90px;top:-10px;bottom:-8px}
+
+/* цена онлайн */
+.hero-pair .live{display:inline-flex;align-items:center;gap:5px;margin-left:8px;padding:1px 8px 1px 7px;border-radius:999px;background:rgba(61,211,156,.16);color:#7BE8BF;font-size:12px;font-weight:600;vertical-align:1px}
+.hero-pair .live i{width:6px;height:6px;border-radius:50%;background:#3DD39C;animation:livePulse 1.8s ease-in-out infinite}
+@keyframes livePulse{50%{opacity:.3}}
+.hero-price.tick-up{animation:tickUp 1s ease-out}
+.hero-price.tick-down{animation:tickDown 1s ease-out}
+@keyframes tickUp{0%{color:#7BE8BF}}
+@keyframes tickDown{0%{color:#FFA9AC}}
 @media (min-width:700px){
   .hero{padding:22px 24px 16px}
   .hero-price{font-size:52px}
@@ -686,7 +695,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
     tab: 'overview', period: store.get('period', '1М'), range: 0.10, step: 1, bookView: store.get('bookView', 'sum'),
     filter: 'all', q: '', showAll: false, newsKind: 'all', evAll: false,
     seen: store.get('seen', {}), intro: true, lastId: null, lastPrice: null,
-    chartMode: store.get('chartMode', 'line') === 'candles' ? 'candles' : 'line', tre: null
+    chartMode: store.get('chartMode', 'line') === 'candles' ? 'candles' : 'line', tre: null, live: null
   };
   const okTabs = TABS.concat(EXTRA).map(t => t[0]);
   { const t = store.get('tab', null); if (okTabs.includes(t)) S.tab = t; }
@@ -1014,7 +1023,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
       else if (c.d1 && c.d1.length > 3) rows = per === '1Д' ? c.d1.slice(-2) : per === '1Н' ? c.d1.slice(-8) : per === '1М' ? c.d1.slice(-31) : per === '3М' ? c.d1.slice(-91) : c.d1.slice();
       if (rows && rows.length >= 2) {
         rows = rows.map(p => p.length >= 5 ? [p[0], p[1], p[2], p[3], p[4], p[5] || 0] : [p[0], p[1], p[1], p[1], p[1], 0]);
-        const step = hourly ? 3600 : 86400, nt = c.nowTs, np = c.now;
+        const lp = livePrice(), step = hourly ? 3600 : 86400, nt = lp ? Math.floor(S.live.ts / 1000) : c.nowTs, np = lp || c.now;
         if (np && nt) {
           const last = rows[rows.length - 1];
           if (nt >= last[0] && nt < last[0] + step) { last[4] = np; last[2] = Math.max(last[2], np); last[3] = Math.min(last[3], np); }
@@ -1031,7 +1040,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
   }
   function priceSeries(s, per) { const R = priceRows(s, per); return R ? { pts: R.rows.map(r => [r[0] * 1000, r[4]]), src: R.src } : null; }
   function perChange(s, per, R) {
-    if (per === '1Д' && s && s.price && s.price.chg24 != null) return s.price.chg24;
+    if (per === '1Д') { const lc = liveChg(); if (lc != null) return lc; if (s && s.price && s.price.chg24 != null) return s.price.chg24; }
     if (!R || !R.rows.length) return null;
     const base = R.line ? R.rows[0][4] : R.rows[0][1], last = R.rows[R.rows.length - 1][4];
     return base ? (last / base - 1) * 100 : null;
@@ -1046,7 +1055,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
   }
   function resetHero() {
     const s = V(); if (!s) return;
-    setHero((s.price || {}).mid, perChange(s, S.period, priceRows(s, S.period)), PER_NAME[S.period], false);
+    setHero(livePrice() || (s.price || {}).mid, perChange(s, S.period, priceRows(s, S.period)), PER_NAME[S.period], false);
   }
   function scrubHero(v, tSec) {
     if (!HC) return;
@@ -1508,6 +1517,57 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
     return S.news.filter(it => (it.d || '') >= lim);
   }
 
+  // ---------- цена онлайн: Kraken WebSocket v2 (запускается только на публичном сайте) ----------
+  // Остальные цифры — из утренней сводки; онлайн обновляются только цена, изменение за сутки и последняя точка графика.
+  function livePrice() { return !S.archived && S.live && S.live.price ? S.live.price : null; }
+  function liveChg() { return livePrice() && S.live.chg24 != null ? S.live.chg24 : null; }
+  function applyLive(prev) {
+    const lp = livePrice();
+    const badge = $('#hlive');
+    if (badge) badge.hidden = !lp || !!S.live.stale;
+    if (!lp) return;
+    if (!$('#p-overview .hero.scrub')) resetHero();
+    const el = $('#hprice');
+    if (el && prev != null && lp !== prev && !RM) { el.classList.remove('tick-up', 'tick-down'); void el.offsetWidth; el.classList.add(lp > prev ? 'tick-up' : 'tick-down'); }
+    if (HC && HC.rows && HC.rows.length && !HC.touching && typeof HC.main.update === 'function') {
+      const r = HC.rows[HC.rows.length - 1];
+      r[4] = lp; r[2] = Math.max(r[2], lp); r[3] = Math.min(r[3], lp);
+      try { HC.main.update(HC.vol ? { time: r[0] + TZ, open: r[1], high: r[2], low: r[3], close: r[4] } : { time: r[0] + TZ, value: r[4] }); } catch (e) { }
+    }
+    const cap = $('#hcap'); if (cap) cap.textContent = 'капитализация ≈ ' + n(lp * SUPPLY / 1e6, 1) + ' млн $';
+    try { document.title = fp(lp) + ' $ · DOG Монитор'; } catch (e) { }
+  }
+  function startLive() {
+    if (!('WebSocket' in window)) return;
+    let ws = null, retry = 0, timer = null;
+    const open = () => {
+      clearTimeout(timer);
+      try { ws = new WebSocket('wss://ws.kraken.com/v2'); } catch (e) { ws = null; return; }
+      ws.onopen = () => { retry = 0; try { ws.send(JSON.stringify({ method: 'subscribe', params: { channel: 'ticker', symbol: ['DOG/USD'] } })); } catch (e) { } };
+      ws.onmessage = ev => {
+        let m;
+        try { m = JSON.parse(ev.data); } catch (e) { return; }
+        if (!m || m.channel !== 'ticker' || !Array.isArray(m.data)) return;
+        const d = m.data.find(x => x && x.symbol === 'DOG/USD');
+        if (!d) return;
+        const last = Number(d.last), base = ((S.cur || {}).price || {}).mid;
+        // защита: цена должна быть числом и не дальше 50% от утренней сводки
+        if (!isFinite(last) || last <= 0 || (base && Math.abs(last / base - 1) > 0.5)) return;
+        const prev = livePrice(), chg = Number(d.change_pct);
+        S.live = { price: last, chg24: isFinite(chg) && d.change_pct != null ? chg : null, ts: Date.now(), stale: false };
+        applyLive(prev);
+      };
+      ws.onclose = () => {
+        ws = null;
+        if (S.live) { S.live.stale = true; applyLive(null); }
+        if (retry < 8) timer = setTimeout(open, Math.min(30000, 2000 * Math.pow(2, retry++)));
+      };
+      ws.onerror = () => { try { ws && ws.close(); } catch (e) { } };
+    };
+    open();
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && !ws) { retry = 0; open(); } });
+  }
+
   // ---------- ГЛАВНОЕ ----------
   function renderOverview() {
     const s = V(), el = $('#p-overview');
@@ -1517,7 +1577,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
     const mood = pr.chg24 == null ? 'rgba(247,147,26,.28)' : (pr.chg24 >= 0.5 ? 'rgba(61,211,156,.30)' : (pr.chg24 <= -0.5 ? 'rgba(255,110,115,.26)' : 'rgba(247,147,26,.28)'));
     const hero = `<section class="hero" style="--mood:${mood}" aria-label="Цена DOG">
         <div class="hero-top">
-          <div class="hero-main"><div class="hero-pair">DOG · цена в долларах</div>
+          <div class="hero-main"><div class="hero-pair">DOG · цена в долларах<span class="live" id="hlive" hidden><i></i>онлайн</span></div>
             <div class="hero-price tnum" id="hprice">${fp(pr.mid)}<small>$</small></div>
             <div class="hero-chg"><span class="pill ${dir(chg)}" id="hpill">${pillTxt(chg)}</span><span id="hlabel">${PER_NAME[S.period]}</span></div>
           </div>
@@ -1528,7 +1588,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
           <div class="periods" role="group" aria-label="Период графика">${['1Д', '1Н', '1М', '3М', '1Г'].map(p => `<button type="button" data-per="${p}" aria-pressed="${String(S.period === p)}" aria-label="${PER_NAME[p]}">${p}</button>`).join('')}</div>
           <button type="button" class="hmode" id="hmode" aria-pressed="${String(S.chartMode === 'candles')}" aria-label="Свечи и объём торгов" title="Свечи и объём торгов">${ico('candle')}</button>
         </div>
-        <div class="hero-foot"><span>Kraken, DOG/USD</span><span>капитализация ≈ ${n(pr.cap, 1)} млн $</span></div>
+        <div class="hero-foot"><span>Kraken, DOG/USD</span><span id="hcap">капитализация ≈ ${n(pr.cap, 1)} млн $</span></div>
       </section>`;
     const left = hero + tilesHtml(s) + summaryHtml(s);
     const right = `<div class="box" id="ex-box">${exchangesHtml(s)}</div><div class="box" id="tre-box">${treasuryHtml()}</div><div class="box" id="news-box">${newsPreviewHtml()}</div>${checkRowHtml(s)}`;
@@ -1537,6 +1597,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
       <div class="home-grid"><div class="home-col">${left}</div><div class="home-col">${right}</div></div>`;
     drawPrice(true);
     animateIntro(pr.mid);
+    applyLive(null);
   }
   function refreshHomeParts() {
     const s = V(); if (!s || !$('#st-box')) return;
@@ -1793,7 +1854,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
     if (!el || from == null || to == null) return;
     const t0 = performance.now();
     const step = now => {
-      if (!el.isConnected || $('#p-overview .hero.scrub')) return;
+      if (!el.isConnected || $('#p-overview .hero.scrub') || livePrice()) return;
       const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
       el.firstChild.nodeValue = fp(from + (to - from) * e);
       if (k < 1) requestAnimationFrame(step); else el.firstChild.nodeValue = fp(to);
@@ -2349,6 +2410,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
       return;
     }
     S.db = db;
+    startLive();
     let fallbackUnsub = null;
     const onCur = d => {
       const prevId = S.lastId;
