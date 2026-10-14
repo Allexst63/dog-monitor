@@ -1136,7 +1136,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
     const candles = S.chartMode === 'candles' && !R.line, hourly = R.hourly;
     const chart = LW.createChart(el, {
       autoSize: true,
-      layout: { background: { type: 'solid', color: 'transparent' }, textColor: 'rgba(243,244,250,0.6)', fontSize: 11, fontFamily: '"Golos Text", system-ui, sans-serif', attributionLogo: true },
+      layout: { background: { type: 'solid', color: 'rgba(0,0,0,0)' }, textColor: 'rgba(243,244,250,0.6)', fontSize: 11, fontFamily: '"Golos Text", system-ui, sans-serif', attributionLogo: true },
       grid: { vertLines: { visible: false }, horzLines: { color: 'rgba(255,255,255,0.06)' } },
       rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.14, bottom: candles ? 0.26 : 0.08 } },
       timeScale: { borderVisible: false, timeVisible: hourly, secondsVisible: false, fixLeftEdge: true, fixRightEdge: true, lockVisibleTimeRangeOnResize: true, tickMarkFormatter: tickFmt },
@@ -2373,7 +2373,13 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
       run(s);
       return () => { const i = subs.indexOf(s); if (i >= 0) subs.splice(i, 1); };
     }
-    const refresh = () => { if (document.visibilityState !== 'hidden') subs.forEach(run); };
+    let ver = null;
+    load('version.json').then(v => { ver = v.text; }).catch(() => { });
+    const refresh = async () => {
+      if (document.visibilityState === 'hidden') return;
+      try { const v = await load('version.json'); if (v.data !== undefined && v.text === ver) return; ver = v.text; } catch (e) { }
+      subs.forEach(run);
+    };
     setInterval(refresh, POLL);
     document.addEventListener('visibilitychange', refresh);
     const doc = path => {

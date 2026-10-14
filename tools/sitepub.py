@@ -4,8 +4,8 @@
 Утреннее обновление после записи в базу дашборда запускает:
     python3 tools/sitepub.py /tmp/dogmon <папка-клона-сайта>
 Скрипт берёт список записей из /tmp/dogmon/out/writes.json (те же документы, что ушли в базу)
-и раскладывает их в data/ сайта: live.json, snapshots/<id>.json, hist.json, news.json,
-treasuries.json, audit.json. В сеть не ходит, пишет только в папку data/ сайта.
+и раскладывает их в data/ сайта: live.json (+ короткий version.json), snapshots/<id>.json, hist.json,
+news.json, treasuries.json, audit.json. В сеть не ходит, пишет только в папку data/ сайта.
 """
 import json
 import os
@@ -52,7 +52,9 @@ def apply(site, coll, doc_id, data):
     if not isinstance(data, dict) or not ID_RE.match(doc_id):
         return f'пропуск {coll}/{doc_id}'
     if coll == 'live' and doc_id == 'current':
-        jdump({k: v for k, v in data.items() if k not in STRIP}, os.path.join(d, 'live.json'))
+        head = {k: data[k] for k in ('id', 'ts', 'kind', 'label') if k in data}
+        jdump(dict(head, **{k: v for k, v in data.items() if k not in STRIP and k not in head}), os.path.join(d, 'live.json'))
+        jdump({'id': data.get('id'), 'ts': data.get('ts'), 'kind': data.get('kind'), 'price': (data.get('price') or {}).get('mid')}, os.path.join(d, 'version.json'))
     elif coll == 'snapshots':
         jdump({k: v for k, v in data.items() if k not in STRIP}, os.path.join(d, 'snapshots', doc_id + '.json'))
     elif coll == 'hist':
