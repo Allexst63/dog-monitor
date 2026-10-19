@@ -18,7 +18,7 @@ import xml.etree.ElementTree as ET
 QUERIES = ['"DOG•GO•TO•THE•MOON"', '"DOG (Bitcoin)"', '"C2 Blockchain" DOG', 'Leonidas DOG bitcoin runes',
            '"$DOG" bitcoin rune', 'Bitcoin runes DOG exchange listing']
 UA = 'Mozilla/5.0 (compatible; DOG-Monitor/1.0; +https://allexst63.github.io/dog-monitor/)'
-SKIP = re.compile(r'price prediction|прогноз|predict|forecast|dogecoin|doge\b|pet|puppy|veterinar', re.I)
+SKIP = re.compile(r'price prediction|прогноз|predict|forecast|dogecoin|\bdoge\b|\bpets?\b|puppy|veterinar', re.I)
 
 
 def rss(q, engine='google'):
