@@ -1,0 +1,304 @@
+{
+"kinds": {
+"custody": "Кастодиан",
+"distributor": "Распределитель",
+"exchange": "Биржа",
+"marketplace": "Маркетплейс",
+"mm": "Маркет-мейкер",
+"private": "Частный",
+"treasury": "Казна",
+"unknown": "Не определён"
+},
+"map": {
+"3F4qqoDqqgntxMsepoX69WRFR46gk5kb9N": {
+"k": "private",
+"n": "Частный",
+"note": "получил 18 млн 12.10, держит",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"3G7gSaxPY7BhbEASd2pnZY5cg7uEQMQvd8": {
+"k": "custody",
+"n": "Биржевой кошелёк",
+"note": "мультиподпись 2-из-3, ~17 тыс. поступлений с 07.2024 — похоже на биржу или кастодиана, имя не установлено",
+"src": "bitinfocharts + dogdata"
+},
+"bc1p2kwpqvk50qxqkxan2xtj85h6nah8g0pyn3fjucdkhlnu8hz39kssmtef4h": {
+"k": "private",
+"n": "Частный",
+"note": "получил 210 млн, отдал 90 млн",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1p3v3d6xzmezymkw2ye5cfqgvlg75epfljp2cz4y22chxgcrn7fjqqv2s47l": {
+"k": "private",
+"n": "Частный",
+"note": "активный трейдер",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1p42d64wz3wf4ey849ca3vxx0xy82a986wkuqxkhkmnzuj22gy64jsymqzg0": {
+"k": "private",
+"n": "Частный",
+"note": "с 05.2024, много мелких входов",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1p4j3yh0ftucmrfx04pehzca6cxaasyurh30u7ydttwvekpalyanysgth39w": {
+"k": "private",
+"n": "Частный",
+"note": "ранний покупатель, копит",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1p4pkr90vrqspmfddplde05v55gelkvcjwhsu93c9m5zu9gwwvgz0qap0vkn": {
+"k": "distributor",
+"n": "Распределитель",
+"note": "получает от Gate траншами ~100 млн и раздаёт дальше",
+"src": "dogdata: flow_pattern"
+},
+"bc1p50n9sksy5gwe6fgrxxsqfcp6ndsfjhykjqef64m8067hfadd9efqrhpp9k": {
+"k": "exchange",
+"n": "Bitget",
+"note": "кошелёк биржи",
+"src": "dogdata: verified"
+},
+"bc1p5kt6ghj6nmu5gh8gg7t24cqlr8qqrvzk5patsszcvxmje0kkvrxsztrlrd": {
+"k": "private",
+"n": "Частный",
+"note": "держит 12.8 млн",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1p5qpcdw4xpql54f0hfuxukgqe9g0ln0mppxgw8tqh2jvd8rccs3ase2zdj8": {
+"k": "private",
+"n": "Частный",
+"note": "купил 310 млн за один день (07.2025), не двигал",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1p5s304rghaw9uv66ewva26qvsw8gt4ydwl5yxa7knkkl5k4v492vs8yykdm": {
+"k": "private",
+"n": "Частный",
+"note": "с аирдропа, ни разу не продавал",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1p6ag3mn7x38tgvefqxs89zwun4jccpdf7s690ly0ktn5nzhadggqqm5xva7": {
+"k": "private",
+"n": "Частный",
+"note": "с 05.2024, продал ~0.15 млрд",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1p6fl05759zkhnnlnqaug7xldnyz7v884fct58j7vxzh9k897u02sq0qa6uy": {
+"k": "private",
+"n": "Частный",
+"note": "с аирдропа, почти не продавал",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1p6lcg45y3k4z265evcpawgystvsmvsyx73dh30rvva8tzy6gatd8qyfsfj8": {
+"k": "private",
+"n": "Частный",
+"note": "с аирдропа, почти не продавал",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1p6vly9m3e7yh5hwwkz92l89w2qqhyj4htkqewml963g7kn9k79qase0ukl3": {
+"k": "distributor",
+"n": "Распределитель (пара А)",
+"note": "один владелец с парой Б: продаёт через маркетплейсы и Kraken",
+"src": "dogdata: flow_pattern"
+},
+"bc1p8d8kexdxatnfejdvd9dq7uky4m9wjxl59r3dnqg7nqq9gaxz2jxq6ntach": {
+"k": "mm",
+"n": "Маркет-мейкер",
+"note": "~83% объёма через биржи: отправляет на Kraken, получает с Gate и Bitget",
+"src": "dogdata: flow_pattern"
+},
+"bc1p8yhaghr0djthqjp4m3kgalandvtr78f4qkz4vpx56jhqa68t2r7sr0p29z": {
+"k": "private",
+"n": "Частный",
+"note": "получил 13.3 млн, держит",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1paa22h5hm2xwcn5y5qvmks4adaj0m7sp2n93evwlxhvn9jm796lksfh772r": {
+"k": "private",
+"n": "Частный",
+"note": "накопитель: 39 млн, выводит с Kraken",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1palwreu6q9dfz9w6p28ze74awl5q5nqgt2mr6nrsp53h6rm0plraqjjpj5d": {
+"k": "private",
+"n": "Частный",
+"note": "с аирдропа, ни разу не двигался",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1pcdk5hrl94nn6u8f2h6ljycx809s0rsn799yccj2hy3dkj70qwckqrprgw9": {
+"k": "private",
+"n": "Частный",
+"note": "транзитный",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1pcksnluq2ddq8zpam28nnc6uqmjqltpve7jytvgmzf6f4dj9z0jzssqd0zs": {
+"k": "private",
+"n": "Частный",
+"note": "держит, почти не продавал",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1pczdzvvuulwyna9e6dsl8w0r35prvnmpawcwlrv4y42u5npysrdzqhwa7wl": {
+"k": "private",
+"n": "Частный",
+"note": "активный: получил 1.47 млрд, отдал 0.59 млрд",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1pds3s9gnaf3m0t5vgtlq8qdvk3jtwdrhj6h55c2t05nkzs0zqeh8q73j797": {
+"k": "private",
+"n": "Частный",
+"note": "с аирдропа, продал ~54 млн",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1pe73rfsnfyk752e75dm3jyd9stdr89zfd8ngdalprrnvv4chrepssg5d8zk": {
+"k": "private",
+"n": "Частный",
+"note": "транзитный",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1pj9rx6wesyzytxfff9zhpn5krjr30grzhv0jc5dyr4kzecx4mlt7s0wke2y": {
+"k": "private",
+"n": "Частный",
+"note": "получил 210 млн, отдал 79 млн",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1pjqjceqjjchz59ltxgq7wgd2pvq4ck8v3jheqedy5sktfvras45mqsw0xuu": {
+"k": "private",
+"n": "Частный",
+"note": "активный трейдер: оборот 2.8 млрд",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1pk8g4rztfkxs2q9c40g6keeknjw6aadx3kzu4suzlll0remfw7xxs5x9ctv": {
+"k": "exchange",
+"n": "Gate",
+"note": "кошелёк биржи",
+"src": "dogdata: verified"
+},
+"bc1plu89p08emw2megm79rg0tg4rtnpqaahuzd8cfn3wvzlxgvvuadpsv9yd6z": {
+"k": "private",
+"n": "Частный",
+"note": "держит, почти не продавал",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1plzs2lltvv29k603w5m0aqma5e8w0n3pc77dt89l5w9hurmdfgd0swdhspn": {
+"k": "exchange",
+"n": "Kraken",
+"note": "основной кошелёк биржи: сюда сводятся все депозиты (резерв)",
+"src": "dogdata: named, own_flow"
+},
+"bc1pneum26aq4jjtw8p72gsf0k34qvjfmlucjpa2kx70s6ppuh0dpkgs78ndd5": {
+"k": "private",
+"n": "Частный",
+"note": "транзитный, прогнал 70 млн",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1ppv2vyjxrh6krry2gpjswzswm0d8jjqw2eg2lca4cxf66varxud6sycjt2s": {
+"k": "private",
+"n": "Частный",
+"note": "с аирдропа, почти не продавал",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1ppyhy32w29g7uhkdwv5z9s9ecqssyeqdgfcevq75kpj54px78kulqfshx83": {
+"k": "private",
+"n": "Частный",
+"note": "активный трейдер: оборот 0.86 млрд",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1pqc2zn2nakq255dy6swjkts54ktfm35cjv2x7266n53tn8lvntfjsjpsuds": {
+"k": "private",
+"n": "Частный",
+"note": "с аирдропа, ни разу не продавал",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1prdyzwdg0rcdgf9cg0a4zyx0cq3mdr3n6mcym95f3eg4dexfvnsjq200ly4": {
+"k": "mm",
+"n": "Трейдинг-деск",
+"note": "гоняет объём между четырьмя биржами",
+"src": "dogdata: flow_pattern"
+},
+"bc1ps48lkwxntjmyg5vluegmasxuhxszhuglwjesuejx7c45zt96ka3ssrsxgh": {
+"k": "private",
+"n": "Частный",
+"note": "копит с 03.07.2026: 447 млн, ни разу не продавал",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1pud2j5tpy5s3c5u6y7e2lqn8tp5208q0mmxjtjqncmzp9wyj5gssswnz8nk": {
+"k": "marketplace",
+"n": "Маркетплейс",
+"note": "участвует в ~18% всех переводов DOG",
+"src": "dogdata: flow_pattern"
+},
+"bc1pur4mqzclu89hq0wjyce5d2hfehpfvk5hhv90xaw4zxmyhwgz0cds7tgnce": {
+"k": "private",
+"n": "Частный",
+"note": "активный: получил 332 млн, отдал 216 млн",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1pw56l62nnaneldkuyyqlr4jh2tptn779c4d06tdmkd0h7xfq59jtquvtxwl": {
+"k": "distributor",
+"n": "Распределитель (пара Б)",
+"note": "один владелец с парой А",
+"src": "dogdata: flow_pattern"
+},
+"bc1pzfc47vp69p88wj7fx3a0n30hxhhvkfck3zz63eg53n8ur9wxrstssed4f0": {
+"k": "private",
+"n": "Частный",
+"note": "получил 200 млн за один день (01.2026), не двигал",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1pzg6aed026czampasr6lp7q0eugeptmw789z4d0xm605sc0qm2cmqxf5vtk": {
+"k": "private",
+"n": "Частный",
+"note": "с аирдропа, ни разу не продавал",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1pzsx4xvghxmc0prv4mys0xdly9dh9js3e88e4m24k5gxzkeskx30s4qzjud": {
+"k": "treasury",
+"n": "Казна",
+"note": "с 26.06.2026 только принимает: 2.53 млрд с моста Merlin и 2.6 млрд выводами с Kraken; владелец не установлен",
+"src": "dogdata: flow_pattern"
+},
+"bc1pzsygr05uzgtnyfg7a3j0ehjpuph5gaadvjx4gsry52knsvhhz7cqu4fal9": {
+"k": "private",
+"n": "Частный",
+"note": "с аирдропа; продал ~0.17 из 1.3 млрд",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1q42dv46c779lz3m87hen7u3wtvfmquewgaeus30": {
+"k": "private",
+"n": "Частный",
+"note": "ни разу не продавал",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1q97ufxcw0l440m30us0g8vsqmdgqh5ysc7h4ezw2eugx4ne5hxvws7zv8yu": {
+"k": "private",
+"n": "Частный",
+"note": "активный трейдер: оборот 3.3 млрд",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1qgqnmf5mvf8mrmart7e2wrzgxasgveglyduh8jh": {
+"k": "private",
+"n": "Частный",
+"note": "транзитный",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1qj7dam98j6ktjcp320qu77y2vrylv49c2k2hkmu": {
+"k": "exchange",
+"n": "MEXC",
+"note": "кошелёк биржи",
+"src": "dogdata: verified"
+},
+"bc1qkm4nhv5gka0p27eznaheygehlgfv6cnuvrsr9mgqu6vtk7rhnpzqq350c0": {
+"k": "private",
+"n": "Частный",
+"note": "транзитный",
+"src": "dogdata: нет метки владельца; вывод по истории переводов"
+},
+"bc1qmscmeqqxqz7vkfscfs8pvl98gkdkcr8e0egkhm": {
+"k": "exchange",
+"n": "CoinEx",
+"note": "депозитный адрес, опубликован биржей",
+"src": "dogdata: first_party"
+}
+},
+"updated": "2026-10-14T09:30:00Z",
+"v": 1
+}

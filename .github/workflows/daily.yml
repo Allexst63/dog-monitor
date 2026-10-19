@@ -1,0 +1,49 @@
+name: Утреннее обновление DOG Монитора
+
+on:
+  schedule:
+    - cron: '41 5 * * *'     # каждый день ~05:41 UTC (GitHub может запускать с задержкой до получаса)
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dogmon-daily
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Сбор данных и расчёт сводки
+        env:
+          DOGMON: ${{ runner.temp }}/dogmon
+        run: python3 tools/daily.py run .
+
+      - name: Выкладка на сайт
+        run: |
+          git config user.name "DOG Monitor bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          if git diff --cached --quiet; then echo "нет изменений"; exit 0; fi
+          ID=$(python3 -c "import json;print(json.load(open('data/version.json'))['id'])")
+          git commit -m "Сводка $ID (авто)"
+          for i in 1 2 3; do
+            git push origin HEAD:main && exit 0
+            git pull --rebase origin main
+          done
+          exit 1
+
+      - name: Сырые ответы источников (для проверки)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: raw-${{ github.run_id }}
+          path: ${{ runner.temp }}/dogmon/raw
+          retention-days: 7
