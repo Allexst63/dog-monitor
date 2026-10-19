@@ -3,12 +3,14 @@
 
     python3 tools/newsfeed.py <out.json> [дней=4]
 
-Собирает свежие заголовки из Google News RSS по запросам о DOG и C2 Blockchain.
+Собирает свежие заголовки из Google News и Bing News по запросам о DOG и C2 Blockchain,
+а если в секретах репозитория есть X_BEARER_TOKEN — ещё и посты отслеживаемых аккаунтов X.
 На сайт напрямую не публикуется: это только список для отбора.
 """
 import datetime as dt
 import email.utils
 import json
+import os
 import re
 import sys
 import urllib.parse
@@ -18,7 +20,7 @@ import xml.etree.ElementTree as ET
 QUERIES = ['"DOG•GO•TO•THE•MOON"', '"DOG (Bitcoin)"', '"C2 Blockchain" DOG', 'Leonidas DOG bitcoin runes',
            '"$DOG" bitcoin rune', 'Bitcoin runes DOG exchange listing']
 UA = 'Mozilla/5.0 (compatible; DOG-Monitor/1.0; +https://allexst63.github.io/dog-monitor/)'
-SKIP = re.compile(r'price prediction|прогноз|predict|forecast|dogecoin|\bdoge\b|\bpets?\b|puppy|veterinar', re.I)
+SKIP = re.compile(r'price prediction|previs|prediksi|прогноз|predict|forecast|dogecoin|\bdoge\b|\bpets?\b|puppy|veterinar', re.I)
 
 
 def rss(q, engine='google'):
@@ -36,6 +38,32 @@ def rss(q, engine='google'):
         yield {'title': (it.findtext('title') or '').strip(), 'url': (it.findtext('link') or '').strip(),
                'pub': it.findtext('pubDate'), 'src': (src.text or '').strip() if src is not None else '',
                'srcUrl': src.get('url') if src is not None else '', 'q': q}
+
+
+X_ACCOUNTS = ('LeonidasNFT', 'dogofbitcoin', 'The_Dog_Of_BTC', 'dogdatabtc', 'bitmaxdog')
+
+
+def x_posts(token, days):
+    """Посты отслеживаемых аккаунтов X (нужен ключ X API в секрете X_BEARER_TOKEN)."""
+    q = '(' + ' OR '.join(f'from:{a}' for a in X_ACCOUNTS) + ') -is:retweet'
+    start = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=min(days, 6))).strftime('%Y-%m-%dT%H:%M:%SZ')
+    url = 'https://api.x.com/2/tweets/search/recent?' + urllib.parse.urlencode({
+        'query': q, 'max_results': 100, 'start_time': start, 'tweet.fields': 'created_at,public_metrics,note_tweet',
+        'expansions': 'author_id', 'user.fields': 'username'})
+    req = urllib.request.Request(url, headers={'Authorization': 'Bearer ' + token, 'User-Agent': UA})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        d = json.loads(r.read())
+    users = {u['id']: u['username'] for u in (d.get('includes') or {}).get('users') or []}
+    out = []
+    for tw in d.get('data') or []:
+        u = users.get(tw.get('author_id'), '')
+        m = tw.get('public_metrics') or {}
+        text = ((tw.get('note_tweet') or {}).get('text') or tw.get('text') or '').strip()
+        t = dt.datetime.fromisoformat(tw['created_at'].replace('Z', '+00:00'))
+        out.append({'kind': 'X', 'src': '@' + u, 'title': text[:280], 'text': text[:1500],
+                    'url': f'https://x.com/{u}/status/{tw["id"]}', 'd': t.strftime('%Y-%m-%d'), 'ts': t.strftime('%Y-%m-%dT%H:%MZ'),
+                    'likes': m.get('like_count'), 'reposts': m.get('retweet_count')})
+    return out
 
 
 def main(out, days=4):
@@ -61,6 +89,16 @@ def main(out, days=4):
         except Exception as e:
             errs.append(f'{engine} {q}: {e}')
         stat.append(f'{engine} {q}: {n}')
+    token = os.environ.get('X_BEARER_TOKEN', '').strip()
+    xn = None
+    if token:
+        try:
+            xs = x_posts(token, days)
+            xn = len(xs)
+            items += xs
+        except Exception as e:
+            errs.append(f'X API: {e}')
+    stat.append('X: ' + ('нет ключа X_BEARER_TOKEN' if not token else f'{xn if xn is not None else "ошибка"} постов'))
     items.sort(key=lambda x: x['ts'], reverse=True)
     json.dump({'updated': now.strftime('%Y-%m-%dT%H:%M:%SZ'), 'items': items[:60], 'errors': errs, 'stat': stat},
               open(out, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)

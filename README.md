@@ -9,6 +9,14 @@
   - `hist.json` — история итогов, `news.json` — новости, `treasuries.json` — запасы компаний, `audit.json` — самопроверка.
 - `fonts/`, `icons/`, `og.jpg`, `manifest.webmanifest` — шрифты, иконки, картинка для превью ссылки, установка на экран телефона.
 
+## Автообновление
+- **Каждое утро (~05:41 UTC)** GitHub Actions (`.github/workflows/daily.yml`) сам собирает стаканы 7 бирж, свечи Kraken,
+  топ-100 и переводы DOG DATA (`tools/fetch.py`), считает сводку (`tools/dogmon.py` через `tools/daily.py`) и кладёт её в `data/`.
+  Запустить вручную: вкладка Actions → «Утреннее обновление DOG Монитора» → Run workflow.
+- Там же собираются кандидаты в новости (`tools/newsfeed.py` → `data/feed.json`: Google News, Bing News и, если задан
+  секрет `X_BEARER_TOKEN`, посты аккаунтов DOG в X). Ежедневная задача Claude отбирает из них важное, пишет по-русски
+  и добавляет в `data/news.json` (`tools/daily.py news`).
+
 ## Источники и лицензии
 См. `NOTICE.md`. Сайт не использует cookies и аналитику.
 

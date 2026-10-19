@@ -35,7 +35,9 @@ jobs:
 
       - name: Кандидаты в новости (Google News)
         continue-on-error: true
-        run: python3 tools/newsfeed.py data/feed.json 4
+        env:
+          X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+        run: python3 tools/newsfeed.py data/feed.json 7
 
       - name: Выкладка на сайт
         run: |
