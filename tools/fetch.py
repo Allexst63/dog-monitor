@@ -17,6 +17,7 @@ import urllib.request
 
 UA = 'Mozilla/5.0 (compatible; DOG-Monitor/1.0; +https://allexst63.github.io/dog-monitor/)'
 DD = ('https://www.dogdata.xyz', 'https://dogdata.xyz')
+LAST = [None]
 
 
 def get(urls, tries=3):
@@ -30,7 +31,8 @@ def get(urls, tries=3):
             try:
                 req = urllib.request.Request(full, headers={'User-Agent': UA, 'Accept': 'application/json'})
                 with urllib.request.urlopen(req, timeout=30) as r:
-                    return json.loads(r.read().decode('utf-8'))
+                    LAST[0] = json.loads(r.read().decode('utf-8'))
+                    return LAST[0]
             except (urllib.error.URLError, ValueError, TimeoutError, OSError) as e:
                 last = f'{u}: {e}'
         time.sleep(2 + 3 * i)
@@ -92,6 +94,45 @@ def g(d, *path):
     return d
 
 
+def dk(d, key):
+    """значение ключа на любой глубине (первое найденное)"""
+    if isinstance(d, dict):
+        if key in d:
+            return d[key]
+        for v in d.values():
+            r = dk(v, key)
+            if r is not None:
+                return r
+    elif isinstance(d, list):
+        for v in d[:3]:
+            r = dk(v, key)
+            if r is not None:
+                return r
+    return None
+
+
+def items(x, name_keys):
+    """список [{...}] или словарь {имя: значение|{...}} → [(имя, dict)]"""
+    out = []
+    if isinstance(x, dict):
+        for k, v in x.items():
+            out.append((k, v if isinstance(v, dict) else {'percentage': v}))
+    for v in x if isinstance(x, list) else []:
+        if isinstance(v, dict):
+            out.append((next((v[k] for k in name_keys if k in v), None), v))
+    return out
+
+
+def shape(d, depth=0):
+    if depth > 3:
+        return '…'
+    if isinstance(d, dict):
+        return '{' + ', '.join(f'{k}: {shape(v, depth + 1)}' for k, v in list(d.items())[:14]) + '}'
+    if isinstance(d, list):
+        return f'[{len(d)}× ' + (shape(d[0], depth + 1) if d else '') + ']'
+    return type(d).__name__
+
+
 def addr(x):
     if isinstance(x, str):
         return x
@@ -138,8 +179,8 @@ def f_whales():
 def f_markets():
     d = get([h + '/api/markets' for h in DD])
     tk = first_list(d, 'market') or first_list(d, 'pair')
-    L = [f"last_updated={s(d.get('last_updated'))}; price={s(d.get('price'))}; totalVolume={s(d.get('totalVolume'))}; "
-         f"marketCap={s(d.get('marketCap'))}; priceChange24h={s(d.get('priceChange24h'))}"]
+    L = [f"last_updated={s(dk(d, 'last_updated'))}; price={s(dk(d, 'price') if not isinstance(dk(d, 'price'), (dict, list)) else None)}; "
+         f"totalVolume={s(dk(d, 'totalVolume'))}; marketCap={s(dk(d, 'marketCap'))}; priceChange24h={s(dk(d, 'priceChange24h'))}"]
     L += [f"{t.get('market')};{t.get('pair')};{s(t.get('price'))};{s(t.get('volumeUsd'))}" for t in tk]
     return d, '\n'.join(L)
 
@@ -226,12 +267,11 @@ def f_age():
     d = get([h + '/api/metrics/utxo-age' for h in DD])
     keys = ('last_updated', 'total_utxos', 'total_supply', 'avg_age_days', 'median_age_days', 'lth_percentage', 'sth_percentage',
             'realized_cap', 'market_cap', 'mvrv_ratio', 'supply_in_profit_pct', 'supply_in_loss_pct', 'current_price')
-    L = [f'{k}={s(d.get(k))}' for k in keys]
-    for w in d.get('hodl_waves') or []:
-        L.append(f"wave;{w.get('range') or w.get('label') or w.get('name')};{s(w.get('percentage'))}")
-    for b in d.get('size_distribution') or []:
-        name = next((b[k] for k in ('bucket', 'name', 'label', 'range', 'size') if k in b), None)
-        L.append(f"size;{name};{s(b.get('count'))};{s(b.get('percentage'))}")
+    L = [f'{k}={s(dk(d, k))}' for k in keys]
+    for name, w in items(dk(d, 'hodl_waves'), ('range', 'label', 'name', 'age')):
+        L.append(f"wave;{name};{s(w.get('percentage', w.get('pct')))}")
+    for name, b in items(dk(d, 'size_distribution'), ('bucket', 'name', 'label', 'range', 'size')):
+        L.append(f"size;{name};{s(b.get('count'))};{s(b.get('percentage', b.get('pct')))}")
     return d, '\n'.join(L)
 
 
@@ -273,13 +313,20 @@ SOURCES = {
 
 def save(raw, name, fn):
     os.makedirs(os.path.join(raw, 'json'), exist_ok=True)
+    LAST[0] = None
     try:
         d, text = fn()
         json.dump(d, open(os.path.join(raw, 'json', name + '.json'), 'w', encoding='utf-8'), ensure_ascii=False)
         ok = True
     except Exception as e:
         text, ok = f'UNAVAILABLE: {e}', False
+        try:
+            print(f'SHAPE {name}:', shape(LAST[0]))
+        except Exception:
+            pass
     open(os.path.join(raw, name + '.txt'), 'w', encoding='utf-8').write(text + '\n')
+    if name in os.environ.get('DOGMON_SHAPE', '').split(','):
+        print(f'SHAPE {name}:', shape(LAST[0])[:1500])
     print(f"FETCH {'ok ' if ok else 'ERR'} {name}: {text.splitlines()[0][:140] if text else ''}")
     return ok
 

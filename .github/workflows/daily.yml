@@ -24,6 +24,7 @@ jobs:
       - name: Сбор данных и расчёт сводки
         env:
           DOGMON: ${{ runner.temp }}/dogmon
+          DOGMON_SHAPE: dd_age,markets
         run: python3 tools/daily.py run .
 
       - name: Выкладка на сайт
