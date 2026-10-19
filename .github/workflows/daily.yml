@@ -26,6 +26,10 @@ jobs:
           DOGMON: ${{ runner.temp }}/dogmon
         run: python3 tools/daily.py run .
 
+      - name: Кандидаты в новости (Google News)
+        continue-on-error: true
+        run: python3 tools/newsfeed.py data/feed.json 4
+
       - name: Выкладка на сайт
         run: |
           git config user.name "DOG Monitor bot"
