@@ -4,6 +4,8 @@
     python3 tools/daily.py run  <site_dir>              сбор данных → расчёт → data/ сайта (GitHub Actions, каждое утро)
     python3 tools/daily.py news <site_dir> <news.json>  добавить новости (их отбирает задача Claude) в data/news.json
     python3 tools/daily.py message <site_dir> [статус]  короткое сообщение по текущей сводке сайта
+    python3 tools/daily.py sync <site_dir> <db_dir> <out_dir>  список записей для базы дашборда (ArtifactData batch):
+        db_dir — то, что ArtifactData уже сохранил (snapshots/, news/, live/, meta/); в базу идёт только недостающее
 
 Рабочая папка — $DOGMON (по умолчанию /tmp/dogmon). Прошлые сводки берутся из data/ сайта.
 """
@@ -183,6 +185,39 @@ def message(site, status=None):
     print(sh(os.path.join(BASE, 'dogmon.py'), 'message', *([status] if status else [])).strip())
 
 
+def sync(site, db, out):
+    site, db, out = (os.path.abspath(x) for x in (site, db, out))
+    data = os.path.join(site, 'data')
+    os.makedirs(out, exist_ok=True)
+    have = lambda coll, i: os.path.exists(os.path.join(db, coll, i + '.json'))
+    live = jload(os.path.join(data, 'live.json'))
+    sid = live['id']
+    writes, pin = [], []
+    if not have('snapshots', sid) and live.get('kind') in ('утро', 'запрос', 'база'):
+        writes.append({'op': 'set', 'collection': 'snapshots', 'doc_id': sid, 'file_path': os.path.join(data, 'snapshots', sid + '.json')})
+    writes.append({'op': 'set', 'collection': 'live', 'doc_id': 'current', 'file_path': os.path.join(data, 'live.json')})
+    if have('live', 'current'):
+        pin.append('live/current')
+    h = next((x for x in jload(os.path.join(data, 'hist.json'), []) if x.get('id') == sid), None)
+    if h and not have('hist', sid):
+        jdump(h, os.path.join(out, 'hist.json'))
+        writes.append({'op': 'set', 'collection': 'hist', 'doc_id': sid, 'file_path': os.path.join(out, 'hist.json')})
+    for n in (jload(os.path.join(data, 'news.json'), []) or [])[:30]:
+        if n.get('id') and not have('news', n['id']):
+            p = os.path.join(out, 'news', n['id'] + '.json')
+            jdump({k: v for k, v in n.items() if k != 'id'}, p)
+            writes.append({'op': 'set', 'collection': 'news', 'doc_id': n['id'], 'file_path': p})
+    for doc in ('audit', 'treasuries'):
+        if os.path.exists(os.path.join(data, doc + '.json')):
+            writes.append({'op': 'set', 'collection': 'meta', 'doc_id': doc, 'file_path': os.path.join(data, doc + '.json')})
+            if have('meta', doc):
+                pin.append('meta/' + doc)
+    jdump(writes, os.path.join(out, 'writes.json'))
+    print(f'SNAPSHOT_ID={sid}')
+    print(f'SYNC_WRITES={len(writes)} → {os.path.join(out, "writes.json")}')
+    print('NEED_VERSION: ' + (' '.join(pin) if pin else 'нет'))
+
+
 if __name__ == '__main__':
     cmd = sys.argv[1] if len(sys.argv) > 1 else ''
     if cmd == 'run' and len(sys.argv) == 3:
@@ -191,5 +226,7 @@ if __name__ == '__main__':
         news(sys.argv[2], sys.argv[3])
     elif cmd == 'message' and len(sys.argv) in (3, 4):
         message(sys.argv[2], sys.argv[3] if len(sys.argv) == 4 else None)
+    elif cmd == 'sync' and len(sys.argv) == 5:
+        sync(*sys.argv[2:5])
     else:
         sys.exit(__doc__)
