@@ -21,13 +21,18 @@ UA = 'Mozilla/5.0 (compatible; DOG-Monitor/1.0; +https://allexst63.github.io/dog
 SKIP = re.compile(r'price prediction|прогноз|predict|forecast|dogecoin|doge\b|pet|puppy|veterinar', re.I)
 
 
-def rss(q):
-    url = 'https://news.google.com/rss/search?' + urllib.parse.urlencode({'q': q + ' when:7d', 'hl': 'en-US', 'gl': 'US', 'ceid': 'US:en'})
+def rss(q, engine='google'):
+    if engine == 'google':
+        url = 'https://news.google.com/rss/search?' + urllib.parse.urlencode({'q': q, 'hl': 'en-US', 'gl': 'US', 'ceid': 'US:en'})
+    else:
+        url = 'https://www.bing.com/news/search?' + urllib.parse.urlencode({'q': q, 'format': 'rss', 'qft': 'sortbydate="1"'})
     req = urllib.request.Request(url, headers={'User-Agent': UA})
     with urllib.request.urlopen(req, timeout=30) as r:
         root = ET.fromstring(r.read())
     for it in root.iter('item'):
         src = it.find('source')
+        if src is None:
+            src = next((c for c in it if c.tag.endswith('}Source') or c.tag.endswith('}source')), None)
         yield {'title': (it.findtext('title') or '').strip(), 'url': (it.findtext('link') or '').strip(),
                'pub': it.findtext('pubDate'), 'src': (src.text or '').strip() if src is not None else '',
                'srcUrl': src.get('url') if src is not None else '', 'q': q}
@@ -35,10 +40,12 @@ def rss(q):
 
 def main(out, days=4):
     now = dt.datetime.now(dt.timezone.utc)
-    seen, items, errs = set(), [], []
-    for q in QUERIES:
+    seen, items, errs, stat = set(), [], [], []
+    for q, engine in [(q, e) for e in ('google', 'bing') for q in QUERIES]:
+        n = 0
         try:
-            for x in rss(q):
+            for x in rss(q, engine):
+                n += 1
                 try:
                     t = email.utils.parsedate_to_datetime(x['pub']).astimezone(dt.timezone.utc)
                 except Exception:
@@ -52,11 +59,12 @@ def main(out, days=4):
                 del x['pub']
                 items.append(x)
         except Exception as e:
-            errs.append(f'{q}: {e}')
+            errs.append(f'{engine} {q}: {e}')
+        stat.append(f'{engine} {q}: {n}')
     items.sort(key=lambda x: x['ts'], reverse=True)
-    json.dump({'updated': now.strftime('%Y-%m-%dT%H:%M:%SZ'), 'items': items[:60], 'errors': errs},
+    json.dump({'updated': now.strftime('%Y-%m-%dT%H:%M:%SZ'), 'items': items[:60], 'errors': errs, 'stat': stat},
               open(out, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-    print(f'NEWSFEED: {len(items)} кандидатов, ошибок {len(errs)}')
+    print(f'NEWSFEED: {len(items)} кандидатов, ошибок {len(errs)}; ' + '; '.join(stat))
     for x in items[:15]:
         print(f"  {x['ts']} | {x['src']} | {x['title'][:110]}")
 
