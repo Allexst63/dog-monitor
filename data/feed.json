@@ -1,29 +1,50 @@
 {
- "updated": "2026-10-19T12:07:39Z",
+ "updated": "2026-10-20T06:06:23Z",
  "items": [
   {
-   "title": "Dog (Bitcoin) (DOG) Previsão de Preço 2026, 2027, 2028, 2029, 2030",
-   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6ad6080d862d4b4588c6c8a708ad80a6&url=https%3a%2f%2fbr.beincrypto.com%2fpreco%2fdog-go-to-the-moon-rune%2fprevisao-preco%2f&c=13888651505144635806&mkt=en-us",
-   "src": "br.beincrypto",
+   "title": "Dog (Bitcoin) Price Today in India | DOG to INR Live Price & Chart - Binance",
+   "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE9kUVl4cGtqaTI2NmdmdjVtVVY0cEowNE1ISkNqYW9UdWdCT1M2SzV1WkJzTWdacTVXbWJLcXFRTDIyUTYzRGg2WU9SSEhQUXVaRy1oaTZMNDlHTHZOeFRoNnhpaFBFMk05U05n?oc=5",
+   "src": "Binance",
+   "srcUrl": "https://www.binance.com",
+   "q": "\"DOG (Bitcoin)\"",
+   "d": "2026-10-15",
+   "ts": "2026-10-15T11:00Z"
+  },
+  {
+   "title": "DOG•GO•TO•THE•MOON",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6ad704e0470f4432868a806076012d47&url=https%3a%2f%2fbr.investing.com%2fcrypto%2fdog-go-to-the-moon-rune&c=6166008487613861021&mkt=en-us",
+   "src": "Investing",
    "srcUrl": null,
    "q": "\"DOG•GO•TO•THE•MOON\"",
-   "d": "2026-10-16",
-   "ts": "2026-10-16T17:00Z"
+   "d": "2026-10-13",
+   "ts": "2026-10-13T15:44Z"
+  },
+  {
+   "title": "Best MLBB Betting Sites 2026: Mobile Legends Wagering Insights",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6ad704e1bc8540f9ace2c32b56e253c7&url=https%3a%2f%2finsider-gaming.com%2fesports-betting%2fmobile-legends%2f&c=1476591766000840144&mkt=en-us",
+   "src": "Insider Gaming",
+   "srcUrl": null,
+   "q": "\"$DOG\" bitcoin rune",
+   "d": "2026-10-13",
+   "ts": "2026-10-13T06:07Z"
   }
  ],
- "errors": [],
+ "errors": [
+  "bing Bitcoin runes DOG exchange listing: not well-formed (invalid token): line 1, column 41"
+ ],
  "stat": [
-  "google \"DOG•GO•TO•THE•MOON\": 22",
-  "google \"DOG (Bitcoin)\": 66",
+  "google \"DOG•GO•TO•THE•MOON\": 21",
+  "google \"DOG (Bitcoin)\": 64",
   "google \"C2 Blockchain\" DOG: 9",
   "google Leonidas DOG bitcoin runes: 10",
   "google \"$DOG\" bitcoin rune: 10",
-  "google Bitcoin runes DOG exchange listing: 49",
+  "google Bitcoin runes DOG exchange listing: 48",
   "bing \"DOG•GO•TO•THE•MOON\": 9",
   "bing \"DOG (Bitcoin)\": 12",
-  "bing \"C2 Blockchain\" DOG: 8",
-  "bing Leonidas DOG bitcoin runes: 10",
+  "bing \"C2 Blockchain\" DOG: 9",
+  "bing Leonidas DOG bitcoin runes: 0",
   "bing \"$DOG\" bitcoin rune: 12",
-  "bing Bitcoin runes DOG exchange listing: 11"
+  "bing Bitcoin runes DOG exchange listing: 0",
+  "X: нет ключа X_BEARER_TOKEN"
  ]
 }
