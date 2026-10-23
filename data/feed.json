@@ -1,38 +1,44 @@
 {
- "updated": "2026-10-22T06:08:05Z",
+ "updated": "2026-10-23T06:07:59Z",
  "items": [
   {
-   "title": "Per poter aggiungere questa coin nei preferiti devi essere loggato.",
-   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6ad9a847cb984a7c9ac11e7e29390a0f&url=https%3a%2f%2fwww.criptovaluta.it%2fdog-go-to-the-moon%2f&c=481264743388887086&mkt=en-us",
-   "src": "Criptovaluta.it",
+   "title": "DOG•GO•TO•THE•MOON",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6adaf9c101514c24853e186bbf90af47&url=https%3a%2f%2fbr.investing.com%2fcrypto%2fdog-go-to-the-moon-rune&c=6166008487613861021&mkt=en-us",
+   "src": "Investing",
    "srcUrl": null,
-   "q": "Leonidas DOG bitcoin runes",
-   "d": "2026-10-20",
-   "ts": "2026-10-20T01:53Z"
+   "q": "\"DOG•GO•TO•THE•MOON\"",
+   "d": "2026-10-22",
+   "ts": "2026-10-22T16:03Z"
   },
   {
-   "title": "Ordinals Supporter Leonidas Unveils New Bitcoin Client: “$DOG Mode” - BitRss - Crypto World News - Howl.link",
-   "url": "https://news.google.com/rss/articles/CBMiO0FVX3lxTE5DYlA3X2wzTU9fb2V6TkV0ODZjbjVKcHpZd3BBbGEyTi01blB1c0N0NVY5OVJDR3BYYlpv?oc=5",
-   "src": "Howl.link",
-   "srcUrl": "https://t.co",
-   "q": "Leonidas DOG bitcoin runes",
-   "d": "2026-10-18",
-   "ts": "2026-10-18T05:58Z"
+   "title": "DOG•GO•TO•THE•MOON价格",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6adaf9c101514c24853e186bbf90af47&url=https%3a%2f%2fwww.okx.com%2fzh-hans%2fprice%2fdog%25E2%2580%25A2go%25E2%2580%25A2to%25E2%2580%25A2the%25E2%2580%25A2moon-dog&c=10595843722143744522&mkt=en-us",
+   "src": "okx",
+   "srcUrl": null,
+   "q": "\"DOG•GO•TO•THE•MOON\"",
+   "d": "2026-10-20",
+   "ts": "2026-10-20T05:44Z"
+  },
+  {
+   "title": "Per poter aggiungere questa coin nei preferiti devi essere loggato.",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6adaf9c101514c24853e186bbf90af47&url=https%3a%2f%2fwww.criptovaluta.it%2fdog-go-to-the-moon%2f&c=481264743388887086&mkt=en-us",
+   "src": "Criptovaluta.it",
+   "srcUrl": null,
+   "q": "\"DOG•GO•TO•THE•MOON\"",
+   "d": "2026-10-20",
+   "ts": "2026-10-20T01:53Z"
   }
  ],
- "errors": [
-  "bing \"DOG•GO•TO•THE•MOON\": not well-formed (invalid token): line 1, column 41",
-  "bing \"DOG (Bitcoin)\": not well-formed (invalid token): line 1, column 41"
- ],
+ "errors": [],
  "stat": [
-  "google \"DOG•GO•TO•THE•MOON\": 17",
-  "google \"DOG (Bitcoin)\": 19",
-  "google \"C2 Blockchain\" DOG: 6",
-  "google Leonidas DOG bitcoin runes: 11",
-  "google \"$DOG\" bitcoin rune: 10",
+  "google \"DOG•GO•TO•THE•MOON\": 14",
+  "google \"DOG (Bitcoin)\": 53",
+  "google \"C2 Blockchain\" DOG: 5",
+  "google Leonidas DOG bitcoin runes: 10",
+  "google \"$DOG\" bitcoin rune: 9",
   "google Bitcoin runes DOG exchange listing: 47",
-  "bing \"DOG•GO•TO•THE•MOON\": 0",
-  "bing \"DOG (Bitcoin)\": 0",
+  "bing \"DOG•GO•TO•THE•MOON\": 11",
+  "bing \"DOG (Bitcoin)\": 10",
   "bing \"C2 Blockchain\" DOG: 8",
   "bing Leonidas DOG bitcoin runes: 11",
   "bing \"$DOG\" bitcoin rune: 12",
