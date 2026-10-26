@@ -700,10 +700,13 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
   const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
   const esc = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   // ---------- язык: английский по умолчанию, русский — в настройках (меню «⋯» или ?lang=ru) ----------
+  // язык: ссылка всегда открывает английскую версию; русский — в настройках (меню «⋯»), выбор держится,
+  // пока открыта вкладка/сессия; постоянная русская ссылка — ?lang=ru
   const LANG = (() => {
     let l = null;
-    try { const q = new URLSearchParams(location.search).get('lang'); if (q === 'ru' || q === 'en') { l = q; localStorage.setItem('dogmon.lang', JSON.stringify(q)); } } catch (e) { }
-    if (!l) { try { l = JSON.parse(localStorage.getItem('dogmon.lang')); } catch (e) { } }
+    try { localStorage.removeItem('dogmon.lang'); } catch (e) { }      // старое «вечное» запоминание языка больше не используем
+    try { const q = new URLSearchParams(location.search).get('lang'); if (q === 'ru' || q === 'en') l = q; } catch (e) { }
+    if (!l) { try { l = sessionStorage.getItem('dogmon.lang'); } catch (e) { } }
     return l === 'ru' ? 'ru' : 'en';
   })();
   const EN = LANG === 'en', RU = !EN;
@@ -712,7 +715,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
   const MLN = EN ? 'M' : '\u00a0млн', MLRD = EN ? 'B' : '\u00a0млрд';
   // множественное число: P(k, 'кошелёк', 'кошелька', 'кошельков', 'wallet', 'wallets')
   const P = (k, o, f, m, e1, e2) => EN ? (Math.abs(k) === 1 ? e1 : e2) : plural(k, o, f, m);
-  function setLang(l) { try { localStorage.setItem('dogmon.lang', JSON.stringify(l)); } catch (e) { } try { const u = new URL(location.href); u.searchParams.delete('lang'); location.replace(u.toString()); } catch (e) { location.reload(); } }
+  function setLang(l) { try { sessionStorage.setItem('dogmon.lang', l); } catch (e) { } try { const u = new URL(location.href); u.searchParams.delete('lang'); location.replace(u.toString()); } catch (e) { location.reload(); } }
   document.documentElement.lang = LANG;
   if (RU) {
     try {
@@ -2110,7 +2113,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
         <p class="note">${T('Это наблюдение, а не правило: биржи и сами перекладывают монеты между своими кошельками.', 'This is an observation, not a rule: exchanges also shuffle coins between their own wallets.')}</p>`],
     wallets: () => [T('Кто есть кто', 'Who’s who'), `<p>${T('Сто самых крупных кошельков DOG. Метки ставятся по данным DOG DATA, публикациям бирж и движению монет.', 'The hundred largest DOG wallets. Labels come from DOG DATA, exchange disclosures and how the coins move.')}</p>
         <ul class="plain"><li><span class="kdot kd-exchange"></span><b>${T('Биржи', 'Exchanges')}</b> — ${T('кошельки бирж и биржевые хранилища.', 'exchange wallets and exchange custody.')}</li><li><span class="kdot kd-treasury"></span><b>${T('Сервисы', 'Services')}</b> — ${T('казна проекта, распределители, маркет-мейкеры, маркетплейсы.', 'treasuries, distributors, market makers, marketplaces.')}</li><li><span class="kdot kd-private"></span><b>${T('Холдеры', 'Holders')}</b> — ${T('кошельки без метки биржи или сервиса; «крупный холдер» — с большим числом операций.', 'wallets with no exchange or service label; a “large holder” has many transactions.')}</li></ul>
-        <p>${T('<b>Ср. цена</b> — по какой цене в среднем пришли на кошелёк его нынешние DOG (по цене дня поступления, аирдроп — бесплатно). Зелёный процент — сейчас дороже этой цены, красный — дешевле.', '<b>Avg cost</b> — the average price at which the wallet’s current DOG arrived (each deposit valued at that day’s price; airdropped coins count as free). A green percentage means DOG is above that price now, red means below.')}</p>
+        <p>${T('<b>Ср. цена покупок</b> — по какой цене в среднем кошелёк покупал и пополнялся после аирдропа (по цене дня поступления). Монеты с аирдропа бесплатные и в неё не входят — их доля написана отдельно. Зелёный процент — сейчас дороже этой цены, красный — дешевле.', '<b>Avg buy</b> — the average price at which the wallet bought or was topped up after the airdrop (each deposit at that day’s price). Airdropped coins were free and are left out — their share is shown separately. Green means DOG is above that price now, red means below.')}</p>
         <p class="note">${T('Метка — оценка, а не подтверждение владельца. Линия у кошелька — баланс по дням.', 'A label is an estimate, not a confirmed owner. The line next to each wallet is its daily balance.')}</p>`]
   };
   function openInfo(k) {
@@ -2521,29 +2524,30 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
     const r = p / avg;
     return { cls: r >= 1 ? 'up' : 'down', txt: r >= 10 ? '×' + n(r, 0) : sg((r - 1) * 100, 0) + '%' };
   }
+  const airTxt = f => T(`аирдроп ${n(f * 100, 0)}%`, `${n(f * 100, 0)}% airdrop`);
   function costLine(a, k) {
     if (isEx(k) || k === 'marketplace') return '';
     const w = costOf(a); if (!w) return '';
-    if (w.free >= 0.98) return `<span class="cbl"><span class="up">${T('бесплатно с аирдропа', 'free from the airdrop')}</span></span>`;
-    const v = vsAvg(w.avg);
-    return `<span class="cbl">${T('ср. цена', 'avg cost')} <b>${w.ax ? '≈' : ''}${m1r(w.avg)}</b>${T('', '/1M')}${v ? ` <span class="${v.cls}">${v.txt}</span>` : ''}</span>`;
+    if (w.buy == null) return `<span class="cbl"><span class="up">${T('аирдроп — бесплатно, без покупок', 'airdrop — free, no buys')}</span></span>`;
+    const v = vsAvg(w.buy);
+    return `<span class="cbl">${T('ср. цена покупок', 'avg buy')} <b>${w.ax ? '≈' : ''}${m1r(w.buy)}</b>${T('', '/1M')}${v ? ` <span class="${v.cls}">${v.txt}</span>` : ''}${w.free >= 0.05 ? ` · <span class="up">${airTxt(w.free)}</span>` : ''}</span>`;
   }
   function costBlock(a, k) {
     const c = S.cb && S.cb.c && S.cb.c[a], w = costOf(a);
-    const head = `<h3 style="font-size:15px;margin-bottom:6px">${T('Средняя цена DOG на этом кошельке', 'Average cost of the DOG in this wallet')}</h3>`;
-    if (isEx(k) || k === 'marketplace') return `<div class="cbbox">${head}<p class="note">${T('Для кошельков бирж и маркетплейсов среднюю цену не считаем: там лежат монеты многих клиентов.', 'We don’t calculate this for exchange and marketplace wallets: they hold coins of many customers.')}</p></div>`;
+    const head = `<h3 style="font-size:15px;margin-bottom:6px">${T('Средняя цена покупок (без аирдропа)', 'Average buy price (airdrop excluded)')}</h3>`;
+    if (isEx(k) || k === 'marketplace') return `<div class="cbbox">${head}<p class="note">${T('Для кошельков бирж и маркетплейсов не считаем: там лежат монеты многих клиентов.', 'Not calculated for exchange and marketplace wallets: they hold coins of many customers.')}</p></div>`;
     if (!S.cb) return '';
-    if (c && c.skip) return `<div class="cbbox">${head}<p class="note">${T('Больше 1000 операций — DOG DATA отдаёт не всю историю переводов этого кошелька, поэтому среднюю цену не считаем.', 'More than 1,000 transactions — DOG DATA doesn’t return this wallet’s full transfer history, so we don’t calculate it.')}</p></div>`;
+    if (c && c.skip) return `<div class="cbbox">${head}<p class="note">${T('Больше 1000 операций — DOG DATA отдаёт не всю историю переводов этого кошелька, поэтому не считаем.', 'More than 1,000 transactions — DOG DATA doesn’t return this wallet’s full transfer history, so we don’t calculate it.')}</p></div>`;
     if (!w) return `<div class="cbbox">${head}<p class="note">${c && c.ok === false ? T('История переводов не сходится с балансом — цену не показываем.', 'The transfer history doesn’t match the balance, so we don’t show a figure.') : T('Посчитаем в следующем утреннем обновлении.', 'Will be calculated in the next morning update.')}</p></div>`;
-    const v = vsAvg(w.avg), p = curPrice();
-    const fd = w.first ? dOf(w.first) : null;
-    const main = w.free >= 0.98
-      ? `<div class="cbbig up">${T('Бесплатно', 'Free')}</div><p>${T('Почти все монеты этого кошелька получены на аирдропе DOG — бесплатно.', 'Almost all coins in this wallet came from the DOG airdrop — for free.')}</p>`
-      : `<div class="cbbig">${w.ax ? '≈' : ''}${m1r(w.avg)} <small>${T('за 1 млн DOG', 'per 1M DOG')}</small></div>${v && p ? `<p>${T('Сейчас', 'Now')} ${ONE_M} ≈ ${m1s(p)} — <b class="${v.cls}">${v.txt}</b> ${T('к средней цене', 'vs. the average cost')}.</p>` : ''}`;
-    return `<div class="cbbox">${head}${main}
-      <dl class="kv">${w.free >= 0.02 && w.free < 0.98 ? `<dt>${T('Получено бесплатно (аирдроп)', 'Received free (airdrop)')}</dt><dd>${n(w.free * 100, 0)}%</dd>${w.paid ? `<dt>${T('Средняя цена без аирдропа', 'Average cost excl. airdrop')}</dt><dd>${m1r(w.paid)} ${PER1M}</dd>` : ''}` : ''}${fd ? `<dt>${T('Первое поступление', 'First DOG received')}</dt><dd>${esc(F_D.format(fd))}</dd>` : ''}</dl>
+    const p = curPrice(), fb = w.fb ? dOf(w.fb) : null;
+    if (w.buy == null) return `<div class="cbbox">${head}<div class="cbbig up">${T('Аирдроп', 'Airdrop')}</div><p>${T('Монеты этого кошелька получены бесплатно на аирдропе DOG, покупок и пополнений не было — средней цены покупки нет.', 'This wallet’s coins came free from the DOG airdrop, with no buys or top-ups since — so there’s no average buy price.')}</p></div>`;
+    const v = vsAvg(w.buy);
+    return `<div class="cbbox">${head}
+      <div class="cbbig">${w.ax ? '≈' : ''}${m1r(w.buy)} <small>${T('за 1 млн DOG', 'per 1M DOG')}</small></div>
+      ${v && p ? `<p>${T('Сейчас', 'Now')} ${ONE_M} ≈ ${m1s(p)} — <b class="${v.cls}">${v.txt}</b> ${T('к этой цене', 'vs. this price')}.</p>` : ''}
+      <dl class="kv"><dt>${T('С аирдропа (бесплатно)', 'From the airdrop (free)')}</dt><dd>${w.free >= 0.005 ? n(w.free * 100, 0) + T('% монет', '% of coins') : T('нет', 'none')}</dd>${fb ? `<dt>${T('Первая покупка / пополнение', 'First buy / top-up')}</dt><dd>${esc(F_D.format(fb))}</dd>` : ''}</dl>
       ${w.ax ? `<p class="note">${T('В истории переводов DOG DATA не хватает части операций этого кошелька — цена оценена по известным поступлениям.', 'DOG DATA’s transfer history for this wallet is missing some transactions — the figure is estimated from the known deposits.')}</p>` : ''}
-      <p class="note">${T('Как считаем: каждое поступление DOG оцениваем по цене дня, когда монеты пришли на кошелёк (Kraken, раньше — Gate); при отправке средняя цена не меняется. Монеты с аирдропа стоят 0. Если монеты пришли с биржи — это близко к цене покупки, если с другого своего кошелька — это цена в день перевода.', 'How we calculate it: each DOG deposit is valued at that day’s price (Kraken, earlier Gate); sending coins out doesn’t change the average. Airdropped coins count as free. If coins came from an exchange this is close to the purchase price; if from another own wallet, it’s the price on the day of the transfer.')}</p></div>`;
+      <p class="note">${T('Как считаем: берём только пополнения кошелька после аирдропа и оцениваем каждое по цене DOG в день поступления (Kraken, раньше — Gate); при отправке монет средняя цена не меняется. Монеты с аирдропа достались бесплатно и в среднюю цену не входят. Если монеты пришли с биржи — это почти цена покупки; если со своего другого кошелька — цена в день перевода.', 'How we calculate it: only top-ups after the airdrop count, each valued at that day’s DOG price (Kraken, earlier Gate); sending coins out doesn’t change the average. Airdropped coins were free and are left out. If coins came from an exchange this is close to the purchase price; if from another own wallet, it’s the price on the day of the transfer.')}</p></div>`;
   }
   function holdersCost() {
     const c = S.cb && S.cb.c; if (!c) return null;
@@ -2553,7 +2557,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
       if (isEx(x.k) || x.k === 'marketplace' || !e || e.skip || !e.ok || !e.bal) continue;
       bal += e.bal; cost += e.cost; free += Math.min(e.free || 0, e.bal); k++;
     }
-    return bal > 0 ? { avg: cost / bal, free: free / bal, k, bal } : null;
+    return bal - free > 0 ? { buy: cost / (bal - free), free: free / bal, k } : null;
   }
   // ---------- мини-графики балансов (data/wallets.json) ----------
   const isEx = k => k === 'exchange' || k === 'custody';
@@ -2622,7 +2626,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
     return `<div class="sec"><div class="sec-head"><h2>${T('Кто владеет DOG', 'Who owns DOG')}</h2><p>${T('все 100 млрд монет', 'all 100B coins')}</p></div>
       <div class="group"><div class="own-bar" role="img" aria-label="${esc(segs.map(x => x[1] + ' ' + n(x[2], 1) + '%').join(', '))}">${segs.map(x => `<i style="width:${x[2].toFixed(2)}%;background:${x[0]}"></i>`).join('')}</div>
       <div class="own-lg">${segs.map(x => `<div><span class="key" style="background:${x[0]}"></span><span class="ol-t"><b>${n(x[2], 1)}%</b> ${x[1]}<small>${esc(x[3])}</small></span></div>`).join('')}</div>
-      ${(() => { const hc = holdersCost(); if (!hc) return ''; const v = vsAvg(hc.avg); return `<div class="own-cost"><span class="t">${T('Крупные холдеры получили свои DOG в среднем по', 'Large holders got their DOG at an average of')} <b>${m1r(hc.avg)}</b> ${PER1M}${v ? ` — ${T('сейчас', 'now')} <b class="${v.cls}">${v.txt}</b>` : ''}.</span><small>${T(`${hc.k} ${plural(hc.k, 'кошелёк', 'кошелька', 'кошельков')} топ-100 без бирж; ${n(hc.free * 100, 0)}% их монет получены бесплатно на аирдропе.`, `${hc.k} top-100 wallets excluding exchanges; ${n(hc.free * 100, 0)}% of their coins came free from the airdrop.`)}</small></div>`; })()}</div></div>`;
+      ${(() => { const hc = holdersCost(); if (!hc) return ''; const v = vsAvg(hc.buy); return `<div class="own-cost"><span class="t">${T('Крупные холдеры покупали и пополняли кошельки в среднем по', 'Large holders bought and topped up at an average of')} <b>${m1r(hc.buy)}</b> ${PER1M}${v ? ` — ${T('сейчас', 'now')} <b class="${v.cls}">${v.txt}</b>` : ''}.</span><small>${T(`Ещё ${n(hc.free * 100, 0)}% их монет — с аирдропа, бесплатно, в среднюю цену не входят. ${hc.k} ${plural(hc.k, 'кошелёк', 'кошелька', 'кошельков')} топ-100 без бирж.`, `Another ${n(hc.free * 100, 0)}% of their coins came free from the airdrop and are left out. ${hc.k} top-100 wallets excluding exchanges.`)}</small></div>`; })()}</div></div>`;
   }
 
   function renderWallets() {
@@ -2654,7 +2658,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
       const nt = noteTr(x.nt, x.nt_en);
       return `<button type="button" class="row wrow" data-wal="${esc(x.a)}">${avatar(x.n, x.k)}<span class="t"><b>${esc(['private', 'unknown'].includes(x.k) || !KIND_NAME[x.k] ? T('Холдер', 'Holder') : ownName(x.n, x.k))} <span class="faint" style="font-weight:500">${NO}${x.r}</span>${x.new ? ` <span class="tag hot">${T('новый', 'new')}</span>` : ''}</b><span class="sub">${nt ? esc(nt) : `<span class="addr">${esc(short(x.a))}</span>`}</span>${costLine(x.a, x.k)}</span>${sparkW(x.a, x.k)}<span class="v"><b>${mdog(x.b)}</b><span class="faint">${esc(usdM(x.b, mid))}</span>${hasD ? `<span class="dchip ${dcls(x.d, x.k)}">${sg(x.d, 1)}${MLN}</span>` : ''}</span></button>`;
     };
-    html += `<div class="sec"><div class="sec-head">${hInfo('h2', T('Топ-100 кошельков', 'Top 100 wallets'), 'wallets')}<p>${T(`держат ${n(s.top100pct, 2)}% всех DOG, холдеров всего ${n(s.holders)}`, `hold ${n(s.top100pct, 2)}% of all DOG; ${n(s.holders)} holders in total`)}${days > 1 ? T(` · линия — баланс за ${days} ${plural(days, 'день', 'дня', 'дней')}`, ` · the line shows the balance over ${days} days`) : ''}${S.cb ? T(' · ср. цена — за 1 млн DOG', '') : ''}</p></div>
+    html += `<div class="sec"><div class="sec-head">${hInfo('h2', T('Топ-100 кошельков', 'Top 100 wallets'), 'wallets')}<p>${T(`держат ${n(s.top100pct, 2)}% всех DOG, холдеров всего ${n(s.holders)}`, `hold ${n(s.top100pct, 2)}% of all DOG; ${n(s.holders)} holders in total`)}${days > 1 ? T(` · линия — баланс за ${days} ${plural(days, 'день', 'дня', 'дней')}`, ` · the line shows the balance over ${days} days`) : ''}${S.cb ? T(' · ср. цена покупок — за 1 млн DOG, без аирдропа', ' · avg buy excludes the airdrop') : ''}</p></div>
       <div class="chips" role="group" aria-label="${T('Фильтр', 'Filter')}">${fbtn('all', T('Все', 'All'), 100)}${fbtn('moved', T('Изменились', 'Changed'), nMoved)}${fbtn('svc', T('Биржи и сервисы', 'Exchanges & services'), nSvc)}${fbtn('private', T('Холдеры', 'Holders'), 100 - nSvc)}</div>
       <label class="search">${ico('search')}<input id="wsearch" type="search" placeholder="${T('Адрес, место или метка', 'Address, rank or label')}" value="${esc(S.q)}" aria-label="${T('Поиск по адресу, месту или метке', 'Search by address, rank or label')}"></label>
       <div class="group flush rows" id="wlist">${rows.length ? rows.map(wrow).join('') : `<p class="note" style="padding:12px 16px">${T('Ничего не найдено.', 'Nothing found.')}</p>`}</div>
@@ -2756,7 +2760,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
   // ---------- СПРАВКА ----------
   const HELP_EN = `<div class="group help">
       <h2>How to use this page</h2>
-      <p>This page collects data on the DOG token (DOG•GO•TO•THE•MOON) from seven exchanges and from the Bitcoin blockchain on its own. There’s nothing to set up: sections are at the bottom of the screen on a phone and on the left on a computer. The language switch is in the “⋯” menu (top right) or in the left panel.</p>
+      <p>This page collects data on the DOG token (DOG•GO•TO•THE•MOON) from seven exchanges and from the Bitcoin blockchain on its own. There’s nothing to set up: sections are at the bottom of the screen on a phone and on the left on a computer. The site always opens in English; to switch to Russian use the “⋯” menu (top right) or the left panel — or open the site with ?lang=ru.</p>
       <div><h3>Gestures</h3><ul>
         <li><b>Stories</b> are the circles at the top of Home. Tap the right side for the next slide, the left side for the previous one. Hold your finger down to pause. Swipe sideways for the next story. <b>Swipe up or down to close.</b></li>
         <li><b>Bottom cards</b> close with a swipe down on the top handle, or a tap outside the card.</li>
@@ -2768,7 +2772,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
       <div><h3>Companies holding DOG</h3><p>Public companies that keep DOG in their treasury. Right now that’s C2 Blockchain (USA), which regularly reports its purchases. The steps on the chart are its holdings in each report, the dashed line is its 1.5B DOG goal. The company’s coins are held at Kraken, so it has no separate wallet in the top 100.</p></div>
       <div><h3>Transfers</h3><p>Every transfer of 5M DOG or more in the last 24 hours: from where, to where and how much. “To an exchange” means DOG was moved onto an exchange (often done before selling); “from an exchange” means it was withdrawn to a personal wallet. Tap a transfer to see the addresses and the transaction itself.</p></div>
       <div><h3>Wallets</h3><p>At the top: what changed since the last report and who owns DOG overall. Then the hundred largest DOG wallets. Blue labels are exchanges, pink are services, grey are private holders. The small line next to each wallet is its balance day by day; the dollar value is shown under the balance.</p>
-        <p style="margin-top:8px"><b>Avg cost</b> under a wallet’s description is the average price at which its current DOG arrived, per 1M DOG: each deposit is valued at that day’s exchange price, and airdropped coins count as free. The percentage shows how today’s price compares. Tap a wallet to see its balance, change, a larger chart, the average-cost details and an address you can copy. Exchange wallets have no average cost — they hold many customers’ coins.</p></div>
+        <p style="margin-top:8px"><b>Avg buy</b> under a wallet’s description is the average price, per 1M DOG, at which the wallet bought or was topped up after the airdrop: each deposit is valued at that day’s exchange price. Airdropped coins were free, so they’re left out of the average and their share is shown separately (“airdrop 40%”). The percentage shows how today’s price compares. Tap a wallet to see its balance, change, a larger chart, the average-cost details and an address you can copy. Exchange wallets have no average cost — they hold many customers’ coins.</p></div>
       <div><h3>How DOG is held</h3><ul><li><b>Average purchase price</b> — the average price at which coins last changed hands. If today’s price is lower, most holders bought higher.</li><li><b>In profit vs. at a loss</b> — what share of coins is now worth more or less than the price of its last transfer.</li><li><b>Held over a year</b> — the more coins that haven’t moved in over a year, the less holders are selling.</li></ul></div>
       <div><h3>News</h3><p>Every morning the update looks for posts on X (Leonidas, the official DOG accounts, DOG DATA), listings, delistings, research and company reports on DOG purchases. Each item links to its source.</p></div>
       <div><h3>When it updates</h3><p>Once a day in the morning — a full report with news. Extra reports on request. The update time is shown at the top: tap it to see the data checks. The price itself updates live from Kraken.</p></div>
@@ -2804,7 +2808,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
       <div><h3>Компании, которые копят DOG</h3><p>Публичные компании, которые держат DOG в казне. Сейчас это C2 Blockchain (США): компания регулярно сообщает о покупках. Ступеньки на графике — её запасы по каждому отчёту, пунктир — цель 1,5 млрд DOG. Монеты компании хранятся на Kraken, поэтому отдельного кошелька в топ-100 у неё нет.</p></div>
       <div><h3>Переводы</h3><p>Все переводы от 5 млн DOG за сутки: откуда, куда и сколько. «На биржу» — DOG завели на биржу (так часто делают перед продажей), «с биржи» — вывели на свой кошелёк. Нажмите на перевод, чтобы увидеть адреса и саму транзакцию.</p></div>
       <div><h3>Кошельки</h3><p>Вверху — что изменилось с прошлой сводки и кто владеет DOG. Ниже — сто самых крупных кошельков. Синие метки — биржи, розовые — сервисы, серые — частные холдеры. Линия у кошелька — его баланс по дням, под балансом — сумма в долларах.</p>
-        <p style="margin-top:8px"><b>Ср. цена</b> под описанием кошелька — по какой цене в среднем пришли на кошелёк его нынешние DOG, за 1 млн DOG: каждое поступление оценивается по цене дня на бирже, монеты с аирдропа — бесплатно. Процент — насколько цена сейчас выше или ниже. Нажмите на кошелёк — откроются баланс, изменение, большой график, подробности о средней цене и адрес. Для кошельков бирж средней цены нет: там монеты многих клиентов.</p></div>
+        <p style="margin-top:8px"><b>Ср. цена покупок</b> под описанием кошелька — по какой цене в среднем кошелёк покупал и пополнялся после аирдропа, за 1 млн DOG: каждое поступление оценивается по цене дня на бирже. Монеты с аирдропа достались бесплатно, в среднюю цену не входят, их доля написана отдельно («аирдроп 40%»). Процент — насколько цена сейчас выше или ниже. Нажмите на кошелёк — откроются баланс, изменение, большой график, подробности о средней цене и адрес. Для кошельков бирж средней цены нет: там монеты многих клиентов.</p></div>
       <div><h3>Как держат DOG</h3><ul><li><b>Средняя цена покупки</b> — по какой цене монеты в среднем последний раз переходили из рук в руки. Если текущая цена ниже — большинство купило дороже.</li><li><b>В прибыли и в убытке</b> — какая доля монет сейчас стоит дороже или дешевле цены последнего перевода.</li><li><b>Лежат больше года</b> — чем больше монет не двигались больше года, тем меньше холдеры продают.</li></ul></div>
       <div><h3>Новости</h3><p>Каждое утро обновление ищет посты в X (Leonidas, официальные аккаунты DOG, DOG DATA), листинги, делистинги, исследования и отчёты компаний о покупках DOG. Ссылка всегда ведёт на источник.</p></div>
       <div><h3>Когда обновляется</h3><p>Раз в сутки утром — полная сводка с новостями. Дополнительные сводки — по запросу. Время обновления видно вверху: нажмите на него, чтобы посмотреть проверку данных.</p></div>

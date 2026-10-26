@@ -141,6 +141,8 @@ def apply(st, txs, px, dates):
             st['cost'] += q * p
             if pre or p == 0:
                 st['free'] += q
+            elif not st.get('fb'):
+                st['fb'] = t          # первая покупка / пополнение после аирдропа
             if not st.get('first'):
                 st['first'] = t
         elif x.get('direction') == 'out' and st['bal'] > 0:
@@ -162,7 +164,7 @@ def reconcile(st, bal_now):
         return st, True, None
     if st['bal'] > 0 and (st['bal'] > bal_now or st['bal'] >= 0.9 * bal_now):
         k = bal_now / st['bal']
-        return ({'bal': bal_now, 'cost': st['cost'] * k, 'free': st['free'] * k, 'first': st.get('first')}, True,
+        return ({'bal': bal_now, 'cost': st['cost'] * k, 'free': st['free'] * k, 'first': st.get('first'), 'fb': st.get('fb')}, True,
                 'out' if st['bal'] > bal_now else 'in')
     return st, False, None
 
@@ -191,7 +193,7 @@ def main():
           os.path.join(data, 'prices.json'))
 
     old = jload(os.path.join(data, 'costbasis.json'), {}) or {}
-    cache = old.get('c') or {}
+    cache = (old.get('c') or {}) if old.get('v') == 2 else {}   # v2: средняя цена без аирдропа — пересчёт с нуля
     out_w, out_c = {}, {}
     stat = {'ok': 0, 'skip': 0, 'err': 0, 'full': 0, 'inc': 0, 'same': 0, 'bad': 0}
     for x in top:
@@ -216,10 +218,10 @@ def main():
             if c and not c.get('skip') and c.get('n') and total >= c['n']:
                 new = total - c['n']
                 if new == 0 and txs0 and txs0[0].get('txid') == c.get('last'):
-                    st = {k2: c[k2] for k2 in ('bal', 'cost', 'free', 'first')}
+                    st = {k2: c.get(k2) for k2 in ('bal', 'cost', 'free', 'first', 'fb')}
                     stat['same'] += 1
                 elif 0 < new < len(txs0) and txs0[new].get('txid') == c.get('last'):
-                    st = apply({k2: c[k2] for k2 in ('bal', 'cost', 'free', 'first')}, sorted(txs0[:new], key=tkey), px, dates)
+                    st = apply({k2: c.get(k2) for k2 in ('bal', 'cost', 'free', 'first', 'fb')}, sorted(txs0[:new], key=tkey), px, dates)
                     stat['inc'] += 1
             if st is None or abs(st['bal'] - bal_now) > max(1.0, bal_now * 0.005):
                 d, txs, total, why = full_history(a, d)
@@ -227,14 +229,14 @@ def main():
                     out_c[a] = {'n': total, 'skip': why}
                     stat['skip'] += 1
                     continue
-                st = apply({'bal': 0.0, 'cost': 0.0, 'free': 0.0, 'first': None}, sorted(txs, key=tkey), px, dates)
+                st = apply({'bal': 0.0, 'cost': 0.0, 'free': 0.0, 'first': None, 'fb': None}, sorted(txs, key=tkey), px, dates)
                 stat['full'] += 1
                 txs0 = txs
             hist_bal = st['bal']
             st, ok, approx = reconcile(st, bal_now)
             last = (txs0[0].get('txid') if txs0 else None)
             out_c[a] = {'n': total, 'last': last, 'bal': round(st['bal'], 5), 'cost': round(st['cost'], 6),
-                        'free': round(max(0.0, st['free']), 5), 'first': st['first'], 'ok': ok}
+                        'free': round(max(0.0, st['free']), 5), 'first': st['first'], 'fb': st.get('fb'), 'ok': ok}
             if approx:
                 out_c[a]['ax'] = approx
                 stat['approx'] = stat.get('approx', 0) + 1
@@ -253,15 +255,17 @@ def main():
         if c.get('skip') or not c.get('ok') or not c.get('bal'):
             continue
         bal, cost, free = c['bal'], c['cost'], min(c['free'], c['bal'])
-        w = {'avg': cost / bal, 'free': round(free / bal, 4), 'first': c.get('first')}
+        paid = bal - free
+        # средняя цена — только по покупкам и пополнениям после аирдропа; монеты с аирдропа в неё не входят
+        w = {'free': round(free / bal, 4), 'first': c.get('first'), 'fb': c.get('fb')}
+        if paid >= max(0.02 * bal, 0.5e6):
+            w['buy'] = float(f'{cost / paid:.4g}')
         if c.get('ax'):
             w['ax'] = c['ax']
-        if bal - free > 1:
-            w['paid'] = cost / (bal - free)
-        out_w[a] = {k2: (float(f'{v:.4g}') if isinstance(v, float) and k2 in ('avg', 'paid') else v) for k2, v in w.items()}
+        out_w[a] = w
 
-    jdump({'updated': NOW.strftime('%Y-%m-%dT%H:%M:%SZ'), 'asof': live.get('id'),
-           'method': 'средняя стоимость: поступления по цене закрытия дня, отправки не меняют среднюю; аирдроп = 0',
+    jdump({'v': 2, 'updated': NOW.strftime('%Y-%m-%dT%H:%M:%SZ'), 'asof': live.get('id'),
+           'method': 'средняя цена покупок: пополнения после аирдропа по цене закрытия дня, отправки не меняют среднюю; монеты аирдропа не входят',
            'w': out_w, 'c': out_c}, os.path.join(data, 'costbasis.json'))
     print('COST', ' '.join(f'{k2}={v}' for k2, v in stat.items()), f'кошельков с ценой: {len(out_w)}')
 
