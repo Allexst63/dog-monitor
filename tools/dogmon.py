@@ -552,7 +552,7 @@ def compute(kind):
     def ent(a):
         if a in labels:
             e = labels[a]
-            return {'n': e.get('n'), 'k': e.get('k'), 'note': e.get('note', '')}
+            return {'n': e.get('n'), 'k': e.get('k'), 'note': e.get('note', ''), 'note_en': e.get('note_en', '')}
         if a in looked:
             return looked[a]
         if a in cache:
@@ -754,7 +754,11 @@ def compute(kind):
             e['n'], e['k'] = who['n'], who['k']
             if who.get('note'):
                 e['nt'] = who['note']
+            if who.get('note_en'):
+                e['nt_en'] = who['note_en']
             entities[a] = {'n': who['n'], 'k': who['k'], 'note': who.get('note', '')}
+            if who.get('note_en'):
+                entities[a]['note_en'] = who['note_en']
         else:
             e['n'], e['k'] = 'Крупный холдер', 'unknown'
             if a not in lookup:
@@ -1333,7 +1337,7 @@ def merge_treasuries(cand):
 
 
 def news():
-    """raw/news.json: [{d, title, src, url, kind, sum, eng?, treasury?}] → out/news/<id>.json + записи в out/writes.json."""
+    """raw/news.json: [{d, title, src, url, kind, sum, eng?, title_en?, sum_en?, src_en?, eng_en?, treasury?}] → out/news/<id>.json + записи в out/writes.json."""
     path = os.path.join(RAW, 'news.json')
     try:
         cand = json.load(open(path, encoding='utf-8'))
@@ -1387,6 +1391,11 @@ def news():
                'kind': kind, 'sum': re.sub(r'\s+', ' ', str(it.get('sum') or '')).strip()[:400], 'ts': iso(NOW)}
         if it.get('eng'):
             doc['eng'] = str(it['eng'])[:60]
+        # английская версия для сайта (по умолчанию сайт на английском): title_en, sum_en, src_en, eng_en
+        for k, lim in (('title_en', 180), ('sum_en', 400), ('src_en', 60), ('eng_en', 60)):
+            v = re.sub(r'\s+', ' ', str(it.get(k) or '')).strip()
+            if v:
+                doc[k] = v[:lim]
         json.dump(doc, open(os.path.join(OUT, 'news', nid + '.json'), 'w', encoding='utf-8'), ensure_ascii=False)
         seen_urls.add(url.rstrip('/').lower())
         seen_titles.add(key_t)

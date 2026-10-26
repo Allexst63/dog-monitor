@@ -1,16 +1,29 @@
 {
-  "name": "DOG Монитор",
-  "short_name": "DOG Монитор",
-  "description": "Цена DOG, стаканы 7 бирж, крупные переводы, топ-100 кошельков, запасы C2 Blockchain и новости. Обновляется каждое утро.",
-  "lang": "ru",
+  "name": "DOG Monitor",
+  "short_name": "DOG Monitor",
+  "description": "DOG price, order books from 7 exchanges, large transfers, the top 100 wallets, C2 Blockchain holdings and news. Updated every morning. English and Russian.",
+  "lang": "en",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#080B14",
   "theme_color": "#0A0F25",
   "icons": [
-    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
-    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png"},
-    {"src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
