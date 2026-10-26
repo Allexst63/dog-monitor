@@ -82,6 +82,45 @@ def prune(site):
     return removed
 
 
+WALLET_DAYS = 30       # дней истории балансов топ-100 для мини-графиков
+
+
+def wallet_history(site):
+    """data/wallets.json: баланс каждого кошелька текущего топ-100 по дням (последняя полная сводка дня)."""
+    d = os.path.join(site, 'data')
+    live_p = os.path.join(d, 'live.json')
+    sd = os.path.join(d, 'snapshots')
+    if not os.path.exists(live_p) or not os.path.isdir(sd):
+        return 0
+    live = jload(live_p)
+    by_day = {}
+    for f in sorted(os.listdir(sd)):
+        if not f.endswith('.json'):
+            continue
+        try:
+            snap = jload(os.path.join(sd, f))
+        except Exception:
+            continue
+        if snap.get('kind') not in ('утро', 'база', 'запрос') or not snap.get('top100'):
+            continue
+        day = str(snap.get('ts') or f)[:10]
+        if day not in by_day or str(snap.get('ts')) > str(by_day[day].get('ts')):
+            by_day[day] = snap
+    if live.get('top100') and live.get('kind') in ('утро', 'база', 'запрос'):
+        day = str(live.get('ts'))[:10]
+        if day not in by_day or str(live.get('ts')) >= str(by_day[day].get('ts')):
+            by_day[day] = live
+    days = sorted(by_day)[-WALLET_DAYS:]
+    maps = [{x['a']: x.get('b') for x in by_day[k].get('top100') or [] if x.get('a')} for k in days]
+    out = {'days': days, 'b': {}}
+    for x in live.get('top100') or []:
+        a = x.get('a')
+        if a:
+            out['b'][a] = [m.get(a) for m in maps]
+    jdump(out, os.path.join(d, 'wallets.json'))
+    return len(days)
+
+
 def main(dogmon, site):
     out = os.path.join(dogmon, 'out')
     done = []
@@ -93,11 +132,12 @@ def main(dogmon, site):
     if os.path.exists(audit):
         done.append(apply(site, 'meta', 'audit', jload(audit)))
     removed = prune(site)
+    wdays = wallet_history(site)
     live = jload(os.path.join(site, 'data', 'live.json'))
     hist = jload(os.path.join(site, 'data', 'hist.json')) if os.path.exists(os.path.join(site, 'data', 'hist.json')) else []
     news = jload(os.path.join(site, 'data', 'news.json')) if os.path.exists(os.path.join(site, 'data', 'news.json')) else []
     print('SITE:', '; '.join(done))
-    print(f'SITE_LIVE={live.get("id")} hist={len(hist)} news={len(news)} архив_удалено={removed}')
+    print(f'SITE_LIVE={live.get("id")} hist={len(hist)} news={len(news)} архив_удалено={removed} кошельки_дней={wdays}')
 
 
 if __name__ == '__main__':

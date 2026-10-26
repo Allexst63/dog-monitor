@@ -170,6 +170,7 @@ p{margin:0}
 .hero-price{font-family:var(--display);font-weight:500;font-size:42px;line-height:1.08;letter-spacing:-.01em;margin-top:2px;white-space:nowrap}
 .hero-price small{font-size:22px;font-weight:400;color:var(--card-ink-2);margin-left:4px}
 .hero-chg{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin-top:8px;font-size:13px;color:var(--card-ink-2)}
+.hero-1m{margin-top:8px;font-size:15px;font-weight:500;color:var(--card-ink)}
 .hero .up{color:#7BE8BF} .hero .down{color:#FFA9AC}
 .hero .pill.up{background:rgba(61,211,156,.16);color:#7BE8BF} .hero .pill.down{background:rgba(255,124,128,.16);color:#FFA9AC} .hero .pill.flat{background:rgba(255,255,255,.1);color:var(--card-ink)}
 .moon{width:72px;height:72px;flex:none;margin:-2px -2px 0 0}
@@ -242,6 +243,21 @@ p{margin:0}
 .checkrow{display:flex;align-items:center;gap:10px;width:100%;border:0;background:transparent;color:var(--ink-2);font-size:13.5px;cursor:pointer;padding:4px 2px;text-align:left}
 .checkrow .ico{width:18px;height:18px}
 
+/* стакан: вывод сверху */
+.verdict{display:flex;flex-direction:column;gap:4px}
+.vd-k{font-size:13px;color:var(--ink-2)}
+.vd-h{font-family:var(--display);font-weight:600;font-size:23px;line-height:1.2;text-wrap:balance}
+.vd-h.up{color:var(--up)} .vd-h.down{color:var(--down)}
+.mood-bar.big{height:16px}
+.mood-legend small{display:block;font-size:12.5px}
+.vd-price{margin-top:10px;padding-top:10px;border-top:1px solid var(--line-2);font-size:14px}
+.bbo b{color:var(--ink);font-weight:600}
+.bdet{border-top:1px solid var(--line-2);padding-top:8px}
+.bdet summary{cursor:pointer;font-size:14px;font-weight:600;color:var(--accent-ink);list-style:none;padding:4px 0}
+.bdet summary::-webkit-details-marker{display:none}
+.bdet summary::after{content:" ▾"}
+.bdet[open] summary::after{content:" ▴"}
+.bdet-in{display:flex;flex-direction:column;gap:12px;padding-top:8px}
 /* стакан */
 .dchart{position:relative;touch-action:pan-y;margin-top:4px}
 .dchart svg{display:block;width:100%}
@@ -328,6 +344,24 @@ tbody.click tr:hover td{background:var(--surface-2)}
 .dchip{font-size:12px;font-weight:600;padding:1px 7px;border-radius:999px;white-space:nowrap}
 .dchip.up{background:var(--ok-soft)} .dchip.down{background:var(--ask-soft)}
 
+/* кошельки v5 */
+.wrow{grid-template-columns:auto minmax(0,1fr) auto auto}
+.wrow .t > span.sub{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.35;margin-top:1px}
+.wrow .v{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
+.wrow .v > span{font-size:12.5px}
+.wrow .v .dchip{font-size:12px;margin-top:2px}
+.dchip.muted{background:var(--surface-3)}
+.spk{display:block;width:56px;height:26px;flex:none}
+.spk-big{display:block;width:100%;height:90px}
+.spk-ax{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--ink-3);margin-top:4px}
+.own-bar{display:flex;gap:2px;height:18px;border-radius:6px;overflow:hidden}
+.own-bar i{display:block;height:100%;min-width:2px}
+.own-lg{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;margin-top:12px;font-size:13.5px}
+.own-lg > div{display:flex;align-items:flex-start;gap:0}
+.own-lg .key{margin-top:5px;flex:none}
+.own-lg b{font-family:var(--display);font-size:17px;font-weight:600;margin-right:2px}
+.own-lg small{display:block;font-size:12px;color:var(--ink-3)}
+@media (max-width:420px){.spk{width:46px}.wrow{gap:4px 10px;padding-inline:14px}}
 /* новости */
 .news{display:flex;flex-direction:column;gap:12px}
 .nitem{display:flex;flex-direction:column;gap:8px}
@@ -736,6 +770,9 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
     return n(v, 0) + '\u00a0$';
   }
   const usdM = (q, mid) => (q && mid) ? '≈ ' + usd(q * 1e6 * mid) : '';
+  // цена за 1 млн DOG — понятнее, чем шесть нулей после запятой
+  const m1 = p => { if (p == null || isNaN(p)) return '—'; const v = p * 1e6; return n(v, Math.abs(v - Math.round(v)) >= 0.05 ? 1 : 0); };
+  const m1s = p => m1(p) + '\u00a0$';
   function plural(k, one, few, many) { k = Math.abs(k) % 100; const k1 = k % 10; if (k > 10 && k < 20) return many; if (k1 > 1 && k1 < 5) return few; if (k1 === 1) return one; return many; }
 
   function toDate(x) {
@@ -813,10 +850,10 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
   }
   function wallText(w) {
     const nm = EXN[w.x] || w.x, sd = w.s === 'b' ? 'на покупку' : 'на продажу';
-    if (w.k === 'новая') return `${nm}: новая заявка ${sd} ${mdog(w.q1)} DOG по ${fp(w.p)} $`;
-    if (w.k === 'снята') return `${nm}: снята заявка ${sd} ${mdog(w.q0)} DOG по ${fp(w.p)} $`;
-    if (w.k === 'переставлена') return `${nm}: заявку ${sd} ${mdog(w.q0)} DOG переставили с ${fp(w.p0)} на ${fp(w.p)} $`;
-    return `${nm}: заявка ${sd} по ${fp(w.p)} $ — было ${mdog(w.q0)}, стало ${mdog(w.q1)} DOG`;
+    if (w.k === 'новая') return `${nm}: новая заявка ${sd} ${mdog(w.q1)} DOG по ${m1s(w.p)} за 1 млн`;
+    if (w.k === 'снята') return `${nm}: снята заявка ${sd} ${mdog(w.q0)} DOG по ${m1s(w.p)} за 1 млн`;
+    if (w.k === 'переставлена') return `${nm}: заявку ${sd} ${mdog(w.q0)} DOG переставили с ${m1s(w.p0)} на ${m1s(w.p)} за 1 млн`;
+    return `${nm}: заявка ${sd} по ${m1s(w.p)} за 1 млн — было ${mdog(w.q0)}, стало ${mdog(w.q1)} DOG`;
   }
 
   // ---------- навигация ----------
@@ -1049,6 +1086,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
   function setHero(price, chg, label, scrub) {
     const p = $('#hprice'), pill = $('#hpill'), lab = $('#hlabel');
     if (p && p.firstChild && price != null) p.firstChild.nodeValue = fp(price);
+    const m = $('#h1m'); if (m && price != null) m.textContent = '1 млн DOG ≈ ' + m1s(price);
     if (pill) { pill.className = 'pill ' + dir(chg); pill.textContent = pillTxt(chg); }
     if (lab) lab.textContent = label || '';
     const h = $('#p-overview .hero'); if (h) h.classList.toggle('scrub', !!scrub);
@@ -1580,6 +1618,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
           <div class="hero-main"><div class="hero-pair">DOG · цена в долларах<span class="live" id="hlive" hidden><i></i>онлайн</span></div>
             <div class="hero-price tnum" id="hprice">${fp(pr.mid)}<small>$</small></div>
             <div class="hero-chg"><span class="pill ${dir(chg)}" id="hpill">${pillTxt(chg)}</span><span id="hlabel">${PER_NAME[S.period]}</span></div>
+            <div class="hero-1m" id="h1m">1 млн DOG ≈ ${m1s(pr.mid)}</div>
           </div>
           ${moonSvg(pr.chg24)}
         </div>
@@ -1976,7 +2015,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
       + `<path d="${da}L${X(hi).toFixed(1)},${base}Z" fill="var(--ask-soft)"/><path d="${da}" fill="none" stroke="var(--ask)" stroke-width="2" stroke-linejoin="round"/>`
       + `<line x1="${X(mid).toFixed(1)}" x2="${X(mid).toFixed(1)}" y1="${pt - 6}" y2="${base}" stroke="var(--ink-3)"/>`
       + `<line x1="${pl}" x2="${W - pr}" y1="${base}" y2="${base}" stroke="var(--line)"/>`
-      + xt.map((p, i) => `<text class="ax" x="${X(p).toFixed(1)}" y="${H - 18}" text-anchor="${i === 0 ? 'start' : (i === 4 ? 'end' : 'middle')}">${i === 2 ? 'цена' : (i < 2 ? '−' : '+') + n(Math.abs((p / mid - 1) * 100), 0) + '%'}</text>${W < 560 && (i === 1 || i === 3) ? '' : `<text class="ax" x="${X(p).toFixed(1)}" y="${H - 4}" text-anchor="${i === 0 ? 'start' : (i === 4 ? 'end' : 'middle')}">${(+p).toFixed(6).replace('.', ',')}</text>`}`).join('')
+      + xt.map((p, i) => `<text class="ax" x="${X(p).toFixed(1)}" y="${H - 18}" text-anchor="${i === 0 ? 'start' : (i === 4 ? 'end' : 'middle')}">${i === 2 ? 'цена' : (i < 2 ? '−' : '+') + n(Math.abs((p / mid - 1) * 100), 0) + '%'}</text>${W < 560 && (i === 1 || i === 3) ? '' : `<text class="ax" x="${X(p).toFixed(1)}" y="${H - 4}" text-anchor="${i === 0 ? 'start' : (i === 4 ? 'end' : 'middle')}">${m1s(p)}</text>`}`).join('')
       + `<line class="vx" y1="${pt}" y2="${base}" stroke="var(--ink-2)"/><circle class="vd" r="5" fill="var(--ink)" stroke="var(--surface)" stroke-width="2"/>`;
     el.innerHTML = svgEl(W, H, inner, `Глубина стакана: покупки до −${S.range * 100}% — ${n(bRows.length ? bRows[bRows.length - 1].cum : 0, 1)} млн DOG, продажи до +${S.range * 100}% — ${n(aRows.length ? aRows[aRows.length - 1].cum : 0, 1)} млн DOG`) + '<div class="tip" hidden></div>';
     el.tabIndex = 0;
@@ -1984,24 +2023,60 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
     const xs = pts.map(([, r]) => X(r.idx * TICK));
     attachCross(el, {
       xs, tipTop: -6,
-      at: i => { const [sd, r] = pts[i]; return { x: xs[i], ys: [Y(r.cum)], html: `<b>${mdog(r.cum)} DOG</b>${sd === 'b' ? 'покупки от цены до ' : 'продажи от цены до '}${fp(r.idx * TICK)} $` }; }
+      at: i => { const [sd, r] = pts[i]; return { x: xs[i], ys: [Y(r.cum)], html: `<b>${mdog(r.cum)} DOG</b>${sd === 'b' ? 'хотят купить по цене до ' : 'хотят продать по цене до '}${m1s(r.idx * TICK)} за 1 млн` }; }
     });
   }
+  // сводка стакана одной фразой: кого больше рядом с ценой
+  function bookSides(agg) {
+    const lo = agg.mid * (1 - S.range), hi = agg.mid * (1 + S.range);
+    const B = agg.b.filter(r => r.idx * TICK >= lo - 1e-12).reduce((a, r) => a + r.sum, 0);
+    const A = agg.a.filter(r => r.idx * TICK <= hi + 1e-12).reduce((a, r) => a + r.sum, 0);
+    return { B, A };
+  }
+  function timesTxt(r) {
+    const v = +r.toFixed(1);
+    return Number.isInteger(v) ? `${n(v)} ${plural(v, 'раз', 'раза', 'раз')}` : `${n(v, 1)} раза`;
+  }
+  function verdictHtml(s, agg) {
+    const { B, A } = bookSides(agg), pct = Math.round(S.range * 100);
+    let head, tone = 'flat';
+    if (B < 0.05 && A < 0.05) head = 'Рядом с ценой заявок нет';
+    else if (A < 0.05) { head = 'Хотят только купить — продавцов рядом нет'; tone = 'up'; }
+    else if (B < 0.05) { head = 'Хотят только продать — покупателей рядом нет'; tone = 'down'; }
+    else {
+      const r = B >= A ? B / A : A / B;
+      if (r < 1.1) head = 'Покупателей и продавцов примерно поровну';
+      else if (B > A) { head = `Покупателей больше в ${timesTxt(r)}`; tone = 'up'; }
+      else { head = `Продавцов больше в ${timesTxt(r)}`; tone = 'down'; }
+    }
+    const tot = Math.max(B + A, 1e-9);
+    return `<div class="group verdict">
+      <div class="vd-k">Рядом с ценой — до ${pct}% вверх и вниз, все биржи вместе</div>
+      <div class="vd-h ${tone}">${head}</div>
+      <div class="mood-bar big" aria-hidden="true"><i class="b" style="width:${(B / tot * 100).toFixed(1)}%"></i><i class="a" style="width:${(A / tot * 100).toFixed(1)}%"></i></div>
+      <div class="mood-legend"><span><span class="key b"></span>Хотят купить<b>${mdog(B)} DOG</b><small class="faint">${esc(usdM(B, agg.mid))}</small></span><span class="r"><span class="key a"></span>Хотят продать<b>${mdog(A)} DOG</b><small class="faint">${esc(usdM(A, agg.mid))}</small></span></div>
+      <p class="vd-price">Цена сейчас: <b>1 млн DOG ≈ ${m1s(agg.mid)}</b> <span class="faint">(${fp(agg.mid)} $ за 1 DOG)</span></p>
+    </div>`;
+  }
   function renderLadder(s, agg) {
-    const max = Math.max(1e-9, ...agg.a.map(r => r.sum), ...agg.b.map(r => r.sum));
+    const cut = !S.ladFull && S.range > 0.05;
+    const lim = cut ? 0.05 : S.range;
+    const aR = agg.a.filter(r => r.idx * TICK <= agg.mid * (1 + lim) + 1e-12), bR = agg.b.filter(r => r.idx * TICK >= agg.mid * (1 - lim) - 1e-12);
+    const max = Math.max(1e-9, ...aR.map(r => r.sum), ...bR.map(r => r.sum));
     const row = (r, side) => {
       const p = r.idx * TICK, pc = (p / agg.mid - 1) * 100, w = r.sum / max * 100;
       const parts = Object.entries(r.by).filter(([k, q]) => q >= 0.1 && !s.books[k].off).sort((x, y) => y[1] - x[1]);
-      const who = parts.slice(0, 3).map(([k, q]) => `${EXN[k]} ${n(q, 1)}`).join(', ') + (parts.length > 3 ? ` и ещё ${parts.length - 3}` : '');
       const wall = Object.values(r.by).some(q => q >= MOVE);
-      return `<div class="lrow ${side}${wall ? ' wall' : ''}"><span class="pp"><span class="p">${fp(p)}</span><span class="pc">${pc >= 0 ? '+' : '−'}${n(Math.abs(pc), 1)}%</span></span><span class="barw"><i style="width:${r.sum > 0 ? Math.max(w, 1).toFixed(2) : 0}%"></i><b>${r.sum >= 0.05 ? n(r.sum, 1) : ''}</b></span><span class="r faint">${n(r.cum, 1)}</span>${r.sum >= 1 && parts.length ? `<span class="who">${esc(who)}</span>` : ''}</div>`;
+      const who = wall ? parts.filter(([, q]) => q >= MOVE).map(([k, q]) => `${EXN[k]} — ${n(q, 1)} млн`).join(', ') : '';
+      return `<div class="lrow ${side}${wall ? ' wall' : ''}" title="${fp(p)} $ за 1 DOG"><span class="pp"><span class="p">${m1s(p)}</span><span class="pc">${pc >= 0 ? '+' : '−'}${n(Math.abs(pc), 1)}%</span></span><span class="barw"><i style="width:${r.sum > 0 ? Math.max(w, 1).toFixed(2) : 0}%"></i><b>${r.sum >= 0.05 ? n(r.sum, 1) : ''}</b></span><span class="r faint">${n(r.cum, 1)}</span>${who ? `<span class="who">стенка: ${esc(who)}</span>` : ''}</div>`;
     };
     return `<div class="ladder" role="table" aria-label="Сводный стакан">
-      <div class="lrow head"><span>Цена, $</span><span>Объём на шаге, млн DOG</span><span class="r">Всего</span></div>
-      ${agg.a.slice().reverse().map(r => row(r, 'a')).join('')}
-      <div class="lrow mid">Текущая цена ${fp(agg.mid)} $. Выше — продажи, ниже — покупки</div>
-      ${agg.b.map(r => row(r, 'b')).join('')}
-    </div>`;
+      <div class="lrow head"><span>Цена за 1 млн DOG</span><span>Заявки на этой цене, млн DOG</span><span class="r">Всего</span></div>
+      ${aR.slice().reverse().map(r => row(r, 'a')).join('')}
+      <div class="lrow mid">Сейчас 1 млн DOG ≈ ${m1s(agg.mid)}. Выше — продажи, ниже — покупки</div>
+      ${bR.map(r => row(r, 'b')).join('')}
+    </div>
+    ${cut ? `<button type="button" class="more" data-ladfull="1">Показать до ±${Math.round(S.range * 100)}%</button>` : (S.ladFull && S.range > 0.05 ? '<button type="button" class="more" data-ladfull="0">Свернуть до ±5%</button>' : '')}`;
   }
   function renderMatrix(s, agg) {
     const all = agg.a.concat(agg.b);
@@ -2014,11 +2089,11 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
       const bg = side === 'b' ? `color-mix(in srgb,var(--bid) ${Math.round(a * 100)}%,transparent)` : `color-mix(in srgb,var(--ask) ${Math.round(a * 100)}%,transparent)`;
       return `<td class="r${off}" style="background:${bg}">${st === 'part' ? '≥' : ''}${n(q, 1)}</td>`;
     };
-    const tr = (r, side) => `<tr class="${side}"><td class="pcol">${fp(r.idx * TICK)}</td>${agg.exs.map(k => cell(r, k, side)).join('')}<td class="r"><b>${r.sum >= 0.05 ? n(r.sum, 1) : ''}</b></td><td class="r faint">${n(r.cum, 1)}</td></tr>`;
+    const tr = (r, side) => `<tr class="${side}"><td class="pcol">${m1s(r.idx * TICK)}</td>${agg.exs.map(k => cell(r, k, side)).join('')}<td class="r"><b>${r.sum >= 0.05 ? n(r.sum, 1) : ''}</b></td><td class="r faint">${n(r.cum, 1)}</td></tr>`;
     return `<div class="scroll"><table class="matrix">
-      <thead><tr><th class="pcol">Цена, $</th>${agg.exs.map(k => `<th class="r${s.books[k].off ? ' off' : ''}">${EXN[k]}</th>`).join('')}<th class="r">Сумма</th><th class="r">Всего</th></tr></thead>
+      <thead><tr><th class="pcol">За 1 млн</th>${agg.exs.map(k => `<th class="r${s.books[k].off ? ' off' : ''}">${EXN[k]}</th>`).join('')}<th class="r">Сумма</th><th class="r">Всего</th></tr></thead>
       <tbody>${agg.a.slice().reverse().map(r => tr(r, 'a')).join('')}
-      <tr class="midrow"><td colspan="${agg.exs.length + 3}">Текущая цена ${fp(agg.mid)} $</td></tr>
+      <tr class="midrow"><td colspan="${agg.exs.length + 3}">Сейчас 1 млн DOG ≈ ${m1s(agg.mid)}</td></tr>
       ${agg.b.map(r => tr(r, 'b')).join('')}</tbody></table></div>`;
   }
   function depthRow(label, d, maxv) {
@@ -2028,17 +2103,17 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
       <div class="b" style="width:${(b / tot * 100).toFixed(1)}%">${d.b == null ? '—' : n(b, 1)}</div>
       <div class="a" style="width:${(a / tot * 100).toFixed(1)}%">${d.a == null ? '—' : n(a, 1)}</div></div>`;
   }
-  function wallList(list, side, deltas, cmp, ex) {
+  function wallList(list, side, deltas, cmp, ex, brief) {
     if (!list || !list.length) return '<p class="note">нет заявок от 5 млн</p>';
     return `<ul class="wl">${list.map(w => {
       const ch = (deltas || []).find(x => x.x === ex && x.s === side && Math.abs(x.p - w.p) < 1e-12);
       let chip = '';
       if (cmp && ch) {
         if (ch.k === 'новая') chip = '<span class="tag hot">новая</span>';
-        else if (ch.k === 'переставлена') chip = `<span class="tag hot">была на ${fp(ch.p0)}</span>`;
+        else if (ch.k === 'переставлена') chip = `<span class="tag hot">была на ${m1s(ch.p0)}</span>`;
         else chip = `<span class="tag hot">${sg(ch.q1 - ch.q0, 1)}</span>`;
       }
-      return `<li><span>${fp(w.p)}</span><span class="q">${n(w.q, 1)} млн</span>${chip}${w.o ? `<span class="t">изм. ${esc(when(w.o))}</span>` : ''}</li>`;
+      return `<li><span>${m1s(w.p)}</span><span class="q">${n(w.q, 1)} млн</span>${chip}${!brief && w.o ? `<span class="t">изм. ${esc(when(w.o))}</span>` : ''}</li>`;
     }).join('')}</ul>`;
   }
   function renderBooks() {
@@ -2048,15 +2123,16 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
     const segBtn = (grp, val, txt, cur) => `<button type="button" data-${grp}="${val}" aria-pressed="${String(cur)}">${txt}</button>`;
     let html = `<div class="sec">
       <div class="sec-head"><h2>Все биржи в одном стакане</h2><p>${esc(when(s.ts))}</p></div>
+      ${agg ? verdictHtml(s, agg) : ''}
       <div class="controls">
         <span class="grp"><span class="lbl">Диапазон</span><span class="seg" id="seg-range">${[0.05, 0.10, 0.20, 0.30].map(r => segBtn('range', r, '±' + Math.round(r * 100) + '%', S.range === r)).join('')}</span></span>
-        <span class="grp"><span class="lbl">Шаг цены</span><span class="seg" id="seg-step">${[1, 2, 5].map(m => segBtn('step', m, fp(m * TICK).replace(/0+$/, ''), S.step === m)).join('')}</span></span>
+        <span class="grp"><span class="lbl">Шаг</span><span class="seg" id="seg-step">${[1, 2, 5].map(m => segBtn('step', m, m1s(m * TICK), S.step === m)).join('')}</span></span>
       </div>
       <div class="group"><div class="legend-row"><span><span class="lk" style="background:var(--bid)"></span>Покупки — ниже цены</span><span><span class="lk" style="background:var(--ask)"></span>Продажи — выше цены</span>${infoBtn('books')}</div><div class="dchart" id="dchart"></div></div>
       <div class="group"><div class="sec-head" style="margin-bottom:10px"><h3>По шагам цены</h3><span class="seg" id="seg-view">${segBtn('view', 'sum', 'Сумма', S.bookView === 'sum')}${segBtn('view', 'matrix', 'По биржам', S.bookView === 'matrix')}</span></div>
         ${agg ? (S.bookView === 'sum' ? renderLadder(s, agg) : renderMatrix(s, agg)) : '<div class="empty">Нет цены для стакана.</div>'}
       </div>
-      ${agg ? '<p class="note">Жирные строки — стенки: от 5 млн DOG на одной бирже.</p>' : ''}
+      ${agg ? '<p class="note">Цены — за 1 млн DOG. Жирные строки — стенки: одна заявка от 5 млн DOG на одной бирже.</p>' : ''}
     </div>`;
     const wd = s.wallsDelta || [], pl = prevLabel(s);
     html += `<div class="sec"><div class="sec-head"><h2>Каждая биржа</h2><p>крупные заявки — от 5 млн DOG${pl ? ', метки — изменения с ' + esc(pl) : ''}</p></div><div class="books">`;
@@ -2068,14 +2144,21 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
       const gone = wd.filter(w => w.x === k && w.k === 'снята');
       const ed = b.edge || {}, mid = b.mid || (s.price || {}).mid;
       const covTxt = [ed.b != null ? 'покупки видны до ' + n((ed.b / mid - 1) * 100, 1) + '%' : 'покупки видны полностью', ed.a != null ? 'продажи до +' + n((ed.a / mid - 1) * 100, 1) + '%' : 'продажи полностью'].join(', ');
+      const near = (list, side) => (list || []).slice().sort((x, y) => side === 'b' ? y.p - x.p : x.p - y.p).slice(0, 3);
+      const nAll = (b.bids || []).length + (b.asks || []).length;
       html += `<div class="group book">
-        <div class="book-top"><h3><span class="exlogo">${esc(nm[0])}</span>${esc(nm)}</h3><span class="meta">${b.ats ? 'данные ' + esc(when(b.ats)) : 'биржа не сообщает время'}</span></div>
-        <div class="bbo"><span>покупка ${fp(b.bid)}</span><span>продажа ${fp(b.ask)}</span>${spread != null ? `<span>разница ${n(spread, 2)}%</span>` : ''}${k === 'gate' && b.vol24usd ? `<span>оборот за сутки ${usd(b.vol24usd)}</span>` : ''}</div>
+        <div class="book-top"><h3><span class="exlogo">${esc(nm[0])}</span>${esc(nm)}</h3><span class="meta">${b.ats ? esc(when(b.ats)) : ''}</span></div>
+        <div class="bbo"><span>лучшая покупка <b>${m1s(b.bid)}</b></span><span>лучшая продажа <b>${m1s(b.ask)}</b></span><span class="faint">за 1 млн DOG</span></div>
         ${b.off ? '<div class="warnline">Цена этой биржи отличается от остальных больше чем на 3% — в общие суммы она не входит.</div>' : ''}
         <div class="depth">${depthRow('±2%', b.d2, maxv)}${depthRow('±5%', b.d5, maxv)}${depthRow('±10%', b.d10, maxv)}${depthRow('±25%', b.d25, maxv)}</div>
-        <div class="walls"><div><h4 class="b">Покупки</h4>${wallList(b.bids, 'b', wd, b.cmp, k)}</div><div><h4 class="a">Продажи</h4>${wallList(b.asks, 'a', wd, b.cmp, k)}</div></div>
-        ${gone.length ? `<div class="note">Сняты: ${gone.map(w => `${n(w.q0, 1)} млн ${w.s === 'b' ? 'на покупку' : 'на продажу'} по ${fp(w.p)}`).join('; ')}</div>` : ''}
-        <div class="foot">${k === 'gate' ? 'Gate группирует заявки по 0,00001. ' : ''}${k === 'kraken' ? 'Время у заявки — когда её последний раз меняли. ' : ''}Строк ${b.rows ? b.rows.b + ' и ' + b.rows.a : '—'}; ${esc(covTxt)}.</div>
+        <div class="walls"><div><h4 class="b">Ближайшие крупные покупки</h4>${wallList(near(b.bids, 'b'), 'b', wd, b.cmp, k, true)}</div><div><h4 class="a">Ближайшие крупные продажи</h4>${wallList(near(b.asks, 'a'), 'a', wd, b.cmp, k, true)}</div></div>
+        <details class="bdet"><summary>Все крупные заявки${nAll ? ' (' + nAll + ')' : ''} и подробности</summary>
+          <div class="bdet-in">
+            <div class="walls"><div><h4 class="b">Покупки</h4>${wallList(b.bids, 'b', wd, b.cmp, k)}</div><div><h4 class="a">Продажи</h4>${wallList(b.asks, 'a', wd, b.cmp, k)}</div></div>
+            ${gone.length ? `<div class="note">Сняты: ${gone.map(w => `${n(w.q0, 1)} млн ${w.s === 'b' ? 'на покупку' : 'на продажу'} по ${m1s(w.p)}`).join('; ')}</div>` : ''}
+            <div class="foot">${spread != null ? `Разница между лучшей покупкой и продажей ${n(spread, 2)}%. ` : ''}${k === 'gate' && b.vol24usd ? `Оборот за сутки ${usd(b.vol24usd)}. ` : ''}${k === 'gate' ? 'Gate группирует заявки по 10 $ за 1 млн. ' : ''}${k === 'kraken' ? 'Время у заявки — когда её последний раз меняли. ' : ''}${esc(covTxt)}.</div>
+          </div>
+        </details>
       </div>`;
     }
     html += '</div></div>';
@@ -2084,8 +2167,8 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
       const tot = venues.reduce((a, v) => a + (v.v || 0), 0);
       const inBook = new Set(EX.filter(([k]) => (s.books || {})[k]).map(([, nm]) => nm));
       html += `<div class="sec"><div class="sec-head"><h2>Где торгуют DOG</h2><p>оборот за сутки по данным DOG DATA: ${usd(tot)}${(s.price || {}).cov != null ? ', стаканы выше — ' + n(s.price.cov) + '% оборота' : ''}</p></div>
-        <div class="group scroll" style="padding:4px 6px"><table><thead><tr><th>Площадка</th><th>Пара</th><th class="r">Цена</th><th class="r">Оборот</th><th class="r">Доля</th></tr></thead><tbody>
-        ${venues.slice().sort((x, y) => y.v - x.v).map(v => `<tr><td class="nw">${esc(v.n)}${inBook.has(v.n) ? ' <span class="tag">стакан</span>' : ''}</td><td class="faint nw">${esc(v.pair)}</td><td class="r nw">${fp(v.p)}</td><td class="r nw">${usd(v.v)}</td><td class="r faint">${tot ? n(v.v / tot * 100, 1) + '%' : '—'}</td></tr>`).join('')}
+        <div class="group scroll" style="padding:4px 6px"><table><thead><tr><th>Площадка</th><th>Пара</th><th class="r">За 1 млн</th><th class="r">Оборот</th><th class="r">Доля</th></tr></thead><tbody>
+        ${venues.slice().sort((x, y) => y.v - x.v).map(v => `<tr><td class="nw">${esc(v.n)}${inBook.has(v.n) ? ' <span class="tag">стакан</span>' : ''}</td><td class="faint nw">${esc(v.pair)}</td><td class="r nw">${m1s(v.p)}</td><td class="r nw">${usd(v.v)}</td><td class="r faint">${tot ? n(v.v / tot * 100, 1) + '%' : '—'}</td></tr>`).join('')}
         </tbody></table></div></div>`;
     }
     el.innerHTML = html;
@@ -2094,6 +2177,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
   $('#p-books').addEventListener('click', e => {
     const b = e.target.closest('button');
     if (!b) return;
+    if (b.dataset.ladfull) { S.ladFull = b.dataset.ladfull === '1'; renderBooks(); return; }
     if (b.dataset.range) S.range = +b.dataset.range;
     else if (b.dataset.step) S.step = +b.dataset.step;
     else if (b.dataset.view) { S.bookView = b.dataset.view; store.set('bookView', S.bookView); }
@@ -2167,37 +2251,110 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
     openSheet(ownName(nm, k), `<div class="row static" style="padding:0">${avatar(nm, k)}<span class="t"><b>${esc(ownName(nm, k))}</b><span>${x ? 'место №' + x.r + ' в топ-100' : 'вне топ-100'}</span></span><span>${kindTag(k)}</span></div>
       <dl class="kv">${x ? `<dt>Баланс</dt><dd>${mdog(x.b, 2)} DOG</dd><dt>Доля всех DOG</dt><dd>${n(x.b * 1e6 / SUPPLY * 100, 3)}%</dd><dt>В долларах</dt><dd>${esc(usdM(x.b, (s.price || {}).mid) || '—')}</dd>${x.d != null ? `<dt>Изменение${pl ? ' с ' + esc(pl) : ''}</dt><dd class="${dcls(x.d, x.k)}">${sg(x.d, 2)}\u00a0млн</dd>` : ''}${x.u ? `<dt>Частей монет (UTXO)</dt><dd>${n(x.u)}</dd>` : ''}` : (mv && mv.b0 != null ? `<dt>Был баланс</dt><dd>${mdog(mv.b0, 2)} DOG</dd>` : '')}</dl>
       ${e.nt || e.note ? `<p class="note">${esc(e.nt || e.note)}</p>` : ''}
+      ${balSeries(a) ? `<div><h3 style="font-size:15px;margin-bottom:6px">Баланс по дням</h3>${sparkW(a, k, 320, 90, true)}</div>` : ''}
       <div class="addrbox"><code>${esc(a)}</code>${copyBtn(a)}</div>
       <div class="btns"><a class="btn" href="https://mempool.space/address/${encodeURIComponent(a)}" target="_blank" rel="noopener">mempool.space ${ico('ext')}</a><a class="btn" href="https://ordiscan.com/address/${encodeURIComponent(a)}" target="_blank" rel="noopener">Ordiscan ${ico('ext')}</a></div>
       <p class="note">Метка владельца — оценка по данным DOG DATA, публикациям бирж и движению монет, а не подтверждение.</p>`);
   }
+  // ---------- мини-графики балансов (data/wallets.json) ----------
+  const isEx = k => k === 'exchange' || k === 'custody';
+  function balSeries(a) {
+    const wh = S.wh; if (!wh || !wh.b || !wh.b[a]) return null;
+    const v = wh.b[a], pts = [];
+    v.forEach((x, i) => { if (x != null) pts.push([i, x]); });
+    return pts.length >= 2 ? { pts, n: v.length, days: wh.days } : null;
+  }
+  function sparkW(a, k, W = 56, H = 26, big = false) {
+    const ser = balSeries(a);
+    if (!ser) return big ? '' : `<span class="spk" aria-hidden="true"></span>`;
+    const ys = ser.pts.map(p => p[1]), lo = Math.min(...ys), hi = Math.max(...ys);
+    const first = ys[0], last = ys[ys.length - 1], ch = last - first;
+    const flat = hi - lo < Math.max(0.05, hi * 0.0005);
+    const col = flat ? 'var(--ink-3)' : (isEx(k) ? 'var(--k1)' : (ch > 0 ? 'var(--bid)' : (ch < 0 ? 'var(--ask)' : 'var(--ink-3)')));
+    const pad = big ? 6 : 3, X = i => pad + i / Math.max(1, ser.n - 1) * (W - pad * 2);
+    const Y = v => flat ? H / 2 : pad + (1 - (v - lo) / (hi - lo)) * (H - pad * 2);
+    const d = ser.pts.map((p, j) => (j ? 'L' : 'M') + X(p[0]).toFixed(1) + ',' + Y(p[1]).toFixed(1)).join('');
+    const lp = ser.pts[ser.pts.length - 1];
+    const area = big && !flat ? `<path d="${d}L${X(lp[0]).toFixed(1)},${H - pad}L${X(ser.pts[0][0]).toFixed(1)},${H - pad}Z" fill="${col}" opacity=".12"/>` : '';
+    const svg = `<svg class="${big ? 'spk-big' : 'spk'}" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" preserveAspectRatio="none" aria-hidden="true">${area}<path d="${d}" fill="none" stroke="${col}" stroke-width="${big ? 2.2 : 1.6}" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/><circle cx="${X(lp[0]).toFixed(1)}" cy="${Y(lp[1]).toFixed(1)}" r="${big ? 3.5 : 2}" fill="${col}"/></svg>`;
+    if (!big) return svg;
+    const dd = x => { const t = toDate(x + 'T12:00:00Z'); return t ? dml(t) : x; };
+    return `<div class="spk-wrap">${svg}<div class="spk-ax"><span>${esc(dd(ser.days[0]))}</span><span>${flat ? 'баланс не менялся' : `от ${mdog(lo)} до ${mdog(hi)}`}</span><span>${esc(dd(ser.days[ser.days.length - 1]))}</span></div></div>`;
+  }
+
+  // ---------- кошельки: сводка за сутки ----------
+  function walletsSummaryHtml(s) {
+    const mv = s.movers || {}, ex = s.exch || {}, pl = prevLabel(s);
+    if (!s.prevId) return '';
+    const notEx = x => !isEx(x.k);
+    const up = (mv.up || []).filter(notEx), dn = (mv.down || []).filter(notEx), nw = mv.new || [], out = mv.out || [];
+    const sum = a => a.reduce((t, x) => t + (x.d || 0), 0);
+    const ev = (icon, c, html, small) => `<div class="ev"><span class="ei ${c}">${ico(icon)}</span><span>${html}${small ? `<small>${small}</small>` : ''}</span></div>`;
+    const items = [];
+    if (ex.d != null) {
+      const d = ex.d;
+      items.push(Math.abs(d) < 0.05
+        ? ev('building', '', 'На кошельках бирж — <b>без изменений</b>', `там лежит ${mdog(ex.bal)} DOG, ${n(ex.pct, 1)}% всех монет`)
+        : ev('building', d > 0 ? 'a' : 'b', `На кошельки бирж ${d > 0 ? 'пришло' : 'ушло'} <b>${mdog(Math.abs(d))} DOG</b>`, d > 0 ? 'больше монет на биржах — их проще быстро продать' : 'монеты забирают с бирж — обычно, чтобы хранить'));
+    }
+    if (up.length) items.push(ev('up', 'b', `${up.length} ${plural(up.length, 'кошелёк', 'кошелька', 'кошельков')} ${plural(up.length, 'добавил', 'добавили', 'добавили')} <b>+${mdog(sum(up))} DOG</b>`, up.slice(0, 3).map(x => esc(ownName(x.n, x.k)) + ' №' + x.r + ' ' + sg(x.d, 1) + ' млн').join(' · ')));
+    if (dn.length) items.push(ev('down', 'a', `${dn.length} ${plural(dn.length, 'кошелёк', 'кошелька', 'кошельков')} ${plural(dn.length, 'отправил', 'отправили', 'отправили')} <b>${mdog(Math.abs(sum(dn)))} DOG</b>`, dn.slice(0, 3).map(x => esc(ownName(x.n, x.k)) + ' №' + x.r + ' ' + sg(x.d, 1) + ' млн').join(' · ')));
+    if (nw.length) items.push(ev('plus', 'o', `${nw.length} ${plural(nw.length, 'новый кошелёк', 'новых кошелька', 'новых кошельков')} в топ-100`));
+    if (out.length) items.push(ev('minus', '', `${out.length} ${plural(out.length, 'кошелёк вышел', 'кошелька вышли', 'кошельков вышли')} из топ-100`));
+    if (!up.length && !dn.length) items.push(ev('check', '', 'Крупные холдеры монеты не двигали', 'ни один кошелёк вне бирж не изменился на 5 млн DOG и больше'));
+    return `<div class="sec"><div class="sec-head"><h2>Что изменилось</h2><p>${pl ? 'с ' + esc(pl) : ''}</p></div><div class="group"><div class="events">${items.join('')}</div></div></div>`;
+  }
+
+  // ---------- кошельки: кто владеет DOG ----------
+  function ownersHtml(s) {
+    const t = s.top100 || []; if (!t.length) return '';
+    const pc = x => x * 1e6 / SUPPLY * 100;
+    const g = { ex: [0, 0], svc: [0, 0], pr: [0, 0] };
+    for (const x of t) { const key = isEx(x.k) ? 'ex' : (['private', 'unknown'].includes(x.k) || !KIND_NAME[x.k] ? 'pr' : 'svc'); g[key][0] += pc(x.b || 0); g[key][1]++; }
+    const rest = Math.max(0, 100 - g.ex[0] - g.svc[0] - g.pr[0]);
+    const segs = [
+      ['var(--k1)', 'Биржи', g.ex[0], `${g.ex[1]} ${plural(g.ex[1], 'кошелёк', 'кошелька', 'кошельков')}`],
+      ['var(--k5)', 'Казна и сервисы', g.svc[0], `${g.svc[1]} ${plural(g.svc[1], 'кошелёк', 'кошелька', 'кошельков')}`],
+      ['var(--k-pr)', 'Крупные холдеры', g.pr[0], `${g.pr[1]} ${plural(g.pr[1], 'кошелёк', 'кошелька', 'кошельков')} из топ-100`],
+      ['var(--surface-3)', 'Все остальные', rest, s.holders ? `≈ ${n(Math.max(0, s.holders - 100))} кошельков` : '']
+    ];
+    return `<div class="sec"><div class="sec-head"><h2>Кто владеет DOG</h2><p>все 100 млрд монет</p></div>
+      <div class="group"><div class="own-bar" role="img" aria-label="${esc(segs.map(x => x[1] + ' ' + n(x[2], 1) + '%').join(', '))}">${segs.map(x => `<i style="width:${x[2].toFixed(2)}%;background:${x[0]}"></i>`).join('')}</div>
+      <div class="own-lg">${segs.map(x => `<div><span class="key" style="background:${x[0]}"></span><span class="ol-t"><b>${n(x[2], 1)}%</b> ${x[1]}<small>${esc(x[3])}</small></span></div>`).join('')}</div></div></div>`;
+  }
+
   function renderWallets() {
     const s = V(), el = $('#p-wallets');
     if (!s || !s.top100) { el.innerHTML = '<div class="empty">Нет данных топ-100.</div>'; return; }
-    const ex = s.exch || {}, pl = prevLabel(s);
+    const ex = s.exch || {}, pl = prevLabel(s), mid = (s.price || {}).mid;
     const maxB = Math.max(1e-9, ...(ex.by || []).map(g => g.bal));
-    let html = `<div class="sec"><div class="sec-head">${hInfo('h2', 'DOG на биржах', 'exch')}<p>${mdog(ex.bal)} DOG, ${n(ex.pct, 1)}% всех монет${ex.d != null && Math.abs(ex.d) >= 0.05 ? `, за период ${sg(ex.d, 1)}\u00a0млн` : ''}</p></div>
+    let html = walletsSummaryHtml(s) + ownersHtml(s);
+    html += `<div class="sec"><div class="sec-head">${hInfo('h2', 'DOG на биржах', 'exch')}<p>${mdog(ex.bal)} DOG, ${n(ex.pct, 1)}% всех монет${ex.d != null && Math.abs(ex.d) >= 0.05 ? `, за период ${sg(ex.d, 1)} млн` : ''}</p></div>
       <div class="group"><div class="hbars">${hbarsHtml(ex.by, maxB)}</div></div>
       <p class="note">Изменения — в миллионах DOG${pl ? ' с ' + esc(pl) : ''}.</p></div>`;
-    const cnt = {};
-    for (const x of s.top100) cnt[x.k] = (cnt[x.k] || 0) + 1;
     const services = x => !['private', 'unknown'].includes(x.k);
+    const moved = x => (x.d != null && Math.abs(x.d) >= 0.1) || x.new;
     const q = S.q.trim().toLowerCase();
     let rows = s.top100.filter(x => {
       if (S.filter === 'svc' && !services(x)) return false;
       if (S.filter === 'private' && services(x)) return false;
-      if (S.filter === 'moved' && !(x.d != null && Math.abs(x.d) >= MOVE) && !x.new) return false;
+      if (S.filter === 'moved' && !moved(x)) return false;
       if (q && !(x.a.toLowerCase().includes(q) || (x.n || '').toLowerCase().includes(q) || (x.nt || '').toLowerCase().includes(q) || String(x.r) === q)) return false;
       return true;
     });
     const total = rows.length, limited = !S.showAll && !q && S.filter === 'all';
     if (limited) rows = rows.slice(0, 25);
     const fbtn = (v, t, c) => `<button type="button" class="chip" data-filter="${v}" aria-pressed="${String(S.filter === v)}">${t}${c != null ? `<span class="c">${c}</span>` : ''}</button>`;
-    const nSvc = s.top100.filter(services).length, nMoved = s.top100.filter(x => (x.d != null && Math.abs(x.d) >= MOVE) || x.new).length;
-    html += `<div class="sec"><div class="sec-head">${hInfo('h2', 'Топ-100 кошельков', 'wallets')}<p>держат ${n(s.top100pct, 2)}% всех DOG, холдеров всего ${n(s.holders)}</p></div>
-      <div class="chips" role="group" aria-label="Фильтр">${fbtn('all', 'Все', 100)}${fbtn('svc', 'Биржи и сервисы', nSvc)}${fbtn('private', 'Холдеры', 100 - nSvc)}${fbtn('moved', 'Изменились от 5 млн', nMoved)}</div>
+    const nSvc = s.top100.filter(services).length, nMoved = s.top100.filter(moved).length;
+    const days = S.wh && S.wh.days ? S.wh.days.length : 0;
+    const wrow = x => {
+      const hasD = x.d != null && Math.abs(x.d) >= 0.05;
+      return `<button type="button" class="row wrow" data-wal="${esc(x.a)}">${avatar(x.n, x.k)}<span class="t"><b>${esc(['private', 'unknown'].includes(x.k) || !KIND_NAME[x.k] ? 'Холдер' : ownName(x.n, x.k))} <span class="faint" style="font-weight:500">№${x.r}</span>${x.new ? ' <span class="tag hot">новый</span>' : ''}</b><span class="sub">${x.nt ? esc(x.nt) : `<span class="addr">${esc(short(x.a))}</span>`}</span></span>${sparkW(x.a, x.k)}<span class="v"><b>${mdog(x.b)}</b><span class="faint">${esc(usdM(x.b, mid))}</span>${hasD ? `<span class="dchip ${dcls(x.d, x.k)}">${sg(x.d, 1)} млн</span>` : ''}</span></button>`;
+    };
+    html += `<div class="sec"><div class="sec-head">${hInfo('h2', 'Топ-100 кошельков', 'wallets')}<p>держат ${n(s.top100pct, 2)}% всех DOG, холдеров всего ${n(s.holders)}${days > 1 ? ` · линия — баланс за ${days} ${plural(days, 'день', 'дня', 'дней')}` : ''}</p></div>
+      <div class="chips" role="group" aria-label="Фильтр">${fbtn('all', 'Все', 100)}${fbtn('moved', 'Изменились', nMoved)}${fbtn('svc', 'Биржи и сервисы', nSvc)}${fbtn('private', 'Холдеры', 100 - nSvc)}</div>
       <label class="search">${ico('search')}<input id="wsearch" type="search" placeholder="Адрес, место или метка" value="${esc(S.q)}" aria-label="Поиск по адресу, месту или метке"></label>
-      <div class="group flush rows" id="wlist">${rows.length ? rows.map(x => `<button type="button" class="row" data-wal="${esc(x.a)}">${avatar(x.n, x.k)}<span class="t"><b>${esc(ownName(x.n, x.k))} <span class="faint" style="font-weight:500">№${x.r}</span>${x.new ? ' <span class="tag hot">новый</span>' : ''}</b><span>${x.nt ? esc(x.nt) : `<span class="addr">${esc(short(x.a))}</span>`}</span></span><span class="v"><b>${mdog(x.b)}</b><span class="${x.d != null && Math.abs(x.d) >= 0.05 ? dcls(x.d, x.k) : 'faint'}">${x.d == null ? '' : (Math.abs(x.d) >= 0.05 ? sg(x.d, 1) + '\u00a0млн' : 'без изменений')}</span></span></button>`).join('') : '<p class="note" style="padding:12px 16px">Ничего не найдено.</p>'}</div>
+      <div class="group flush rows" id="wlist">${rows.length ? rows.map(wrow).join('') : '<p class="note" style="padding:12px 16px">Ничего не найдено.</p>'}</div>
       ${limited && total > rows.length ? `<button type="button" class="more" id="showall">Показать все ${total}</button>` : ''}
     </div>`;
     const hl = s.health;
@@ -2445,6 +2602,8 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
       renderNews();
       refreshHomeParts();
     }, () => { S.newsLoaded = true; renderNews(); });
+    const loadWh = () => fetch('data/wallets.json?v=' + Math.floor(Date.now() / 60000), { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(d => { if (d && d.b) { S.wh = d; renderWallets(); } }).catch(() => { });
+    loadWh(); setInterval(() => { if (document.visibilityState !== 'hidden') loadWh(); }, 15 * 60e3);
     db.doc('meta/audit').onSnapshot(snap => { S.audit = snap.exists ? snap.data() : null; }, () => { });
     db.doc('meta/treasuries').onSnapshot(snap => { S.tre = snap.exists ? snap.data() : null; refreshHomeParts(); }, () => { });
     setInterval(setStatus, 60000);
