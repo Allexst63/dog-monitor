@@ -2516,7 +2516,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
   // ---------- средняя цена DOG у кошелька (data/costbasis.json, считает tools/costbasis.py) ----------
   // средняя цена за 1 млн DOG — целыми долларами (1 795 $), меньше 100 $ — с десятыми
   const m1r = p => p == null || isNaN(p) ? '—' : dol(n(p * 1e6, p * 1e6 >= 100 ? 0 : 1));
-  const costOf = a => { const w = S.cb && S.cb.w && S.cb.w[a]; return w && w.avg != null ? w : null; };
+  const costOf = a => { const w = S.cb && S.cb.w && S.cb.w[a]; return w || null; };
   const curPrice = () => livePrice() || ((V() || {}).price || {}).mid || null;
   // «сейчас к средней цене»: +12% / −35%, а при росте в 10 раз и больше — ×12
   function vsAvg(avg) {
