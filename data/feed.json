@@ -1,9 +1,18 @@
 {
- "updated": "2026-10-25T06:05:05Z",
+ "updated": "2026-10-26T06:11:23Z",
  "items": [
   {
+   "title": "Convert 50 OCD to BTC — Onchain dog to Bitcoin Converter - CoinCodex",
+   "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5Na3Nhb1hscmc5WXF0S2daT2VUS0RkSGJmbW1wQVYxWWJ5S29DLVFvWVA2dTlwN21vQWZZZ01mbGg5UE5yNTBlUmhMVTd0YkdTZDhiVy1vbEctTnNNUUZYZ2luMmtheGg0bUdVYw?oc=5",
+   "src": "CoinCodex",
+   "srcUrl": "https://coincodex.com",
+   "q": "\"DOG (Bitcoin)\"",
+   "d": "2026-10-25",
+   "ts": "2026-10-25T03:12Z"
+  },
+  {
    "title": "DOG•GO•TO•THE•MOON价格",
-   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6add9c13ce0f4bd89a6d87e5ca02fc13&url=https%3a%2f%2fwww.okx.com%2fzh-hans%2fprice%2fdog%25E2%2580%25A2go%25E2%2580%25A2to%25E2%2580%25A2the%25E2%2580%25A2moon-dog&c=10595843722143744522&mkt=en-us",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6adeef0ea857473f8c539a65ce56c06e&url=https%3a%2f%2fwww.okx.com%2fzh-hans%2fprice%2fdog%25E2%2580%25A2go%25E2%2580%25A2to%25E2%2580%25A2the%25E2%2580%25A2moon-dog&c=10595843722143744522&mkt=en-us",
    "src": "okx",
    "srcUrl": null,
    "q": "\"DOG•GO•TO•THE•MOON\"",
@@ -12,37 +21,28 @@
   },
   {
    "title": "Per poter aggiungere questa coin nei preferiti devi essere loggato.",
-   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6add9c13ce0f4bd89a6d87e5ca02fc13&url=https%3a%2f%2fwww.criptovaluta.it%2fdog-go-to-the-moon%2f&c=481264743388887086&mkt=en-us",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6adeef0ea857473f8c539a65ce56c06e&url=https%3a%2f%2fwww.criptovaluta.it%2fdog-go-to-the-moon%2f&c=481264743388887086&mkt=en-us",
    "src": "Criptovaluta.it",
    "srcUrl": null,
    "q": "\"DOG•GO•TO•THE•MOON\"",
    "d": "2026-10-20",
    "ts": "2026-10-20T01:53Z"
-  },
-  {
-   "title": "Dog (Bitcoin) Price Today in Australia | DOG to AUD Live Price & Chart - Binance",
-   "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE0za1o4QmRtQzVGWWU2Mk9jWmtFcUVrRHFrSTZYV1hCelF1cFVRaEZ0cGpDQnFzWUZuTTF0dWpUbm1abU1QVDdQYTMxWEtmSnlyQ1I3dkFua3lRWml6bThzNnVsX2xSWkFMcWpJ?oc=5",
-   "src": "Binance",
-   "srcUrl": "https://www.binance.com",
-   "q": "\"DOG•GO•TO•THE•MOON\"",
-   "d": "2026-10-18",
-   "ts": "2026-10-18T08:44Z"
   }
  ],
  "errors": [],
  "stat": [
-  "google \"DOG•GO•TO•THE•MOON\": 16",
-  "google \"DOG (Bitcoin)\": 52",
-  "google \"C2 Blockchain\" DOG: 2",
+  "google \"DOG•GO•TO•THE•MOON\": 14",
+  "google \"DOG (Bitcoin)\": 53",
+  "google \"C2 Blockchain\" DOG: 3",
   "google Leonidas DOG bitcoin runes: 10",
-  "google \"$DOG\" bitcoin rune: 10",
-  "google Bitcoin runes DOG exchange listing: 47",
+  "google \"$DOG\" bitcoin rune: 9",
+  "google Bitcoin runes DOG exchange listing: 48",
   "bing \"DOG•GO•TO•THE•MOON\": 11",
-  "bing \"DOG (Bitcoin)\": 11",
-  "bing \"C2 Blockchain\" DOG: 8",
-  "bing Leonidas DOG bitcoin runes: 10",
+  "bing \"DOG (Bitcoin)\": 12",
+  "bing \"C2 Blockchain\" DOG: 7",
+  "bing Leonidas DOG bitcoin runes: 12",
   "bing \"$DOG\" bitcoin rune: 12",
-  "bing Bitcoin runes DOG exchange listing: 10",
+  "bing Bitcoin runes DOG exchange listing: 11",
   "X: нет ключа X_BEARER_TOKEN"
  ]
 }
