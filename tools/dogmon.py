@@ -91,6 +91,7 @@ SIZE_ROW = re.compile(LEAD + r'size' + SEP + r'([^;|\n]+?)' + SEP + r'(\d+)' + S
 CHAIN_ROW = re.compile(LEAD + r'chain' + SEP + r'([a-z]+)' + SEP + r'(\d+)' + (SEP + NUM) * 4 + r'(?:' + SEP + ISO + r')?', re.M)
 
 checks, warns, refetch, lookup = [], [], [], []
+closed = {}
 
 
 # ---------- утилиты ----------
@@ -101,6 +102,19 @@ def chk(ok, text, src=None):
             if s not in refetch:
                 refetch.append(s)
     return bool(ok)
+
+
+def closed_reason(names):
+    """биржа ответила «нет такой пары» (HTTP 400/404) — значит, торги DOG там, скорее всего, сняты"""
+    for name in names:
+        try:
+            text = open(os.path.join(RAW, name + '.txt'), encoding='utf-8', errors='replace').read()
+        except FileNotFoundError:
+            continue
+        m = re.search(r'HTTP Error (400|404)', text)
+        if text.strip().upper().startswith('UNAVAILABLE') and m:
+            return f'пара не найдена (HTTP {m.group(1)}) — похоже, торги DOG сняты'
+    return None
 
 
 def raw(name):
@@ -645,6 +659,10 @@ def compute(kind):
         label = EXN[ex]
         parsed = {nm: parse_book(nm) for nm in files}
         if any(v is None for v in parsed.values()):
+            why = closed_reason(files)
+            if why:
+                closed[ex] = why          # не ошибка данных: биржа больше не торгует DOG — в итоги и проверки не входит
+                continue
             chk(False, f'{label}: стакан — нет данных', list(files))
             continue
         if ex == 'kraken':
@@ -879,7 +897,7 @@ def compute(kind):
                  'top1000': conc.get('top1000_supply_pct'), 'gini': conc.get('gini_coefficient')},
         'top100': top100, 'movers': movers, 'exch': exch, 'flows': flows, 'delta': delta, 'entities': entities,
         'prevId': prev_id, 'prevTs': (prev or {}).get('ts'), 'prevLabel': (prev or {}).get('label'), 'prevKind': (prev or {}).get('kind'),
-        'checks': checks, 'warnings': warns, 'brief': '', 'report': '', 'chart': chart, 'health': health,
+        'checks': checks, 'warnings': warns, 'closed': closed, 'brief': '', 'report': '', 'chart': chart, 'health': health,
         'srcTs': {'top100': iso(hold_t), 'stats': iso(stats.get('t')), 'conc': iso(conc.get('t')),
                   'markets': iso(markets.get('t')), 'whales': iso(wt_t), 'btc': iso(bt_t),
                   'ohlc': (chart or {}).get('asof'), 'health': (health or {}).get('asof')}}
@@ -956,7 +974,7 @@ def report(s):
     for ex, name in EXCHANGES:
         b = s['books'].get(ex)
         if not b:
-            L.append(f'| {name} | нет данных | — | — |')
+            L.append(f"| {name} | {'торги сняты?' if ex in (s.get('closed') or {}) else 'нет данных'} | — | — |")
             continue
         band, d = '±10%', b['d10']
         if d['b'] is None or d['a'] is None:

@@ -6,10 +6,10 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'full — полная сводка; feed — только кандидаты в новости'
+        description: 'full — полная сводка; feed — только кандидаты в новости; wallets — только средние цены кошельков'
         default: full
         type: choice
-        options: [full, feed]
+        options: [full, feed, wallets]
 
 permissions:
   contents: write
@@ -21,19 +21,26 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
       - name: Сбор данных и расчёт сводки
-        if: ${{ github.event.inputs.mode != 'feed' }}
+        if: ${{ github.event.inputs.mode != 'feed' && github.event.inputs.mode != 'wallets' }}
         env:
           DOGMON: ${{ runner.temp }}/dogmon
         run: python3 tools/daily.py run .
 
+      - name: Средняя цена DOG у кошельков топ-100 и история цены
+        if: ${{ github.event.inputs.mode != 'feed' }}
+        continue-on-error: true      # не мешает утренней сводке: при ошибке остаётся вчерашний расчёт
+        timeout-minutes: 12
+        run: python3 tools/costbasis.py .
+
       - name: Кандидаты в новости (Google News)
+        if: ${{ github.event.inputs.mode != 'wallets' }}
         continue-on-error: true
         env:
           X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
@@ -54,7 +61,7 @@ jobs:
           exit 1
 
       - name: Сырые ответы источников (для проверки)
-        if: ${{ always() && github.event.inputs.mode != 'feed' }}
+        if: ${{ always() && github.event.inputs.mode != 'feed' && github.event.inputs.mode != 'wallets' }}
         uses: actions/upload-artifact@v4
         with:
           name: raw-${{ github.run_id }}

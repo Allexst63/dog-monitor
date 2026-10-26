@@ -115,14 +115,18 @@ def audit(s, fetch_ok, fetch_all, failed, looked, refetched):
     items = [f'Автоматическое утреннее обновление: проверка данных {ok} из {len(ch)}',
              f'Источники: получено {fetch_ok} из {fetch_all}' + (f' (повторно запрошено: {len(refetched)})' if refetched else ''),
              f"Стаканы {len(books)} из 7 бирж: " + ', '.join(names.get(k, k) for k in books)]
-    miss = [names[k] for k in names if k not in books]
+    closed = s.get('closed') or {}
+    miss = [names[k] for k in names if k not in books and k not in closed]
     if miss:
         items.append('Не удалось получить стакан: ' + ', '.join(miss) + ' — в итоги не вошли')
+    for k, why in closed.items():
+        items.append(f'{names.get(k, k)}: {why}; в итоги не входит')
     if looked:
         items.append(f'Проверены владельцы {looked} кошельков по данным DOG DATA')
     bad = [c['t'] for c in ch if not c.get('ok')]
     items += [f'Замечание: {t}' for t in bad[:3]]
     todo = [f'Перепроверить: {t}' for t in bad[:5]]
+    failed = [f for f in failed if not any(f.startswith(k + '_') for k in closed)]
     if failed:
         todo.append('Не ответили источники: ' + ', '.join(failed))
     return {'ts': NOW.strftime('%Y-%m-%dT%H:%M:%SZ'), 'items': items[:8], 'todo': todo[:5]}
