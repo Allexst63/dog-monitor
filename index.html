@@ -2526,22 +2526,23 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
     const w = costOf(a); if (!w) return '';
     if (w.free >= 0.98) return `<span class="cbl"><span class="up">${T('бесплатно с аирдропа', 'free from the airdrop')}</span></span>`;
     const v = vsAvg(w.avg);
-    return `<span class="cbl">${T('ср. цена', 'avg cost')} <b>${m1r(w.avg)}</b>${T('', '/1M')}${v ? ` <span class="${v.cls}">${v.txt}</span>` : ''}</span>`;
+    return `<span class="cbl">${T('ср. цена', 'avg cost')} <b>${w.ax ? '≈' : ''}${m1r(w.avg)}</b>${T('', '/1M')}${v ? ` <span class="${v.cls}">${v.txt}</span>` : ''}</span>`;
   }
   function costBlock(a, k) {
     const c = S.cb && S.cb.c && S.cb.c[a], w = costOf(a);
     const head = `<h3 style="font-size:15px;margin-bottom:6px">${T('Средняя цена DOG на этом кошельке', 'Average cost of the DOG in this wallet')}</h3>`;
     if (isEx(k) || k === 'marketplace') return `<div class="cbbox">${head}<p class="note">${T('Для кошельков бирж и маркетплейсов среднюю цену не считаем: там лежат монеты многих клиентов.', 'We don’t calculate this for exchange and marketplace wallets: they hold coins of many customers.')}</p></div>`;
     if (!S.cb) return '';
-    if (c && c.skip) return `<div class="cbbox">${head}<p class="note">${T(`Слишком много операций (${n(c.n)}) — похоже на сервис, среднюю цену не считаем.`, `Too many transactions (${n(c.n)}) — looks like a service, so we don’t calculate it.`)}</p></div>`;
+    if (c && c.skip) return `<div class="cbbox">${head}<p class="note">${T('Больше 1000 операций — DOG DATA отдаёт не всю историю переводов этого кошелька, поэтому среднюю цену не считаем.', 'More than 1,000 transactions — DOG DATA doesn’t return this wallet’s full transfer history, so we don’t calculate it.')}</p></div>`;
     if (!w) return `<div class="cbbox">${head}<p class="note">${c && c.ok === false ? T('История переводов не сходится с балансом — цену не показываем.', 'The transfer history doesn’t match the balance, so we don’t show a figure.') : T('Посчитаем в следующем утреннем обновлении.', 'Will be calculated in the next morning update.')}</p></div>`;
     const v = vsAvg(w.avg), p = curPrice();
     const fd = w.first ? dOf(w.first) : null;
     const main = w.free >= 0.98
       ? `<div class="cbbig up">${T('Бесплатно', 'Free')}</div><p>${T('Почти все монеты этого кошелька получены на аирдропе DOG — бесплатно.', 'Almost all coins in this wallet came from the DOG airdrop — for free.')}</p>`
-      : `<div class="cbbig">${m1r(w.avg)} <small>${T('за 1 млн DOG', 'per 1M DOG')}</small></div>${v && p ? `<p>${T('Сейчас', 'Now')} ${ONE_M} ≈ ${m1s(p)} — <b class="${v.cls}">${v.txt}</b> ${T('к средней цене', 'vs. the average cost')}.</p>` : ''}`;
+      : `<div class="cbbig">${w.ax ? '≈' : ''}${m1r(w.avg)} <small>${T('за 1 млн DOG', 'per 1M DOG')}</small></div>${v && p ? `<p>${T('Сейчас', 'Now')} ${ONE_M} ≈ ${m1s(p)} — <b class="${v.cls}">${v.txt}</b> ${T('к средней цене', 'vs. the average cost')}.</p>` : ''}`;
     return `<div class="cbbox">${head}${main}
       <dl class="kv">${w.free >= 0.02 && w.free < 0.98 ? `<dt>${T('Получено бесплатно (аирдроп)', 'Received free (airdrop)')}</dt><dd>${n(w.free * 100, 0)}%</dd>${w.paid ? `<dt>${T('Средняя цена без аирдропа', 'Average cost excl. airdrop')}</dt><dd>${m1r(w.paid)} ${PER1M}</dd>` : ''}` : ''}${fd ? `<dt>${T('Первое поступление', 'First DOG received')}</dt><dd>${esc(F_D.format(fd))}</dd>` : ''}</dl>
+      ${w.ax ? `<p class="note">${T('В истории переводов DOG DATA не хватает части операций этого кошелька — цена оценена по известным поступлениям.', 'DOG DATA’s transfer history for this wallet is missing some transactions — the figure is estimated from the known deposits.')}</p>` : ''}
       <p class="note">${T('Как считаем: каждое поступление DOG оцениваем по цене дня, когда монеты пришли на кошелёк (Kraken, раньше — Gate); при отправке средняя цена не меняется. Монеты с аирдропа стоят 0. Если монеты пришли с биржи — это близко к цене покупки, если с другого своего кошелька — это цена в день перевода.', 'How we calculate it: each DOG deposit is valued at that day’s price (Kraken, earlier Gate); sending coins out doesn’t change the average. Airdropped coins count as free. If coins came from an exchange this is close to the purchase price; if from another own wallet, it’s the price on the day of the transfer.')}</p></div>`;
   }
   function holdersCost() {

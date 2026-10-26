@@ -13,8 +13,8 @@
     достались бесплатно — их цена 0, а доля таких монет пишется отдельно (free);
   * кошельки бирж, биржевых хранилищ и маркетплейсов не считаем: там монеты клиентов, «средняя цена» не имеет смысла;
   * история переводов кэшируется в data/costbasis.json, каждое утро догружаются только новые переводы;
-  * если баланс по истории не сходится с балансом DOG DATA больше чем на 0,5% — пересчитываем с нуля, а если и
-    тогда не сходится — цену не показываем (ok=false).
+  * если баланс по истории не сходится с балансом DOG DATA больше чем на 0,5% — пересчитываем с нуля; если и тогда
+    не сходится — см. reconcile(): при недостающих отправках цена остаётся верной (ax='out'), иначе не показываем.
 Цены DOG — только с бирж (агрегаторы цен не используются). В сеть ходит только по HTTPS к dogdata.xyz, Kraken и Gate.
 """
 import bisect
@@ -30,7 +30,8 @@ from fetch import get  # noqa: E402  (тот же HTTP-клиент с повт�
 
 DD = ('https://www.dogdata.xyz', 'https://dogdata.xyz')
 SKIP_KINDS = ('exchange', 'custody', 'marketplace')
-MAX_TX = 3000          # больше операций — это уже сервис, историю не грузим
+MAX_TX = 1000          # DOG DATA отдаёт не больше 1000 последних операций адреса, а всё более раннее сворачивает
+                       # в одну запись «Pre-indexed activity» — у таких кошельков настоящую среднюю цену не посчитать
 PAGE = 500
 LAUNCH = '2024-04-25'  # первый день торгов DOG на биржах (первая дневная свеча Gate)
 NOW = dt.datetime.now(dt.timezone.utc)
@@ -58,12 +59,13 @@ def day(ts):
 def fetch_prices(old):
     """{дата: [open, high, low, close]} — Kraken DOG/USD (последние ~720 дней), раньше — Gate DOG/USDT."""
     px, src = {}, {}
+    today = NOW.strftime('%Y-%m-%d')
     try:
         d = get('https://api.gateio.ws/api/v4/spot/candlesticks?currency_pair=DOG_USDT&interval=1d&limit=1000')
         for r in d if isinstance(d, list) else []:
             t = dt.datetime.fromtimestamp(int(float(r[0])), dt.timezone.utc).strftime('%Y-%m-%d')
             o, h, lo, c = (float(r[i]) for i in (5, 3, 4, 2))
-            if c > 0:
+            if c > 0 and t <= today:      # у Gate бывает «завтрашняя» пустая свеча — её не берём
                 px[t] = [o, h, lo, c]
                 src[t] = 'g'
         print(f'PRICES gate: {len(px)} дней')
@@ -77,7 +79,7 @@ def fetch_prices(old):
         for r in res.get(key) or []:
             t = dt.datetime.fromtimestamp(int(r[0]), dt.timezone.utc).strftime('%Y-%m-%d')
             o, h, lo, c = (float(r[i]) for i in (1, 2, 3, 4))
-            if c > 0:
+            if c > 0 and t <= today:
                 px[t] = [o, h, lo, c]
                 src[t] = 'k'
                 n += 1
@@ -86,7 +88,7 @@ def fetch_prices(old):
         print('PRICES kraken ERR', e)
     # дни, которых нет в свежем ответе (старые), берём из прошлого файла
     for t, v in ((old or {}).get('d') or {}).items():
-        if t not in px:
+        if t not in px and t <= today:
             px[t] = v
             src[t] = ((old or {}).get('s') or {}).get(t, '?')
     return px, src
@@ -110,7 +112,7 @@ def full_history(a, first=None):
     total = int(d.get('tx_count') or (d.get('pagination') or {}).get('total') or 0)
     txs = list(d.get('transactions') or [])
     if total > MAX_TX:
-        return d, txs, total, 'много операций'
+        return d, txs, total, 'больше 1000 операций'
     while len(txs) < total:
         time.sleep(0.4)
         nd = page(a, len(txs))
@@ -147,6 +149,22 @@ def apply(st, txs, px, dates):
             st['free'] -= st['free'] * f
             st['bal'] = max(0.0, st['bal'] - q)
     return st
+
+
+def reconcile(st, bal_now):
+    """История DOG DATA бывает неполной: часть отправок (реже — поступлений) в список переводов не попадает,
+    а баланс берётся из UTXO и всегда точный. При методе средней стоимости отправки не меняют среднюю цену,
+    поэтому, если не хватает отправок, средняя по известным поступлениям остаётся верной — просто приводим
+    остаток к настоящему балансу (approx='out'). Если не хватает поступлений до 10% — так же, но пометка 'in';
+    больше — цену не показываем."""
+    tol = max(1.0, bal_now * 0.005)
+    if abs(st['bal'] - bal_now) <= tol:
+        return st, True, None
+    if st['bal'] > 0 and (st['bal'] > bal_now or st['bal'] >= 0.9 * bal_now):
+        k = bal_now / st['bal']
+        return ({'bal': bal_now, 'cost': st['cost'] * k, 'free': st['free'] * k, 'first': st.get('first')}, True,
+                'out' if st['bal'] > bal_now else 'in')
+    return st, False, None
 
 
 def main():
@@ -192,7 +210,7 @@ def main():
             txs0 = d.get('transactions') or []
             st = None
             if total > MAX_TX:
-                out_c[a] = {'n': total, 'skip': 'много операций'}
+                out_c[a] = {'n': total, 'skip': 'больше 1000 операций'}
                 stat['skip'] += 1
                 continue
             if c and not c.get('skip') and c.get('n') and total >= c['n']:
@@ -212,13 +230,18 @@ def main():
                 st = apply({'bal': 0.0, 'cost': 0.0, 'free': 0.0, 'first': None}, sorted(txs, key=tkey), px, dates)
                 stat['full'] += 1
                 txs0 = txs
-            ok = abs(st['bal'] - bal_now) <= max(1.0, bal_now * 0.005)
+            hist_bal = st['bal']
+            st, ok, approx = reconcile(st, bal_now)
             last = (txs0[0].get('txid') if txs0 else None)
             out_c[a] = {'n': total, 'last': last, 'bal': round(st['bal'], 5), 'cost': round(st['cost'], 6),
                         'free': round(max(0.0, st['free']), 5), 'first': st['first'], 'ok': ok}
+            if approx:
+                out_c[a]['ax'] = approx
+                stat['approx'] = stat.get('approx', 0) + 1
+                print(f'COST approx({approx}) {a[:12]}…: история {hist_bal / 1e6:.2f}M, баланс {bal_now / 1e6:.2f}M')
             stat['ok' if ok else 'bad'] += 1
             if not ok:
-                print(f'COST mismatch {a[:12]}…: история {st["bal"] / 1e6:.2f}M, баланс {bal_now / 1e6:.2f}M')
+                print(f'COST mismatch {a[:12]}…: история {hist_bal / 1e6:.2f}M, баланс {bal_now / 1e6:.2f}M')
         except Exception as e:
             stat['err'] += 1
             print(f'COST ERR {a[:12]}…: {str(e)[:160]}')
@@ -231,6 +254,8 @@ def main():
             continue
         bal, cost, free = c['bal'], c['cost'], min(c['free'], c['bal'])
         w = {'avg': cost / bal, 'free': round(free / bal, 4), 'first': c.get('first')}
+        if c.get('ax'):
+            w['ax'] = c['ax']
         if bal - free > 1:
             w['paid'] = cost / (bal - free)
         out_w[a] = {k2: (float(f'{v:.4g}') if isinstance(v, float) and k2 in ('avg', 'paid') else v) for k2, v in w.items()}
