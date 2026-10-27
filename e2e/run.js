@@ -6,7 +6,10 @@ const SITE = 'https://allexst63.github.io/dog-monitor/';
   const b = await chromium.launch();
   const out = [];
   const runs = [['phone_en', { width: 390, height: 860 }, '?debug=1'], ['phone_ru', { width: 390, height: 860 }, '?debug=1&lang=ru'], ['desk_en', { width: 1280, height: 900 }, '?debug=1']];
+  let first = true;
   for (const [name, vp, q] of runs) {
+    if (!first) await new Promise(r => setTimeout(r, 25000));   // разные посетители заходят не одновременно
+    first = false;
     const phone = name.startsWith('phone');
     const ctx = await b.newContext({ viewport: vp, deviceScaleFactor: phone ? 2 : 1, isMobile: phone, hasTouch: phone, locale: name.endsWith('ru') ? 'ru-RU' : 'en-GB', timezoneId: 'Europe/Paris' });
     const pg = await ctx.newPage();
