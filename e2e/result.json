@@ -1,0 +1,810 @@
+[
+ {
+  "name": "phone_en",
+  "langAfterSwitch": [
+   "ru",
+   "?debug=1&v=1793117866657",
+   "#books"
+  ]
+ },
+ {
+  "name": "phone_en",
+  "live": true,
+  "tLive": 2498,
+  "status": "Live 17:17, just now",
+  "bar": "Live data as of 17:17\n13 of 13 checks passed\nUpdate",
+  "again": true,
+  "sheet": "Data updated at 17:17\n14 of 14 checks passed · 1.1 s\nWhat changed since the morning report\n\ntoday at 07:10 → now\n\nPrice: $0.0008999 → $0.0008932 (−0.7%)\n1M DOG: $899.9 → $893.3\nWithin 10% of the price, buyers 118.3M → 118.1M, sellers 88.0M → 90.3M DOG\nall exchanges combined\nKraken: buy order for 15.0M DOG at $757 per 1M was pulled\nKraken: new buy order for 13.1M DOG at $828 per 1M\nplus 10 smaller order changes — see Order book\n6.7M DOG arrived in exchange wallets\nBitget −10.7M · MEXC +8.9M · Kraken +8.3M\nLarge holders haven’t moved coins since the morning\nno non-exchange top-100 wallet changed by 5M+\nNo new transfers of 5M+ DOG since the morning\nHolders: 86,308 → 86,313 (+5)\nBitcoin: $79,798 → $80,473 (+0.8%)\nOpen the order book\nSelf-check\nKraken: order book received — 94 + 500 levels, 0.2 s\nGate: order book received — 67 + 100 levels, 0.3 s\nDigiFinex: order book received — 41 + 43 levels, 0.3 s\nCoinW: order book received — 20 + 20 levels, 0.3 s\nExchange prices agree: 0.8% spread\nKraken book matches the live price: 0.22% apart\nPrice is plausible: −0.7% vs. the morning report\nKraken chart: hourly candles up to 17:00, daily up to today\nTop 100: 100 wallets, ranks 1–100, descending\nTop-100 share: 41.14% (morning: 41.14%) — consistent\nDOG DATA: 86,313 holders, snapshot 16:27 (50 min ago)\nTransfers of 5M+ in 24h: 1, DOG DATA as of 17:17\nBTC (Coinbase): $80,473, 17:17\nLoaded the 26 Oct 18:08 report for comparison\nMEXC and BingX: order books from the 07:10 report — these exchanges don’t answer requests from web pages\nVenues and volumes, coin age and average purchase price — from the 07:10 report (DOG DATA serves them to servers only)\nSources and response times\nMorning report checks — 23 of 23\nMorning publish self-check · 27 Oct 07:09\nUpdate again\nDone\n\nLive updates cover the Kraken, Gate, DigiFinex and CoinW order books, price and chart, the top 100 and exchange balances, holder count, 5M+ transfers and bitcoin. A full report with news is built every morning.",
+  "dm": {
+   "ts": "2026-10-27T16:17:49Z",
+   "upd": {
+    "n": 13,
+    "okN": 13,
+    "kept": [
+     "mexc",
+     "bingx"
+    ],
+    "dur": 2040,
+    "diff": [
+     "Price: $0.0008999 → $0.0008934 (−0.7%)",
+     "Within 10% of the price, buyers 118.3M → 118.2M, sellers 88.0M → 90.6M DOG",
+     "Kraken: buy order for 15.0M DOG at $757 per 1M was pulled",
+     "Kraken: new buy order for 13.1M DOG at $828 per 1M",
+     "plus 10 smaller order changes — see Order book",
+     "6.7M DOG arrived in exchange wallets",
+     "Large holders haven’t moved coins since the morning",
+     "No new transfers of 5M+ DOG since the morning",
+     "Holders: 86,308 → 86,313 (+5)",
+     "Bitcoin: $79,798 → $80,456 (+0.8%)"
+    ]
+   },
+   "checks": [
+    {
+     "ok": true,
+     "t": "Kraken: order book received — 97 + 500 levels, 0.2 s"
+    },
+    {
+     "ok": true,
+     "t": "Gate: order book received — 67 + 100 levels, 0.5 s"
+    },
+    {
+     "ok": true,
+     "t": "DigiFinex: order book received — 42 + 43 levels, 0.4 s"
+    },
+    {
+     "ok": true,
+     "t": "CoinW: order book received — 20 + 20 levels, 0.4 s"
+    },
+    {
+     "ok": true,
+     "t": "Exchange prices agree: 0.9% spread"
+    },
+    {
+     "ok": true,
+     "t": "Price is plausible: −0.7% vs. the morning report"
+    },
+    {
+     "ok": true,
+     "t": "Kraken chart: hourly candles up to 17:00, daily up to today"
+    },
+    {
+     "ok": true,
+     "t": "Top 100: 100 wallets, ranks 1–100, descending"
+    },
+    {
+     "ok": true,
+     "t": "Top-100 share: 41.14% (morning: 41.14%) — consistent"
+    },
+    {
+     "ok": true,
+     "t": "DOG DATA: 86,313 holders, snapshot 16:27 (50 min ago)"
+    },
+    {
+     "ok": true,
+     "t": "Transfers of 5M+ in 24h: 1, DOG DATA as of 17:17"
+    },
+    {
+     "ok": true,
+     "t": "BTC (Coinbase): $80,456, 17:17"
+    },
+    {
+     "ok": true,
+     "t": "Loaded the 26 Oct 18:08 report for comparison"
+    }
+   ],
+   "price": {
+    "mid": 0.000893375,
+    "cap": 89.3,
+    "chg24": -1.6,
+    "vol24": 466602,
+    "dogdata": 0.000897,
+    "cov": 68
+   },
+   "totals": {
+    "d5": {
+     "b": 63.96,
+     "a": 35.82,
+     "n": 5
+    },
+    "d10": {
+     "b": 118.22,
+     "a": 90.57,
+     "n": 5
+    },
+    "d25": {
+     "b": 262.65,
+     "a": 126.35,
+     "n": 4
+    }
+   },
+   "holders": 86313,
+   "top100pct": 41.142,
+   "exch": {
+    "bal": 23274.43,
+    "d": -14.85
+   },
+   "flows": {
+    "count": 1,
+    "toExch": 0,
+    "fromExch": 7.18
+   },
+   "books": {
+    "kraken": {
+     "bid": 0.000887,
+     "ask": 0.000892,
+     "ats": 1793117867,
+     "old": 0,
+     "off": 0,
+     "rows": {
+      "b": 97,
+      "a": 500
+     },
+     "d10": {
+      "b": 67.17,
+      "a": 28.73
+     }
+    },
+    "gate": {
+     "bid": 0.0008963,
+     "ask": 0.0008982,
+     "ats": 1793117867,
+     "old": 0,
+     "off": 0,
+     "rows": {
+      "b": 67,
+      "a": 100
+     },
+     "d10": {
+      "b": 22.9,
+      "a": 37.04
+     }
+    },
+    "digifinex": {
+     "bid": 0.000895,
+     "ask": 0.0009,
+     "ats": 1793117867,
+     "old": 0,
+     "off": 0,
+     "rows": {
+      "b": 42,
+      "a": 43
+     },
+     "d10": {
+      "b": 10.82,
+      "a": 8.58
+     }
+    },
+    "coinw": {
+     "bid": 0.0008918,
+     "ask": 0.0009027,
+     "ats": 1793117867,
+     "old": 0,
+     "off": 0,
+     "rows": {
+      "b": 20,
+      "a": 20
+     },
+     "d10": {
+      "b": null,
+      "a": null
+     }
+    },
+    "mexc": {
+     "bid": 0.0008963,
+     "ask": 0.0009016,
+     "ats": 1793081382,
+     "old": "cors",
+     "off": 0,
+     "rows": {
+      "b": 125,
+      "a": 150
+     },
+     "d10": {
+      "b": 7.98,
+      "a": 5
+     }
+    },
+    "bingx": {
+     "bid": 0.0008991,
+     "ask": 0.0009026,
+     "ats": 1793081383,
+     "old": "cors",
+     "off": 0,
+     "rows": {
+      "b": 150,
+      "a": 150
+     },
+     "d10": {
+      "b": 9.35,
+      "a": 11.22
+     }
+    }
+   },
+   "btc": 80456,
+   "chart": {
+    "asof": "2026-10-27T16:00:00Z",
+    "chg": {
+     "1d": -1.6,
+     "7d": -2,
+     "30d": -10.6,
+     "90d": 46.8,
+     "1y": -47.4
+    }
+   }
+  },
+  "errs": [],
+  "reqs": [
+   "200 https://cdn.jsdelivr.net/npm/lightweight-charts@5.0.8/dist/lightweight-charts.standalone.production.js",
+   "200 https://api.exchange.coinbase.com/products/BTC-USD/ticker",
+   "200 https://api.kraken.com/0/public/Depth?pair=DOGUSD&count=500",
+   "200 https://openapi.digifinex.com/v3/order_book?symbol=dog_usdt&limit=150",
+   "200 https://api.coinw.com/api/v1/public?command=returnOrderBook&symbol=DOG(RUNE)_USDT&size=100",
+   "200 https://api.gateio.ws/api/v4/spot/tickers?currency_pair=DOG_USDT",
+   "200 https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0.00001&limit=100",
+   "200 https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=60&since=1792513067",
+   "200 https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440&since=1761581867",
+   "200 https://www.dogdata.xyz/api/health",
+   "200 https://www.dogdata.xyz/api/dog-rune/top-holders?limit=100",
+   "200 https://www.dogdata.xyz/api/whale-alerts?threshold=5000000&limit=200",
+   "200 https://api.exchange.coinbase.com/products/BTC-USD/ticker",
+   "200 https://www.dogdata.xyz/api/dog-rune/top-holders?limit=100",
+   "200 https://api.kraken.com/0/public/Depth?pair=DOGUSD&count=500",
+   "200 https://api.coinw.com/api/v1/public?command=returnOrderBook&symbol=DOG(RUNE)_USDT&size=100",
+   "200 https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0.00001&limit=100",
+   "200 https://openapi.digifinex.com/v3/order_book?symbol=dog_usdt&limit=150",
+   "200 https://api.gateio.ws/api/v4/spot/tickers?currency_pair=DOG_USDT",
+   "200 https://www.dogdata.xyz/api/health",
+   "200 https://www.dogdata.xyz/api/whale-alerts?threshold=5000000&limit=200",
+   "200 https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=60&since=1792513072",
+   "200 https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440&since=1761581873",
+   "200 https://cdn.jsdelivr.net/npm/lightweight-charts@5.0.8/dist/lightweight-charts.standalone.production.js",
+   "200 https://api.exchange.coinbase.com/products/BTC-USD/ticker",
+   "200 https://www.dogdata.xyz/api/dog-rune/top-holders?limit=100",
+   "200 https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0.00001&limit=100",
+   "200 https://api.kraken.com/0/public/Depth?pair=DOGUSD&count=500",
+   "200 https://api.coinw.com/api/v1/public?command=returnOrderBook&symbol=DOG(RUNE)_USDT&size=100",
+   "200 https://openapi.digifinex.com/v3/order_book?symbol=dog_usdt&limit=150",
+   "200 https://api.gateio.ws/api/v4/spot/tickers?currency_pair=DOG_USDT",
+   "200 https://www.dogdata.xyz/api/health",
+   "200 https://www.dogdata.xyz/api/whale-alerts?threshold=5000000&limit=200",
+   "200 https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=60&since=1792513076",
+   "200 https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440&since=1761581877"
+  ]
+ },
+ {
+  "name": "phone_ru",
+  "langAfterSwitch": [
+   "en",
+   "?debug=1&v=1793117879751",
+   "#books"
+  ]
+ },
+ {
+  "name": "phone_ru",
+  "live": true,
+  "tLive": 1332,
+  "status": "Онлайн 17:18, только что",
+  "bar": "Онлайн-данные на 17:18\nпроверок пройдено: 13 из 13\nОбновить",
+  "again": true,
+  "sheet": "Данные обновлены в 17:18\nпроверок пройдено: 14 из 14 · 1,1 с\nЧто изменилось с утренней сводки\n\nсегодня в 07:10 → сейчас\n\nЦена: 0,0008999 $ → 0,000893 $ (−0,8%)\n1 млн DOG: 899,9 $ → 893 $\nВ пределах 10% от цены хотят купить 118,3 млн → 116,4 млн, продать 88,0 млн → 90,0 млн DOG\nвсе биржи вместе\nKraken: снята заявка на покупку 15,0 млн DOG по 757 $ за 1 млн\nKraken: новая заявка на покупку 13,1 млн DOG по 828 $ за 1 млн\nи ещё 9 изменений заявок поменьше — в разделе «Стакан»\nНа кошельки бирж пришло 6,7 млн DOG\nBitget −10,7 млн · MEXC +8,9 млн · Kraken +8,3 млн\nКрупные холдеры с утра монеты не двигали\nни один кошелёк топ-100 вне бирж не изменился на 5 млн и больше\nНовых переводов от 5 млн DOG с утра не было\nХолдеров: 86 308 → 86 313 (+5)\nБиткоин: 79 798 → 80 472 $ (+0,8%)\nОткрыть стакан\nСамопроверка\nKraken: стакан получен — 94 + 500 уровней, 0,1 с\nGate: стакан получен — 67 + 100 уровней, 0,2 с\nDigiFinex: стакан получен — 41 + 43 уровня, 0,3 с\nCoinW: стакан получен — 20 + 20 уровней, 0,3 с\nЦены бирж сходятся: разброс 0,8%\nСтакан Kraken сходится с онлайн-ценой: расхождение 0,28%\nЦена правдоподобна: −0,8% к утренней сводке\nГрафик Kraken: часовые свечи до 17:00, дневные — по сегодня\nТоп-100: 100 кошельков, места 1–100, по убыванию\nДоля топ-100: 41,14% (утром 41,14%) — сходится\nDOG DATA: холдеров 86 313, срез 16:27 (50 мин назад)\nПереводы от 5 млн за сутки: 1, DOG DATA на 17:17\nBTC (Coinbase): 80 472 $, 17:18\nДля сравнения загружена сводка 26 окт 18:08\nMEXC и BingX: стаканы из сводки 07:10 — эти биржи не отвечают на запросы со страниц сайтов\nПлощадки и обороты, возраст монет, средняя цена покупки — из сводки 07:10 (DOG DATA отдаёт их только серверу)\nИсточники и время ответа\nПроверка утренней сводки — 23 из 23\nСамопроверка утренней выкладки · 27 окт 07:09\nОбновить ещё раз\nГотово\n\nОнлайн обновляются стаканы Kraken, Gate, DigiFinex и CoinW, цена и график, топ-100 и балансы бирж, число холдеров, переводы от 5 млн и биткоин. Полная сводка с новостями собирается каждое утро.",
+  "dm": {
+   "ts": "2026-10-27T16:18:01Z",
+   "upd": {
+    "n": 13,
+    "okN": 13,
+    "kept": [
+     "mexc",
+     "bingx"
+    ],
+    "dur": 1055,
+    "diff": [
+     "Цена: 0,0008999 $ → 0,000893 $ (−0,8%)",
+     "В пределах 10% от цены хотят купить 118,3 млн → 116,7 млн, продать 88,0 млн → 91,3 млн DOG",
+     "Kraken: снята заявка на покупку 15,0 млн DOG по 757 $ за 1 млн",
+     "Kraken: новая заявка на покупку 13,1 млн DOG по 828 $ за 1 млн",
+     "и ещё 10 изменений заявок поменьше — в разделе «Стакан»",
+     "На кошельки бирж пришло 6,7 млн DOG",
+     "Крупные холдеры с утра монеты не двигали",
+     "Новых переводов от 5 млн DOG с утра не было",
+     "Холдеров: 86 308 → 86 313 (+5)",
+     "Биткоин: 79 798 → 80 472 $ (+0,8%)"
+    ]
+   },
+   "checks": [
+    {
+     "ok": true,
+     "t": "Kraken: стакан получен — 93 + 500 уровней, 0,2 с"
+    },
+    {
+     "ok": true,
+     "t": "Gate: стакан получен — 67 + 100 уровней, 0,7 с"
+    },
+    {
+     "ok": true,
+     "t": "DigiFinex: стакан получен — 41 + 43 уровня, 0,3 с"
+    },
+    {
+     "ok": true,
+     "t": "CoinW: стакан получен — 20 + 20 уровней, 0,8 с"
+    },
+    {
+     "ok": true,
+     "t": "Цены бирж сходятся: разброс 0,8%"
+    },
+    {
+     "ok": true,
+     "t": "Цена правдоподобна: −0,8% к утренней сводке"
+    },
+    {
+     "ok": true,
+     "t": "График Kraken: часовые свечи до 17:00, дневные — по сегодня"
+    },
+    {
+     "ok": true,
+     "t": "Топ-100: 100 кошельков, места 1–100, по убыванию"
+    },
+    {
+     "ok": true,
+     "t": "Доля топ-100: 41,14% (утром 41,14%) — сходится"
+    },
+    {
+     "ok": true,
+     "t": "DOG DATA: холдеров 86 313, срез 16:27 (50 мин назад)"
+    },
+    {
+     "ok": true,
+     "t": "Переводы от 5 млн за сутки: 1, DOG DATA на 17:17"
+    },
+    {
+     "ok": true,
+     "t": "BTC (Coinbase): 80 472 $, 17:17"
+    },
+    {
+     "ok": true,
+     "t": "Для сравнения загружена сводка 26 окт 18:08"
+    }
+   ],
+   "price": {
+    "mid": 0.000892975,
+    "cap": 89.3,
+    "chg24": -1.6,
+    "vol24": 466602,
+    "dogdata": 0.000897,
+    "cov": 68
+   },
+   "totals": {
+    "d5": {
+     "b": 62.47,
+     "a": 36.52,
+     "n": 5
+    },
+    "d10": {
+     "b": 116.74,
+     "a": 91.27,
+     "n": 5
+    },
+    "d25": {
+     "b": 261.16,
+     "a": 127.04,
+     "n": 4
+    }
+   },
+   "holders": 86313,
+   "top100pct": 41.142,
+   "exch": {
+    "bal": 23274.43,
+    "d": -14.85
+   },
+   "flows": {
+    "count": 1,
+    "toExch": 0,
+    "fromExch": 7.18
+   },
+   "books": {
+    "kraken": {
+     "bid": 0.000886,
+     "ask": 0.000893,
+     "ats": 1793117878,
+     "old": 0,
+     "off": 0,
+     "rows": {
+      "b": 93,
+      "a": 500
+     },
+     "d10": {
+      "b": 65.68,
+      "a": 30.39
+     }
+    },
+    "gate": {
+     "bid": 0.0008953,
+     "ask": 0.0008976,
+     "ats": 1793117880,
+     "old": 0,
+     "off": 0,
+     "rows": {
+      "b": 67,
+      "a": 100
+     },
+     "d10": {
+      "b": 22.92,
+      "a": 37.05
+     }
+    },
+    "digifinex": {
+     "bid": 0.000894,
+     "ask": 0.000899,
+     "ats": 1793117880,
+     "old": 0,
+     "off": 0,
+     "rows": {
+      "b": 41,
+      "a": 43
+     },
+     "d10": {
+      "b": 10.81,
+      "a": 7.61
+     }
+    },
+    "coinw": {
+     "bid": 0.0008909,
+     "ask": 0.0009021,
+     "ats": 1793117880,
+     "old": 0,
+     "off": 0,
+     "rows": {
+      "b": 20,
+      "a": 20
+     },
+     "d10": {
+      "b": null,
+      "a": null
+     }
+    },
+    "mexc": {
+     "bid": 0.0008963,
+     "ask": 0.0009016,
+     "ats": 1793081382,
+     "old": "cors",
+     "off": 0,
+     "rows": {
+      "b": 125,
+      "a": 150
+     },
+     "d10": {
+      "b": 7.98,
+      "a": 5
+     }
+    },
+    "bingx": {
+     "bid": 0.0008991,
+     "ask": 0.0009026,
+     "ats": 1793081383,
+     "old": "cors",
+     "off": 0,
+     "rows": {
+      "b": 150,
+      "a": 150
+     },
+     "d10": {
+      "b": 9.35,
+      "a": 11.22
+     }
+    }
+   },
+   "btc": 80472,
+   "chart": {
+    "asof": "2026-10-27T16:00:00Z",
+    "chg": {
+     "1d": -1.6,
+     "7d": -2,
+     "30d": -10.6,
+     "90d": 46.8,
+     "1y": -47.4
+    }
+   }
+  },
+  "errs": [
+   "console Access to fetch at 'https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=60&since=1792513088' from origin 'https://allexst63.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.",
+   "failed https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=60&since=1792513088 net::ERR_FAILED",
+   "console Failed to load resource: net::ERR_FAILED",
+   "console Access to fetch at 'https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440&since=1761581888' from origin 'https://allexst63.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.",
+   "failed https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440&since=1761581888 net::ERR_FAILED",
+   "console Failed to load resource: net::ERR_FAILED"
+  ],
+  "reqs": [
+   "200 https://cdn.jsdelivr.net/npm/lightweight-charts@5.0.8/dist/lightweight-charts.standalone.production.js",
+   "200 https://api.exchange.coinbase.com/products/BTC-USD/ticker",
+   "200 https://www.dogdata.xyz/api/dog-rune/top-holders?limit=100",
+   "200 https://api.kraken.com/0/public/Depth?pair=DOGUSD&count=500",
+   "200 https://openapi.digifinex.com/v3/order_book?symbol=dog_usdt&limit=150",
+   "200 https://www.dogdata.xyz/api/health",
+   "200 https://www.dogdata.xyz/api/whale-alerts?threshold=5000000&limit=200",
+   "200 https://api.gateio.ws/api/v4/spot/tickers?currency_pair=DOG_USDT",
+   "200 https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=60&since=1792513080",
+   "200 https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0.00001&limit=100",
+   "200 https://api.coinw.com/api/v1/public?command=returnOrderBook&symbol=DOG(RUNE)_USDT&size=100",
+   "200 https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440&since=1761581880",
+   "200 https://api.exchange.coinbase.com/products/BTC-USD/ticker",
+   "200 https://www.dogdata.xyz/api/dog-rune/top-holders?limit=100",
+   "200 https://api.kraken.com/0/public/Depth?pair=DOGUSD&count=500",
+   "200 https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0.00001&limit=100",
+   "200 https://openapi.digifinex.com/v3/order_book?symbol=dog_usdt&limit=150",
+   "200 https://api.coinw.com/api/v1/public?command=returnOrderBook&symbol=DOG(RUNE)_USDT&size=100",
+   "200 https://api.gateio.ws/api/v4/spot/tickers?currency_pair=DOG_USDT",
+   "200 https://www.dogdata.xyz/api/health",
+   "200 https://www.dogdata.xyz/api/whale-alerts?threshold=5000000&limit=200",
+   "200 https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=60&since=1792513084",
+   "200 https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440&since=1761581885",
+   "200 https://cdn.jsdelivr.net/npm/lightweight-charts@5.0.8/dist/lightweight-charts.standalone.production.js",
+   "200 https://www.dogdata.xyz/api/dog-rune/top-holders?limit=100",
+   "200 https://api.exchange.coinbase.com/products/BTC-USD/ticker",
+   "200 https://api.kraken.com/0/public/Depth?pair=DOGUSD&count=500",
+   "200 https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0.00001&limit=100",
+   "200 https://openapi.digifinex.com/v3/order_book?symbol=dog_usdt&limit=150",
+   "200 https://api.gateio.ws/api/v4/spot/tickers?currency_pair=DOG_USDT",
+   "200 https://api.coinw.com/api/v1/public?command=returnOrderBook&symbol=DOG(RUNE)_USDT&size=100",
+   "200 https://www.dogdata.xyz/api/health",
+   "200 https://www.dogdata.xyz/api/whale-alerts?threshold=5000000&limit=200"
+  ]
+ },
+ {
+  "name": "desk_en",
+  "live": true,
+  "tLive": 1204,
+  "status": "Live 17:18, just now",
+  "bar": "Live data as of 17:18\n12 of 13 checks passed\nUpdate",
+  "again": true,
+  "sheet": "Data updated at 17:18\n13 of 14 checks passed · 1.0 s\nWhat changed since the morning report\n\ntoday at 07:10 → now\n\nPrice: $0.0008999 → $0.000894 (−0.7%)\n1M DOG: $899.9 → $894\nWithin 10% of the price, buyers 118.3M → 117.8M, sellers 88.0M → 90.9M DOG\nall exchanges combined\nKraken: buy order for 15.0M DOG moved from $757 to $753 per 1M\nKraken: new buy order for 13.1M DOG at $828 per 1M\nplus 9 smaller order changes — see Order book\n6.7M DOG arrived in exchange wallets\nBitget −10.7M · MEXC +8.9M · Kraken +8.3M\nLarge holders haven’t moved coins since the morning\nno non-exchange top-100 wallet changed by 5M+\nNo new transfers of 5M+ DOG since the morning\nHolders: 86,308 → 86,313 (+5)\nBitcoin: $79,798 → $80,472 (+0.8%)\nOpen the order book\nSelf-check\nKraken: order book received — 94 + 500 levels, 0.1 s\nGate: order book received — 67 + 100 levels, 0.2 s\nDigiFinex: order book received — 41 + 43 levels, 0.3 s\nCoinW: order book received — 20 + 20 levels, 0.3 s\nExchange prices agree: 0.6% spread\nKraken book matches the live price: 0.06% apart\nPrice is plausible: −0.7% vs. the morning report\nTop 100: 100 wallets, ranks 1–100, descending\nTop-100 share: 41.14% (morning: 41.14%) — consistent\nDOG DATA: 86,313 holders, snapshot 16:27 (50 min ago)\nTransfers of 5M+ in 24h: 1, DOG DATA as of 17:17\nBTC (Coinbase): $80,472, 17:18\nKraken chart: candles didn’t arrive — chart from the 07:10 report\nLoaded the 26 Oct 18:08 report for comparison\nMEXC and BingX: order books from the 07:10 report — these exchanges don’t answer requests from web pages\nVenues and volumes, coin age and average purchase price — from the 07:10 report (DOG DATA serves them to servers only)\nSources and response times\nMorning report checks — 23 of 23\nMorning publish self-check · 27 Oct 07:09\nUpdate again\nDone\n\nLive updates cover the Kraken, Gate, DigiFinex and CoinW order books, price and chart, the top 100 and exchange balances, holder count, 5M+ transfers and bitcoin. A full report with news is built every morning.",
+  "dm": {
+   "ts": "2026-10-27T16:18:12Z",
+   "upd": {
+    "n": 13,
+    "okN": 12,
+    "kept": [
+     "mexc",
+     "bingx"
+    ],
+    "dur": 1061,
+    "diff": [
+     "Price: $0.0008999 → $0.000893 (−0.8%)",
+     "Within 10% of the price, buyers 118.3M → 117.9M, sellers 88.0M → 89.3M DOG",
+     "Kraken: buy order for 15.0M DOG moved from $757 to $753 per 1M",
+     "Kraken: new buy order for 13.1M DOG at $828 per 1M",
+     "plus 9 smaller order changes — see Order book",
+     "6.7M DOG arrived in exchange wallets",
+     "Large holders haven’t moved coins since the morning",
+     "No new transfers of 5M+ DOG since the morning",
+     "Holders: 86,308 → 86,313 (+5)",
+     "Bitcoin: $79,798 → $80,472 (+0.8%)"
+    ]
+   },
+   "checks": [
+    {
+     "ok": true,
+     "t": "Kraken: order book received — 92 + 500 levels, 0.2 s"
+    },
+    {
+     "ok": true,
+     "t": "Gate: order book received — 67 + 100 levels, 0.5 s"
+    },
+    {
+     "ok": true,
+     "t": "DigiFinex: order book received — 41 + 43 levels, 0.3 s"
+    },
+    {
+     "ok": true,
+     "t": "CoinW: order book received — 20 + 20 levels, 0.3 s"
+    },
+    {
+     "ok": true,
+     "t": "Exchange prices agree: 0.8% spread"
+    },
+    {
+     "ok": true,
+     "t": "Price is plausible: −0.8% vs. the morning report"
+    },
+    {
+     "ok": false,
+     "t": "Kraken chart: some candles didn’t arrive — the rest is from the report"
+    },
+    {
+     "ok": true,
+     "t": "Top 100: 100 wallets, ranks 1–100, descending"
+    },
+    {
+     "ok": true,
+     "t": "Top-100 share: 41.14% (morning: 41.14%) — consistent"
+    },
+    {
+     "ok": true,
+     "t": "DOG DATA: 86,313 holders, snapshot 16:27 (50 min ago)"
+    },
+    {
+     "ok": true,
+     "t": "Transfers of 5M+ in 24h: 1, DOG DATA as of 17:17"
+    },
+    {
+     "ok": true,
+     "t": "BTC (Coinbase): $80,472, 17:18"
+    },
+    {
+     "ok": true,
+     "t": "Loaded the 26 Oct 18:08 report for comparison"
+    }
+   ],
+   "price": {
+    "mid": 0.000892975,
+    "cap": 89.3,
+    "chg24": -1.6,
+    "vol24": 466602,
+    "dogdata": 0.000897,
+    "cov": 68
+   },
+   "totals": {
+    "d5": {
+     "b": 63.64,
+     "a": 34.53,
+     "n": 5
+    },
+    "d10": {
+     "b": 117.91,
+     "a": 89.27,
+     "n": 5
+    },
+    "d25": {
+     "b": 262.34,
+     "a": 125.05,
+     "n": 4
+    }
+   },
+   "holders": 86313,
+   "top100pct": 41.142,
+   "exch": {
+    "bal": 23274.43,
+    "d": -14.85
+   },
+   "flows": {
+    "count": 1,
+    "toExch": 0,
+    "fromExch": 7.18
+   },
+   "books": {
+    "kraken": {
+     "bid": 0.000886,
+     "ask": 0.000893,
+     "ats": 1793117888,
+     "old": 0,
+     "off": 0,
+     "rows": {
+      "b": 92,
+      "a": 500
+     },
+     "d10": {
+      "b": 66.87,
+      "a": 28.37
+     }
+    },
+    "gate": {
+     "bid": 0.0008953,
+     "ask": 0.0008976,
+     "ats": 1793117880,
+     "old": 0,
+     "off": 0,
+     "rows": {
+      "b": 67,
+      "a": 100
+     },
+     "d10": {
+      "b": 22.92,
+      "a": 37.05
+     }
+    },
+    "digifinex": {
+     "bid": 0.000894,
+     "ask": 0.000899,
+     "ats": 1793117891,
+     "old": 0,
+     "off": 0,
+     "rows": {
+      "b": 41,
+      "a": 43
+     },
+     "d10": {
+      "b": 10.79,
+      "a": 7.63
+     }
+    },
+    "coinw": {
+     "bid": 0.0008909,
+     "ask": 0.0009021,
+     "ats": 1793117891,
+     "old": 0,
+     "off": 0,
+     "rows": {
+      "b": 20,
+      "a": 20
+     },
+     "d10": {
+      "b": null,
+      "a": null
+     }
+    },
+    "mexc": {
+     "bid": 0.0008963,
+     "ask": 0.0009016,
+     "ats": 1793081382,
+     "old": "cors",
+     "off": 0,
+     "rows": {
+      "b": 125,
+      "a": 150
+     },
+     "d10": {
+      "b": 7.98,
+      "a": 5
+     }
+    },
+    "bingx": {
+     "bid": 0.0008991,
+     "ask": 0.0009026,
+     "ats": 1793081383,
+     "old": "cors",
+     "off": 0,
+     "rows": {
+      "b": 150,
+      "a": 150
+     },
+     "d10": {
+      "b": 9.35,
+      "a": 11.22
+     }
+    }
+   },
+   "btc": 80472,
+   "chart": {
+    "asof": "2026-10-27T16:00:00Z",
+    "chg": {
+     "1d": -1.6,
+     "7d": -2,
+     "30d": -10.6,
+     "90d": 46.8,
+     "1y": -47.4
+    }
+   }
+  },
+  "errs": [
+   "console Access to fetch at 'https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440&since=1761581892' from origin 'https://allexst63.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.",
+   "failed https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440&since=1761581892 net::ERR_FAILED",
+   "console Failed to load resource: net::ERR_FAILED",
+   "console Access to fetch at 'https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=60&since=1792513096' from origin 'https://allexst63.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.",
+   "failed https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=60&since=1792513096 net::ERR_FAILED",
+   "console Failed to load resource: net::ERR_FAILED",
+   "console Access to fetch at 'https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440&since=1761581896' from origin 'https://allexst63.github.io' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.",
+   "failed https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440&since=1761581896 net::ERR_FAILED",
+   "console Failed to load resource: net::ERR_FAILED"
+  ],
+  "reqs": [
+   "200 https://cdn.jsdelivr.net/npm/lightweight-charts@5.0.8/dist/lightweight-charts.standalone.production.js",
+   "200 https://api.exchange.coinbase.com/products/BTC-USD/ticker",
+   "200 https://www.dogdata.xyz/api/dog-rune/top-holders?limit=100",
+   "200 https://api.kraken.com/0/public/Depth?pair=DOGUSD&count=500",
+   "200 https://api.coinw.com/api/v1/public?command=returnOrderBook&symbol=DOG(RUNE)_USDT&size=100",
+   "200 https://openapi.digifinex.com/v3/order_book?symbol=dog_usdt&limit=150",
+   "200 https://www.dogdata.xyz/api/health",
+   "200 https://www.dogdata.xyz/api/whale-alerts?threshold=5000000&limit=200",
+   "200 https://api.gateio.ws/api/v4/spot/tickers?currency_pair=DOG_USDT",
+   "200 https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0.00001&limit=100",
+   "200 https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=60&since=1792513092",
+   "200 https://www.dogdata.xyz/api/dog-rune/top-holders?limit=100",
+   "200 https://api.exchange.coinbase.com/products/BTC-USD/ticker",
+   "200 https://api.kraken.com/0/public/Depth?pair=DOGUSD&count=500",
+   "200 https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0.00001&limit=100",
+   "200 https://api.coinw.com/api/v1/public?command=returnOrderBook&symbol=DOG(RUNE)_USDT&size=100",
+   "200 https://api.gateio.ws/api/v4/spot/tickers?currency_pair=DOG_USDT",
+   "200 https://www.dogdata.xyz/api/health",
+   "200 https://openapi.digifinex.com/v3/order_book?symbol=dog_usdt&limit=150",
+   "200 https://www.dogdata.xyz/api/whale-alerts?threshold=5000000&limit=200"
+  ]
+ }
+]
