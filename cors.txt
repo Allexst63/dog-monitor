@@ -1,20 +1,0 @@
-200 | NO-ACAO |  | content-type: application/json | 1844B | https://www.dogdata.xyz/api/address/bitcoin/bc1plzs2lltvv29k603w5m0aqma5e8w0n3pc77dt89l5w9hurmdfgd0swdhspn?limit=1
-{"address":"bc1plzs2lltvv29k603w5m0aqma5e8w0n3pc77dt89l5w9hurmdfgd0swdhspn","status":"holder","holder":{"rank":1,"total_dog":13705483526.24906,"total_amount":13
-200 | NO-ACAO |  | content-type: application/json | 537B | https://www.dogdata.xyz/api/airdrop/summary
-{"total_recipients":75497,"still_holding":26744,"sold_everything":48753,"retention_rate":35.4239,"total_current_balance":29873924242.261055,"recipients_with_mul
-200 | NO-ACAO |  | content-type: application/json | 1109B | https://www.dogdata.xyz/api/multichain/stats
-{"total_holders":13084,"total_market_cap_usd":87608892.68303242,"total_volume_24h_usd":11255.808807237716,"total_supply_all_chains":31099847,"chains":[{"chain":
-200 | NO-ACAO |  | content-type: application/json | 8202B | https://www.dogdata.xyz/api/dog-rune/holders?page=2&limit=25
-{"data":[{"rank":26,"address":"bc1pzfc47vp69p88wj7fx3a0n30hxhhvkfck3zz63eg53n8ur9wxrstssed4f0","total_amount":20069204689979,"total_dog":200692046.89979,"utxo_c
-404 | NO-ACAO |  | content-type: text/html | 552B | https://www.mexc.com/open/api/v2/market/depth?symbol=DOG_USDT&depth=20
-<html> <head><title>404 Not Found</title></head> <body> <center><h1>404 Not Found</h1></center> <hr><center>openresty</center> </body> </html> <!-- a pad
-200 | NO-ACAO |  | content-type: application/json | 107B | https://api.mexc.com/api/v3/ticker/bookTicker?symbol=DOGUSDT
-{"symbol":"DOGUSDT","bidPrice":"0.0008918","bidQty":"261882.20","askPrice":"0.0008948","askQty":"31764.67"}
-403 | NO-ACAO |  | content-type: text/html | 444B | https://www.mexc.com/api/platform/spot/market-v2/web/symbol/ticker?symbol=DOG_USDT
-<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1>   You don't have permission to access "http&#58;&#47;&#47;www&#46;mexc&#46;com&#4
-403 | NO-ACAO |  |  | 0B | https://open-api.bingx.com/openApi/spot/v1/ticker/24hr?symbol=DOG-USDT
-
-200 | access-control-allow-origin: https://allexst63.github.io |  | content-type: application/json | 399B | https://api.kraken.com/0/public/Trades?pair=DOGUSD&count=5
-{"error":[],"result":{"DOGUSD":[["0.000887000","10020.19800",1793114790.4903615,"s","l","",865610],["0.000887000","52733.97221",1793114861.9475288,"s","l","",86
-200 | access-control-allow-origin: * |  | content-type: application/json | 532B | https://api.gateio.ws/api/v4/spot/candlesticks?currency_pair=DOG_USDT&interval=1d&limit=5
-[["1792713600","67102.25300280","0.0009094","0.0009511","0.000903","0.0009197","72514471.00000000","true"],["1792800000","132296.62599840","0.0008978","0.000972

@@ -14,16 +14,11 @@ jobs:
         run: |
           O="https://allexst63.github.io"
           urls=(
-            "https://www.dogdata.xyz/api/address/bitcoin/bc1plzs2lltvv29k603w5m0aqma5e8w0n3pc77dt89l5w9hurmdfgd0swdhspn?limit=1"
-            "https://www.dogdata.xyz/api/airdrop/summary"
-            "https://www.dogdata.xyz/api/multichain/stats"
-            "https://www.dogdata.xyz/api/dog-rune/holders?page=2&limit=25"
-            "https://www.mexc.com/open/api/v2/market/depth?symbol=DOG_USDT&depth=20"
-            "https://api.mexc.com/api/v3/ticker/bookTicker?symbol=DOGUSDT"
-            "https://www.mexc.com/api/platform/spot/market-v2/web/symbol/ticker?symbol=DOG_USDT"
-            "https://open-api.bingx.com/openApi/spot/v1/ticker/24hr?symbol=DOG-USDT"
-            "https://api.kraken.com/0/public/Trades?pair=DOGUSD&count=5"
-            "https://api.gateio.ws/api/v4/spot/candlesticks?currency_pair=DOG_USDT&interval=1d&limit=5"
+            "https://api.hiro.so/runes/v1/etchings/840000:3"
+            "https://api.hiro.so/runes/v1/etchings/840000:3/holders?limit=60&offset=0"
+            "https://api.hiro.so/runes/v1/etchings/840000:3/holders/bc1plzs2lltvv29k603w5m0aqma5e8w0n3pc77dt89l5w9hurmdfgd0swdhspn"
+            "https://api.hiro.so/runes/v1/etchings/840000:3/activity?limit=5"
+            "https://api.hiro.so/runes/v1/addresses/bc1plzs2lltvv29k603w5m0aqma5e8w0n3pc77dt89l5w9hurmdfgd0swdhspn/balances"
           )
           : > cors.txt
           for u in "${urls[@]}"; do
@@ -33,7 +28,7 @@ jobs:
             ct=$(grep -i '^content-type' h.txt | tr -d '\r' | head -1)
             size=$(wc -c < b.txt)
             echo "$code | ${acao:-NO-ACAO} | ${acac} | ${ct} | ${size}B | $u" >> cors.txt
-            head -c 160 b.txt | tr '\n' ' ' >> cors.txt; echo >> cors.txt
+            head -c 700 b.txt | tr '\n' ' ' >> cors.txt; echo >> cors.txt
           done
           # preflight-free GET is enough for fetch() without custom headers
           cat cors.txt
