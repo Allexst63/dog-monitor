@@ -1,0 +1,52 @@
+name: CORS check (temporary)
+on:
+  push:
+    branches: [cors-check]
+permissions:
+  contents: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check CORS headers of public APIs
+        run: |
+          O="https://allexst63.github.io"
+          urls=(
+            "https://api.kraken.com/0/public/Depth?pair=DOGUSD&count=10"
+            "https://api.kraken.com/0/public/Ticker?pair=XBTUSD,DOGUSD"
+            "https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440"
+            "https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0.00001&limit=10"
+            "https://api.gateio.ws/api/v4/spot/tickers?currency_pair=DOG_USDT"
+            "https://api.gate.io/api/v4/spot/order_book?currency_pair=DOG_USDT&limit=10"
+            "https://api.mexc.com/api/v3/depth?symbol=DOGUSDT&limit=10"
+            "https://open-api.bingx.com/openApi/spot/v1/market/depth?symbol=DOG-USDT&limit=10"
+            "https://openapi.digifinex.com/v3/order_book?symbol=dog_usdt&limit=10"
+            "https://api.coinw.com/api/v1/public?command=returnOrderBook&symbol=DOG(RUNE)_USDT&size=10"
+            "https://api.exchange.coinbase.com/products/BTC-USD/ticker"
+            "https://www.dogdata.xyz/api/dog-rune/stats"
+            "https://www.dogdata.xyz/api/dog-rune/holders?page=1&limit=25"
+            "https://www.dogdata.xyz/api/whale-alerts?threshold=5000000&limit=20"
+            "https://www.dogdata.xyz/api/markets"
+            "https://www.dogdata.xyz/api/metrics/holder-concentration"
+            "https://www.dogdata.xyz/api/metrics/utxo-age"
+            "https://dogdata.xyz/api/dog-rune/stats"
+          )
+          : > cors.txt
+          for u in "${urls[@]}"; do
+            code=$(curl -s -m 25 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/126 Safari/537.36" -D h.txt -o b.txt -w '%{http_code}' -H "Origin: $O" "$u" || echo ERR)
+            acao=$(grep -i '^access-control-allow-origin' h.txt | tr -d '\r' | head -1)
+            acac=$(grep -i '^access-control-allow-credentials' h.txt | tr -d '\r' | head -1)
+            ct=$(grep -i '^content-type' h.txt | tr -d '\r' | head -1)
+            size=$(wc -c < b.txt)
+            echo "$code | ${acao:-NO-ACAO} | ${acac} | ${ct} | ${size}B | $u" >> cors.txt
+            head -c 160 b.txt | tr '\n' ' ' >> cors.txt; echo >> cors.txt
+          done
+          # preflight-free GET is enough for fetch() without custom headers
+          cat cors.txt
+      - name: Save results to branch
+        run: |
+          git config user.name "DOG Monitor bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cors.txt && git commit -m "CORS results" && git push origin HEAD:cors-check
