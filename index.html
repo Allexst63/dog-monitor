@@ -635,6 +635,54 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
 .site-foot{margin-top:30px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;line-height:1.55;color:var(--ink-3);display:flex;flex-direction:column;gap:6px;max-width:80ch}
 .site-foot b{color:var(--ink-2);font-weight:600}
 .site-foot a{color:var(--ink-2);text-decoration:underline;text-decoration-color:var(--line)}
+/* обновление сейчас */
+@keyframes spin{to{transform:rotate(360deg)}}
+.ico.spin{animation:spin .9s linear infinite}
+.status.run .dot{background:var(--accent);animation:livePulse 1.2s ease-in-out infinite}
+.btn[disabled]{opacity:.65;cursor:default;filter:none}
+.updbar{display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:18px;padding:8px 8px 8px 14px;min-width:0}
+.updbar .ub-info{display:flex;align-items:center;gap:11px;min-width:0;flex:1;border:0;background:transparent;padding:3px 0;text-align:left;cursor:pointer;color:inherit;border-radius:10px}
+.ub-dot{width:9px;height:9px;border-radius:50%;background:var(--ink-3);flex:none;box-shadow:0 0 0 4px color-mix(in srgb,var(--ink-3) 16%,transparent)}
+.updbar.ok .ub-dot{background:var(--bid);box-shadow:0 0 0 4px var(--bid-soft)}
+.updbar.warn .ub-dot{background:var(--warn);box-shadow:0 0 0 4px var(--warn-soft)}
+.updbar.run .ub-dot{background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft);animation:livePulse 1.2s ease-in-out infinite}
+.ub-t{display:flex;flex-direction:column;min-width:0;line-height:1.35}
+.ub-t b{font-size:14px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ub-t span{font-size:12.5px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ub-btn{flex:none;background:var(--accent-soft);color:var(--accent-ink)}
+.ub-btn .ico{width:17px;height:17px}
+.updsheet{display:flex;flex-direction:column;gap:16px}
+.upd-head{display:grid;grid-template-columns:46px minmax(0,1fr);gap:12px;align-items:center;background:var(--surface-2);border-radius:18px;padding:12px 14px}
+.upd-head .uh-ic{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--surface-3);color:var(--ink-2)}
+.upd-head.ok .uh-ic{background:var(--ok-soft);color:var(--up)}
+.upd-head.warn .uh-ic{background:var(--warn-soft);color:var(--warn)}
+.upd-head.run .uh-ic{background:var(--accent-soft);color:var(--accent-ink)}
+.upd-head .uh-ic .ico{width:22px;height:22px}
+.upd-head b{display:block;font-size:16px;font-weight:600;line-height:1.3}
+.upd-head span{display:block;font-size:13px;color:var(--ink-2);margin-top:2px}
+.upd-sec{display:flex;flex-direction:column;gap:6px}
+.upd-sec h3{font-size:16px}
+.upd-sec .events{margin-top:0}
+.srcl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.srcl li{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 0;font-size:14px}
+.srcl li + li{border-top:1px solid var(--line-2)}
+.srcl .st{width:22px;height:22px;display:grid;place-items:center;color:var(--ink-3)}
+.srcl .st .ico{width:18px;height:18px}
+.srcl .st.ok{color:var(--up)} .srcl .st.bad{color:var(--warn)}
+.srcl b{font-weight:600}
+.srcl small{display:block;color:var(--ink-3);font-size:12.5px;line-height:1.35}
+.srcl .v{font-size:12.5px;color:var(--ink-3);white-space:nowrap;font-variant-numeric:tabular-nums}
+.spinner{width:16px;height:16px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--accent);animation:spin .8s linear infinite;display:block}
+details.upd-more{border-top:1px solid var(--line-2);padding-top:10px}
+details.upd-more summary{cursor:pointer;font-weight:600;font-size:14.5px;color:var(--ink-2);padding:2px 0;list-style-position:outside}
+details.upd-more[open] summary{margin-bottom:8px}
+.list .info{color:var(--ink-3)}
+.row .av.acc{background:var(--accent-soft);color:var(--accent-ink)}
+.rail .rail-foot .btn{align-self:flex-start}
+.oldnote{font-size:12.5px;color:var(--ink-3);display:flex;gap:6px;align-items:flex-start}
+.oldnote .ico{width:15px;height:15px;margin-top:2px}
+.tag.old{background:var(--surface-3);color:var(--ink-3)}
+@media (prefers-reduced-motion: reduce){.ico.spin,.spinner{animation:none!important}}
 </style>
 </head>
 <body>
@@ -649,8 +697,8 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
     <header class="topbar">
       <div class="brand"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#131B41"/><circle cx="16" cy="16" r="10" fill="#F7B34F"/><circle cx="20.5" cy="13" r="9" fill="#131B41"/></svg><b class="brandname">DOG Monitor</b></div>
       <h1 class="sect" id="sect">Home</h1>
-      <button type="button" class="status" id="status" aria-label="Data status"><span class="dot"></span><span id="status-t">Connecting…</span></button>
-      <button type="button" class="iconbtn menu" id="menu" aria-label="More: language, history, guide, data checks"><svg class="ico" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01" stroke-width="3"/></svg></button>
+      <button type="button" class="status" id="status" aria-label="Data status and update"><span class="dot"></span><span id="status-t">Connecting…</span></button>
+      <button type="button" class="iconbtn menu" id="menu" aria-label="More: update, language, history, guide, data checks"><svg class="ico" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01" stroke-width="3"/></svg></button>
     </header>
     <div class="content">
       <div class="archive" id="archive" hidden><span id="archive-text"></span><button type="button" id="archive-back">Back to current data</button></div>
@@ -715,7 +763,17 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
   const MLN = EN ? 'M' : '\u00a0млн', MLRD = EN ? 'B' : '\u00a0млрд';
   // множественное число: P(k, 'кошелёк', 'кошелька', 'кошельков', 'wallet', 'wallets')
   const P = (k, o, f, m, e1, e2) => EN ? (Math.abs(k) === 1 ? e1 : e2) : plural(k, o, f, m);
-  function setLang(l) { try { sessionStorage.setItem('dogmon.lang', l); } catch (e) { } try { const u = new URL(location.href); u.searchParams.delete('lang'); location.replace(u.toString()); } catch (e) { location.reload(); } }
+  // смена языка: страница всегда перезагружается (раньше при адресе с #вкладкой location.replace менял только якорь — кнопка «не работала»)
+  function setLang(l) {
+    let kept = false;
+    try { sessionStorage.setItem('dogmon.lang', l); kept = sessionStorage.getItem('dogmon.lang') === l; } catch (e) { }
+    try {
+      const u = new URL(location.href);
+      if (kept) u.searchParams.delete('lang'); else u.searchParams.set('lang', l);   // без sessionStorage язык держится в адресе
+      history.replaceState(null, '', u.pathname + u.search + u.hash);
+    } catch (e) { }
+    location.reload();
+  }
   document.documentElement.lang = LANG;
   if (RU) {
     try {
@@ -723,8 +781,8 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
       document.querySelectorAll('.brandname').forEach(b => { b.textContent = 'DOG Монитор'; });
       const set = (sel, prop, v) => { const el = document.querySelector(sel); if (el) el[prop] = v; };
       set('#status-t', 'textContent', 'Подключаюсь…');
-      set('#status', 'ariaLabel', 'Состояние данных');
-      set('#menu', 'ariaLabel', 'Ещё: язык, история, справка, проверка данных');
+      set('#status', 'ariaLabel', 'Состояние данных и обновление');
+      set('#menu', 'ariaLabel', 'Ещё: обновление, язык, история, справка, проверка данных');
       set('#archive-back', 'textContent', 'К текущим данным');
       set('#p-overview .empty', 'textContent', 'Загружаю данные…');
       set('#story-hint-t', 'textContent', 'Смахните вверх, чтобы закрыть');
@@ -744,7 +802,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
   const NEWS_NAME = EN
     ? { 'листинг': 'Listing', 'делистинг': 'Delisting', 'X': 'Post on X', 'исследование': 'Research', 'проект': 'Project', 'новость': 'News' }
     : { 'листинг': 'Листинг', 'делистинг': 'Делистинг', 'X': 'Пост в X', 'исследование': 'Исследование', 'проект': 'Проект', 'новость': 'Новость' };
-  const TYP_EN = { 'на биржу': 'to an exchange', 'с биржи': 'from an exchange', 'между кошельками': 'between wallets' };
+  const TYP_EN = { 'на биржу': 'to an exchange', 'с биржи': 'from an exchange', 'между кошельками': 'between wallets', 'между биржами': 'between exchanges' };
   const typTr = t => EN ? (TYP_EN[t] || t) : t;
   const nTitle = it => EN ? (it.title_en || it.title) : it.title;
   const nSum = it => EN ? (it.title_en ? (it.sum_en || '') : (it.sum_en || it.sum || '')) : it.sum;
@@ -789,6 +847,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
     info: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zm0-10.5V16m0-8.5h.01',
     building: 'M4 21h16M6 21V5.5A1.5 1.5 0 0 1 7.5 4h9A1.5 1.5 0 0 1 18 5.5V21M9.5 8h1m3 0h1m-5 4h1m3 0h1m-5 4h1m3 0h1',
     x: 'M5 4l14 16M19 4 5 20',
+    refresh: 'M20.5 12a8.5 8.5 0 1 1-8.5-8.5c2.38 0 4.66.95 6.37 2.6L20.5 8M20.5 3.5V8H16',
     globe: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM3.5 9h17M3.5 15h17M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z'
   };
   const ico = (k, cls = '') => `<svg class="ico ${cls}" viewBox="0 0 24 24" aria-hidden="true"><path d="${ICON[k] || ''}"/></svg>`;
@@ -959,6 +1018,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
     return /[А-Яа-яЁё]/.test(s) ? '' : s;
   }
   const CHK_EN = [
+    [/BTC (\d{1,3}(?: \d{3})+|\d+)\$/g, (m, x) => 'BTC $' + x.replace(/ /g, ',')],
     [/^dogdata: /, 'DOG DATA: '], [/статистика/g, 'stats'], [/топ-10 из статистики — (\d+) строк[а-я]*/g, 'top 10 from stats — $1 rows'],
     [/топ-100: (\d+) строк[а-я]*, места 1–100, по убыванию/g, 'top 100: $1 rows, ranks 1–100, descending'], [/топ-10 совпадает в двух источниках/g, 'top 10 matches in two sources'],
     [/доли топ-10\/топ-100 сходятся с концентрацией \(±([\d.]+) п\.п\.\)/g, 'top-10/top-100 shares match concentration (±$1 pp)'], [/концентрация/g, 'concentration'],
@@ -1060,14 +1120,26 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
     const el = $('#status'), t = $('#status-t');
     const s = S.cur;
     if (!S.db) return;
-    if (!s) { el.className = 'status warn'; t.innerHTML = T('Данных пока нет', 'No data yet'); return; }
-    const d = toDate(s.ts), h = d ? (Date.now() - d.getTime()) / 36e5 : null;
-    let c = 'status ok';
-    if ((h != null && h > 26) || s.fresh === false) c = 'status warn';
-    el.className = c;
-    t.innerHTML = `${T('Сводка', 'Updated')} ${esc(tl(s.ts))}<span class="long">, ${esc(sameDay(d, new Date()) ? ago(s.ts) : dml(s.ts))}${s.fresh === false ? T(', часть данных устарела', ', some data is stale') : ''}</span>`;
     const rf = $('#railfoot');
-    if (rf) rf.innerHTML = `<span>${esc(KIND_TITLE[s.kind] || T('Сводка', 'Report'))} — ${esc(when(s.ts))}.</span><span>${T('Полная сводка собирается каждое утро, внеочередная — по запросу.', 'A full report is built every morning, extra ones on request.')}</span>${langSwitch()}`;
+    if (!s) {
+      el.className = 'status ' + (UP.run ? 'run' : 'warn');
+      t.innerHTML = UP.run ? T('Обновляю…', 'Updating…') : T('Данных пока нет', 'No data yet');
+      return;
+    }
+    const u = s.upd;
+    if (UP.run) {
+      el.className = 'status run';
+      t.innerHTML = `${T('Обновляю…', 'Updating…')}<span class="long"> ${T('стаканы, топ-100, переводы', 'order books, top 100, transfers')}</span>`;
+    } else if (u) {
+      const age = (Date.now() - (toDate(u.ts) || new Date()).getTime()) / 6e4;
+      el.className = 'status ' + (u.okN === u.n && age < 60 ? 'ok' : 'warn');
+      t.innerHTML = `${T('Онлайн', 'Live')} ${esc(tl(u.ts))}<span class="long">, ${esc(ago(u.ts))}</span>`;
+    } else {
+      const d = toDate(s.ts), h = d ? (Date.now() - d.getTime()) / 36e5 : null;
+      el.className = (h != null && h > 26) || s.fresh === false ? 'status warn' : 'status ok';
+      t.innerHTML = `${T('Сводка', 'Updated')} ${esc(tl(s.ts))}<span class="long">, ${esc(sameDay(d, new Date()) ? ago(s.ts) : dml(s.ts))}${s.fresh === false ? T(', часть данных устарела', ', some data is stale') : ''}</span>`;
+    }
+    if (rf) rf.innerHTML = `<span>${u ? T('Онлайн-данные', 'Live data') + ' — ' + esc(when(u.ts)) : esc(KIND_TITLE[s.kind] || T('Сводка', 'Report')) + ' — ' + esc(when(s.ts))}.</span><span>${T('Свежие стаканы, топ-100 и переводы подтягиваются при открытии сайта и по кнопке; полная сводка с новостями — каждое утро.', 'Fresh order books, the top 100 and transfers load when the site opens and on demand; a full report with news is built every morning.')}</span><button type="button" class="btn sm" data-upd ${UP.run ? 'disabled' : ''}>${ico('refresh', UP.run ? 'spin' : '')}<span>${T('Обновить сейчас', 'Update now')}</span></button>${langSwitch()}`;
   }
 
   // ---------- лист снизу ----------
@@ -1541,9 +1613,73 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
     return out;
   }
   const isExK = k => k === 'exchange' || k === 'custody';
+  // то же по-русски — для онлайн-обновления (утренний текст сводки пишет tools/daily.py)
+  const ruWho = (nm, k, r) => k === 'private' ? 'холдер' + (r ? ' №' + r : '') : (k === 'unknown' || !KIND_NAME[k] ? 'крупный холдер' + (r ? ' №' + r : '') : ownName(nm, k));
+  function alertsRu(s) {
+    const out = [], pr = s.price || {}, mid = pr.mid, c24 = pr.chg24;
+    if (c24 != null && Math.abs(c24) >= 7) out.push(`цена за сутки ${sg(c24, 1)}%`);
+    if (!s.prevId) return out;
+    const t = toDate(s.ts), pt = toDate(s.prevTs), longGap = !!(t && pt && t - pt > 30 * 36e5);
+    const dist = p => { if (!mid) return ''; const d = (p / mid - 1) * 100; return Math.abs(d) < 0.5 ? ', у самой цены' : ` (${sg(d, 0)}% от цены)`; };
+    let k = 0;
+    for (const w of s.wallsDelta || []) {
+      const q0 = +w.q0 || 0, q1 = +w.q1 || 0, p = +w.p;
+      if (Math.max(q0, q1) < 20 || (mid && Math.abs(p / mid - 1) > 0.3)) continue;
+      if ((w.k === 'выросла' || w.k === 'уменьшилась') && Math.abs(q1 - q0) < 10) continue;
+      const ex = EXN[w.x] || w.x, sd = w.s === 'b' ? 'покупку' : 'продажу';
+      if (w.k === 'новая') out.push(`${ex}: новая заявка на ${sd} ${mdog(q1)} DOG по ${m1s(p)} за 1 млн${dist(p)}`);
+      else if (w.k === 'снята') out.push(`${ex}: снята заявка на ${sd} ${mdog(q0)} DOG по ${m1s(p)} за 1 млн`);
+      else if (w.k === 'переставлена') out.push(`${ex}: заявку на ${sd} ${mdog(q1)} DOG переставили с ${m1s(+w.p0 || p)} на ${m1s(p)} за 1 млн${dist(p)}`);
+      else out.push(`${ex}: заявка на ${sd} по ${m1s(p)} за 1 млн ${q1 > q0 ? 'выросла' : 'уменьшилась'}: ${n(q0, 1)} → ${mdog(q1)} DOG`);
+      if (++k >= 4) break;
+    }
+    const fl = s.flows || {}, byf = {}, done = new Set();
+    for (const g of fl.byEx || []) byf[g.n] = g;
+    for (const g of (s.exch || {}).by || []) {
+      const d = g.d; if (d == null || Math.abs(d) < 20) continue;
+      const fx = byf[g.n] || {}, day = (d > 0 ? fx.in : fx.out) || 0;
+      const extra = longGap && day >= 5 ? ` (за последние сутки — ${mdog(day)})` : '';
+      out.push(d > 0 ? `${g.n}: на биржу пришло ${mdog(d)} DOG${extra}` : `${g.n}: с биржи ушло ${mdog(-d)} DOG${extra}`);
+      done.add(g.n);
+    }
+    for (const [nm, fx] of Object.entries(byf)) {
+      if (done.has(nm)) continue;
+      if ((fx.in || 0) >= 20) out.push(`${nm}: на биржу за сутки пришло ${mdog(fx.in)} DOG`);
+      if ((fx.out || 0) >= 20) out.push(`${nm}: с биржи за сутки ушло ${mdog(fx.out)} DOG`);
+    }
+    k = 0;
+    for (const b of fl.big || []) {
+      if (b.typ === 'между кошельками' && (b.q || 0) >= 20) { out.push(`перевод ${mdog(b.q)} DOG: ${ruWho(b.fn, b.fk, b.fr)} → ${ruWho(b.tn, b.tk, b.tr)}`); if (++k >= 2) break; }
+    }
+    const mv = s.movers || {}, bal = {};
+    for (const x of s.top100 || []) bal[x.a] = x.b;
+    k = 0;
+    for (const x of (mv.up || []).concat(mv.down || []).sort((a, b) => Math.abs(b.d || 0) - Math.abs(a.d || 0))) {
+      if (isExK(x.k) || x.d == null || Math.abs(x.d) < 20) continue;
+      out.push(`${ruWho(x.n, x.k, x.r)} ${x.d > 0 ? 'набрал' : 'сбросил'} ${mdog(Math.abs(x.d))} DOG${bal[x.a] ? `, теперь ${mdog(bal[x.a])}` : ''}`);
+      if (++k >= 3) break;
+    }
+    if ((mv.new || []).length) out.push(`новые в топ-100: ${mv.new.slice(0, 3).map(x => `№${x.r} (${mdog(x.b)})`).join(', ')}${mv.new.length > 3 ? ` и ещё ${mv.new.length - 3}` : ''}`);
+    if ((mv.out || []).length) out.push(`вышли из топ-100: ${mv.out.filter(x => x.r0).slice(0, 3).map(x => `было №${x.r0} (${mdog(x.b0)})`).join(', ')}`);
+    return out;
+  }
+  function briefRu(s) {
+    const pr = s.price || {}, ch = ((s.chart || {}).chg) || {}, parts = [];
+    const pc = x => x == null ? null : (Math.abs(x) < 0.5 ? 'почти без изменений' : sg(x, 1) + '%');
+    if (pr.mid) {
+      const bits = [pr.chg24 != null ? `за сутки ${pc(pr.chg24)}` : null, ch['7d'] != null ? `за неделю ${pc(ch['7d'])}` : null].filter(Boolean);
+      parts.push(`Цена DOG — около ${fpd(pr.mid)} (1 млн DOG ≈ ${m1s(pr.mid)})${bits.length ? ': ' + bits.join(', ') : ''}.`);
+    }
+    const ex = s.exch || {};
+    if (ex.bal) parts.push(`На кошельках бирж лежит ${mdog(ex.bal)} DOG.`);
+    const al = alertsRu(s);
+    if (al.length) parts.push('Главное за сутки: ' + al.slice(0, 3).join('; ') + '.');
+    else if (s.prevId) parts.push('Крупных изменений за сутки не было: заявки в стаканах, балансы бирж и переводы — без сдвигов от 20 млн DOG.');
+    return parts.join(' ');
+  }
   function briefOf(s) {
     if (!s) return '';
-    if (RU) return s.brief || '';
+    if (RU) return s.upd ? briefRu(s) : (s.brief || '');
     const pr = s.price || {}, ch = ((s.chart || {}).chg) || {}, parts = [];
     const pc = x => x == null ? null : (Math.abs(x) < 0.5 ? 'barely changed' : sg(x, 1) + '%');
     if (pr.mid) {
@@ -1574,7 +1710,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
     for (const t of sentences) { if (chunks.length && (chunks[chunks.length - 1] + ' ' + t).length < 190) chunks[chunks.length - 1] += ' ' + t; else chunks.push(t); }
     chunks.slice(0, 3).forEach(c => sl.push(`<div class="stext">${esc(c)}</div>`));
     const ch = s.checks || [], ok = ch.filter(c => c.ok).length;
-    sl.push(`<div class="ssmall">${T('Перед публикацией сводка проверяет сама себя', 'Before publishing, the report checks itself')}</div><div class="sbig">${ok} ${T('из', 'of')} ${ch.length}</div><div class="stext">${ok === ch.length ? T('проверок пройдено — данные свежие и сходятся между источниками', 'checks passed — data is fresh and sources agree') : T('проверок пройдено — подробности в «Проверке данных»', 'checks passed — details under “Data checks”')}</div>`);
+    sl.push(`<div class="ssmall">${s.upd ? T('Обновление проверило себя само', 'This update checked itself') : T('Перед публикацией сводка проверяет сама себя', 'Before publishing, the report checks itself')}</div><div class="sbig">${ok} ${T('из', 'of')} ${ch.length}</div><div class="stext">${ok === ch.length ? T('проверок пройдено — данные свежие и сходятся между источниками', 'checks passed — data is fresh and sources agree') : T('проверок пройдено — подробности в «Проверке данных»', 'checks passed — details under “Data checks”')}</div>`);
     out.push({ key: 'sum', title: T('Итог дня', 'Daily recap'), icon: 'sparkle', slides: sl });
 
     const wd = (s.wallsDelta || []).slice(0, 4);
@@ -1875,7 +2011,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
         </div>
         <div class="hero-foot"><span id="hsrc">${S.period === 'ВСЁ' ? 'Kraken + Gate' : 'Kraken, DOG/USD'}</span><span id="hcap">${T('капитализация ≈ ', 'market cap ≈ ')}${usd(pr.cap * 1e6)}</span></div>
       </section>`;
-    const left = hero + tilesHtml(s) + summaryHtml(s);
+    const left = (S.archived ? '' : updBarHtml(s)) + hero + tilesHtml(s) + summaryHtml(s);
     const right = `<div class="box" id="ex-box">${exchangesHtml(s)}</div><div class="box" id="tre-box">${treasuryHtml()}</div><div class="box" id="news-box">${newsPreviewHtml()}</div>${checkRowHtml(s)}`;
     killChart();
     el.innerHTML = `<div class="box" id="st-box">${storiesHtml(buildStories(s))}</div>
@@ -1958,8 +2094,9 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
         <div class="sec-head c">${hInfo('h3', T('Стаканы бирж', 'Exchange order books'), 'books')}<p>${T('млн DOG рядом с ценой', 'M DOG near the price')}</p></div>
         <div class="bf-legend" aria-hidden="true"><span></span><span class="l"><span class="key b"></span>${T('купят', 'buy')}</span><span class="r"><span class="key a"></span>${T('продадут', 'sell')}</span></div>
         <button type="button" class="bf" data-go="books" aria-label="${T('Открыть сводный стакан всех бирж', 'Open the combined order book')}">
-          ${rows.map(([k, nm]) => { const b = s.books[k], d = b.d10 || {}, na = d.b == null && d.a == null; return `<span class="bf-row${b.off ? ' off' : ''}"><span class="bf-n"><span class="exlogo sm">${esc(nm[0])}</span>${esc(nm)}</span>${na ? `<span class="bf-na">${T('биржа отдаёт мало данных', 'exchange shares little data')}</span>` : half(d.b, 'b') + half(d.a, 'a')}</span>`; }).join('')}
+          ${rows.map(([k, nm]) => { const b = s.books[k], d = b.d10 || {}, na = d.b == null && d.a == null; return `<span class="bf-row${b.off ? ' off' : ''}"><span class="bf-n"><span class="exlogo sm">${esc(nm[0])}</span>${esc(nm)}${b.old && s.upd ? '<sup class="faint">*</sup>' : ''}</span>${na ? `<span class="bf-na">${T('биржа отдаёт мало данных', 'exchange shares little data')}</span>` : half(d.b, 'b') + half(d.a, 'a')}</span>`; }).join('')}
         </button>
+        ${s.upd && rows.some(([k]) => s.books[k].old) ? (() => { const g = w => rows.filter(([k]) => s.books[k].old === w).map(([, nm]) => nm).join(', '); const c = g('cors'), f = g('fail'); return `<p class="oldnote">* ${T('из утренней сводки', 'from the morning report')} (${esc(tl(s.upd.baseTs))}): ${[c ? esc(c) + T(' — эти биржи не отвечают на запросы со страниц сайтов', ' — these exchanges don’t answer requests from web pages') : '', f ? esc(f) + T(' — не ответила при обновлении', ' — didn’t respond during the update') : ''].filter(Boolean).join('; ')}</p>`; })() : ''}
       </section>`;
   }
   const monY = ds => { const d = dOf(ds); if (!d) return ''; try { return new Intl.DateTimeFormat(LOC, { month: 'short', year: 'numeric' }).format(d).replace(/\s*г\.?$/, '').replace('.', ''); } catch (e) { return String(ds).slice(0, 7); } };
@@ -2025,7 +2162,11 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
       </section>`;
   }
   function checkRowHtml(s) {
-    const ch = s.checks || [], okc = ch.filter(c => c.ok).length;
+    const ch = s.checks || [], okc = ch.filter(c => c.ok).length, u = s.upd;
+    if (u) {
+      const bc = u.baseChecks || [];
+      return `<button type="button" class="checkrow" id="checkrow">${ico(okc === ch.length ? 'check' : 'alert')}<span>${T('Проверка данных', 'Data checks')}: ${okc} ${T('из', 'of')} ${ch.length} ${T('при обновлении в', 'at the')} ${esc(tl(u.ts))}${T('', ' update')}${bc.length ? T(`; утренняя сводка — ${bc.filter(c => c.ok).length} из ${bc.length}`, `; morning report: ${bc.filter(c => c.ok).length} of ${bc.length}`) : ''}</span></button>`;
+    }
     return `<button type="button" class="checkrow" id="checkrow">${ico(okc === ch.length ? 'check' : 'alert')}<span>${T('Проверка данных', 'Data checks')}: ${okc} ${T('из', 'of')} ${ch.length}${(s.warnings || []).length ? T(', замечаний ', ', warnings: ') + s.warnings.length : ''}${S.audit && (S.audit.items || []).length ? T('. Самопроверка от ', '. Self-check of ') + esc(dtl(S.audit.ts)) : ''}</span></button>`;
   }
   function events(s) {
@@ -2158,22 +2299,18 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
     if (e.target.closest('#briefmore')) { briefSheet(); return; }
     if (e.target.closest('#checkrow')) openChecks();
   });
-  function openChecks() {
-    const s = V(); if (!s) return;
-    const ch = s.checks || [], warn = s.warnings || [];
-    const a = S.audit;
-    openSheet(T('Проверка данных', 'Data checks'), `<p class="note">${T('Каждое обновление само проверяет время источников, полноту топ-100, совпадение данных в двух источниках и сходимость цен бирж.', 'Every update checks itself: how fresh each source is, that the top 100 is complete, that two sources agree, and that exchange prices line up.')}</p>
-      <ul class="list">${ch.map(c => `<li><span class="${c.ok ? 'ok' : 'bad'}">${ico(c.ok ? 'check' : 'alert')}</span><span>${esc(chkTr(c.t))}</span></li>`).join('')}${warn.map(w => `<li><span class="bad">${ico('alert')}</span><span>${esc(chkTr(w))}</span></li>`).join('')}${Object.keys(s.closed || {}).map(k => `<li><span class="faint">${ico('info')}</span><span>${esc(EXN[k] || k)}: ${T('биржа больше не отдаёт стакан DOG — похоже, торги сняты; в проверки и итоги не входит', 'the exchange no longer returns a DOG order book — trading appears to have ended; excluded from checks and totals')}</span></li>`).join('')}</ul>
-      ${a && (a.items || []).length ? `<h3>${T('Самопроверка от', 'Self-check of')} ${esc(dtl(a.ts))}</h3><ul class="list">${a.items.map(x => `<li><span class="ok">${ico('check')}</span><span>${esc(chkTr(x))}</span></li>`).join('')}</ul>` : ''}`);
-  }
-  $('#status').addEventListener('click', openChecks);
+  function openChecks() { openUpd(false); }
+  $('#status').addEventListener('click', () => openUpd(!UP.run && !S.archived && Date.now() - Math.max(UP.at || 0, UP.last || 0) > 120e3));
   $('#menu').addEventListener('click', () => {
-    const s = V(), ch = (s && s.checks) || [];
-    openSheet(T('Ещё', 'More'), `<div class="setting"><span class="set-t">${ico('globe')}<b>${T('Язык', 'Language')}</b></span>${langSwitch()}</div>
+    const s = V(), ch = (s && s.checks) || [], u = s && s.upd;
+    openSheet(T('Ещё', 'More'), `<div class="group flush rows" style="background:var(--surface-2)">
+      <button type="button" class="row" data-upd ${UP.run ? 'disabled' : ''}><span class="av acc">${ico('refresh', UP.run ? 'spin' : '')}</span><span class="t"><b>${T('Обновить сейчас', 'Update now')}</b><span>${u ? T('данные на ', 'data as of ') + esc(tl(u.ts)) + T(', проверено ', ', checked ') + u.okN + '/' + u.n : T('свежие стаканы и переводы + самопроверка', 'fresh order books and transfers + self-check')}</span></span><span class="v faint">${ico('chev')}</span></button>
+    </div>
+    <div class="setting"><span class="set-t">${ico('globe')}<b>${T('Язык', 'Language')}</b></span>${langSwitch()}</div>
       <div class="group flush rows" style="background:var(--surface-2)">
-      <button type="button" class="row" data-go="history"><span class="av">${ico('clock')}</span><span class="t"><b>${T('История обновлений', 'Update history')}</b><span>${T('графики и архив сводок', 'charts and report archive')}</span></span><span class="v faint">${ico('chev')}</span></button>
+      <button type="button" class="row" data-go="history"><span class="av">${ico('clock')}</span><span class="t"><b>${T('История сводок', 'Report history')}</b><span>${T('графики и архив сводок', 'charts and report archive')}</span></span><span class="v faint">${ico('chev')}</span></button>
       <button type="button" class="row" data-go="help"><span class="av">${ico('help')}</span><span class="t"><b>${T('Как читать дашборд', 'How to read this dashboard')}</b><span>${T('простыми словами, без жаргона', 'in plain words, no jargon')}</span></span><span class="v faint">${ico('chev')}</span></button>
-      <button type="button" class="row" id="m-checks"><span class="av">${ico('check')}</span><span class="t"><b>${T('Проверка данных', 'Data checks')}</b><span>${ch.filter(c => c.ok).length} ${T('из', 'of')} ${ch.length} ${T('проверок пройдено', 'checks passed')}</span></span><span class="v faint">${ico('chev')}</span></button>
+      <button type="button" class="row" id="m-checks"><span class="av">${ico('check')}</span><span class="t"><b>${T('Проверка данных', 'Data checks')}</b><span>${ch.filter(c => c.ok).length} ${T('из', 'of')} ${ch.length} ${T('пройдено', 'passed')}${u ? T(' при обновлении', ' on update') : ''}</span></span><span class="v faint">${ico('chev')}</span></button>
     </div>`);
   });
   $('#sheet').addEventListener('click', e => { if (e.target.closest('#m-checks')) openChecks(); });
@@ -2373,7 +2510,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
     const agg = aggregate(s);
     const segBtn = (grp, val, txt, cur) => `<button type="button" data-${grp}="${val}" aria-pressed="${String(cur)}">${txt}</button>`;
     let html = `<div class="sec">
-      <div class="sec-head"><h2>${T('Все биржи в одном стакане', 'All exchanges in one order book')}</h2><p>${esc(when(s.ts))}</p></div>
+      <div class="sec-head"><h2>${T('Все биржи в одном стакане', 'All exchanges in one order book')}</h2><p>${s.upd ? T('онлайн, ', 'live, ') + esc(when(s.upd.ts)) : esc(when(s.ts))}</p></div>
       ${agg ? verdictHtml(s, agg) : ''}
       <div class="controls">
         <span class="grp"><span class="lbl">${T('Диапазон', 'Range')}</span><span class="seg" id="seg-range">${[0.05, 0.10, 0.20, 0.30].map(r => segBtn('range', r, '±' + Math.round(r * 100) + '%', S.range === r)).join('')}</span></span>
@@ -2402,7 +2539,8 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
       const near = (list, side) => (list || []).slice().sort((x, y) => side === 'b' ? y.p - x.p : x.p - y.p).slice(0, 3);
       const nAll = (b.bids || []).length + (b.asks || []).length;
       html += `<div class="group book">
-        <div class="book-top"><h3><span class="exlogo">${esc(nm[0])}</span>${esc(nm)}</h3><span class="meta">${b.ats ? esc(when(b.ats)) : ''}</span></div>
+        <div class="book-top"><h3><span class="exlogo">${esc(nm[0])}</span>${esc(nm)}</h3><span class="meta">${b.old && s.upd ? `<span class="tag old">${T('утренняя сводка', 'morning report')}</span> ` : ''}${b.ats ? esc(when(b.ats)) : ''}</span></div>
+        ${b.old && s.upd ? `<p class="oldnote">${ico('info')}<span>${b.old === 'fail' ? T(`${nm} не ответила при обновлении, поэтому этот стакан — из утренней сводки. Попробуйте обновить ещё раз.`, `${nm} didn’t respond during the update, so this order book is from the morning report. Try updating again.`) : T(`${nm} не отвечает на запросы со страниц сайтов, поэтому этот стакан — из утренней сводки. Остальные биржи обновлены ${when(s.upd.ts)}.`, `${nm} doesn’t answer requests from web pages, so this order book is from the morning report. The other exchanges were updated ${when(s.upd.ts)}.`)}</span></p>` : ''}
         <div class="bbo"><span>${T('лучшая покупка', 'best bid')} <b>${m1s(b.bid)}</b></span><span>${T('лучшая продажа', 'best ask')} <b>${m1s(b.ask)}</b></span><span class="faint">${T('за 1 млн DOG', 'per 1M DOG')}</span></div>
         ${b.off ? `<div class="warnline">${T('Цена этой биржи отличается от остальных больше чем на 3% — в общие суммы она не входит.', 'This exchange’s price differs from the others by more than 3% — it’s excluded from the totals.')}</div>` : ''}
         <div class="depth">${depthRow('±2%', b.d2, maxv)}${depthRow('±5%', b.d5, maxv)}${depthRow('±10%', b.d10, maxv)}${depthRow('±25%', b.d25, maxv)}</div>
@@ -2775,14 +2913,14 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
         <p style="margin-top:8px"><b>Avg buy</b> under a wallet’s description is the average price, per 1M DOG, at which the wallet bought or was topped up after the airdrop: each deposit is valued at that day’s exchange price. Airdropped coins were free, so they’re left out of the average and their share is shown separately (“airdrop 40%”). The percentage shows how today’s price compares. Tap a wallet to see its balance, change, a larger chart, the average-cost details and an address you can copy. Exchange wallets have no average cost — they hold many customers’ coins.</p></div>
       <div><h3>How DOG is held</h3><ul><li><b>Average purchase price</b> — the average price at which coins last changed hands. If today’s price is lower, most holders bought higher.</li><li><b>In profit vs. at a loss</b> — what share of coins is now worth more or less than the price of its last transfer.</li><li><b>Held over a year</b> — the more coins that haven’t moved in over a year, the less holders are selling.</li></ul></div>
       <div><h3>News</h3><p>Every morning the update looks for posts on X (Leonidas, the official DOG accounts, DOG DATA), listings, delistings, research and company reports on DOG purchases. Each item links to its source.</p></div>
-      <div><h3>When it updates</h3><p>Once a day in the morning — a full report with news. Extra reports on request. The update time is shown at the top: tap it to see the data checks. The price itself updates live from Kraken.</p></div>
+      <div><h3>When it updates</h3><p>Every morning a full report with news is built on a server. On top of it, whenever you open the site or tap <b>Update</b>, the page itself pulls fresh data: order books from Kraken, Gate, DigiFinex and CoinW, the price chart, the top 100 wallets and exchange balances, the holder count, transfers of 5M+ DOG and the bitcoin price — and then checks itself: are the sources fresh, do exchange prices agree, is every book sane. MEXC and BingX don’t answer requests from web pages, so their order books stay from the morning report and are marked as such. The status at the top shows the time of the data; tap it to see what changed since the morning report and the full list of checks. The price itself updates live from Kraken.</p></div>
       <h2 id="sources">Sources and method</h2>
       <div class="foot-src">
         <p><b>Sources.</b> Holders, the top 100, transfers of 5M+ DOG, trading venues, coin age, average purchase price, the airdrop and DOG on other chains come from DOG DATA (dogdata.xyz, which indexes the Bitcoin blockchain). Order books come from the public APIs of Kraken (DOG/USD), Gate, MEXC, BingX, DigiFinex, CoinW and Bitget (DOG/USDT). The price chart uses Kraken candles. C2 Blockchain holdings come from the company’s press releases. Price aggregator websites are not used.</p>
-        <p><b>Method.</b> The price is the median of the mid-prices of the Kraken, Gate, MEXC and BingX order books. Market cap = price × 100B DOG. The combined order book adds up all exchanges in $10-per-1M steps; an exchange whose price differs from the others by more than 3% is left out. A wall is a level of 5M DOG or more.</p>
+        <p><b>Method.</b> The price is the median of the mid-prices of the Kraken, Gate, MEXC and BingX order books (on a live update — of Kraken and Gate). Market cap = price × 100B DOG. The combined order book adds up all exchanges in $10-per-1M steps; an exchange whose price differs from the others by more than 3% is left out. A wall is a level of 5M DOG or more.</p>
         <p><b>Wallet owners.</b> Exchanges and services are labelled using DOG DATA tags, exchange disclosures and flow analysis. A label is an estimate, not a confirmed owner.</p>
         <p><b>Chart</b> built with <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener">Lightweight Charts™ by TradingView</a>.</p>
-        <p><b>This site</b> is an unofficial project, not affiliated with the DOG team, any exchange or C2 Blockchain, and it is not investment advice. It uses no cookies and no analytics; view settings (tab, chart period, language) are stored only in your browser. The Jost and Golos Text fonts (SIL OFL) are hosted on the site itself; the chart library loads from jsDelivr.</p>
+        <p><b>This site</b> is an unofficial project, not affiliated with the DOG team, any exchange or C2 Blockchain, and it is not investment advice. It uses no cookies and no analytics; view settings (tab, chart period, language) are stored only in your browser. For fresh data, your browser requests public data directly from Kraken, Gate, DigiFinex, CoinW, Coinbase and DOG DATA. The Jost and Golos Text fonts (SIL OFL) are hosted on the site itself; the chart library loads from jsDelivr.</p>
         <p><b>Times</b> on the page are in <span id="tzname">your local time</span>.</p>
       </div></div>`;
   function renderHelp() {
@@ -2811,14 +2949,14 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
         <p style="margin-top:8px"><b>Ср. цена покупок</b> под описанием кошелька — по какой цене в среднем кошелёк покупал и пополнялся после аирдропа, за 1 млн DOG: каждое поступление оценивается по цене дня на бирже. Монеты с аирдропа достались бесплатно, в среднюю цену не входят, их доля написана отдельно («аирдроп 40%»). Процент — насколько цена сейчас выше или ниже. Нажмите на кошелёк — откроются баланс, изменение, большой график, подробности о средней цене и адрес. Для кошельков бирж средней цены нет: там монеты многих клиентов.</p></div>
       <div><h3>Как держат DOG</h3><ul><li><b>Средняя цена покупки</b> — по какой цене монеты в среднем последний раз переходили из рук в руки. Если текущая цена ниже — большинство купило дороже.</li><li><b>В прибыли и в убытке</b> — какая доля монет сейчас стоит дороже или дешевле цены последнего перевода.</li><li><b>Лежат больше года</b> — чем больше монет не двигались больше года, тем меньше холдеры продают.</li></ul></div>
       <div><h3>Новости</h3><p>Каждое утро обновление ищет посты в X (Leonidas, официальные аккаунты DOG, DOG DATA), листинги, делистинги, исследования и отчёты компаний о покупках DOG. Ссылка всегда ведёт на источник.</p></div>
-      <div><h3>Когда обновляется</h3><p>Раз в сутки утром — полная сводка с новостями. Дополнительные сводки — по запросу. Время обновления видно вверху: нажмите на него, чтобы посмотреть проверку данных.</p></div>
+      <div><h3>Когда обновляется</h3><p>Каждое утро на сервере собирается полная сводка с новостями. Поверх неё при каждом открытии сайта и по кнопке <b>«Обновить»</b> страница сама берёт свежие данные: стаканы Kraken, Gate, DigiFinex и CoinW, график цены, топ-100 кошельков и балансы бирж, число холдеров, переводы от 5 млн DOG и цену биткоина — и проверяет себя: свежие ли источники, сходятся ли цены бирж, нет ли битых стаканов. MEXC и BingX не отвечают на запросы со страниц сайтов, поэтому их стаканы остаются из утренней сводки, с пометкой. Время данных видно вверху: нажмите на него, чтобы увидеть, что изменилось с утренней сводки, и полный список проверок. Цена обновляется онлайн с Kraken.</p></div>
       <h2 id="sources">Источники и расчёт</h2>
       <div class="foot-src">
         <p><b>Источники.</b> Холдеры, топ-100, переводы от 5 млн DOG, площадки, возраст монет, средняя цена покупки, аирдроп и DOG в других сетях — DOG DATA (dogdata.xyz, индексирует блокчейн Bitcoin). Стаканы — публичные API бирж: Kraken (DOG/USD), Gate, MEXC, BingX, DigiFinex, CoinW, Bitget (DOG/USDT). График цены — свечи Kraken. Запасы C2 Blockchain — пресс-релизы компании. Сайты-агрегаторы цен не используются.</p>
-        <p><b>Расчёт.</b> Цена — медиана середин стаканов Kraken, Gate, MEXC и BingX. Капитализация = цена × 100 млрд DOG. Сводный стакан складывает уровни всех бирж с шагом 0,00001; биржа, чья цена отличается от остальных больше чем на 3%, в сумму не входит. Стенка — уровень от 5 млн DOG.</p>
+        <p><b>Расчёт.</b> Цена — медиана середин стаканов Kraken, Gate, MEXC и BingX (при онлайн-обновлении — Kraken и Gate). Капитализация = цена × 100 млрд DOG. Сводный стакан складывает уровни всех бирж с шагом 0,00001; биржа, чья цена отличается от остальных больше чем на 3%, в сумму не входит. Стенка — уровень от 5 млн DOG.</p>
         <p><b>Владельцы кошельков.</b> Биржи и сервисы — по меткам DOG DATA, публикациям бирж и анализу потоков. Метка — оценка, а не подтверждение владельца.</p>
         <p><b>График</b> построен с помощью <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener">Lightweight Charts™ от TradingView</a>.</p>
-        <p><b>Сайт</b> — неофициальный проект, не связан с командой DOG, биржами и C2 Blockchain; не является инвестиционной рекомендацией. Сайт не использует cookies и аналитику; настройки вида (вкладка, период графика) хранятся только в вашем браузере. Шрифты Jost и Golos Text (лицензия SIL OFL) хранятся на самом сайте; библиотека графика загружается с jsDelivr.</p>
+        <p><b>Сайт</b> — неофициальный проект, не связан с командой DOG, биржами и C2 Blockchain; не является инвестиционной рекомендацией. Сайт не использует cookies и аналитику; настройки вида (вкладка, период графика) хранятся только в вашем браузере. Свежие данные браузер запрашивает напрямую у Kraken, Gate, DigiFinex, CoinW, Coinbase и DOG DATA. Шрифты Jost и Golos Text (лицензия SIL OFL) хранятся на самом сайте; библиотека графика загружается с jsDelivr.</p>
         <p><b>Время</b> на странице — <span id="tzname">местное</span>.</p>
       </div></div>`;
     try {
@@ -2835,6 +2973,631 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
   }
   let rzT = null, lastW = window.innerWidth;
   window.addEventListener('resize', () => { if (Math.abs(window.innerWidth - lastW) < 2) return; lastW = window.innerWidth; clearTimeout(rzT); rzT = setTimeout(drawCharts, 120); });
+  // ---------- ОБНОВИТЬ СЕЙЧАС: свежие данные прямо со страницы + самопроверка ----------
+  // Браузер может спросить напрямую только те API, что разрешают запросы со сторонних сайтов (CORS):
+  // Kraken, Gate, DigiFinex, CoinW (стаканы), Kraken (свечи), Coinbase (BTC) и DOG DATA (топ-100, число холдеров, переводы от 5 млн).
+  // MEXC и BingX на запросы со страниц не отвечают — их стаканы остаются из утренней сводки, с пометкой.
+  // Расчёт повторяет tools/dogmon.py: стенки от 5 млн, сводный стакан ±30% шагом 10 $ за 1 млн, глубина ±2/5/10/25%,
+  // изменения — с прошлой сводки (как везде на сайте); итог обновления показывает, что изменилось с утренней сводки.
+  const UP = {
+    WALL: 5e6, BUCKET: 1e-5, LAD: 0.30, MOVE: 5,
+    LIVE: ['kraken', 'gate', 'digifinex', 'coinw'], REQ: { kraken: 500, gate: 100, digifinex: 150, coinw: 20 },
+    raw: null, at: 0, run: null, st: {}, t0: 0, dur: 0, prev: {}, err: null, last: 0
+  };
+  const DD_API = 'https://www.dogdata.xyz/api/';
+  // [ключ, адрес, задержка старта, мс] — запросы к одному серверу разнесены, чтобы не упереться в лимиты
+  const UP_SRC = [
+    ['kraken', () => 'https://api.kraken.com/0/public/Depth?pair=DOGUSD&count=500', 0],
+    ['gate', () => 'https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0.00001&limit=100', 0],
+    ['gateTk', () => 'https://api.gateio.ws/api/v4/spot/tickers?currency_pair=DOG_USDT', 150],
+    ['digifinex', () => 'https://openapi.digifinex.com/v3/order_book?symbol=dog_usdt&limit=150', 0],
+    ['coinw', () => 'https://api.coinw.com/api/v1/public?command=returnOrderBook&symbol=DOG(RUNE)_USDT&size=100', 0],
+    ['btc', () => 'https://api.exchange.coinbase.com/products/BTC-USD/ticker', 0],
+    ['top', () => DD_API + 'dog-rune/top-holders?limit=100', 0],
+    ['ddh', () => DD_API + 'health', 200],
+    ['whales', () => DD_API + 'whale-alerts?threshold=5000000&limit=200', 400],
+    ['h1', () => 'https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=60&since=' + (Math.floor(Date.now() / 1000) - 7 * 86400), 450],
+    ['d1', () => 'https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440&since=' + (Math.floor(Date.now() / 1000) - 365 * 86400), 900]
+  ];
+  // строки списка источников: [id, ключи запросов, название, что берём]
+  const UP_ROWS = [
+    ['kraken', ['kraken', 'h1', 'd1'], 'Kraken', T('стакан и график цены', 'order book and price chart')],
+    ['gate', ['gate', 'gateTk'], 'Gate', T('стакан и итоги за сутки', 'order book and 24h stats')],
+    ['digifinex', ['digifinex'], 'DigiFinex', T('стакан', 'order book')],
+    ['coinw', ['coinw'], 'CoinW', T('стакан', 'order book')],
+    ['top', ['top', 'ddh'], 'DOG DATA', T('топ-100 кошельков и число холдеров', 'top 100 wallets and holder count')],
+    ['whales', ['whales'], 'DOG DATA', T('переводы от 5 млн DOG за сутки', 'transfers of 5M+ DOG in 24h')],
+    ['btc', ['btc'], 'Coinbase', T('цена биткоина', 'bitcoin price')]
+  ];
+  const pause = ms => new Promise(r => setTimeout(r, ms));
+  const num = x => { const v = typeof x === 'number' ? x : parseFloat(x); return isFinite(v) ? v : null; };
+  const rnd = (x, d = 2) => x == null || !isFinite(x) ? null : Math.round(x * Math.pow(10, d)) / Math.pow(10, d);
+  const sumOf = a => a.reduce((t, x) => t + (x || 0), 0);
+  const median = a => { const v = a.filter(x => x != null && isFinite(x)).sort((x, y) => x - y); if (!v.length) return null; const m = v.length >> 1; return v.length % 2 ? v[m] : (v[m - 1] + v[m]) / 2; };
+  const pad2 = x => String(x).padStart(2, '0');
+  const hmU = ms => { const d = new Date(ms); return isNaN(d) ? null : `${pad2(d.getUTCDate())}.${pad2(d.getUTCMonth() + 1)} ${pad2(d.getUTCHours())}:${pad2(d.getUTCMinutes())} UTC`; };
+  const isoS = ms => { const d = new Date(ms); return isNaN(d) ? null : d.toISOString().replace(/\.\d{3}Z$/, 'Z'); };
+  const isExK2 = k => k === 'exchange' || k === 'custody';
+
+  async function upGet(url, ms) {
+    const ctl = typeof AbortController === 'function' ? new AbortController() : null;
+    const t0 = performance.now();
+    const tm = setTimeout(() => { try { ctl && ctl.abort(); } catch (e) { } }, ms || 9000);
+    try {
+      const r = await fetch(url, { cache: 'no-store', credentials: 'omit', signal: ctl ? ctl.signal : undefined });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return { d: await r.json(), ms: Math.round(performance.now() - t0) };
+    } catch (e) {
+      throw new Error(e && e.name === 'AbortError' ? 'timeout' : (e && /^HTTP/.test(e.message) ? e.message : 'network'));
+    } finally { clearTimeout(tm); }
+  }
+  // прошлая сводка (для изменений «с прошлой сводки»): лежит рядом, в data/snapshots/
+  function prevSnap(id) {
+    if (!id) return Promise.resolve(null);
+    if (!UP.prev[id]) {
+      UP.prev[id] = upGet('data/snapshots/' + encodeURIComponent(id) + '.json', 8000).then(r => r.d && r.d.id ? r.d : null).catch(() => { delete UP.prev[id]; return null; });
+    }
+    return UP.prev[id];
+  }
+
+  // ---------- разбор ответов ----------
+  function lvls(rows, withTs) {
+    const out = [];
+    for (const r of rows || []) {
+      let p = null, q = null, t = null;
+      if (Array.isArray(r)) { p = num(r[0]); q = num(r[1]); if (withTs && r.length > 2) t = num(r[2]); }
+      else if (r && typeof r === 'object') { p = num(r.price != null ? r.price : r.p); q = num(['amount', 'qty', 'quantity', 'size', 'volume', 'q'].map(k => r[k]).find(v => v != null)); }
+      if (p != null && q != null) out.push([p, q, t]);
+    }
+    return out;
+  }
+  function parseBook(ex, d, tFetch) {
+    let bids = [], asks = [], t = null;
+    if (ex === 'kraken') {
+      if (d.error && d.error.length) throw new Error(String(d.error[0]));
+      const res = d.result || {}, x = res[Object.keys(res)[0]] || {};
+      bids = lvls(x.bids, true); asks = lvls(x.asks, true);
+      const mx = Math.max(0, ...bids.concat(asks).map(e => e[2] || 0));
+      t = mx ? mx * 1000 : null;
+    } else if (ex === 'gate') { bids = lvls(d.bids); asks = lvls(d.asks); t = num(d.current); }
+    else if (ex === 'digifinex') { if (d.code != null && +d.code !== 0) throw new Error('code ' + d.code); bids = lvls(d.bids); asks = lvls(d.asks); t = num(d.date) ? num(d.date) * 1000 : null; }
+    else if (ex === 'coinw') { if (d.code != null && String(d.code) !== '200') throw new Error('code ' + d.code); const x = d.data && typeof d.data === 'object' ? d.data : d; bids = lvls(x.bids); asks = lvls(x.asks); }
+    const zero = bids.some(e => e[0] === 0);
+    bids = bids.filter(e => e[0] > 0 && e[1] > 0).sort((a, b) => b[0] - a[0]);
+    asks = asks.filter(e => e[0] > 0 && e[1] > 0).sort((a, b) => a[0] - b[0]);
+    return { bids, asks, zero, t: t || tFetch };
+  }
+  function firstList(d, need) {
+    if (Array.isArray(d)) {
+      if (d.length && d[0] && typeof d[0] === 'object' && !Array.isArray(d[0]) && need in d[0]) return d;
+      for (const x of d) { const r = firstList(x, need); if (r) return r; }
+    } else if (d && typeof d === 'object') {
+      for (const v of Object.values(d)) { const r = firstList(v, need); if (r) return r; }
+    }
+    return null;
+  }
+  const addrOf = x => typeof x === 'string' ? x : (Array.isArray(x) ? (x.length ? addrOf(x[0]) : 'null') : (x && typeof x === 'object' ? (x.address || x.addr || x.label || x.name || 'null') : 'null'));
+  function ohlcRows(d) {
+    if (!d || (d.error && d.error.length)) return null;
+    const res = d.result || {}, key = Object.keys(res).find(k => k !== 'last'), rows = new Map();
+    for (const r of res[key] || []) {
+      const t = parseInt(r[0], 10), o = num(r[1]), h = num(r[2]), lo = num(r[3]), c = num(r[4]), v = num(r[6]);
+      if (t && o != null && lo > 0 && lo <= h && c > 0 && lo <= Math.max(o, c) + 1e-12) rows.set(t, [t, o, h, lo, c, v || 0]);
+    }
+    const out = [...rows.values()].sort((a, b) => a[0] - b[0]);
+    return out.length ? out : null;
+  }
+
+  // ---------- расчёт, как в tools/dogmon.py ----------
+  function depthOf(bids, asks, mid, fb, fa) {
+    const out = {};
+    for (const [key, f] of [['d2', .02], ['d5', .05], ['d10', .10], ['d25', .25]]) {
+      const lo = mid * (1 - f), hi = mid * (1 + f);
+      const cb = fb || (bids.length && bids[bids.length - 1][0] < lo), ca = fa || (asks.length && asks[asks.length - 1][0] > hi);
+      out[key] = { b: cb ? rnd(sumOf(bids.filter(x => x[0] >= lo).map(x => x[1])) / 1e6) : null, a: ca ? rnd(sumOf(asks.filter(x => x[0] <= hi).map(x => x[1])) / 1e6) : null };
+    }
+    return out;
+  }
+  function ladderOf(bids, asks, mid) {
+    const lo = mid * (1 - UP.LAD), hi = mid * (1 + UP.LAD), bb = new Map(), ab = new Map(), k5 = v => Math.round(v * 1e5) / 1e5;
+    for (const [p, q] of bids) if (p >= lo) { const k = k5(Math.floor(p / UP.BUCKET + 1e-9) * UP.BUCKET); bb.set(k, (bb.get(k) || 0) + q); }
+    for (const [p, q] of asks) if (p <= hi) { const k = k5(Math.ceil(p / UP.BUCKET - 1e-9) * UP.BUCKET); ab.set(k, (ab.get(k) || 0) + q); }
+    return { b: [...bb].sort((x, y) => y[0] - x[0]).map(([p, q]) => ({ p, q: rnd(q / 1e6, 3) })), a: [...ab].sort((x, y) => x[0] - y[0]).map(([p, q]) => ({ p, q: rnd(q / 1e6, 3) })) };
+  }
+  function wallsOf(levels, mid, side, cnt = 12) {
+    const w = levels.filter(x => x[1] >= UP.WALL && x[0] >= mid * 0.5 && x[0] <= mid * 2).sort((a, b) => b[1] - a[1]).slice(0, cnt);
+    w.sort((a, b) => side === 'b' ? b[0] - a[0] : a[0] - b[0]);
+    return w.map(([p, q, ts]) => { const e = { p, q: rnd(q / 1e6) }; if (ts) e.o = Math.floor(ts < 1e11 ? ts : ts / 1e3); return e; });
+  }
+  // изменения крупных заявок между прошлым снимком стакана и текущим (копия wall_changes из tools/dogmon.py)
+  function wallChanges(ex, side, pb, levels, cur, full, edge, prevT) {
+    const book = new Map();
+    for (const [p, q] of levels) { const k = +p.toFixed(9); book.set(k, (book.get(k) || 0) + q); }
+    const pedge = pb.edge && typeof pb.edge === 'object' ? pb.edge[side] : null;
+    const out = [], prevPs = new Set(), prevList = pb[side === 'b' ? 'bids' : 'asks'] || [];
+    const qFloor = prevList.length >= 12 ? Math.min(...prevList.map(w => +w.q)) : 0;
+    for (const w of prevList) {
+      const p0 = +(+w.p).toFixed(9);
+      prevPs.add(p0);
+      if (!(full || edge == null || (side === 'b' ? p0 >= edge : p0 <= edge))) continue;
+      const q1 = (book.get(p0) || 0) / 1e6, d = q1 - +w.q;
+      if (Math.abs(d) >= 1.0 && Math.abs(d) >= 0.1 * +w.q) out.push({ x: ex, s: side, p: w.p, q0: rnd(+w.q), q1: rnd(q1), k: q1 < 0.5 ? 'снята' : (d > 0 ? 'выросла' : 'уменьшилась') });
+    }
+    const pm = num(pb.mid);
+    for (const w of cur) {
+      const p = +(+w.p).toFixed(9);
+      const seen = pedge == null || (side === 'b' ? p >= pedge : p <= pedge);
+      const inWin = pm == null || (p >= pm * 0.5 && p <= pm * 2);
+      const older = prevT != null && w.o && w.o < prevT;           // Kraken: уровень не менялся с прошлого снимка
+      if (!prevPs.has(p) && seen && w.q > qFloor && inWin && !older) out.push({ x: ex, s: side, p: w.p, q0: null, q1: w.q, k: 'новая' });
+    }
+    const born = out.filter(w => w.k === 'новая');
+    for (const g of out.filter(w => w.k === 'снята').sort((a, b) => b.q0 - a.q0)) {
+      const pair = born.filter(b => Math.abs(b.p / g.p - 1) <= 0.03 && Math.abs(b.q1 / g.q0 - 1) <= 0.35);
+      if (!pair.length) continue;
+      const b = pair.reduce((m, x) => Math.abs(x.p / g.p - 1) < Math.abs(m.p / g.p - 1) ? x : m);
+      born.splice(born.indexOf(b), 1); out.splice(out.indexOf(b), 1);
+      Object.assign(g, { k: 'переставлена', p0: g.p, p: b.p, q1: b.q1 });
+    }
+    return out.filter(w => !(w.k === 'переставлена' && Math.abs(w.p / w.p0 - 1) < 0.005 && Math.abs(w.q1 / w.q0 - 1) < 0.10));
+  }
+  const wdKey = w => (w.k === 'новая' || w.k === 'снята' || w.k === 'переставлена') ? Math.max(w.q0 || 0, w.q1 || 0) : Math.abs((w.q1 || 0) - (w.q0 || 0));
+  // владельцы адресов: метки из утренней и прошлой сводок (топ-100, переводы, справочник)
+  function entMap(base, prev) {
+    const m = new Map();
+    const put = (a, e) => { if (a && e && e.k && e.k !== 'unknown' && !m.has(a)) m.set(a, { n: e.n, k: e.k, note: e.note || e.nt || '', note_en: e.note_en || e.nt_en || '' }); };
+    for (const s of [base, prev]) {
+      if (!s) continue;
+      for (const x of s.top100 || []) put(x.a, x);
+      for (const [a, e] of Object.entries(s.entities || {})) put(a, e);
+      for (const b of (s.flows || {}).big || []) { put(b.from, { n: b.fn, k: b.fk }); put(b.to, { n: b.tn, k: b.tk }); }
+    }
+    return m;
+  }
+  // балансы топ-100 на момент прошлой сводки: из неё самой, а если не загрузилась — восстанавливаем из утренней
+  function prevTopOf(base, prev) {
+    if (!base.prevId) return null;
+    const m = new Map();
+    if (prev && (prev.top100 || []).length) { for (const x of prev.top100) m.set(x.a, { b: +x.b, r: x.r, n: x.n, k: x.k }); return m; }
+    for (const x of base.top100 || []) if (x.d != null) m.set(x.a, { b: +x.b - x.d, r: x.r0 != null ? x.r0 : null, n: x.n, k: x.k });
+    for (const x of (base.movers || {}).out || []) m.set(x.a, { b: +x.b0, r: x.r0, n: x.n, k: x.k });
+    return m.size ? m : null;
+  }
+  function chartOf(h1, d1, kb) {
+    const lastRows = h1 || d1, nowP = (kb && kb.mid) || lastRows[lastRows.length - 1][4];
+    const chg = (rows, back) => { if (!rows || rows.length <= back) return null; const b = rows[rows.length - 1 - back][4]; return b ? rnd((nowP / b - 1) * 100, 1) : null; };
+    const R7 = x => Math.round(x * 1e7) / 1e7, row = r => [r[0], R7(r[1]), R7(r[2]), R7(r[3]), R7(r[4]), Math.round(r[5] || 0)];
+    const out = { src: 'Kraken DOG/USD', now: +nowP.toFixed(9), nowTs: kb ? kb.ats : null, d1: (d1 || []).map(row), h1: (h1 || []).map(row),
+      chg: { '1d': chg(h1, 24), '7d': h1 ? chg(h1, h1.length - 1) : null, '30d': chg(d1, 30), '90d': chg(d1, 90), '1y': d1 ? chg(d1, d1.length - 1) : null } };
+    if (d1) {
+      const hi = d1.reduce((m, r) => r[2] > m[2] ? r : m), lo = d1.reduce((m, r) => r[3] < m[3] ? r : m);
+      Object.assign(out, { hi: hi[2], hiT: hi[0], lo: lo[3], loT: lo[0], days: d1.length });
+    }
+    if (h1) {
+      const l24 = h1.slice(-24);
+      Object.assign(out, { hi24: Math.max(...l24.map(r => r[2])), lo24: Math.min(...l24.map(r => r[3])), vol24: rnd(sumOf(l24.map(r => r[5])) / 1e6) });
+    }
+    out.asof = isoS(Math.max(...[d1, h1].filter(Boolean).map(x => x[x.length - 1][0])) * 1000);
+    return out;
+  }
+
+  // ---------- онлайн-сводка поверх утренней ----------
+  function buildLive(base, raw, prev) {
+    const now = raw.done || Date.now();
+    const L = JSON.parse(JSON.stringify(base));
+    const ck = [], info = [];
+    const chk = (ok, t) => { ck.push({ ok: !!ok, t }); return !!ok; };
+    const bt = toDate(base.ts), bT = bt ? bt.getTime() / 1000 : null;
+    const pT = prev && toDate(prev.ts) ? toDate(prev.ts).getTime() / 1000 : null;
+    const rep = tl(base.ts), st = UP.st || {};
+
+    // --- стаканы ---
+    const lv = {};
+    for (const ex of UP.LIVE) {
+      if (!raw[ex]) continue;
+      try {
+        const b = parseBook(ex, raw[ex], (raw.t || {})[ex] || now);
+        if (b.bids.length && b.asks.length) lv[ex] = b;
+      } catch (e) { }
+    }
+    const tk = Array.isArray(raw.gateTk) ? raw.gateTk[0] : raw.gateTk;
+    if (lv.gate && tk) { const hb = num(tk.highest_bid), la = num(tk.lowest_ask); if (hb && la && hb < la) { lv.gate.bid = hb; lv.gate.ask = la; } }
+    for (const b of Object.values(lv)) if (b.bid == null) { b.bid = b.bids[0][0]; b.ask = b.asks[0][0]; }
+    const mids = {};
+    for (const [ex, b] of Object.entries(lv)) if (b.bid < b.ask) mids[ex] = (b.bid + b.ask) / 2;
+    const core = Object.keys(mids).filter(ex => ex === 'kraken' || ex === 'gate');
+    let mid = median((core.length ? core : Object.keys(mids)).map(ex => mids[ex]));
+    const baseMid = (base.price || {}).mid;
+    if (!mid) mid = livePrice() || baseMid;
+    if (!mid) return null;
+    for (const ex of UP.LIVE) {
+      const b = lv[ex], nm = EXN[ex];
+      if (!b) { chk(false, T(`${nm}: нет ответа — стакан из сводки ${rep}`, `${nm}: no response — order book from the ${rep} report`)); continue; }
+      const ms = (st[ex] || {}).ms || 0;
+      chk(b.bid < b.ask, b.bid < b.ask
+        ? T(`${nm}: стакан получен — ${n(b.bids.length)} + ${n(b.asks.length)} ${plural(b.asks.length, 'уровень', 'уровня', 'уровней')}${ms ? ', ' + n(ms / 1000, 1) + ' с' : ''}`, `${nm}: order book received — ${n(b.bids.length)} + ${n(b.asks.length)} levels${ms ? ', ' + n(ms / 1000, 1) + ' s' : ''}`)
+        : T(`${nm}: лучшая покупка не ниже лучшей продажи — данные битые`, `${nm}: best bid isn’t below best ask — bad data`));
+    }
+    const books = {};
+    for (const [ex, b] of Object.entries(lv)) {
+      if (!(b.bid < b.ask)) continue;
+      const m = mids[ex];
+      const fb = ex === 'gate' ? (b.zero || b.bids.length < UP.REQ.gate - 1) : b.bids.length < UP.REQ[ex];
+      const fa = b.asks.length < UP.REQ[ex];
+      b.fb = fb; b.fa = fa; b.eb = fb ? null : b.bids[b.bids.length - 1][0]; b.ea = fa ? null : b.asks[b.asks.length - 1][0];
+      b.wb = wallsOf(b.bids, m, 'b'); b.wa = wallsOf(b.asks, m, 'a');
+      books[ex] = Object.assign({ bid: b.bid, ask: b.ask, mid: +m.toFixed(9), asof: hmU(b.t), ats: Math.floor(b.t / 1000), rows: { b: b.bids.length, a: b.asks.length },
+        edge: { b: b.eb, a: b.ea }, bids: b.wb, asks: b.wa, ladder: ladderOf(b.bids, b.asks, mid) }, depthOf(b.bids, b.asks, m, fb, fa));
+    }
+    if (books.gate && tk) Object.assign(books.gate, { last: num(tk.last), chg24: num(tk.change_percentage), vol24usd: num(tk.quote_volume), low24: num(tk.low_24h), high24: num(tk.high_24h) });
+    const kept = [];
+    for (const [ex, b] of Object.entries(base.books || {})) if (!books[ex]) { books[ex] = Object.assign({}, b, { old: UP.LIVE.includes(ex) ? 'fail' : 'cors' }); kept.push(ex); }
+    // биржа, чья цена дальше 3% от общей, в итоги не входит (утренние стаканы — тоже, если цена с утра ушла)
+    for (const b of Object.values(books)) { delete b.off; if (b.mid && Math.abs(b.mid / mid - 1) > 0.03) b.off = 1; }
+    const live = Object.keys(mids);
+    const bad = live.filter(ex => Math.abs(mids[ex] / mid - 1) > 0.03), good = live.filter(ex => !bad.includes(ex));
+    if (live.length > 1) {
+      const spread = good.length > 1 ? (Math.max(...good.map(e => mids[e])) / Math.min(...good.map(e => mids[e])) - 1) * 100 : 0;
+      chk(!bad.length, !bad.length ? T(`Цены бирж сходятся: разброс ${n(spread, 1)}%`, `Exchange prices agree: ${n(spread, 1)}% spread`)
+        : T(`Цены расходятся больше чем на 3%: ${bad.map(e => EXN[e]).join(', ')} — в итоги не вошли`, `Prices differ by more than 3%: ${bad.map(e => EXN[e]).join(', ')} — excluded from totals`));
+    }
+    const wsP = livePrice();
+    if (wsP && mids.kraken) { const dv = Math.abs(mids.kraken / wsP - 1) * 100; chk(dv <= 1.5, T(`Стакан Kraken сходится с онлайн-ценой: расхождение ${n(dv, 2)}%`, `Kraken book matches the live price: ${n(dv, 2)}% apart`)); }
+    if (baseMid && Object.keys(mids).length) {
+      // резкий ход цены принимаем, только если его подтверждают хотя бы две биржи (их цены сходятся в пределах 3%)
+      const dv = (mid / baseMid - 1) * 100, agree = good.length >= 2, calm = Math.abs(dv) < 50;
+      if (!chk(calm || agree, calm ? T(`Цена правдоподобна: ${sg(dv, 1)}% к утренней сводке`, `Price is plausible: ${sg(dv, 1)}% vs. the morning report`)
+        : agree ? T(`Цена ${sg(dv, 0)}% к утренней сводке — подтверждают ${good.length} ${plural(good.length, 'биржа', 'биржи', 'бирж')}`, `Price ${sg(dv, 0)}% vs. the morning report — confirmed by ${good.length} exchanges`)
+          : T(`Цена ${sg(dv, 0)}% к утренней сводке и не подтверждена другими биржами — похоже на сбой данных`, `Price ${sg(dv, 0)}% vs. the morning report and not confirmed by other exchanges — looks like bad data`))) { UP.badChecks = ck.slice(); return null; }
+    }
+
+    // изменения крупных заявок — с прошлой сводки, как в утренней
+    const pbk = prev && prev.books;
+    let wd = [];
+    for (const [ex, b] of Object.entries(lv)) {
+      const bk = books[ex]; if (!bk || bk.old) continue;
+      bk.cmp = !!(pbk && pbk[ex] && !pbk[ex].nowalls);
+      if (bk.cmp) wd = wd.concat(wallChanges(ex, 'b', pbk[ex], b.bids, b.wb, b.fb, b.eb, pT), wallChanges(ex, 'a', pbk[ex], b.asks, b.wa, b.fa, b.ea, pT));
+    }
+    wd = wd.concat((base.wallsDelta || []).filter(w => !(books[w.x] && !books[w.x].old)));
+    wd.sort((a, b) => wdKey(b) - wdKey(a));
+    L.wallsDelta = wd.slice(0, 16);
+    L.books = books;
+    const totals = {};
+    for (const key of ['d5', 'd10', 'd25']) {
+      const bs = [], as = [];
+      for (const bk of Object.values(books)) { if (bk.off || !bk[key]) continue; if (bk[key].b != null) bs.push(bk[key].b); if (bk[key].a != null) as.push(bk[key].a); }
+      totals[key] = { b: rnd(sumOf(bs)), a: rnd(sumOf(as)), n: bs.length };
+    }
+    L.totals = totals;
+
+    // --- график Kraken ---
+    const h1 = ohlcRows(raw.h1), d1 = ohlcRows(raw.d1);
+    if (h1 || d1) {
+      const bc = base.chart || {};
+      L.chart = chartOf(h1 || (bc.h1 && bc.h1.length ? bc.h1 : null), d1 || (bc.d1 && bc.d1.length ? bc.d1 : null), books.kraken && !books.kraken.old ? books.kraken : null);
+      const lh = (h1 || [])[(h1 || []).length - 1];
+      chk(!!(h1 && d1) && lh && now / 1000 - lh[0] <= 150 * 60, h1 && d1
+        ? T(`График Kraken: часовые свечи до ${tl(lh[0])}, дневные — по сегодня`, `Kraken chart: hourly candles up to ${tl(lh[0])}, daily up to today`)
+        : T('График Kraken: часть свечей не пришла — остальное из сводки', 'Kraken chart: some candles didn’t arrive — the rest is from the report'));
+    }
+    L.price = Object.assign({}, base.price, { mid: +mid.toFixed(9), cap: rnd(mid * SUPPLY / 1e6, 1) });
+    const c24 = L.chart && L.chart.chg && h1 ? L.chart.chg['1d'] : null;
+    L.price.chg24 = c24 != null ? c24 : (tk && num(tk.change_percentage) != null ? rnd(num(tk.change_percentage)) : (base.price || {}).chg24);
+
+    // --- топ-100, холдеры, биржи ---
+    const ent = entMap(base, prev);
+    const top = (firstList(raw.top, 'address') || []).map(h => ({ r: num(h.rank), a: String(h.address || ''), b: num(h.total_dog), u: num(h.utxo_count) })).filter(x => x.a && x.r && x.b != null).sort((x, y) => x.r - y.r);
+    const okTop = top.length === 100 && new Set(top.map(x => x.a)).size === 100 && top.every((x, i) => x.r === i + 1 && (!i || top[i - 1].b >= x.b - 1e-6));
+    const hd = String(((((raw.ddh || {}).checks || {}).holders_data) || {}).details || '');
+    const hm = hd.match(/(\d[\d,\s]*)\s*holders/i), hu = hd.match(/updated:\s*([0-9T:.+\-Z]+)/i);
+    const holders = hm ? parseInt(hm[1].replace(/\D/g, ''), 10) : null, hT = hu ? toDate(hu[1]) : null;
+    const prevTop = prevTopOf(base, prev);
+    let topLive = false;
+    if (raw.top) chk(okTop, okTop ? T('Топ-100: 100 кошельков, места 1–100, по убыванию', 'Top 100: 100 wallets, ranks 1–100, descending')
+      : T(`Топ-100: пришло ${top.length} строк вместо 100 — оставлен утренний`, `Top 100: got ${top.length} rows instead of 100 — kept the morning list`));
+    if (okTop) {
+      topLive = true;
+      const was = new Map((base.top100 || []).map(x => [x.a, x]));
+      const t100 = top.map(h => {
+        const e = { r: h.r, a: h.a, b: rnd(h.b / 1e6, 3), u: h.u };
+        const w = ent.get(h.a), bx = was.get(h.a);
+        if (w) { e.n = w.n; e.k = w.k; } else { e.n = 'Крупный холдер'; e.k = 'unknown'; }
+        const nt = (bx && bx.nt) || (w && w.note), nte = (bx && bx.nt_en) || (w && w.note_en);
+        if (nt) e.nt = nt;
+        if (nte) e.nt_en = nte;
+        if (prevTop) { const p = prevTop.get(h.a); if (p) { e.d = rnd(h.b / 1e6 - p.b, 3); e.r0 = p.r; } else { e.d = null; e.new = 1; } }
+        return e;
+      });
+      L.top100 = t100;
+      const ents = Object.assign({}, base.entities || {});
+      for (const x of t100) if (x.k !== 'unknown') ents[x.a] = Object.assign({ n: x.n, k: x.k, note: x.nt || '' }, x.nt_en ? { note_en: x.nt_en } : {});
+      L.entities = ents;
+      const mini = x => ({ r: x.r, a: x.a, d: x.d, n: x.n, k: x.k });
+      const mv = { up: [], down: [], new: [], out: [] };
+      if (prevTop) {
+        const ch = t100.filter(x => x.d != null && Math.abs(x.d) >= UP.MOVE);
+        mv.up = ch.filter(x => x.d > 0).sort((a, b) => b.d - a.d).slice(0, 8).map(mini);
+        mv.down = ch.filter(x => x.d < 0).sort((a, b) => a.d - b.d).slice(0, 8).map(mini);
+        mv.new = t100.filter(x => x.new).map(x => ({ r: x.r, a: x.a, b: x.b, n: x.n, k: x.k }));
+        const cur = new Set(t100.map(x => x.a));
+        mv.out = [...prevTop].filter(([a]) => !cur.has(a)).map(([a, p]) => ({ r0: p.r, a, b0: rnd(p.b, 3), n: p.n || (ent.get(a) || {}).n, k: p.k || (ent.get(a) || {}).k }));
+      }
+      L.movers = mv;
+      const by = new Map();
+      for (const x of t100) {
+        if (!isExK2(x.k)) continue;
+        let g = by.get(x.n);
+        if (!g) { g = { n: x.n, k: x.k, bal: 0, d: 0, cnt: 0, known: true }; by.set(x.n, g); }
+        g.bal += x.b; g.cnt++;
+        if (x.d != null) g.d += x.d; else if (prevTop) g.known = false;
+      }
+      const exBy = [...by.values()].map(g => ({ n: g.n, k: g.k, bal: rnd(g.bal), cnt: g.cnt, d: prevTop && g.known ? rnd(g.d) : null })).sort((a, b) => b.bal - a.bal);
+      const bal = sumOf(exBy.map(g => g.bal));
+      L.exch = { by: exBy, bal: rnd(bal), d: prevTop ? rnd(sumOf(exBy.filter(g => g.d != null).map(g => g.d))) : null, pct: rnd(bal * 1e6 / SUPPLY * 100) };
+      L.top10pct = rnd(sumOf(top.slice(0, 10).map(x => x.b)) / SUPPLY * 100, 3);
+      L.top100pct = rnd(sumOf(top.map(x => x.b)) / SUPPLY * 100, 3);
+      if (base.top100pct != null) { const dv = L.top100pct - base.top100pct; chk(Math.abs(dv) <= 1, T(`Доля топ-100: ${n(L.top100pct, 2)}% (утром ${n(base.top100pct, 2)}%) — сходится`, `Top-100 share: ${n(L.top100pct, 2)}% (morning: ${n(base.top100pct, 2)}%) — consistent`)); }
+    }
+    if (holders && holders > 1000) {
+      L.holders = holders;
+      if (hT) { L.holdersAsof = L.top100Asof = hmU(hT.getTime()); L.srcTs = Object.assign({}, L.srcTs, { top100: isoS(hT.getTime()), stats: isoS(hT.getTime()) }); }
+      const age = hT ? (now - hT.getTime()) / 36e5 : null;
+      chk(age != null && age <= 13 && age > -0.3, T(`DOG DATA: холдеров ${n(holders)}, срез ${hT ? tl(hT) : '—'}${age != null ? ' (' + ago(hT) + ')' : ''}`, `DOG DATA: ${n(holders)} holders, snapshot ${hT ? tl(hT) : '—'}${age != null ? ' (' + ago(hT) + ')' : ''}`));
+    } else if (raw.ddh) chk(false, T('DOG DATA: не удалось прочитать число холдеров', 'DOG DATA: couldn’t read the holder count'));
+
+    // --- переводы от 5 млн за сутки ---
+    if (raw.whales) {
+      const al = firstList(raw.whales, 'txid') || firstList(raw.whales, 'total_dog_moved') || [];
+      const rank = new Map((L.top100 || []).map(x => [x.a, x.r]));
+      const rows = al.map(a => ({ t: toDate(a.timestamp), q: num(a.total_dog_moved), fr: addrOf(a.from), to: addrOf(a.to), tx: a.txid ? String(a.txid) : '' })).filter(x => x.t && x.q != null);
+      const day = rows.filter(x => x.t.getTime() >= now - 864e5).sort((a, b) => b.q - a.q);
+      let toX = 0, fromX = 0;
+      const exb = new Map(), big = [];
+      const addEx = (nm, i, q) => { const v = exb.get(nm) || [0, 0]; v[i] += q; exb.set(nm, v); };
+      for (const x of day) {
+        const fe = ent.get(x.fr), te = ent.get(x.to), fx = !!(fe && isExK2(fe.k)), tx = !!(te && isExK2(te.k));
+        let typ = 'между кошельками';
+        if (tx && !fx) { toX += x.q; addEx(te.n, 0, x.q); typ = 'на биржу'; }
+        else if (fx && !tx) { fromX += x.q; addEx(fe.n, 1, x.q); typ = 'с биржи'; }
+        else if (fx && tx) typ = 'между биржами';
+        const d = x.t;
+        big.push({ t: `${pad2(d.getUTCDate())}.${pad2(d.getUTCMonth() + 1)} ${pad2(d.getUTCHours())}:${pad2(d.getUTCMinutes())}`, ts: Math.floor(d.getTime() / 1000), q: rnd(x.q / 1e6), from: x.fr, to: x.to,
+          fr: rank.get(x.fr) || null, tr: rank.get(x.to) || null, fn: fe ? fe.n : 'Крупный холдер', fk: fe ? fe.k : 'unknown', tn: te ? te.n : 'Крупный холдер', tk: te ? te.k : 'unknown', typ, tx: x.tx });
+        for (const [a, e] of [[x.fr, fe], [x.to, te]]) if (e && !(L.entities || {})[a]) { L.entities = L.entities || {}; L.entities[a] = { n: e.n, k: e.k, note: e.note || '' }; }
+      }
+      L.flows = { toExch: rnd(toX / 1e6), fromExch: rnd(fromX / 1e6), net: rnd((toX - fromX) / 1e6), count: day.length,
+        byEx: [...exb].map(([nm, v]) => ({ n: nm, in: rnd(v[0] / 1e6), out: rnd(v[1] / 1e6) })).sort((a, b) => (b.in + b.out) - (a.in + a.out)), big: big.slice(0, 15) };
+      const wT = toDate(raw.whales.timestamp), decl = num(raw.whales.total_alerts);
+      if (wT) L.srcTs = Object.assign({}, L.srcTs, { whales: isoS(wT.getTime()) });
+      const wAge = wT ? (now - wT.getTime()) / 6e4 : null;
+      chk(wAge != null && wAge <= 120 && wAge > -15 && (decl == null || decl === al.length),
+        decl != null && decl !== al.length ? T(`Переводы от 5 млн: список неполный — ${al.length} из ${decl}`, `Transfers of 5M+: incomplete list — ${al.length} of ${decl}`)
+          : T(`Переводы от 5 млн за сутки: ${day.length}, DOG DATA на ${wT ? tl(wT) : '—'}`, `Transfers of 5M+ in 24h: ${day.length}, DOG DATA as of ${wT ? tl(wT) : '—'}`));
+    }
+
+    // --- BTC ---
+    const bp = num((raw.btc || {}).price), bTm = toDate((raw.btc || {}).time);
+    if (raw.btc) {
+      const ok = bp != null && bp > 1e4 && bp < 1e6 && bTm && Math.abs(now - bTm.getTime()) < 36e5;
+      if (chk(ok, T(`BTC (Coinbase): ${n(bp)} $, ${bTm ? tl(bTm) : '—'}`, `BTC (Coinbase): $${n(bp)}, ${bTm ? tl(bTm) : '—'}`))) { L.btc = Math.round(bp); L.srcTs = Object.assign({}, L.srcTs, { btc: isoS(bTm.getTime()) }); }
+    }
+
+    if (!h1 && !d1) chk(false, T(`График Kraken: свечи не пришли — график из сводки ${rep}`, `Kraken chart: candles didn’t arrive — chart from the ${rep} report`));
+    if (!raw.top) chk(false, T(`DOG DATA: топ-100 не загрузился — список из сводки ${rep}`, `DOG DATA: the top 100 didn’t load — list from the ${rep} report`));
+    if (!raw.ddh) chk(false, T(`DOG DATA: число холдеров не загрузилось — из сводки ${rep}`, `DOG DATA: the holder count didn’t load — from the ${rep} report`));
+    if (!raw.whales) chk(false, T(`DOG DATA: переводы не загрузились — список из сводки ${rep}`, `DOG DATA: transfers didn’t load — list from the ${rep} report`));
+    if (!raw.btc) chk(false, T('BTC (Coinbase): нет ответа', 'BTC (Coinbase): no response'));
+
+    // --- изменения с прошлой сводки (подписи «с …» на сайте остаются верными) ---
+    if (base.prevId) {
+      const hrow = (S.hist || []).find(h => h.id === base.prevId) || {};
+      const pm = prev ? (prev.price || {}).mid : hrow.mid, ph = prev ? prev.holders : hrow.holders, p100 = prev ? prev.top100pct : hrow.t100, p10 = prev ? prev.top10pct : null;
+      L.delta = Object.assign({}, base.delta, {
+        price: pm ? rnd((mid / pm - 1) * 100, 1) : (base.delta || {}).price,
+        holders: L.holders && ph ? L.holders - ph : (base.delta || {}).holders,
+        top100pct: topLive && p100 != null ? rnd(L.top100pct - p100, 3) : (base.delta || {}).top100pct,
+        top10pct: topLive && p10 != null ? rnd(L.top10pct - p10, 3) : (base.delta || {}).top10pct
+      });
+    }
+    chk(!!prev || !base.prevId, prev ? T(`Для сравнения загружена сводка ${dtl(prev.ts)}`, `Loaded the ${dtl(prev.ts)} report for comparison`)
+      : T('Прошлая сводка не загрузилась — изменения стенок взяты из утренней', 'The previous report didn’t load — wall changes are from the morning report'));
+
+    const keptOld = kept.filter(ex => base.books[ex]), noCors = keptOld.filter(ex => !UP.LIVE.includes(ex));
+    if (noCors.length) info.push(T(`${noCors.map(e => EXN[e]).join(' и ')}: стаканы из сводки ${rep} — эти биржи не отвечают на запросы со страниц сайтов`, `${noCors.map(e => EXN[e]).join(' and ')}: order books from the ${rep} report — these exchanges don’t answer requests from web pages`));
+    info.push(T(`Площадки и обороты, возраст монет, средняя цена покупки — из сводки ${rep} (DOG DATA отдаёт их только серверу)`, `Venues and volumes, coin age and average purchase price — from the ${rep} report (DOG DATA serves them to servers only)`));
+
+    L.ts = isoS(now);
+    L.checks = ck;
+    L.warnings = [];
+    L.fresh = ck.every(c => c.ok);
+    const okN = ck.filter(c => c.ok).length;
+    L.upd = { ts: L.ts, baseId: base.id, baseTs: base.ts, baseKind: base.kind, n: ck.length, okN, info, kept: keptOld, topLive, dur: UP.dur,
+      baseChecks: base.checks || [], baseWarnings: base.warnings || [], diff: sinceItems(base, L, lv, bT, topLive, !!raw.whales) };
+    return L;
+  }
+
+  // что изменилось с утренней сводки — для итогов обновления
+  function sinceItems(base, L, lv, bT, topLive, flowsLive) {
+    const out = [], ev = (i, c, h, small) => out.push({ i, c, h, small });
+    const pm = (base.price || {}).mid, m = (L.price || {}).mid;
+    if (pm && m) { const d = (m / pm - 1) * 100; ev(d >= 0 ? 'up' : 'down', Math.abs(d) < 0.05 ? '' : (d > 0 ? 'b' : 'a'), T(`Цена: ${fpd(pm)} → <b>${fpd(m)}</b> (${sg(d, 1)}%)`, `Price: ${fpd(pm)} → <b>${fpd(m)}</b> (${sg(d, 1)}%)`), `${ONE_M}: ${m1s(pm)} → ${m1s(m)}`); }
+    const b10 = (base.totals || {}).d10 || {}, l10 = (L.totals || {}).d10 || {};
+    if (b10.b != null && l10.b != null) ev('book', '', T(`В пределах 10% от цены хотят купить ${mdog(b10.b)} → <b>${mdog(l10.b)}</b>, продать ${mdog(b10.a)} → <b>${mdog(l10.a)}</b> DOG`, `Within 10% of the price, buyers ${mdog(b10.b)} → <b>${mdog(l10.b)}</b>, sellers ${mdog(b10.a)} → <b>${mdog(l10.a)}</b> DOG`), T('все биржи вместе', 'all exchanges combined'));
+    // стенки: изменения с утра на биржах, обновлённых сейчас
+    let wd = [];
+    for (const [ex, b] of Object.entries(lv)) {
+      const ob = (base.books || {})[ex]; if (!ob || !b.wb) continue;
+      wd = wd.concat(wallChanges(ex, 'b', ob, b.bids, b.wb, b.fb, b.eb, bT), wallChanges(ex, 'a', ob, b.asks, b.wa, b.fa, b.ea, bT));
+    }
+    wd.sort((a, b) => wdKey(b) - wdKey(a));
+    // заметные: заявка от 10 млн в пределах ±30% от цены; выросла или уменьшилась — на 5 млн и больше
+    const big = wd.filter(w => { const q0 = +w.q0 || 0, q1 = +w.q1 || 0; if (Math.max(q0, q1) < 10 || (m && Math.abs(+w.p / m - 1) > 0.3)) return false; return !((w.k === 'выросла' || w.k === 'уменьшилась') && Math.abs(q1 - q0) < 5); }).slice(0, 3);
+    big.forEach(w => ev('wall', w.k === 'новая' ? 'o' : '', esc(wallText(w))));
+    const rest = wd.length - big.length;
+    if (rest > 0) ev('wall', '', big.length ? T(`и ещё ${rest} ${plural(rest, 'изменение', 'изменения', 'изменений')} заявок поменьше — в разделе «Стакан»`, `plus ${rest} smaller order ${rest === 1 ? 'change' : 'changes'} — see Order book`)
+      : T(`Заявки от 5 млн DOG: ${rest} ${plural(rest, 'небольшое изменение', 'небольших изменения', 'небольших изменений')} — в разделе «Стакан»`, `Orders of 5M+ DOG: ${rest} small ${rest === 1 ? 'change' : 'changes'} — see Order book`));
+    if (!wd.length && Object.keys(lv).length) ev('wall', '', T('Крупные заявки (от 5 млн DOG) с утра не менялись', 'Large orders (5M+ DOG) haven’t changed since the morning'));
+    const be = base.exch || {}, le = L.exch || {};
+    if (topLive && le.by && be.by) {
+      const d = (le.bal || 0) - (be.bal || 0);
+      const per = (le.by || []).map(g => { const o = (be.by || []).find(x => x.n === g.n); return [g.n, g.bal - (o ? o.bal : 0)]; })
+        .concat((be.by || []).filter(o => !(le.by || []).some(g => g.n === o.n)).map(o => [o.n, -o.bal]))
+        .filter(x => Math.abs(x[1]) >= 0.5).sort((a, b) => Math.abs(b[1]) - Math.abs(a[1])).slice(0, 4);
+      ev('building', Math.abs(d) < 0.05 ? '' : (d > 0 ? 'a' : 'b'), Math.abs(d) < 0.05 ? T('Кошельки бирж — без изменений', 'Exchange wallets — unchanged')
+        : T(`На кошельки бирж ${d > 0 ? 'пришло' : 'ушло'} <b>${mdog(Math.abs(d))} DOG</b>`, `<b>${mdog(Math.abs(d))} DOG</b> ${d > 0 ? 'arrived in' : 'left'} exchange wallets`),
+        per.length ? per.map(x => `${esc(nameTr(x[0]))} ${sg(x[1], 1)}${MLN}`).join(' · ') : T(`всего ${mdog(le.bal)} DOG`, `${mdog(le.bal)} DOG in total`));
+      const was = new Map((base.top100 || []).map(x => [x.a, x]));
+      const mv = (L.top100 || []).filter(x => !isExK2(x.k)).map(x => { const o = was.get(x.a); return o ? { x, d: x.b - o.b } : { x, d: null }; });
+      const moved = mv.filter(y => y.d != null && Math.abs(y.d) >= UP.MOVE).sort((a, b) => Math.abs(b.d) - Math.abs(a.d));
+      moved.slice(0, 3).forEach(y => ev(y.d > 0 ? 'up' : 'down', y.d > 0 ? 'b' : 'a', `${esc(whoTxt(y.x.n, y.x.k, y.x.r))} ${y.d > 0 ? T('набрал', 'added') : T('отправил', 'sent out')} <b>${mdog(Math.abs(y.d))} DOG</b>`, T(`теперь ${mdog(y.x.b)}`, `now holds ${mdog(y.x.b)}`)));
+      const nw = mv.filter(y => y.d == null);
+      if (nw.length) ev('plus', 'o', T(`${nw.length} ${plural(nw.length, 'новый кошелёк', 'новых кошелька', 'новых кошельков')} в топ-100`, `${nw.length} new ${nw.length === 1 ? 'wallet' : 'wallets'} in the top 100`), nw.slice(0, 3).map(y => NO + y.x.r + ' · ' + mdog(y.x.b)).join(', '));
+      if (!moved.length && !nw.length) ev('check', '', T('Крупные холдеры с утра монеты не двигали', 'Large holders haven’t moved coins since the morning'), T('ни один кошелёк топ-100 вне бирж не изменился на 5 млн и больше', 'no non-exchange top-100 wallet changed by 5M+'));
+    }
+    const wT = toDate(((base.srcTs || {}).whales) || base.ts), wS = wT ? wT.getTime() / 1000 : 0;
+    const fresh = ((L.flows || {}).big || []).filter(b => b.ts > wS).sort((a, b) => b.ts - a.ts);
+    if (flowsLive) {
+      if (fresh.length) fresh.slice(0, 3).forEach(b => ev('flows', b.typ === 'на биржу' ? 'a' : (b.typ === 'с биржи' ? 'b' : ''), `${T('Перевод', 'Transfer')} <b>${mdog(b.q)} DOG</b>: ${esc(whoTxt(b.fn, b.fk, b.fr))} → ${esc(whoTxt(b.tn, b.tk, b.tr))}`, `${esc(when(b.ts))}, ${esc(typTr(b.typ))}`));
+      else ev('flows', '', T('Новых переводов от 5 млн DOG с утра не было', 'No new transfers of 5M+ DOG since the morning'));
+    }
+    if (base.holders && L.holders && L.holders !== base.holders) ev('person', '', T(`Холдеров: ${n(base.holders)} → <b>${n(L.holders)}</b> (${sg(L.holders - base.holders, 0)})`, `Holders: ${n(base.holders)} → <b>${n(L.holders)}</b> (${sg(L.holders - base.holders, 0)})`));
+    if (base.btc && L.btc && L.btc !== base.btc) { const d = (L.btc / base.btc - 1) * 100; ev(d >= 0 ? 'up' : 'down', '', T(`Биткоин: ${n(base.btc)} → <b>${n(L.btc)} $</b> (${sg(d, 1)}%)`, `Bitcoin: $${n(base.btc)} → <b>$${n(L.btc)}</b> (${sg(d, 1)}%)`)); }
+    return out;
+  }
+
+  // ---------- запуск ----------
+  function runUpdate(opt) {
+    opt = opt || {};
+    if (UP.run) return UP.run;
+    UP.st = {}; UP.t0 = Date.now(); UP.err = null; UP.badChecks = null;
+    UP_SRC.forEach(([k]) => { UP.st[k] = { s: 'run' }; });
+    UP.run = (async () => {
+      const raw = { t: {} };
+      await Promise.all(UP_SRC.map(async ([k, url, delay]) => {
+        if (delay) await pause(delay);
+        try {
+          const r = await upGet(url(), k === 'd1' || k === 'h1' || k === 'whales' ? 12000 : 9000);
+          raw[k] = r.d; raw.t[k] = Date.now(); UP.st[k] = { s: 'ok', ms: r.ms };
+        } catch (e) { UP.st[k] = { s: 'err', e: e.message }; }
+        paintUpd();
+      }));
+      raw.done = Date.now();
+      UP.dur = raw.done - UP.t0;
+      const got = Object.keys(UP.st).filter(k => UP.st[k].s === 'ok').length;
+      if (!got) { UP.err = 'offline'; return null; }
+      UP.raw = raw; UP.at = raw.done;
+      await applyUpdate();
+      return S.cur && S.cur.upd ? S.cur.upd : null;
+    })().catch(e => { UP.err = String(e && e.message || e); return null; }).finally(() => {
+      UP.run = null; UP.last = Date.now();
+      paintUpd(); setStatus();
+      if (opt.toast && S.cur && S.cur.upd && !$('#sheet-body [data-updsheet]')) toast(T(`Данные обновлены — ${tl(S.cur.upd.ts)}`, `Data updated — ${tl(S.cur.upd.ts)}`));
+    });
+    paintUpd(); setStatus();
+    return UP.run;
+  }
+  // строит онлайн-сводку поверх текущей утренней и перерисовывает сайт
+  async function applyUpdate() {
+    const base = S.base;
+    if (!base || !UP.raw) return;
+    const prev = await Promise.race([prevSnap(base.prevId), pause(4000).then(() => null)]);
+    if (S.base !== base) return;                       // пока ждали, пришла новая сводка — её обработает onCur
+    let L = null;
+    try { L = buildLive(base, UP.raw, prev); } catch (e) { UP.err = String(e && e.message || e); try { console.error(e); } catch (x) { } }
+    if (!L) { if (!UP.err) UP.err = 'check'; return; }
+    S.cur = L;
+    if (!S.archived) renderAll(); else setStatus();
+  }
+
+  // ---------- интерфейс обновления ----------
+  function upRowState(keys) {
+    const st = keys.map(k => UP.st[k] || {});
+    if (st.some(x => x.s === 'run')) return { s: 'run' };
+    const ok = st.filter(x => x.s === 'ok');
+    if (!ok.length) return { s: 'err', e: (st[0] || {}).e };
+    return { s: ok.length === st.length ? 'ok' : 'part', ms: Math.max(...ok.map(x => x.ms || 0)) };
+  }
+  function srcListHtml() {
+    const rep = S.base ? tl(S.base.ts) : '';
+    const li = (stc, ic, title, sub, v) => `<li><span class="st ${stc}">${ic}</span><span><b>${title}</b><small>${sub}</small></span><span class="v">${v}</span></li>`;
+    let h = UP_ROWS.map(([id, keys, nm, what]) => {
+      const r = upRowState(keys);
+      if (r.s === 'run') return li('', '<span class="spinner" aria-hidden="true"></span>', esc(nm), esc(what), T('запрос…', 'loading…'));
+      if (r.s === 'err') return li('bad', ico('alert'), esc(nm), esc(what), r.e === 'timeout' ? T('не ответил вовремя', 'timed out') : T('нет ответа', 'no response'));
+      return li(r.s === 'ok' ? 'ok' : 'bad', ico(r.s === 'ok' ? 'check' : 'alert'), esc(nm), esc(what), r.s === 'ok' ? n(r.ms / 1000, 1) + T(' с', ' s') : T('частично', 'partly'));
+    }).join('');
+    const kept = ['mexc', 'bingx'].filter(ex => S.base && (S.base.books || {})[ex]);
+    if (kept.length) h += li('info', ico('clock'), esc(kept.map(e => EXN[e]).join(', ')), T('стаканы — из утренней сводки: эти биржи не отвечают на запросы со страниц сайтов', 'order books from the morning report: these exchanges don’t answer requests from web pages'), rep);
+    return `<ul class="srcl">${h}</ul>`;
+  }
+  const chkLi = c => `<li><span class="${c.ok ? 'ok' : 'bad'}">${ico(c.ok ? 'check' : 'alert')}</span><span>${esc(chkTr(c.t))}</span></li>`;
+  function updSheetHtml() {
+    const s = S.cur, u = s && s.upd, run = !!UP.run, base = S.base;
+    let h = '<div class="updsheet" data-updsheet>';
+    if (run) {
+      const done = Object.values(UP.st).filter(x => x.s !== 'run').length, all = UP_SRC.length;
+      h += `<div class="upd-head run"><span class="uh-ic">${ico('refresh', 'spin')}</span><div><b>${T('Обновляю данные…', 'Updating data…')}</b><span>${T(`получено ${done} из ${all}`, `${done} of ${all} received`)}</span></div></div>
+        <div class="upd-sec"><h3>${T('Источники', 'Sources')}</h3>${srcListHtml()}</div>`;
+    } else if (u) {
+      const ok = u.okN === u.n;
+      h += `<div class="upd-head ${ok ? 'ok' : 'warn'}"><span class="uh-ic">${ico(ok ? 'check' : 'alert')}</span><div><b>${sameDay(toDate(u.ts), new Date()) ? T('Данные обновлены в ', 'Data updated at ') + esc(tl(u.ts)) : T('Данные обновлены ', 'Data updated ') + esc(dtl(u.ts))}</b><span>${T(`проверок пройдено: ${u.okN} из ${u.n}`, `${u.okN} of ${u.n} checks passed`)}${u.dur ? ' · ' + n(u.dur / 1000, 1) + T(' с', ' s') : ''}</span></div></div>`;
+      if (UP.err && UP.err !== 'check') h += `<p class="warnline">${T('Последняя попытка обновить не удалась — показаны данные на ', 'The last update attempt failed — showing data as of ')}${esc(tl(u.ts))}.</p>`;
+      if ((u.diff || []).length) h += `<div class="upd-sec"><h3>${T('Что изменилось с утренней сводки', 'What changed since the morning report')}</h3><p class="note">${esc(when(u.baseTs))} → ${T('сейчас', 'now')}</p><div class="events">${u.diff.map(e => `<div class="ev"><span class="ei ${e.c}">${ico(e.i)}</span><span>${e.h}${e.small ? `<small>${e.small}</small>` : ''}</span></div>`).join('')}</div><button type="button" class="more" data-go="books">${T('Открыть стакан', 'Open the order book')}</button></div>`;
+      h += `<div class="upd-sec"><h3>${T('Самопроверка', 'Self-check')}</h3><ul class="list">${(s.checks || []).map(chkLi).join('')}${(u.info || []).map(t => `<li><span class="info">${ico('info')}</span><span>${esc(t)}</span></li>`).join('')}</ul></div>`;
+      h += `<details class="upd-more"><summary>${T('Источники и время ответа', 'Sources and response times')}</summary>${srcListHtml()}</details>`;
+      const bc = u.baseChecks || [];
+      if (bc.length) h += `<details class="upd-more"><summary>${T('Проверка утренней сводки', 'Morning report checks')} — ${bc.filter(c => c.ok).length} ${T('из', 'of')} ${bc.length}</summary><ul class="list">${bc.map(chkLi).join('')}${(u.baseWarnings || []).map(w => `<li><span class="bad">${ico('alert')}</span><span>${esc(chkTr(w))}</span></li>`).join('')}</ul></details>`;
+    } else {
+      const ch = (s && s.checks) || [], okc = ch.filter(c => c.ok).length;
+      h += `<div class="upd-head ${UP.err ? 'warn' : ''}"><span class="uh-ic">${ico(UP.err ? 'alert' : 'clock')}</span><div><b>${s ? esc(KIND_TITLE[s.kind] || T('Сводка', 'Report')) + ' · ' + esc(when(s.ts)) : T('Данных пока нет', 'No data yet')}</b><span>${UP.err === 'check' ? T('Свежие данные не прошли самопроверку — показана сводка. Попробуйте обновить чуть позже.', 'Fresh data failed the self-check — showing the report. Try updating a bit later.') : UP.err ? T('Не удалось получить свежие данные — проверьте интернет и попробуйте ещё раз.', 'Couldn’t get fresh data — check your connection and try again.') : T('Нажмите «Обновить сейчас»: сайт возьмёт свежие стаканы, топ-100 и переводы прямо с бирж и DOG DATA и проверит себя.', 'Tap “Update now”: the site will pull fresh order books, the top 100 and transfers straight from exchanges and DOG DATA, then check itself.')}</span></div></div>`;
+      if (UP.err === 'check' && (UP.badChecks || []).length) h += `<div class="upd-sec"><h3>${T('Самопроверка', 'Self-check')}</h3><ul class="list">${UP.badChecks.map(chkLi).join('')}</ul></div>`;
+      if (UP.err) h += `<div class="upd-sec"><h3>${T('Источники', 'Sources')}</h3>${srcListHtml()}</div>`;
+      if (ch.length) h += `<div class="upd-sec"><h3>${T('Проверка сводки', 'Report checks')} — ${okc} ${T('из', 'of')} ${ch.length}</h3><ul class="list">${ch.map(chkLi).join('')}${((s && s.warnings) || []).map(w => `<li><span class="bad">${ico('alert')}</span><span>${esc(chkTr(w))}</span></li>`).join('')}</ul></div>`;
+    }
+    const a = S.audit;
+    if (!run && a && (a.items || []).length) h += `<details class="upd-more"><summary>${T('Самопроверка утренней выкладки', 'Morning publish self-check')} · ${esc(dtl(a.ts))}</summary><ul class="list">${a.items.map(x => `<li><span class="ok">${ico('check')}</span><span>${esc(chkTr(x))}</span></li>`).join('')}</ul></details>`;
+    h += `<div class="btns"><button type="button" class="btn primary" data-upd ${run ? 'disabled' : ''}>${ico('refresh', run ? 'spin' : '')}<span>${run ? T('Обновляю…', 'Updating…') : (u ? T('Обновить ещё раз', 'Update again') : T('Обновить сейчас', 'Update now'))}</span></button>${run ? '' : `<button type="button" class="btn" data-close>${T('Готово', 'Done')}</button>`}</div>`;
+    h += `<p class="note">${T('Онлайн обновляются стаканы Kraken, Gate, DigiFinex и CoinW, цена и график, топ-100 и балансы бирж, число холдеров, переводы от 5 млн и биткоин. Полная сводка с новостями собирается каждое утро.', 'Live updates cover the Kraken, Gate, DigiFinex and CoinW order books, price and chart, the top 100 and exchange balances, holder count, 5M+ transfers and bitcoin. A full report with news is built every morning.')}</p>`;
+    return h + '</div>';
+  }
+  function openUpd(start) {
+    openSheet(T('Обновление и проверка', 'Update and data checks'), updSheetHtml());
+    if (start && !UP.run) runUpdate();
+  }
+  // перерисовка того, что зависит от хода обновления: лист, полоска на главной, статус, кнопка в меню слева
+  function paintUpd() {
+    const body = $('#sheet-body');
+    if (body && !$('#sheet').hidden && body.querySelector('[data-updsheet]')) { const y = body.scrollTop; body.innerHTML = updSheetHtml(); body.scrollTop = y; }
+    const bar = $('#updbar');
+    if (bar && V() && !S.archived) bar.outerHTML = updBarHtml(V());
+    $$('[data-upd]').forEach(b => { if (!b.closest('[data-updsheet]') && !b.closest('#updbar')) { b.disabled = !!UP.run; const i = b.querySelector('.ico'); if (i) i.classList.toggle('spin', !!UP.run); } });
+  }
+  function updBarHtml(s) {
+    const u = s && s.upd, run = !!UP.run;
+    const ok = u ? u.okN === u.n : false;
+    const wt = x => sameDay(toDate(x), new Date()) ? tl(x) : when(x);
+    const title = run ? T('Обновляю данные…', 'Updating data…') : (u ? `${T('Онлайн-данные на', 'Live data as of')} ${esc(wt(u.ts))}` : `${esc(KIND_TITLE[s.kind] || T('Сводка', 'Report'))} · ${esc(wt(s.ts))}`);
+    const sub = run ? T('стаканы, топ-100, переводы — прямо с бирж и DOG DATA', 'order books, top 100, transfers — straight from exchanges and DOG DATA')
+      : (u ? T(`проверок пройдено: ${u.okN} из ${u.n}`, `${u.okN} of ${u.n} checks passed`) : (UP.err ? (UP.err === 'check' ? T('свежие данные не прошли проверку', 'fresh data failed the check') : T('свежие данные не загрузились', 'fresh data didn’t load')) : T('обновите, чтобы взять свежие стаканы и переводы', 'update for fresh order books and transfers')));
+    return `<div class="updbar ${run ? 'run' : (u ? (ok ? 'ok' : 'warn') : (UP.err ? 'warn' : ''))}" id="updbar">
+        <button type="button" class="ub-info" data-updopen><span class="ub-dot" aria-hidden="true"></span><span class="ub-t"><b>${title}</b><span>${sub}</span></span></button>
+        <button type="button" class="btn sm ub-btn" data-upd ${run ? 'disabled' : ''}>${ico('refresh', run ? 'spin' : '')}<span>${run ? T('Обновляю', 'Updating') : T('Обновить', 'Update')}</span></button>
+      </div>`;
+  }
+  document.addEventListener('click', e => {
+    const u = e.target.closest('[data-upd]');
+    if (u) { if (u.disabled) return; if (S.archived) { S.view = null; S.archived = false; renderAll(); } openUpd(true); return; }
+    if (e.target.closest('[data-updopen]')) openUpd(false);
+  });
+  // вернулись на вкладку через 10+ минут — тихо обновляем
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState !== 'visible' || UP.run || !S.base) return;
+    if (Date.now() - Math.max(UP.at, UP.last) > 10 * 60e3) runUpdate({ toast: true });
+  });
+  // для проверки расчётов: ?debug=1 открывает состояние страницы в консоли (window.__dm)
+  try { if (/[?&]debug=1\b/.test(location.search)) window.__dm = { S, UP, buildLive }; } catch (e) { }
+
   function renderAll() {
     const a = $('#archive');
     a.hidden = !S.archived;
@@ -2919,11 +3682,23 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
     }
     S.db = db;
     startLive();
+    runUpdate();                                         // свежие стаканы, топ-100 и переводы — параллельно с утренней сводкой
     let fallbackUnsub = null;
-    const onCur = d => {
-      const prevId = S.lastId;
-      S.cur = d; S.lastId = d ? d.id : null;
-      if (!S.archived) renderAll(); else setStatus();
+    const onCur = async d => {
+      const prevId = S.lastId, first = !S.base;
+      S.base = d; S.lastId = d ? d.id : null;
+      if (d && d.prevId) prevSnap(d.prevId);                // прошлая сводка понадобится для сравнения — грузим заранее
+      if (first && d && UP.run) { try { await Promise.race([UP.run, pause(2500)]); } catch (e) { } }
+      if (S.base !== d) return;
+      const bt = d ? toDate(d.ts) : null;
+      const fresh = !!(d && UP.raw && bt && UP.at >= bt.getTime());
+      if (fresh) await applyUpdate();                        // свежие данные поверх новой сводки (перерисует сам)
+      if (S.base !== d) return;
+      if (!(fresh && S.cur && S.cur.upd && S.cur.upd.baseId === d.id)) {
+        S.cur = d;
+        if (!S.archived) renderAll(); else setStatus();
+        if (d && UP.raw && !UP.run && !fresh) runUpdate();   // пришла сводка новее свежих данных — обновим ещё раз
+      }
       if (prevId && d && d.id !== prevId) toast(T(`Пришла новая сводка — ${tl(d.ts)}`, `New report just arrived — ${tl(d.ts)}`));
     };
     db.doc('live/current').onSnapshot(snap => {
