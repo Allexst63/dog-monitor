@@ -1,36 +1,22 @@
-gate_ticker | 200 | access-control-allow-origin: * | 270B | https://api.gateio.ws/api/v4/spot/tickers?currency_pair=DOG_USDT
-[{"currency_pair":"DOG_USDT","last":"0.0008991","lowest_ask":"0.0008987","lowest_size":"4456","highest_bid":"0.0008968","highest_size":"4456","change_percentage":"-2.27","base_volume":"52681403","quote_volume":"47733.9512902","high_24h":"0.00094","low_24h":"0.0008867"}]
-digifinex | 200 | access-control-allow-origin: * | 1658B | https://openapi.digifinex.com/v3/order_book?symbol=dog_usdt&limit=150
-{"date":1793116058,"code":0,"asks":[[0.000941,3970.9],[0.00094,985511.3],[0.000939,56568.8],[0.000938,20359.2],[0.000937,9220.2],[0.000936,66037.8],[0.000935,1888199],[0.000934,18603.9],[0.000933,83877.6],[0.000932,54665.6],[0.000931,51636],[0.00093,5999.5],[0.000929,8257.3],[0.000928,26654.5],[0.00
-kraken_depth | 200 | access-control-allow-origin: https://allexst63.github.io | 23786B | https://api.kraken.com/0/public/Depth?pair=DOGUSD&count=500
-{"error":[],"result":{"DOGUSD":{"asks":[["0.000895000","278673.348",1793116054],["0.000896000","441299.371",1793116054],["0.000897000","297945.784",1793116052],["0.000900000","623589.453",1793116055],["0.000901000","1503557.491",1793116055],["0.000904000","271313.703",1793116009],["0.000905000","354
-bingx_v2 | 403 | NO-ACAO | 0B | https://open-api.bingx.com/openApi/spot/v2/market/depth?symbol=DOG-USDT&depth=100
-
-bingx_v1 | 403 | NO-ACAO | 0B | https://open-api.bingx.com/openApi/spot/v1/market/depth?symbol=DOG-USDT&limit=100
-
-mexc_v2 | 404 | NO-ACAO | 552B | https://www.mexc.com/open/api/v2/market/depth?symbol=DOG_USDT&depth=100
-<html> <head><title>404 Not Found</title></head> <body> <center><h1>404 Not Found</h1></center> <hr><center>openresty</center> </body> </html> <!-- a padding to disable MSIE and Chrome friendly error page --> <!-- a padding to disable MSIE and Chrome friendly error page --> <!-- a padding t
-gate_book | 200 | access-control-allow-origin: * | 3612B | https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0.00001&limit=100
-{"current":1793116060745,"update":1793116046166,"asks":[["0.0009","31403"],["0.00091","2474892"],["0.00092","386794"],["0.00093","1403275"],["0.00094","4294997"],["0.00095","19777232"],["0.00096","3545114"],["0.00097","1383356"],["0.00098","3356747"],["0.00099","1150600"],["0.001","434871"],["0.0010
-bingx_tk | 403 | NO-ACAO | 0B | https://open-api.bingx.com/openApi/spot/v1/ticker/24hr?symbol=DOG-USDT&timestamp=1793116057000
-
-kraken_h1 | 200 | access-control-allow-origin: https://allexst63.github.io | 14555B | https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=60&since=1792511257
-{"error":[],"result":{"DOGUSD":[[1792512000,"0.000894","0.000897","0.000882","0.000886","0.000889","11591078.90060",57],[1792515600,"0.000902","0.000908","0.000895","0.000908","0.000901","1933403.40500",14],[1792519200,"0.000907","0.000925","0.000907","0.000917","0.000915","4590634.85499",27],[17925
-bingx_io | 403 | NO-ACAO | 0B | https://open-api.bingx.io/openApi/spot/v1/market/depth?symbol=DOG-USDT&limit=100
-
-mexc_v3w | 403 | NO-ACAO | 389B | https://www.mexc.com/api/v3/depth?symbol=DOGUSDT&limit=100
-<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1>   You don't have permission to access "http&#58;&#47;&#47;www&#46;mexc&#46;com&#47;api&#47;v3&#47;depth&#63;" on this server.<P> Reference&#32;&#35;18&#46;d92cc717&#46;1793116062&#46;90e697e <P>https&#58;&#47;&#47;errors&
-mexc_tk | 200 | NO-ACAO | 107B | https://api.mexc.com/api/v3/ticker/bookTicker?symbol=DOGUSDT
-{"symbol":"DOGUSDT","bidPrice":"0.0008918","bidQty":"253524.26","askPrice":"0.0008948","askQty":"34203.99"}
-kraken_d1 | 200 | access-control-allow-origin: https://allexst63.github.io | 32925B | https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440&since=1761580057
-{"error":[],"result":{"DOGUSD":[[1761609600,"0.001760","0.001810","0.001590","0.001690","0.001695","221022954.64608",1689],[1761696000,"0.001710","0.001790","0.001640","0.001710","0.001719","135430843.94992",1101],[1761782400,"0.001720","0.001730","0.001540","0.001620","0.001629","151814335.32538",1
-btc | 200 | access-control-allow-origin: * | 187B | https://api.exchange.coinbase.com/products/BTC-USD/ticker
-{"ask":"80523.84","bid":"80523.83","volume":"4633.17563572","trade_id":1111255072,"price":"80523.83","size":"0.00000009","time":"2026-10-27T15:47:42.538525018Z","rfq_volume":"211.054698"}
-dd_price | 404 | access-control-allow-origin: * | 284B | https://www.dogdata.xyz/api/price
-{"error":"Route not found","path":"/api/price","availableRoutes":["/api/health","/api/dog-rune/stats","/api/dog-rune/holders","/api/dog-rune/top-holders","/api/airdrop/summary","/api/airdrop/recipients","/api/forensic/summary","/api/forensic/profiles","/api/forensic/top-performers"]}
-coinw | 200 | access-control-allow-origin: * | 1131B | https://api.coinw.com/api/v1/public?command=returnOrderBook&symbol=DOG(RUNE)_USDT&size=100
-{"code":"200","data":{"asks":[["0.0009032","22253.44"],["0.0009046","25951.60"],["0.0009094","31342.65"],["0.0009108","109736.76"],["0.0009123","20490.29"],["0.0009135","173532.41"],["0.0009146","273051.15"],["0.0009162","198548.23"],["0.0009173","81203.68"],["0.0009184","142756.21"],["0.0009202","4
-dd_wh_small | 200 | access-control-allow-origin: * | 5617B | https://www.dogdata.xyz/api/whale-alerts?threshold=1000000&limit=3
-{"service":"DOG DATA Whale Alerts","version":"2.0.0","chains":["bitcoin","stacks","solana"],"threshold":"1.00M DOG","threshold_raw":1000000,"dog_price_usd":0.000888,"total_alerts":3,"alerts_by_chain":{"bitcoin":3},"timestamp":"2026-10-27T15:47:46.953Z","alerts":[{"chain":"bitcoin","txid":"67849a53eb
-whales | 200 | access-control-allow-origin: * | 3769B | https://www.dogdata.xyz/api/whale-alerts?threshold=5000000&limit=200
-{"service":"DOG DATA Whale Alerts","version":"2.0.0","chains":["bitcoin","stacks","solana"],"threshold":"5.00M DOG","threshold_raw":5000000,"dog_price_usd":0.000888,"total_alerts":2,"alerts_by_chain":{"bitcoin":2},"timestamp":"2026-10-27T15:47:47.140Z","alerts":[{"chain":"bitcoin","txid":"67849a53eb
+dd_conc | 200 | NO-ACAO | 230B | https://www.dogdata.xyz/api/metrics/holder-concentration
+{"gini_coefficient":0.854964,"top10_supply_pct":29.3043,"top100_supply_pct":41.1522,"top1000_supply_pct":57.3518,"total_holders":86313,"total_supply":100000000000,"last_updated":"2026-10-27T15:34:51.151+00:00","source":"supabase"}
+dd_for_sum | 200 | NO-ACAO | 1479B | https://www.dogdata.xyz/api/forensic/summary
+{"statistics":{"total_analyzed":75497,"still_holding":26744,"sold_everything":48753,"accumulated":2488,"accumulator_patterns":["btc_maximalist","dog_legend","ordinal_believer","rune_master","satoshi_visionary"],"dumping":52383,"retention_rate":35.4239,"accumulator_rate":3.2955,"dumper_rate":69.3842,
+dd_stats | 200 | NO-ACAO | 1840B | https://www.dogdata.xyz/api/dog-rune/stats
+{"total_holders":86313,"total_utxos":240422,"total_supply":100000000000,"circulating_supply":99975593192.83,"burned":24406807.16999817,"burned_pct":0.0244,"top10_holders":[{"rank":1,"address":"bc1plzs2lltvv29k603w5m0aqma5e8w0n3pc77dt89l5w9hurmdfgd0swdhspn","total_amount":1370548352624906,"total_dog"
+dd_health | 200 | access-control-allow-origin: * | 315B | https://www.dogdata.xyz/api/health
+{"status":"healthy","timestamp":"2026-10-27T15:48:22.971Z","version":"1.0.0","checks":{"redis":{"status":"ok","latency_ms":4},"holders_data":{"status":"ok","latency_ms":383,"details":"86313 holders, updated: 2026-10-27T15:27:55.735Z"},"transactions":{"status":"ok","details":"Cached in Redis"}},"upti
+dd_air | 200 | NO-ACAO | 537B | https://www.dogdata.xyz/api/airdrop/summary
+{"total_recipients":75497,"still_holding":26744,"sold_everything":48753,"retention_rate":35.4239,"total_current_balance":29873924242.261055,"recipients_with_multiple":9342,"total_airdrops":112411,"accumulated":2488,"accumulator_breakdown":{"diamond_paws":19117,"btc_maximalist":99,"satoshi_visionary"
+dd_holders | 200 | NO-ACAO | 8168B | https://www.dogdata.xyz/api/dog-rune/holders?page=1&limit=100
+{"data":[{"rank":1,"address":"bc1plzs2lltvv29k603w5m0aqma5e8w0n3pc77dt89l5w9hurmdfgd0swdhspn","total_amount":1370548352624906,"total_dog":13705483526.24906,"utxo_count":847},{"rank":2,"address":"bc1pzsx4xvghxmc0prv4mys0xdly9dh9js3e88e4m24k5gxzkeskx30s4qzjud","total_amount":334831646446200,"total_dog
+dd_markets | 200 | NO-ACAO | 3717B | https://www.dogdata.xyz/api/markets
+{"tickers":[{"market":"Kraken","pair":"DOG/USD","price":0.000888,"volumeUsd":96213,"volume":108211482.69305,"spread":0.671141,"trustScore":"green","tradeUrl":"https://pro.kraken.com/app/trade/DOG-USD"},{"market":"MEXC","pair":"DOG/USDT","price":0.0008931,"volumeUsd":66368,"volume":74406393.62,"sprea
+dd_for_prof | 200 | NO-ACAO | 5721B | https://www.dogdata.xyz/api/forensic/profiles?limit=5
+{"data":[{"address":"bc1qcmj5lkumeycyn35lxc3yr32k3fzue87yrjrna6","airdrop_rank":1,"airdrop_amount":6653079462,"receive_count":7477,"first_receive_block":840654,"first_receive_time":"2024-04-24T12:27:21Z","current_balance":0,"current_rank":null,"absolute_change":-6653079462,"percentage_change":-100,"
+dd_addr | 200 | NO-ACAO | 1091B | https://www.dogdata.xyz/api/address/bitcoin/bc1q8pmuc2v0cku2ty0rfxp2jyvrhv6lpsjzq9y6s8?limit=1
+{"address":"bc1q8pmuc2v0cku2ty0rfxp2jyvrhv6lpsjzq9y6s8","status":"tx_only","holder":null,"forensic":null,"labels":[],"entity":null,"transactions":[{"txid":"67849a53eb74053ca15957620dcf2eff32664a93741305b9df27bd5cb9d1bd14","block_height":973252,"timestamp":"2026-10-26T16:00:53+00:00","direction":"out
+dd_top | 200 | access-control-allow-origin: * | 1586B | https://www.dogdata.xyz/api/dog-rune/top-holders
+{"topHolders":[{"address":"bc1plzs2lltvv29k603w5m0aqma5e8w0n3pc77dt89l5w9hurmdfgd0swdhspn","total_amount":1370548352624906,"total_dog":13705483526.24906,"utxo_count":847,"rank":1},{"address":"bc1pzsx4xvghxmc0prv4mys0xdly9dh9js3e88e4m24k5gxzkeskx30s4qzjud","total_amount":334831646446200,"total_dog":3
+dd_top100 | 200 | access-control-allow-origin: * | 15818B | https://www.dogdata.xyz/api/dog-rune/top-holders?limit=100
+{"topHolders":[{"address":"bc1plzs2lltvv29k603w5m0aqma5e8w0n3pc77dt89l5w9hurmdfgd0swdhspn","total_amount":1370548352624906,"total_dog":13705483526.24906,"utxo_count":847,"rank":1},{"address":"bc1pzsx4xvghxmc0prv4mys0xdly9dh9js3e88e4m24k5gxzkeskx30s4qzjud","total_amount":334831646446200,"total_dog":3
