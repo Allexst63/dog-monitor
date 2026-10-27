@@ -2996,9 +2996,18 @@ details.upd-more[open] summary{margin-bottom:8px}
     ['top', () => DD_API + 'dog-rune/top-holders?limit=100', 0],
     ['ddh', () => DD_API + 'health', 200],
     ['whales', () => DD_API + 'whale-alerts?threshold=5000000&limit=200', 400],
-    ['h1', () => 'https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=60&since=' + (Math.floor(Date.now() / 1000) - 7 * 86400), 450],
-    ['d1', () => 'https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440&since=' + (Math.floor(Date.now() / 1000) - 365 * 86400), 900]
+    ['h1', () => 'https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=60&since=' + (Math.floor(Date.now() / 1000) - 7 * 86400), 600],
+    ['d1', () => 'https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440&since=' + (Math.floor(Date.now() / 1000) - 365 * 86400), 1200]
   ];
+  // свечи меняются медленно, а Kraken ограничивает частые запросы к ним: часовые берём не чаще раза в 5 минут,
+  // дневные — раза в 30 минут; между заходами храним в браузере (если хранилище доступно)
+  const UP_TTL = { h1: 5 * 60e3, d1: 30 * 60e3 };
+  function cachedOhlc(k) {
+    const m = UP.raw && UP.raw[k] && UP.raw.t && UP.raw.t[k] && Date.now() - UP.raw.t[k] < UP_TTL[k] ? { t: UP.raw.t[k], d: UP.raw[k] } : null;
+    if (m) return m;
+    const c = store.get('ohlc.' + k, null);
+    return c && c.t && c.d && Date.now() - c.t < UP_TTL[k] && Date.now() - c.t >= 0 ? c : null;
+  }
   // строки списка источников: [id, ключи запросов, название, что берём]
   const UP_ROWS = [
     ['kraken', ['kraken', 'h1', 'd1'], 'Kraken', T('стакан и график цены', 'order book and price chart')],
@@ -3277,8 +3286,9 @@ details.upd-more[open] summary{margin-bottom:8px}
       const bc = base.chart || {};
       L.chart = chartOf(h1 || (bc.h1 && bc.h1.length ? bc.h1 : null), d1 || (bc.d1 && bc.d1.length ? bc.d1 : null), books.kraken && !books.kraken.old ? books.kraken : null);
       const lh = (h1 || [])[(h1 || []).length - 1];
+      const cm = Math.round(Math.max((raw.cached || {}).h1 || 0, (raw.cached || {}).d1 || 0) / 6e4);
       chk(!!(h1 && d1) && lh && now / 1000 - lh[0] <= 150 * 60, h1 && d1
-        ? T(`График Kraken: часовые свечи до ${tl(lh[0])}, дневные — по сегодня`, `Kraken chart: hourly candles up to ${tl(lh[0])}, daily up to today`)
+        ? T(`График Kraken: часовые свечи до ${tl(lh[0])}, дневные — по сегодня${cm ? ` (сохранены ${cm} мин назад)` : ''}`, `Kraken chart: hourly candles up to ${tl(lh[0])}, daily up to today${cm ? ` (saved ${cm} min ago)` : ''}`)
         : T('График Kraken: часть свечей не пришла — остальное из сводки', 'Kraken chart: some candles didn’t arrive — the rest is from the report'));
     }
     L.price = Object.assign({}, base.price, { mid: +mid.toFixed(9), cap: rnd(mid * SUPPLY / 1e6, 1) });
@@ -3473,13 +3483,24 @@ details.upd-more[open] summary{margin-bottom:8px}
     UP.st = {}; UP.t0 = Date.now(); UP.err = null; UP.badChecks = null;
     UP_SRC.forEach(([k]) => { UP.st[k] = { s: 'run' }; });
     UP.run = (async () => {
-      const raw = { t: {} };
+      const raw = { t: {}, cached: {} };
+      const since = Date.now() - UP.last;                   // нажали «Обновить» сразу ещё раз — даём биржам передышку
+      if (UP.last && since < 5000) await pause(5000 - since);
+      UP.t0 = Date.now();
       await Promise.all(UP_SRC.map(async ([k, url, delay]) => {
+        const c = UP_TTL[k] ? cachedOhlc(k) : null;
+        if (c) { raw[k] = c.d; raw.t[k] = c.t; raw.cached[k] = Date.now() - c.t; UP.st[k] = { s: 'ok', ms: 0, cached: true }; paintUpd(); return; }
         if (delay) await pause(delay);
         try {
           const r = await upGet(url(), k === 'd1' || k === 'h1' || k === 'whales' ? 12000 : 9000);
           raw[k] = r.d; raw.t[k] = Date.now(); UP.st[k] = { s: 'ok', ms: r.ms };
-        } catch (e) { UP.st[k] = { s: 'err', e: e.message }; }
+          if (UP_TTL[k] && ohlcRows(r.d)) store.set('ohlc.' + k, { t: raw.t[k], d: r.d });
+        } catch (e) {
+          UP.st[k] = { s: 'err', e: e.message };
+          // свечи не пришли (часто — лимит Kraken): берём сохранённые, если им меньше часа
+          const old = UP_TTL[k] ? store.get('ohlc.' + k, null) : null;
+          if (old && old.d && Date.now() - old.t < 36e5) { raw[k] = old.d; raw.t[k] = old.t; raw.cached[k] = Date.now() - old.t; UP.st[k] = { s: 'ok', ms: 0, cached: true }; }
+        }
         paintUpd();
       }));
       raw.done = Date.now();
