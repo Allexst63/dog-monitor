@@ -1,38 +1,10 @@
 {
- "updated": "2026-10-26T17:09:40Z",
- "items": [
-  {
-   "title": "Convert 50 OCD to BTC — Onchain dog to Bitcoin Converter - CoinCodex",
-   "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5Na3Nhb1hscmc5WXF0S2daT2VUS0RkSGJmbW1wQVYxWWJ5S29DLVFvWVA2dTlwN21vQWZZZ01mbGg5UE5yNTBlUmhMVTd0YkdTZDhiVy1vbEctTnNNUUZYZ2luMmtheGg0bUdVYw?oc=5",
-   "src": "CoinCodex",
-   "srcUrl": "https://coincodex.com",
-   "q": "\"DOG (Bitcoin)\"",
-   "d": "2026-10-25",
-   "ts": "2026-10-25T03:12Z"
-  },
-  {
-   "title": "DOG•GO•TO•THE•MOON价格",
-   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6adf895546304b1486ce99e460b11105&url=https%3a%2f%2fwww.okx.com%2fzh-hans%2fprice%2fdog%25E2%2580%25A2go%25E2%2580%25A2to%25E2%2580%25A2the%25E2%2580%25A2moon-dog&c=10595843722143744522&mkt=en-us",
-   "src": "okx",
-   "srcUrl": null,
-   "q": "\"DOG•GO•TO•THE•MOON\"",
-   "d": "2026-10-20",
-   "ts": "2026-10-20T05:44Z"
-  },
-  {
-   "title": "Per poter aggiungere questa coin nei preferiti devi essere loggato.",
-   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6adf895546304b1486ce99e460b11105&url=https%3a%2f%2fwww.criptovaluta.it%2fdog-go-to-the-moon%2f&c=481264743388887086&mkt=en-us",
-   "src": "Criptovaluta.it",
-   "srcUrl": null,
-   "q": "\"DOG•GO•TO•THE•MOON\"",
-   "d": "2026-10-20",
-   "ts": "2026-10-20T01:53Z"
-  }
- ],
+ "updated": "2026-10-27T06:11:15Z",
+ "items": [],
  "errors": [],
  "stat": [
-  "google \"DOG•GO•TO•THE•MOON\": 15",
-  "google \"DOG (Bitcoin)\": 53",
+  "google \"DOG•GO•TO•THE•MOON\": 16",
+  "google \"DOG (Bitcoin)\": 17",
   "google \"C2 Blockchain\" DOG: 3",
   "google Leonidas DOG bitcoin runes: 11",
   "google \"$DOG\" bitcoin rune: 10",
@@ -40,7 +12,7 @@
   "bing \"DOG•GO•TO•THE•MOON\": 10",
   "bing \"DOG (Bitcoin)\": 12",
   "bing \"C2 Blockchain\" DOG: 7",
-  "bing Leonidas DOG bitcoin runes: 11",
+  "bing Leonidas DOG bitcoin runes: 10",
   "bing \"$DOG\" bitcoin rune: 12",
   "bing Bitcoin runes DOG exchange listing: 11",
   "X: нет ключа X_BEARER_TOKEN"
