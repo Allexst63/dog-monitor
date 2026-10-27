@@ -1,0 +1,10 @@
+403 | NO-ACAO |  | content-type: application/json | 42B | https://api.hiro.so/runes/v1/etchings/840000:3
+{"message":"Missing Authentication Token"}
+403 | NO-ACAO |  | content-type: application/json | 42B | https://api.hiro.so/runes/v1/etchings/840000:3/holders?limit=60&offset=0
+{"message":"Missing Authentication Token"}
+403 | NO-ACAO |  | content-type: application/json | 42B | https://api.hiro.so/runes/v1/etchings/840000:3/holders/bc1plzs2lltvv29k603w5m0aqma5e8w0n3pc77dt89l5w9hurmdfgd0swdhspn
+{"message":"Missing Authentication Token"}
+403 | NO-ACAO |  | content-type: application/json | 42B | https://api.hiro.so/runes/v1/etchings/840000:3/activity?limit=5
+{"message":"Missing Authentication Token"}
+403 | NO-ACAO |  | content-type: application/json | 42B | https://api.hiro.so/runes/v1/addresses/bc1plzs2lltvv29k603w5m0aqma5e8w0n3pc77dt89l5w9hurmdfgd0swdhspn/balances
+{"message":"Missing Authentication Token"}
