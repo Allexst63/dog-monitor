@@ -17,24 +17,17 @@ jobs:
           NOW=$(date +%s)
           mkdir -p fx
           declare -A U
-          U[kraken_depth]="https://api.kraken.com/0/public/Depth?pair=DOGUSD&count=500"
-          U[kraken_h1]="https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=60&since=$((NOW-7*86400))"
-          U[kraken_d1]="https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440&since=$((NOW-365*86400))"
-          U[gate_book]="https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0.00001&limit=100"
-          U[gate_ticker]="https://api.gateio.ws/api/v4/spot/tickers?currency_pair=DOG_USDT"
-          U[digifinex]="https://openapi.digifinex.com/v3/order_book?symbol=dog_usdt&limit=150"
-          U[coinw]="https://api.coinw.com/api/v1/public?command=returnOrderBook&symbol=DOG(RUNE)_USDT&size=100"
-          U[btc]="https://api.exchange.coinbase.com/products/BTC-USD/ticker"
-          U[whales]="https://www.dogdata.xyz/api/whale-alerts?threshold=5000000&limit=200"
-          U[mexc_v2]="https://www.mexc.com/open/api/v2/market/depth?symbol=DOG_USDT&depth=100"
-          U[mexc_v3w]="https://www.mexc.com/api/v3/depth?symbol=DOGUSDT&limit=100"
-          U[mexc_tk]="https://api.mexc.com/api/v3/ticker/bookTicker?symbol=DOGUSDT"
-          U[bingx_v2]="https://open-api.bingx.com/openApi/spot/v2/market/depth?symbol=DOG-USDT&depth=100"
-          U[bingx_v1]="https://open-api.bingx.com/openApi/spot/v1/market/depth?symbol=DOG-USDT&limit=100"
-          U[bingx_io]="https://open-api.bingx.io/openApi/spot/v1/market/depth?symbol=DOG-USDT&limit=100"
-          U[bingx_tk]="https://open-api.bingx.com/openApi/spot/v1/ticker/24hr?symbol=DOG-USDT&timestamp=${NOW}000"
-          U[dd_price]="https://www.dogdata.xyz/api/price"
-          U[dd_wh_small]="https://www.dogdata.xyz/api/whale-alerts?threshold=1000000&limit=3"
+          U[dd_top]="https://www.dogdata.xyz/api/dog-rune/top-holders"
+          U[dd_top100]="https://www.dogdata.xyz/api/dog-rune/top-holders?limit=100"
+          U[dd_health]="https://www.dogdata.xyz/api/health"
+          U[dd_for_sum]="https://www.dogdata.xyz/api/forensic/summary"
+          U[dd_for_prof]="https://www.dogdata.xyz/api/forensic/profiles?limit=5"
+          U[dd_air]="https://www.dogdata.xyz/api/airdrop/summary"
+          U[dd_holders]="https://www.dogdata.xyz/api/dog-rune/holders?page=1&limit=100"
+          U[dd_stats]="https://www.dogdata.xyz/api/dog-rune/stats"
+          U[dd_addr]="https://www.dogdata.xyz/api/address/bitcoin/bc1q8pmuc2v0cku2ty0rfxp2jyvrhv6lpsjzq9y6s8?limit=1"
+          U[dd_markets]="https://www.dogdata.xyz/api/markets"
+          U[dd_conc]="https://www.dogdata.xyz/api/metrics/holder-concentration"
           : > cors.txt
           for k in "${!U[@]}"; do
             u="${U[$k]}"
@@ -50,4 +43,4 @@ jobs:
         run: |
           git config user.name "DOG Monitor bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add cors.txt fx && git commit -m "CORS round 4 + fixtures" && git push origin HEAD:cors-check
+          git add cors.txt fx && git commit -m "CORS round 5" && git push origin HEAD:cors-check
