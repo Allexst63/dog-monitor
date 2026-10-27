@@ -7,40 +7,22 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Fixtures and CORS headers
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: End-to-end check of the live site in Chromium
         run: |
-          O="https://allexst63.github.io"
-          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
-          NOW=$(date +%s)
-          mkdir -p fx
-          declare -A U
-          U[dd_top]="https://www.dogdata.xyz/api/dog-rune/top-holders"
-          U[dd_top100]="https://www.dogdata.xyz/api/dog-rune/top-holders?limit=100"
-          U[dd_health]="https://www.dogdata.xyz/api/health"
-          U[dd_for_sum]="https://www.dogdata.xyz/api/forensic/summary"
-          U[dd_for_prof]="https://www.dogdata.xyz/api/forensic/profiles?limit=5"
-          U[dd_air]="https://www.dogdata.xyz/api/airdrop/summary"
-          U[dd_holders]="https://www.dogdata.xyz/api/dog-rune/holders?page=1&limit=100"
-          U[dd_stats]="https://www.dogdata.xyz/api/dog-rune/stats"
-          U[dd_addr]="https://www.dogdata.xyz/api/address/bitcoin/bc1q8pmuc2v0cku2ty0rfxp2jyvrhv6lpsjzq9y6s8?limit=1"
-          U[dd_markets]="https://www.dogdata.xyz/api/markets"
-          U[dd_conc]="https://www.dogdata.xyz/api/metrics/holder-concentration"
-          : > cors.txt
-          for k in "${!U[@]}"; do
-            u="${U[$k]}"
-            code=$(curl -s -m 25 -A "$UA" -D h.txt -o "fx/$k.json" -w '%{http_code}' -H "Origin: $O" -H "Referer: $O/dog-monitor/" "$u" || echo ERR)
-            acao=$(grep -i '^access-control-allow-origin' h.txt | tr -d '\r' | head -1)
-            size=$(wc -c < "fx/$k.json")
-            echo "$k | $code | ${acao:-NO-ACAO} | ${size}B | $u" >> cors.txt
-            head -c 300 "fx/$k.json" | tr '\n' ' ' >> cors.txt; echo >> cors.txt
-          done
-          date -u +%FT%TZ > fx/fetched_at.txt
-          cat cors.txt
+          npm init -y >/dev/null
+          npm i playwright@1.48.2 >/dev/null 2>&1
+          npx playwright install --with-deps chromium >/dev/null 2>&1
+          sleep 30
+          node e2e/run.js
+          head -c 3000 e2e/result.json
       - name: Save results to branch
         run: |
           git config user.name "DOG Monitor bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add cors.txt fx && git commit -m "CORS round 5" && git push origin HEAD:cors-check
+          git add e2e && git commit -m "E2E results" && git push origin HEAD:cors-check
