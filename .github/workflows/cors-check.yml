@@ -7,39 +7,22 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - name: Fresh API fixtures
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: End-to-end check of the live site in Chromium
         run: |
-          O="https://allexst63.github.io"
-          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
-          NOW=$(date +%s)
-          mkdir -p fx
-          declare -A U
-          U[kraken_depth]="https://api.kraken.com/0/public/Depth?pair=DOGUSD&count=500"
-          U[kraken_h1]="https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=60&since=$((NOW-7*86400))"
-          U[kraken_d1]="https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440&since=$((NOW-365*86400))"
-          U[gate_book]="https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0.00001&limit=100"
-          U[gate_ticker]="https://api.gateio.ws/api/v4/spot/tickers?currency_pair=DOG_USDT"
-          U[digifinex]="https://openapi.digifinex.com/v3/order_book?symbol=dog_usdt&limit=150"
-          U[coinw]="https://api.coinw.com/api/v1/public?command=returnOrderBook&symbol=DOG(RUNE)_USDT&size=100"
-          U[btc]="https://api.exchange.coinbase.com/products/BTC-USD/ticker"
-          U[whales]="https://www.dogdata.xyz/api/whale-alerts?threshold=5000000&limit=200"
-          U[dd_top100]="https://www.dogdata.xyz/api/dog-rune/top-holders?limit=100"
-          U[dd_health]="https://www.dogdata.xyz/api/health"
-          : > cors.txt
-          for k in "${!U[@]}"; do
-            u="${U[$k]}"
-            code=$(curl -s -m 25 -A "$UA" -D h.txt -o "fx/$k.json" -w '%{http_code}' -H "Origin: $O" "$u" || echo ERR)
-            acao=$(grep -i '^access-control-allow-origin' h.txt | tr -d '\r' | head -1)
-            echo "$k | $code | ${acao:-NO-ACAO} | $(wc -c < fx/$k.json)B" >> cors.txt
-            sleep 1
-          done
-          date -u +%FT%TZ > fx/fetched_at.txt
-          cat cors.txt
+          npm init -y >/dev/null
+          npm i playwright@1.48.2 >/dev/null 2>&1
+          npx playwright install --with-deps chromium >/dev/null 2>&1
+          sleep 45
+          node e2e/run.js
+          head -c 4000 e2e/result.json
       - name: Save results to branch
         run: |
           git config user.name "DOG Monitor bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add cors.txt fx && git commit -m "Fixtures" && git push origin HEAD:cors-check
+          git add e2e && git commit -m "E2E results" && git push origin HEAD:cors-check
