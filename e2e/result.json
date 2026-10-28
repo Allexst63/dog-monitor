@@ -1,0 +1,22 @@
+{
+ "desk": {
+  "status": "Live 16:05, just now",
+  "w": {
+   "row": 401,
+   "bar": 101,
+   "axis": 401,
+   "ua": "Chrome/130.0.6723.31"
+  },
+  "errs": []
+ },
+ "phone": {
+  "status": "Live 16:05, just now",
+  "w": {
+   "row": 326,
+   "bar": 66,
+   "axis": 326,
+   "ua": "Chrome/130.0.6723.31"
+  },
+  "errs": []
+ }
+}
