@@ -2152,7 +2152,7 @@ html{overscroll-behavior-y:contain}
         <button type="button" class="bf" data-go="books" aria-label="${T('Открыть сводный стакан всех бирж', 'Open the combined order book')}">
           ${rows.map(([k, nm]) => { const b = s.books[k], d = b.d10 || {}, na = d.b == null && d.a == null; return `<span class="bf-row${b.off ? ' off' : ''}"><span class="bf-n"><span class="exlogo sm">${esc(nm[0])}</span>${esc(nm)}${b.old && s.upd ? '<sup class="faint">*</sup>' : ''}</span>${na ? `<span class="bf-na">${T('биржа отдаёт мало данных', 'exchange shares little data')}</span>` : half(d.b, 'b') + half(d.a, 'a')}</span>`; }).join('')}
         </button>
-        ${s.upd && rows.some(([k]) => s.books[k].old) ? (() => { const g = w => rows.filter(([k]) => s.books[k].old === w).map(([, nm]) => nm).join(', '); const c = g('cors'), f = g('fail'); return `<p class="oldnote">* ${T('из утренней сводки', 'from the morning report')} (${esc(tl(s.upd.baseTs))}): ${[c ? esc(c) + T(' — эти биржи не отвечают на запросы со страниц сайтов', ' — these exchanges don’t answer requests from web pages') : '', f ? esc(f) + T(' — не ответила при обновлении', ' — didn’t respond during the update') : ''].filter(Boolean).join('; ')}</p>`; })() : ''}
+        ${s.upd && rows.some(([k]) => s.books[k].old) ? (() => { const g = w => rows.filter(([k]) => s.books[k].old === w).map(([, nm]) => nm).join(', '); const c = g('cors'), f = g('fail'); return `<p class="oldnote">* ${T('из утренней сводки', 'from the morning report')} (${esc(tl(s.upd.baseTs))}): ${[c ? esc(c) + T(' — эти биржи не отвечают на запросы со страниц сайтов', ' — these exchanges don’t answer requests from web pages') : '', f ? esc(f) + T(' — не ответила при обновлении', ' — didn’t respond during the update') : ''].filter(Boolean).join('; ')}${rows.some(([k]) => s.books[k].old && s.books[k].off) ? T('. Бледные — в итоги не входят: цена с утра ушла больше чем на 3%', '. Faded ones are left out of the totals: the price has moved more than 3% since the morning') : ''}</p>`; })() : ''}
       </section>`;
   }
   const monY = ds => { const d = dOf(ds); if (!d) return ''; try { return new Intl.DateTimeFormat(LOC, { month: 'short', year: 'numeric' }).format(d).replace(/\s*г\.?$/, '').replace('.', ''); } catch (e) { return String(ds).slice(0, 7); } };
@@ -3502,7 +3502,10 @@ html{overscroll-behavior-y:contain}
     const pm = (base.price || {}).mid, m = (L.price || {}).mid;
     if (pm && m) { const d = (m / pm - 1) * 100; ev(d >= 0 ? 'up' : 'down', Math.abs(d) < 0.05 ? '' : (d > 0 ? 'b' : 'a'), T(`Цена: ${fpd(pm)} → <b>${fpd(m)}</b> (${sg(d, 1)}%)`, `Price: ${fpd(pm)} → <b>${fpd(m)}</b> (${sg(d, 1)}%)`), `${ONE_M}: ${m1s(pm)} → ${m1s(m)}`); }
     const b10 = (base.totals || {}).d10 || {}, l10 = (L.totals || {}).d10 || {};
-    if (b10.b != null && l10.b != null) ev('book', '', T(`В пределах 10% от цены хотят купить ${mdog(b10.b)} → <b>${mdog(l10.b)}</b>, продать ${mdog(b10.a)} → <b>${mdog(l10.a)}</b> DOG`, `Within 10% of the price, buyers ${mdog(b10.b)} → <b>${mdog(l10.b)}</b>, sellers ${mdog(b10.a)} → <b>${mdog(l10.a)}</b> DOG`), T('все биржи вместе', 'all exchanges combined'));
+    if (b10.b != null && l10.b != null) ev('book', '', T(`В пределах 10% от цены хотят купить ${mdog(b10.b)} → <b>${mdog(l10.b)}</b>, продать ${mdog(b10.a)} → <b>${mdog(l10.a)}</b> DOG`, `Within 10% of the price, buyers ${mdog(b10.b)} → <b>${mdog(l10.b)}</b>, sellers ${mdog(b10.a)} → <b>${mdog(l10.a)}</b> DOG`), (() => {
+      const out = Object.entries(L.books || {}).filter(([, b]) => b.old && b.off).map(([k]) => EXN[k] || k);
+      return out.length ? T(`все биржи вместе, кроме ${out.join(' и ')}: их утренние цены отличаются от текущей больше чем на 3%`, `all exchanges combined except ${out.join(' and ')}: their morning prices are more than 3% from the current price`) : T('все биржи вместе', 'all exchanges combined');
+    })());
     // стенки: изменения с утра на биржах, обновлённых сейчас
     let wd = [];
     for (const [ex, b] of Object.entries(lv)) {
@@ -3553,6 +3556,7 @@ html{overscroll-behavior-y:contain}
   function runUpdate(opt) {
     opt = opt || {};
     if (UP.run) { if (!opt.silent && UP.silent) { UP.silent = false; paintUpd(); setStatus(); } return UP.run; }
+    if (navigator.onLine === false) { UP.err = 'offline'; UP.last = Date.now(); paintUpd(); setStatus(); return Promise.resolve(null); }
     UP.st = {}; UP.err = null; UP.badChecks = null; UP.silent = !!opt.silent;
     UP_SRC.forEach(([k]) => { UP.st[k] = { s: 'run' }; });
     const prevRaw = UP.raw;
@@ -3582,8 +3586,8 @@ html{overscroll-behavior-y:contain}
       }));
       raw.done = Date.now();
       UP.dur = raw.done - UP.t0;
-      const got = Object.keys(UP.st).filter(k => UP.st[k].s === 'ok').length;
-      if (!got) { UP.err = navigator.onLine === false ? 'offline' : 'network'; return null; }
+      const fresh = k => UP.st[k] && UP.st[k].s === 'ok' && !UP.st[k].cached;
+      if (!['kraken', 'gate', 'digifinex', 'coinw', 'top', 'whales'].some(fresh)) { UP.err = navigator.onLine === false ? 'offline' : 'network'; return null; }
       UP.raw = raw; UP.at = raw.done;
       await applyUpdate({ soft: true, now: !UP.silent });
       return S.cur && S.cur.upd ? S.cur.upd : null;
