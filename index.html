@@ -732,6 +732,8 @@ html{overscroll-behavior-y:contain}
 }
 /* компьютер: шапка по краям того же столбца, что и содержимое; на широком экране столбец шире */
 @media (min-width:1000px){.topbar{padding-left:max(32px,calc((100% - 1056px) / 2));padding-right:max(32px,calc((100% - 1056px) / 2))}}
+/* Safari и старый Chrome по умолчанию прижимают содержимое кнопки к краю (align-items:flex-start) — растягиваем явно */
+.bf,.tre-main{align-items:stretch}
 @media (min-width:1600px){.content{max-width:1280px}.topbar{padding-left:max(32px,calc((100% - 1216px) / 2));padding-right:max(32px,calc((100% - 1216px) / 2))}}
 </style>
 </head>
