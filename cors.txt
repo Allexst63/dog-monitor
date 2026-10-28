@@ -1,0 +1,11 @@
+gate_ticker | 200 | access-control-allow-origin: * | 274B
+digifinex | 200 | access-control-allow-origin: * | 1617B
+kraken_depth | 200 | access-control-allow-origin: https://allexst63.github.io | 23536B
+dd_health | 200 | access-control-allow-origin: * | 317B
+gate_book | 200 | access-control-allow-origin: * | 3528B
+kraken_h1 | 200 | access-control-allow-origin: https://allexst63.github.io | 14569B
+kraken_d1 | 200 | access-control-allow-origin: https://allexst63.github.io | 32926B
+btc | 200 | access-control-allow-origin: * | 187B
+dd_top100 | 200 | access-control-allow-origin: * | 15844B
+coinw | 200 | access-control-allow-origin: * | 1132B
+whales | 200 | access-control-allow-origin: * | 64465B
