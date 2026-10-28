@@ -1,0 +1,48 @@
+{
+ "phone_en": {
+  "ok": true,
+  "tLive": 2793,
+  "first": {
+   "ts": "2026-10-28T14:48:26Z",
+   "n": 14,
+   "ok": 14,
+   "bad": []
+  },
+  "second": {
+   "ts": "2026-10-28T14:50:39Z",
+   "n": 14,
+   "ok": 14,
+   "chartKept": true,
+   "status": "status ok",
+   "bad": []
+  },
+  "sw": {
+   "active": true,
+   "ctrl": true
+  },
+  "ctrl2": true,
+  "off": {
+   "status": "Offline",
+   "bar": "Live data as of 15:50 1 of 10 checks passed Update",
+   "price": "0.0009081"
+  },
+  "back": "Live 15:50",
+  "errs": []
+ },
+ "phone_ru": {
+  "ok": true,
+  "menu": "Обновить сейчас данные на 15:51, проверено 14/14 Язык English Русский Оформление Авто Светлая Тёмная Поделиться ссылкой allexst63.github.io/dog-monitor/?lang=ru История сводок графики и архив сводок Как читать дашборд простыми словами, без жаргона Проверка данных 14 из 14 пройдено при обновлении",
+  "theme": [
+   "dark",
+   "rgb(8, 11, 20)"
+  ],
+  "errs": []
+ },
+ "desk": {
+  "ok": true,
+  "rail": "Live data — today at 15:51. While the page is open, data refreshes itself every 2 minutes; a full report with news is built every morning. Update Settings English Русский",
+  "sheet": "Data updated at 15:51 14 of 14 checks passed · 0.4 s What changed since the morning report today at 07:15 → now Price: $0.0009081 → $0.0009102 (+0.2%) 1M DOG: $908.1 → $910.2 Within 10% of the price, buyers 117.2M → 90.7M, sellers 130.7M → 130.8M DOG all exchanges combined Gate: buy order for 24.8M DOG at $790 per 1M was pulled Gate: buy order for 18.5M DOG at $780 per 1M was pulled Gate: buy order at $770 per 1M shrank from 29.5M to 11.8M DOG plus 13 smaller order changes — see Order book 123.7",
+  "done": true,
+  "errs": []
+ }
+}
