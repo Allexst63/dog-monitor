@@ -1,7 +1,7 @@
 {
   "name": "DOG Monitor",
   "short_name": "DOG Monitor",
-  "description": "DOG price, order books from 7 exchanges, large transfers, the top 100 wallets, C2 Blockchain holdings and news. Updated every morning. English and Russian.",
+  "description": "DOG price and chart, order books from the exchanges, large transfers, the top 100 wallets, C2 Blockchain holdings and news. Refreshes itself while open, works offline. English and Russian.",
   "lang": "en",
   "start_url": "./",
   "scope": "./",
@@ -25,5 +25,11 @@
       "type": "image/png",
       "purpose": "maskable"
     }
+  ],
+  "id": "./",
+  "orientation": "any",
+  "categories": [
+    "finance",
+    "news"
   ]
 }

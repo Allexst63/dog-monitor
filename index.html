@@ -11,6 +11,7 @@
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#EDEFF5">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#080B14">
 <meta name="color-scheme" content="light dark">
+<script>try{var t=JSON.parse(localStorage.getItem("dogmon.theme")||"null");if(t==="dark"||t==="light"){document.documentElement.setAttribute("data-theme",t);document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute("content",t==="dark"?"#080B14":"#EDEFF5")})}}catch(e){}</script>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
@@ -23,7 +24,7 @@
 <meta property="og:locale:alternate" content="ru_RU">
 <meta property="og:site_name" content="DOG Monitor">
 <meta property="og:title" content="DOG Monitor">
-<meta property="og:description" content="Unofficial tracker for DOG•GO•TO•THE•MOON: live price, order books from 7 exchanges, large transfers, the top 100 wallets and news. Updated every morning.">
+<meta property="og:description" content="Unofficial tracker for DOG•GO•TO•THE•MOON: live price, order books, large transfers, the top 100 wallets and news. Live data with a self-check, a full report every morning.">
 <meta property="og:url" content="https://allexst63.github.io/dog-monitor/">
 <meta property="og:image" content="https://allexst63.github.io/dog-monitor/og.jpg">
 <meta property="og:image:width" content="1200">
@@ -683,6 +684,55 @@ details.upd-more[open] summary{margin-bottom:8px}
 .oldnote .ico{width:15px;height:15px;margin-top:2px}
 .tag.old{background:var(--surface-3);color:var(--ink-3)}
 @media (prefers-reduced-motion: reduce){.ico.spin,.spinner{animation:none!important}}
+/* раунд 2: автообновление, жест «потяни вниз», скелетон, настройки */
+html{overscroll-behavior-y:contain}
+.status.sync .dot,.updbar.sync .ub-dot{animation:livePulse 1.2s ease-in-out infinite}
+.ptr{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:70;transform:translate(-50%,-64px);opacity:0;pointer-events:none}
+.ptr-c{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--surface);color:var(--ink-3);box-shadow:0 8px 22px -8px rgba(18,24,41,.45),0 0 0 1px var(--line)}
+.ptr-c .ico{width:20px;height:20px}
+.ptr.ready .ptr-c{color:var(--accent-ink);background:var(--accent-soft)}
+.ptr.busy .ptr-c .ico{animation:spin .9s linear infinite}
+.ptr.back{transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .3s}
+.skel{display:flex;flex-direction:column;gap:16px}
+.sk{position:relative;overflow:hidden;background:var(--surface);border-radius:20px}
+.sk::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--ink) 6%,transparent),transparent);animation:skim 1.5s ease-in-out infinite}
+@keyframes skim{to{transform:translateX(100%)}}
+.sk-st{display:flex;gap:18px;overflow:hidden;padding:2px 0}
+.sk-st i{width:66px;height:66px;border-radius:50%;background:var(--surface);flex:none}
+.sk-bar{height:60px;border-radius:18px}
+.sk-hero{height:min(430px,64vh);border-radius:26px;background:linear-gradient(160deg,var(--space-2),var(--space-0))}
+.sk-hero::after{background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
+.sk-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sk-tile{height:124px}
+.sk-card{height:190px}
+@media (min-width:900px){.skel{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:16px 24px}.sk-st,.sk-bar{grid-column:1/-1}.sk-hero{grid-row:span 2}}
+.rf-btns{display:flex;flex-wrap:wrap;gap:8px}
+.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:10px;font-size:15px}
+.steps .kbd{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:8px;background:var(--surface-3);vertical-align:middle}
+.steps .kbd .ico{width:17px;height:17px}
+.setting .langsw button{padding:7px 12px}
+@media (max-width:380px){.setting .langsw button{padding:7px 9px;font-size:13px}}
+/* телефон с вырезом (особенно горизонтально): отступы от краёв экрана */
+@media (max-width:999px){
+  .main{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .topbar{margin-left:calc(-1 * max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1 * max(16px,env(safe-area-inset-right,0px)));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .tabbar{padding-left:max(4px,env(safe-area-inset-left,0px));padding-right:max(4px,env(safe-area-inset-right,0px))}
+}
+/* телефон горизонтально: ниже шапка и нижнее меню — больше места под данные */
+@media (max-width:999px) and (orientation:landscape) and (max-height:500px){
+  .topbar{padding-top:6px;padding-bottom:6px}
+  .tabbar{padding-top:2px;padding-bottom:calc(2px + env(safe-area-inset-bottom,0px))}
+  .tabbar button{flex-direction:row;justify-content:center;gap:7px;padding:8px 4px;font-size:12.5px}
+  .tabbar .badge{top:0;left:calc(50% - 2px)}
+  .main{padding-bottom:calc(60px + env(safe-area-inset-bottom,0px))}
+  .st{width:60px;gap:4px}
+  .st .ring{width:50px;height:50px}
+  .st .face .ico{width:20px;height:20px}
+  .st span{font-size:11px}
+}
+/* компьютер: шапка по краям того же столбца, что и содержимое; на широком экране столбец шире */
+@media (min-width:1000px){.topbar{padding-left:max(32px,calc((100% - 1056px) / 2));padding-right:max(32px,calc((100% - 1056px) / 2))}}
+@media (min-width:1600px){.content{max-width:1280px}.topbar{padding-left:max(32px,calc((100% - 1216px) / 2));padding-right:max(32px,calc((100% - 1216px) / 2))}}
 </style>
 </head>
 <body>
@@ -703,7 +753,7 @@ details.upd-more[open] summary{margin-bottom:8px}
     <div class="content">
       <div class="archive" id="archive" hidden><span id="archive-text"></span><button type="button" id="archive-back">Back to current data</button></div>
       <main id="view">
-        <section class="panel" data-panel="overview" id="p-overview"><div class="empty">Loading data…</div></section>
+        <section class="panel" data-panel="overview" id="p-overview"><div class="skel" aria-busy="true" aria-label="Loading data…"><div class="sk-st"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="sk sk-bar"></div><div class="sk sk-hero"></div><div class="sk-2"><div class="sk sk-tile"></div><div class="sk sk-tile"></div></div><div class="sk sk-card"></div></div></section>
         <section class="panel" data-panel="books" id="p-books" hidden></section>
         <section class="panel" data-panel="flows" id="p-flows" hidden></section>
         <section class="panel" data-panel="wallets" id="p-wallets" hidden></section>
@@ -784,7 +834,7 @@ details.upd-more[open] summary{margin-bottom:8px}
       set('#status', 'ariaLabel', 'Состояние данных и обновление');
       set('#menu', 'ariaLabel', 'Ещё: обновление, язык, история, справка, проверка данных');
       set('#archive-back', 'textContent', 'К текущим данным');
-      set('#p-overview .empty', 'textContent', 'Загружаю данные…');
+      set('#p-overview .skel', 'ariaLabel', 'Загружаю данные…');
       set('#story-hint-t', 'textContent', 'Смахните вверх, чтобы закрыть');
       set('#sitefoot', 'innerHTML', '<p><b>DOG Монитор</b> — неофициальный информационный проект. Не связан с командой DOG•GO•TO•THE•MOON, биржами и C2 Blockchain.</p><p>Информация носит справочный характер и не является инвестиционной рекомендацией. Цены криптовалют сильно колеблются.</p><p>Данные: <a href="https://www.dogdata.xyz" target="_blank" rel="noopener">DOG DATA</a>, публичные API бирж Kraken, Gate, MEXC, BingX, DigiFinex, CoinW и Bitget, пресс-релизы C2 Blockchain. График — <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener">TradingView Lightweight Charts™</a>. Сайт не использует cookies и аналитику.</p>');
       document.querySelectorAll('[aria-label="Sections"]').forEach(e => e.setAttribute('aria-label', 'Разделы'));
@@ -848,6 +898,9 @@ details.upd-more[open] summary{margin-bottom:8px}
     building: 'M4 21h16M6 21V5.5A1.5 1.5 0 0 1 7.5 4h9A1.5 1.5 0 0 1 18 5.5V21M9.5 8h1m3 0h1m-5 4h1m3 0h1m-5 4h1m3 0h1',
     x: 'M5 4l14 16M19 4 5 20',
     refresh: 'M20.5 12a8.5 8.5 0 1 1-8.5-8.5c2.38 0 4.66.95 6.37 2.6L20.5 8M20.5 3.5V8H16',
+    sliders: 'M4 7h9m4 0h3M4 17h3m4 0h9M13 4.5v5M7 14.5v5',
+    share: 'M12 14.5V3.5m0 0L8 7.5m4-4 4 4M7 10.5H6a1 1 0 0 0-1 1V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-8.5a1 1 0 0 0-1-1h-1',
+    install: 'M12 3.5v11m0 0-4.5-4.5m4.5 4.5 4.5-4.5M5 20.5h14',
     globe: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM3.5 9h17M3.5 15h17M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z'
   };
   const ico = (k, cls = '') => `<svg class="ico ${cls}" viewBox="0 0 24 24" aria-hidden="true"><path d="${ICON[k] || ''}"/></svg>`;
@@ -1120,26 +1173,29 @@ details.upd-more[open] summary{margin-bottom:8px}
     const el = $('#status'), t = $('#status-t');
     const s = S.cur;
     if (!S.db) return;
-    const rf = $('#railfoot');
+    const rf = $('#railfoot'), off = navigator.onLine === false, loud = !!UP.run && !UP.silent;
     if (!s) {
-      el.className = 'status ' + (UP.run ? 'run' : 'warn');
-      t.innerHTML = UP.run ? T('Обновляю…', 'Updating…') : T('Данных пока нет', 'No data yet');
+      el.className = 'status ' + (loud ? 'run' : 'warn');
+      t.innerHTML = loud ? T('Обновляю…', 'Updating…') : (off ? T('Нет сети', 'Offline') : T('Данных пока нет', 'No data yet'));
       return;
     }
     const u = s.upd;
-    if (UP.run) {
+    if (loud) {
       el.className = 'status run';
       t.innerHTML = `${T('Обновляю…', 'Updating…')}<span class="long"> ${T('стаканы, топ-100, переводы', 'order books, top 100, transfers')}</span>`;
+    } else if (off) {
+      el.className = 'status warn';
+      t.innerHTML = `${T('Нет сети', 'Offline')}<span class="long">${T(' · данные на ', ' · data as of ')}${esc(tl(u ? u.ts : s.ts))}</span>`;
     } else if (u) {
       const age = (Date.now() - (toDate(u.ts) || new Date()).getTime()) / 6e4;
-      el.className = 'status ' + (u.okN === u.n && age < 60 ? 'ok' : 'warn');
+      el.className = 'status ' + (u.okN === u.n && age < 30 ? 'ok' : 'warn') + (UP.run ? ' sync' : '');
       t.innerHTML = `${T('Онлайн', 'Live')} ${esc(tl(u.ts))}<span class="long">, ${esc(ago(u.ts))}</span>`;
     } else {
       const d = toDate(s.ts), h = d ? (Date.now() - d.getTime()) / 36e5 : null;
-      el.className = (h != null && h > 26) || s.fresh === false ? 'status warn' : 'status ok';
+      el.className = ((h != null && h > 26) || s.fresh === false ? 'status warn' : 'status ok') + (UP.run ? ' sync' : '');
       t.innerHTML = `${T('Сводка', 'Updated')} ${esc(tl(s.ts))}<span class="long">, ${esc(sameDay(d, new Date()) ? ago(s.ts) : dml(s.ts))}${s.fresh === false ? T(', часть данных устарела', ', some data is stale') : ''}</span>`;
     }
-    if (rf) rf.innerHTML = `<span>${u ? T('Онлайн-данные', 'Live data') + ' — ' + esc(when(u.ts)) : esc(KIND_TITLE[s.kind] || T('Сводка', 'Report')) + ' — ' + esc(when(s.ts))}.</span><span>${T('Свежие стаканы, топ-100 и переводы подтягиваются при открытии сайта и по кнопке; полная сводка с новостями — каждое утро.', 'Fresh order books, the top 100 and transfers load when the site opens and on demand; a full report with news is built every morning.')}</span><button type="button" class="btn sm" data-upd ${UP.run ? 'disabled' : ''}>${ico('refresh', UP.run ? 'spin' : '')}<span>${T('Обновить сейчас', 'Update now')}</span></button>${langSwitch()}`;
+    if (rf) rf.innerHTML = `<span>${u ? T('Онлайн-данные', 'Live data') + ' — ' + esc(when(u.ts)) : esc(KIND_TITLE[s.kind] || T('Сводка', 'Report')) + ' — ' + esc(when(s.ts))}.</span><span>${T('Пока страница открыта, данные обновляются сами каждые 2 минуты; полная сводка с новостями — каждое утро.', 'While the page is open, data refreshes itself every 2 minutes; a full report with news is built every morning.')}</span><span class="rf-btns"><button type="button" class="btn sm" data-upd ${loud ? 'disabled' : ''}>${ico('refresh', UP.run ? 'spin' : '')}<span>${T('Обновить', 'Update')}</span></button><button type="button" class="btn sm" data-more>${ico('sliders')}<span>${T('Настройки', 'Settings')}</span></button></span>${langSwitch()}`;
   }
 
   // ---------- лист снизу ----------
@@ -2011,8 +2067,8 @@ details.upd-more[open] summary{margin-bottom:8px}
         </div>
         <div class="hero-foot"><span id="hsrc">${S.period === 'ВСЁ' ? 'Kraken + Gate' : 'Kraken, DOG/USD'}</span><span id="hcap">${T('капитализация ≈ ', 'market cap ≈ ')}${usd(pr.cap * 1e6)}</span></div>
       </section>`;
-    const left = (S.archived ? '' : updBarHtml(s)) + hero + tilesHtml(s) + summaryHtml(s);
-    const right = `<div class="box" id="ex-box">${exchangesHtml(s)}</div><div class="box" id="tre-box">${treasuryHtml()}</div><div class="box" id="news-box">${newsPreviewHtml()}</div>${checkRowHtml(s)}`;
+    const left = (S.archived ? '' : updBarHtml(s)) + hero + `<div class="box" id="tiles-box">${tilesHtml(s)}</div><div class="box" id="sum-box">${summaryHtml(s)}</div>`;
+    const right = `<div class="box" id="ex-box">${exchangesHtml(s)}</div><div class="box" id="tre-box">${treasuryHtml()}</div><div class="box" id="news-box">${newsPreviewHtml()}</div><div class="box" id="chk-box">${checkRowHtml(s)}</div>`;
     killChart();
     el.innerHTML = `<div class="box" id="st-box">${storiesHtml(buildStories(s))}</div>
       <div class="home-grid"><div class="home-col">${left}</div><div class="home-col">${right}</div></div>`;
@@ -2301,18 +2357,26 @@ details.upd-more[open] summary{margin-bottom:8px}
   });
   function openChecks() { openUpd(false); }
   $('#status').addEventListener('click', () => openUpd(!UP.run && !S.archived && Date.now() - Math.max(UP.at || 0, UP.last || 0) > 120e3));
-  $('#menu').addEventListener('click', () => {
-    const s = V(), ch = (s && s.checks) || [], u = s && s.upd;
+  function openMore() {
+    const s = V(), ch = (s && s.checks) || [], u = s && s.upd, loud = !!UP.run && !UP.silent;
+    const row = (attr, icon, title, sub, cls) => `<button type="button" class="row" ${attr}><span class="av${cls ? ' ' + cls : ''}">${icon}</span><span class="t"><b>${title}</b><span>${sub}</span></span><span class="v faint">${ico('chev')}</span></button>`;
     openSheet(T('Ещё', 'More'), `<div class="group flush rows" style="background:var(--surface-2)">
-      <button type="button" class="row" data-upd ${UP.run ? 'disabled' : ''}><span class="av acc">${ico('refresh', UP.run ? 'spin' : '')}</span><span class="t"><b>${T('Обновить сейчас', 'Update now')}</b><span>${u ? T('данные на ', 'data as of ') + esc(tl(u.ts)) + T(', проверено ', ', checked ') + u.okN + '/' + u.n : T('свежие стаканы и переводы + самопроверка', 'fresh order books and transfers + self-check')}</span></span><span class="v faint">${ico('chev')}</span></button>
+      ${row('data-upd' + (loud ? ' disabled' : ''), ico('refresh', UP.run ? 'spin' : ''), T('Обновить сейчас', 'Update now'), u ? T('данные на ', 'data as of ') + esc(tl(u.ts)) + T(', проверено ', ', checked ') + u.okN + '/' + u.n : T('свежие стаканы и переводы + самопроверка', 'fresh order books and transfers + self-check'), 'acc')}
     </div>
     <div class="setting"><span class="set-t">${ico('globe')}<b>${T('Язык', 'Language')}</b></span>${langSwitch()}</div>
-      <div class="group flush rows" style="background:var(--surface-2)">
-      <button type="button" class="row" data-go="history"><span class="av">${ico('clock')}</span><span class="t"><b>${T('История сводок', 'Report history')}</b><span>${T('графики и архив сводок', 'charts and report archive')}</span></span><span class="v faint">${ico('chev')}</span></button>
-      <button type="button" class="row" data-go="help"><span class="av">${ico('help')}</span><span class="t"><b>${T('Как читать дашборд', 'How to read this dashboard')}</b><span>${T('простыми словами, без жаргона', 'in plain words, no jargon')}</span></span><span class="v faint">${ico('chev')}</span></button>
-      <button type="button" class="row" id="m-checks"><span class="av">${ico('check')}</span><span class="t"><b>${T('Проверка данных', 'Data checks')}</b><span>${ch.filter(c => c.ok).length} ${T('из', 'of')} ${ch.length} ${T('пройдено', 'passed')}${u ? T(' при обновлении', ' on update') : ''}</span></span><span class="v faint">${ico('chev')}</span></button>
+    <div class="setting"><span class="set-t">${ico('moon')}<b>${T('Оформление', 'Appearance')}</b></span>${themeSwitch()}</div>
+    <div class="group flush rows" style="background:var(--surface-2)">
+      ${installRowHtml()}
+      ${row('data-share', ico('share'), T('Поделиться ссылкой', 'Share link'), esc(siteUrl().replace(/^https?:\/\//, '')))}
+    </div>
+    <div class="group flush rows" style="background:var(--surface-2)">
+      ${row('data-go="history"', ico('clock'), T('История сводок', 'Report history'), T('графики и архив сводок', 'charts and report archive'))}
+      ${row('data-go="help"', ico('help'), T('Как читать дашборд', 'How to read this dashboard'), T('простыми словами, без жаргона', 'in plain words, no jargon'))}
+      ${row('id="m-checks"', ico('check'), T('Проверка данных', 'Data checks'), `${ch.filter(c => c.ok).length} ${T('из', 'of')} ${ch.length} ${T('пройдено', 'passed')}${u ? T(' при обновлении', ' on update') : ''}`)}
     </div>`);
-  });
+  }
+  $('#menu').addEventListener('click', openMore);
+  document.addEventListener('click', e => { if (e.target.closest('[data-more]')) openMore(); });
   $('#sheet').addEventListener('click', e => { if (e.target.closest('#m-checks')) openChecks(); });
 
   // ---------- СТАКАН ----------
@@ -2545,7 +2609,7 @@ details.upd-more[open] summary{margin-bottom:8px}
         ${b.off ? `<div class="warnline">${T('Цена этой биржи отличается от остальных больше чем на 3% — в общие суммы она не входит.', 'This exchange’s price differs from the others by more than 3% — it’s excluded from the totals.')}</div>` : ''}
         <div class="depth">${depthRow('±2%', b.d2, maxv)}${depthRow('±5%', b.d5, maxv)}${depthRow('±10%', b.d10, maxv)}${depthRow('±25%', b.d25, maxv)}</div>
         <div class="walls"><div><h4 class="b">${T('Ближайшие крупные покупки', 'Nearest large buy orders')}</h4>${wallList(near(b.bids, 'b'), 'b', wd, b.cmp, k, true)}</div><div><h4 class="a">${T('Ближайшие крупные продажи', 'Nearest large sell orders')}</h4>${wallList(near(b.asks, 'a'), 'a', wd, b.cmp, k, true)}</div></div>
-        <details class="bdet"><summary>${T('Все крупные заявки', 'All large orders')}${nAll ? ' (' + nAll + ')' : ''} ${T('и подробности', 'and details')}</summary>
+        <details class="bdet" data-k="${k}"><summary>${T('Все крупные заявки', 'All large orders')}${nAll ? ' (' + nAll + ')' : ''} ${T('и подробности', 'and details')}</summary>
           <div class="bdet-in">
             <div class="walls"><div><h4 class="b">${T('Покупки', 'Buy orders')}</h4>${wallList(b.bids, 'b', wd, b.cmp, k)}</div><div><h4 class="a">${T('Продажи', 'Sell orders')}</h4>${wallList(b.asks, 'a', wd, b.cmp, k)}</div></div>
             ${gone.length ? `<div class="note">${T('Сняты', 'Pulled')}: ${gone.map(w => `${n(w.q0, 1)}${MLN} ${w.s === 'b' ? T('на покупку', 'buy') : T('на продажу', 'sell')} ${T('по', 'at')} ${m1s(w.p)}`).join('; ')}</div>` : ''}
@@ -2913,7 +2977,8 @@ details.upd-more[open] summary{margin-bottom:8px}
         <p style="margin-top:8px"><b>Avg buy</b> under a wallet’s description is the average price, per 1M DOG, at which the wallet bought or was topped up after the airdrop: each deposit is valued at that day’s exchange price. Airdropped coins were free, so they’re left out of the average and their share is shown separately (“airdrop 40%”). The percentage shows how today’s price compares. Tap a wallet to see its balance, change, a larger chart, the average-cost details and an address you can copy. Exchange wallets have no average cost — they hold many customers’ coins.</p></div>
       <div><h3>How DOG is held</h3><ul><li><b>Average purchase price</b> — the average price at which coins last changed hands. If today’s price is lower, most holders bought higher.</li><li><b>In profit vs. at a loss</b> — what share of coins is now worth more or less than the price of its last transfer.</li><li><b>Held over a year</b> — the more coins that haven’t moved in over a year, the less holders are selling.</li></ul></div>
       <div><h3>News</h3><p>Every morning the update looks for posts on X (Leonidas, the official DOG accounts, DOG DATA), listings, delistings, research and company reports on DOG purchases. Each item links to its source.</p></div>
-      <div><h3>When it updates</h3><p>Every morning a full report with news is built on a server. On top of it, whenever you open the site or tap <b>Update</b>, the page itself pulls fresh data: order books from Kraken, Gate, DigiFinex and CoinW, the price chart, the top 100 wallets and exchange balances, the holder count, transfers of 5M+ DOG and the bitcoin price — and then checks itself: are the sources fresh, do exchange prices agree, is every book sane. MEXC and BingX don’t answer requests from web pages, so their order books stay from the morning report and are marked as such. The status at the top shows the time of the data; tap it to see what changed since the morning report and the full list of checks. The price itself updates live from Kraken.</p></div>
+      <div><h3>When it updates</h3><p>Every morning a full report with news is built on a server. On top of it, the page pulls fresh data itself — when you open it, every 2 minutes while it stays open, and whenever you tap <b>Update</b> (or pull the page down on a phone): order books from Kraken, Gate, DigiFinex and CoinW, the price chart, the top 100 wallets and exchange balances, the holder count, transfers of 5M+ DOG and the bitcoin price — and then checks itself: are the sources fresh, do exchange prices agree, is every book sane. MEXC and BingX don’t answer requests from web pages, so their order books stay from the morning report and are marked as such. The status at the top shows the time of the data; tap it to see what changed since the morning report and the full list of checks. The price itself updates live from Kraken.</p></div>
+      <div><h3>Use it like an app</h3><p>In the ⋯ menu (Settings on a computer) choose <b>Install as an app</b> or, on an iPhone, <b>Add to Home Screen</b>. DOG Monitor then opens full-screen from its own icon, refreshes itself and shows the last saved data when there’s no connection. The same menu has the language and the appearance: automatic, light or dark. On a computer, press <b>R</b> to update.</p></div>
       <h2 id="sources">Sources and method</h2>
       <div class="foot-src">
         <p><b>Sources.</b> Holders, the top 100, transfers of 5M+ DOG, trading venues, coin age, average purchase price, the airdrop and DOG on other chains come from DOG DATA (dogdata.xyz, which indexes the Bitcoin blockchain). Order books come from the public APIs of Kraken (DOG/USD), Gate, MEXC, BingX, DigiFinex, CoinW and Bitget (DOG/USDT). The price chart uses Kraken candles. C2 Blockchain holdings come from the company’s press releases. Price aggregator websites are not used.</p>
@@ -2949,7 +3014,8 @@ details.upd-more[open] summary{margin-bottom:8px}
         <p style="margin-top:8px"><b>Ср. цена покупок</b> под описанием кошелька — по какой цене в среднем кошелёк покупал и пополнялся после аирдропа, за 1 млн DOG: каждое поступление оценивается по цене дня на бирже. Монеты с аирдропа достались бесплатно, в среднюю цену не входят, их доля написана отдельно («аирдроп 40%»). Процент — насколько цена сейчас выше или ниже. Нажмите на кошелёк — откроются баланс, изменение, большой график, подробности о средней цене и адрес. Для кошельков бирж средней цены нет: там монеты многих клиентов.</p></div>
       <div><h3>Как держат DOG</h3><ul><li><b>Средняя цена покупки</b> — по какой цене монеты в среднем последний раз переходили из рук в руки. Если текущая цена ниже — большинство купило дороже.</li><li><b>В прибыли и в убытке</b> — какая доля монет сейчас стоит дороже или дешевле цены последнего перевода.</li><li><b>Лежат больше года</b> — чем больше монет не двигались больше года, тем меньше холдеры продают.</li></ul></div>
       <div><h3>Новости</h3><p>Каждое утро обновление ищет посты в X (Leonidas, официальные аккаунты DOG, DOG DATA), листинги, делистинги, исследования и отчёты компаний о покупках DOG. Ссылка всегда ведёт на источник.</p></div>
-      <div><h3>Когда обновляется</h3><p>Каждое утро на сервере собирается полная сводка с новостями. Поверх неё при каждом открытии сайта и по кнопке <b>«Обновить»</b> страница сама берёт свежие данные: стаканы Kraken, Gate, DigiFinex и CoinW, график цены, топ-100 кошельков и балансы бирж, число холдеров, переводы от 5 млн DOG и цену биткоина — и проверяет себя: свежие ли источники, сходятся ли цены бирж, нет ли битых стаканов. MEXC и BingX не отвечают на запросы со страниц сайтов, поэтому их стаканы остаются из утренней сводки, с пометкой. Время данных видно вверху: нажмите на него, чтобы увидеть, что изменилось с утренней сводки, и полный список проверок. Цена обновляется онлайн с Kraken.</p></div>
+      <div><h3>Когда обновляется</h3><p>Каждое утро на сервере собирается полная сводка с новостями. Поверх неё страница сама берёт свежие данные — при открытии, каждые 2 минуты, пока она открыта, и по кнопке <b>«Обновить»</b> (на телефоне можно просто потянуть страницу вниз): стаканы Kraken, Gate, DigiFinex и CoinW, график цены, топ-100 кошельков и балансы бирж, число холдеров, переводы от 5 млн DOG и цену биткоина — и проверяет себя: свежие ли источники, сходятся ли цены бирж, нет ли битых стаканов. MEXC и BingX не отвечают на запросы со страниц сайтов, поэтому их стаканы остаются из утренней сводки, с пометкой. Время данных видно вверху: нажмите на него, чтобы увидеть, что изменилось с утренней сводки, и полный список проверок. Цена обновляется онлайн с Kraken.</p></div>
+      <div><h3>Как приложение</h3><p>В меню «⋯» (на компьютере — «Настройки») выберите <b>«Установить как приложение»</b>, а на iPhone — <b>«Добавить на экран „Домой“»</b>. Тогда DOG Монитор открывается на весь экран со своего значка, сам обновляется, а без сети показывает последние сохранённые данные. В том же меню — язык и оформление: автоматическое, светлое или тёмное. На компьютере обновить можно клавишей <b>R</b>.</p></div>
       <h2 id="sources">Источники и расчёт</h2>
       <div class="foot-src">
         <p><b>Источники.</b> Холдеры, топ-100, переводы от 5 млн DOG, площадки, возраст монет, средняя цена покупки, аирдроп и DOG в других сетях — DOG DATA (dogdata.xyz, индексирует блокчейн Bitcoin). Стаканы — публичные API бирж: Kraken (DOG/USD), Gate, MEXC, BingX, DigiFinex, CoinW, Bitget (DOG/USDT). График цены — свечи Kraken. Запасы C2 Blockchain — пресс-релизы компании. Сайты-агрегаторы цен не используются.</p>
@@ -3222,9 +3288,10 @@ details.upd-more[open] summary{margin-bottom:8px}
     for (const ex of UP.LIVE) {
       const b = lv[ex], nm = EXN[ex];
       if (!b) { chk(false, T(`${nm}: нет ответа — стакан из сводки ${rep}`, `${nm}: no response — order book from the ${rep} report`)); continue; }
+      if ((raw.stale || {})[ex]) { chk(false, T(`${nm}: нет ответа — стакан на ${tl(raw.t[ex])}`, `${nm}: no response — order book as of ${tl(raw.t[ex])}`)); continue; }
       const ms = (st[ex] || {}).ms || 0;
       chk(b.bid < b.ask, b.bid < b.ask
-        ? T(`${nm}: стакан получен — ${n(b.bids.length)} + ${n(b.asks.length)} ${plural(b.asks.length, 'уровень', 'уровня', 'уровней')}${ms ? ', ' + n(ms / 1000, 1) + ' с' : ''}`, `${nm}: order book received — ${n(b.bids.length)} + ${n(b.asks.length)} levels${ms ? ', ' + n(ms / 1000, 1) + ' s' : ''}`)
+        ? T(`${nm}: стакан получен — ${n(b.bids.length)} + ${n(b.asks.length)} ${plural(b.asks.length, 'уровень', 'уровня', 'уровней')}${ms ? ', ' + n(Math.max(0.1, ms / 1000), 1) + ' с' : ''}`, `${nm}: order book received — ${n(b.bids.length)} + ${n(b.asks.length)} levels${ms ? ', ' + n(Math.max(0.1, ms / 1000), 1) + ' s' : ''}`)
         : T(`${nm}: лучшая покупка не ниже лучшей продажи — данные битые`, `${nm}: best bid isn’t below best ask — bad data`));
     }
     const books = {};
@@ -3393,6 +3460,8 @@ details.upd-more[open] summary{margin-bottom:8px}
       if (chk(ok, T(`BTC (Coinbase): ${n(bp)} $, ${bTm ? tl(bTm) : '—'}`, `BTC (Coinbase): $${n(bp)}, ${bTm ? tl(bTm) : '—'}`))) { L.btc = Math.round(bp); L.srcTs = Object.assign({}, L.srcTs, { btc: isoS(bTm.getTime()) }); }
     }
 
+    const stl = raw.stale || {}, SRCN = { top: T('DOG DATA: топ-100', 'DOG DATA: top 100'), ddh: T('DOG DATA: число холдеров', 'DOG DATA: holder count'), whales: T('DOG DATA: переводы', 'DOG DATA: transfers'), btc: 'BTC (Coinbase)', gateTk: T('Gate: итоги за сутки', 'Gate: 24h stats') };
+    for (const k of Object.keys(SRCN)) if (stl[k]) chk(false, T(`${SRCN[k]}: нет ответа — данные на ${tl(raw.t[k])}`, `${SRCN[k]}: no response — data as of ${tl(raw.t[k])}`));
     if (!h1 && !d1) chk(false, T(`График Kraken: свечи не пришли — график из сводки ${rep}`, `Kraken chart: candles didn’t arrive — chart from the ${rep} report`));
     if (!raw.top) chk(false, T(`DOG DATA: топ-100 не загрузился — список из сводки ${rep}`, `DOG DATA: the top 100 didn’t load — list from the ${rep} report`));
     if (!raw.ddh) chk(false, T(`DOG DATA: число холдеров не загрузилось — из сводки ${rep}`, `DOG DATA: the holder count didn’t load — from the ${rep} report`));
@@ -3477,19 +3546,26 @@ details.upd-more[open] summary{margin-bottom:8px}
   }
 
   // ---------- запуск ----------
+  // при автообновлении DOG DATA спрашиваем реже: топ-100 и холдеры меняются раз в несколько часов, переводы — не каждую минуту
+  const UP_SOFT = { top: 10 * 60e3, ddh: 10 * 60e3, whales: 5 * 60e3 };
+  // источник не ответил, а его недавний ответ есть — показываем его (с пометкой в самопроверке), а не утренний
+  const UP_KEEP = { kraken: 10 * 60e3, gate: 10 * 60e3, gateTk: 10 * 60e3, digifinex: 10 * 60e3, coinw: 10 * 60e3, btc: 10 * 60e3, top: 30 * 60e3, ddh: 30 * 60e3, whales: 30 * 60e3 };
   function runUpdate(opt) {
     opt = opt || {};
-    if (UP.run) return UP.run;
-    UP.st = {}; UP.t0 = Date.now(); UP.err = null; UP.badChecks = null;
+    if (UP.run) { if (!opt.silent && UP.silent) { UP.silent = false; paintUpd(); setStatus(); } return UP.run; }
+    UP.st = {}; UP.err = null; UP.badChecks = null; UP.silent = !!opt.silent;
     UP_SRC.forEach(([k]) => { UP.st[k] = { s: 'run' }; });
+    const prevRaw = UP.raw;
     UP.run = (async () => {
-      const raw = { t: {}, cached: {} };
+      const raw = { t: {}, cached: {}, stale: {} };
       const since = Date.now() - UP.last;                   // нажали «Обновить» сразу ещё раз — даём биржам передышку
       if (UP.last && since < 5000) await pause(5000 - since);
       UP.t0 = Date.now();
+      const reuse = (k, why) => { raw[k] = prevRaw[k]; raw.t[k] = prevRaw.t[k]; raw[why][k] = Date.now() - prevRaw.t[k]; };
       await Promise.all(UP_SRC.map(async ([k, url, delay]) => {
         const c = UP_TTL[k] ? cachedOhlc(k) : null;
         if (c) { raw[k] = c.d; raw.t[k] = c.t; raw.cached[k] = Date.now() - c.t; UP.st[k] = { s: 'ok', ms: 0, cached: true }; paintUpd(); return; }
+        if (UP.silent && UP_SOFT[k] && prevRaw && prevRaw[k] && Date.now() - prevRaw.t[k] < UP_SOFT[k]) { reuse(k, 'cached'); UP.st[k] = { s: 'ok', ms: 0, cached: true }; return; }
         if (delay) await pause(delay);
         try {
           const r = await upGet(url(), k === 'd1' || k === 'h1' || k === 'whales' ? 12000 : 9000);
@@ -3500,15 +3576,16 @@ details.upd-more[open] summary{margin-bottom:8px}
           // свечи не пришли (часто — лимит Kraken): берём сохранённые, если им меньше часа
           const old = UP_TTL[k] ? store.get('ohlc.' + k, null) : null;
           if (old && old.d && Date.now() - old.t < 36e5) { raw[k] = old.d; raw.t[k] = old.t; raw.cached[k] = Date.now() - old.t; UP.st[k] = { s: 'ok', ms: 0, cached: true }; }
+          else if (UP_KEEP[k] && prevRaw && prevRaw[k] && Date.now() - prevRaw.t[k] < UP_KEEP[k]) reuse(k, 'stale');
         }
         paintUpd();
       }));
       raw.done = Date.now();
       UP.dur = raw.done - UP.t0;
       const got = Object.keys(UP.st).filter(k => UP.st[k].s === 'ok').length;
-      if (!got) { UP.err = 'offline'; return null; }
+      if (!got) { UP.err = navigator.onLine === false ? 'offline' : 'network'; return null; }
       UP.raw = raw; UP.at = raw.done;
-      await applyUpdate();
+      await applyUpdate({ soft: true, now: !UP.silent });
       return S.cur && S.cur.upd ? S.cur.upd : null;
     })().catch(e => { UP.err = String(e && e.message || e); return null; }).finally(() => {
       UP.run = null; UP.last = Date.now();
@@ -3518,8 +3595,9 @@ details.upd-more[open] summary{margin-bottom:8px}
     paintUpd(); setStatus();
     return UP.run;
   }
-  // строит онлайн-сводку поверх текущей утренней и перерисовывает сайт
-  async function applyUpdate() {
+  // строит онлайн-сводку поверх утренней; перерисовка — без пересоздания графика и без сброса прокрутки
+  async function applyUpdate(opt) {
+    opt = opt || {};
     const base = S.base;
     if (!base || !UP.raw) return;
     const prev = await Promise.race([prevSnap(base.prevId), pause(4000).then(() => null)]);
@@ -3528,7 +3606,63 @@ details.upd-more[open] summary{margin-bottom:8px}
     try { L = buildLive(base, UP.raw, prev); } catch (e) { UP.err = String(e && e.message || e); try { console.error(e); } catch (x) { } }
     if (!L) { if (!UP.err) UP.err = 'check'; return; }
     S.cur = L;
-    if (!S.archived) renderAll(); else setStatus();
+    if (S.archived) { setStatus(); return; }
+    if (opt.soft && $('#p-overview .hero')) { if (opt.now) softRender(); else scheduleSoft(); }
+    else renderAll();
+  }
+  // пользователь листает или водит пальцем по графику — подождём, чтобы ничего не прыгало под рукой
+  ['pointerdown', 'touchstart', 'wheel', 'keydown'].forEach(ev => window.addEventListener(ev, () => { UP.touchAt = Date.now(); }, { passive: true, capture: true }));
+  window.addEventListener('scroll', () => { UP.touchAt = Date.now(); }, { passive: true });
+  function scheduleSoft() {
+    clearTimeout(scheduleSoft.t);
+    if (Date.now() - (UP.touchAt || 0) < 3500 || (HC && HC.touching) || $('#p-overview .hero.scrub')) { scheduleSoft.t = setTimeout(scheduleSoft, 1500); return; }
+    softRender();
+  }
+  // перерисовка без мигания: главная — по частям, график получает новые свечи на месте; раскрытые блоки и поиск сохраняются
+  function softRender() {
+    clearTimeout(scheduleSoft.t);
+    const s = V();
+    if (!s || S.archived) return;
+    if (!$('#p-overview .hero')) { renderAll(); return; }
+    const y = window.scrollY;
+    const put = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+    setStatus();
+    put('st-box', storiesHtml(buildStories(s)));
+    put('tiles-box', tilesHtml(s)); put('sum-box', summaryHtml(s)); put('ex-box', exchangesHtml(s)); put('chk-box', checkRowHtml(s));
+    put('tre-box', treasuryHtml()); put('news-box', newsPreviewHtml());
+    const bar = $('#updbar'); if (bar) bar.outerHTML = updBarHtml(s);
+    if (!livePrice()) { const cap = $('#hcap'); if (cap) cap.textContent = T('капитализация ≈ ', 'market cap ≈ ') + usd(((s.price || {}).cap || 0) * 1e6); }
+    refreshChart();
+    const hp = $('#hprice'), was = hp && hp.firstChild ? hp.firstChild.nodeValue : null;
+    if (!$('#p-overview .hero.scrub')) resetHero();
+    if (hp && hp.firstChild && was != null && hp.firstChild.nodeValue !== was && !RM && !livePrice()) {
+      const up = parseFloat(String(hp.firstChild.nodeValue).replace(',', '.')) > parseFloat(String(was).replace(',', '.'));
+      hp.classList.remove('tick-up', 'tick-down'); void hp.offsetWidth; hp.classList.add(up ? 'tick-up' : 'tick-down');
+    }
+    const open = $$('#p-books details[open][data-k]').map(d => d.dataset.k);
+    renderBooks();
+    open.forEach(k => { const d = $(`#p-books details[data-k="${k}"]`); if (d) d.open = true; });
+    renderFlows();
+    if (!(document.activeElement && document.activeElement.id === 'wsearch')) renderWallets();
+    if (Math.abs(window.scrollY - y) > 1) window.scrollTo(0, y);
+  }
+  // новые свечи — в тот же график (без пересоздания и мигания)
+  function refreshChart() {
+    const el = $('#pchart'), s = V();
+    if (!el || !s) return;
+    if (!(HC && HC.el === el && el.isConnected) || HC.touching) { drawPrice(false); return; }
+    const R = priceRows(s, S.period);
+    if (!R || !R.rows.length) return;
+    try {
+      const Tm = r => r[0] + TZ;
+      if (HC.vol) {
+        HC.main.setData(R.rows.map(r => ({ time: Tm(r), open: r[1], high: r[2], low: r[3], close: r[4] })));
+        HC.vol.setData(R.rows.map(r => ({ time: Tm(r), value: r[5] || 0, color: r[4] >= r[1] ? 'rgba(61,211,156,0.32)' : 'rgba(255,124,128,0.32)' })));
+      } else HC.main.setData(R.rows.map(r => ({ time: Tm(r), value: r[4] })));
+      HC.rows = R.rows; HC.base = R.line || R.closeBase ? R.rows[0][4] : R.rows[0][1];
+      HC.key = [s.id, S.period, S.chartMode, R.rows.length, R.rows[R.rows.length - 1][4]].join('|');
+      try { HC.chart.timeScale().fitContent(); } catch (e) { }
+    } catch (e) { drawPrice(true); }
   }
 
   // ---------- интерфейс обновления ----------
@@ -3537,7 +3671,7 @@ details.upd-more[open] summary{margin-bottom:8px}
     if (st.some(x => x.s === 'run')) return { s: 'run' };
     const ok = st.filter(x => x.s === 'ok');
     if (!ok.length) return { s: 'err', e: (st[0] || {}).e };
-    return { s: ok.length === st.length ? 'ok' : 'part', ms: Math.max(...ok.map(x => x.ms || 0)) };
+    return { s: ok.length === st.length ? 'ok' : 'part', ms: Math.max(...ok.map(x => x.ms || 0)), cached: ok.every(x => x.cached) };
   }
   function srcListHtml() {
     const rep = S.base ? tl(S.base.ts) : '';
@@ -3546,7 +3680,7 @@ details.upd-more[open] summary{margin-bottom:8px}
       const r = upRowState(keys);
       if (r.s === 'run') return li('', '<span class="spinner" aria-hidden="true"></span>', esc(nm), esc(what), T('запрос…', 'loading…'));
       if (r.s === 'err') return li('bad', ico('alert'), esc(nm), esc(what), r.e === 'timeout' ? T('не ответил вовремя', 'timed out') : T('нет ответа', 'no response'));
-      return li(r.s === 'ok' ? 'ok' : 'bad', ico(r.s === 'ok' ? 'check' : 'alert'), esc(nm), esc(what), r.s === 'ok' ? n(r.ms / 1000, 1) + T(' с', ' s') : T('частично', 'partly'));
+      return li(r.s === 'ok' ? 'ok' : 'bad', ico(r.s === 'ok' ? 'check' : 'alert'), esc(nm), esc(what), r.s === 'ok' ? (r.cached ? T('сохранено', 'cached') : n(Math.max(0.1, r.ms / 1000), 1) + T(' с', ' s')) : T('частично', 'partly'));
     }).join('');
     const kept = ['mexc', 'bingx'].filter(ex => S.base && (S.base.books || {})[ex]);
     if (kept.length) h += li('info', ico('clock'), esc(kept.map(e => EXN[e]).join(', ')), T('стаканы — из утренней сводки: эти биржи не отвечают на запросы со страниц сайтов', 'order books from the morning report: these exchanges don’t answer requests from web pages'), rep);
@@ -3579,7 +3713,7 @@ details.upd-more[open] summary{margin-bottom:8px}
     const a = S.audit;
     if (!run && a && (a.items || []).length) h += `<details class="upd-more"><summary>${T('Самопроверка утренней выкладки', 'Morning publish self-check')} · ${esc(dtl(a.ts))}</summary><ul class="list">${a.items.map(x => `<li><span class="ok">${ico('check')}</span><span>${esc(chkTr(x))}</span></li>`).join('')}</ul></details>`;
     h += `<div class="btns"><button type="button" class="btn primary" data-upd ${run ? 'disabled' : ''}>${ico('refresh', run ? 'spin' : '')}<span>${run ? T('Обновляю…', 'Updating…') : (u ? T('Обновить ещё раз', 'Update again') : T('Обновить сейчас', 'Update now'))}</span></button>${run ? '' : `<button type="button" class="btn" data-close>${T('Готово', 'Done')}</button>`}</div>`;
-    h += `<p class="note">${T('Онлайн обновляются стаканы Kraken, Gate, DigiFinex и CoinW, цена и график, топ-100 и балансы бирж, число холдеров, переводы от 5 млн и биткоин. Полная сводка с новостями собирается каждое утро.', 'Live updates cover the Kraken, Gate, DigiFinex and CoinW order books, price and chart, the top 100 and exchange balances, holder count, 5M+ transfers and bitcoin. A full report with news is built every morning.')}</p>`;
+    h += `<p class="note">${T('Пока страница открыта, она сама обновляется каждые 2 минуты. Онлайн обновляются стаканы Kraken, Gate, DigiFinex и CoinW, цена и график, топ-100 и балансы бирж, число холдеров, переводы от 5 млн и биткоин. Полная сводка с новостями собирается каждое утро.', 'While the page is open, it refreshes itself every 2 minutes. Live updates cover the Kraken, Gate, DigiFinex and CoinW order books, price and chart, the top 100 and exchange balances, holder count, 5M+ transfers and bitcoin. A full report with news is built every morning.')}</p>`;
     return h + '</div>';
   }
   function openUpd(start) {
@@ -3592,16 +3726,17 @@ details.upd-more[open] summary{margin-bottom:8px}
     if (body && !$('#sheet').hidden && body.querySelector('[data-updsheet]')) { const y = body.scrollTop; body.innerHTML = updSheetHtml(); body.scrollTop = y; }
     const bar = $('#updbar');
     if (bar && V() && !S.archived) bar.outerHTML = updBarHtml(V());
-    $$('[data-upd]').forEach(b => { if (!b.closest('[data-updsheet]') && !b.closest('#updbar')) { b.disabled = !!UP.run; const i = b.querySelector('.ico'); if (i) i.classList.toggle('spin', !!UP.run); } });
+    const loud = !!UP.run && !UP.silent;
+    $$('[data-upd]').forEach(b => { if (!b.closest('[data-updsheet]') && !b.closest('#updbar')) { b.disabled = loud; const i = b.querySelector('.ico'); if (i) i.classList.toggle('spin', !!UP.run); } });
   }
   function updBarHtml(s) {
-    const u = s && s.upd, run = !!UP.run;
+    const u = s && s.upd, run = !!UP.run && !UP.silent, sync = !!UP.run && UP.silent;
     const ok = u ? u.okN === u.n : false;
     const wt = x => sameDay(toDate(x), new Date()) ? tl(x) : when(x);
     const title = run ? T('Обновляю данные…', 'Updating data…') : (u ? `${T('Онлайн-данные на', 'Live data as of')} ${esc(wt(u.ts))}` : `${esc(KIND_TITLE[s.kind] || T('Сводка', 'Report'))} · ${esc(wt(s.ts))}`);
     const sub = run ? T('стаканы, топ-100, переводы — прямо с бирж и DOG DATA', 'order books, top 100, transfers — straight from exchanges and DOG DATA')
-      : (u ? T(`проверок пройдено: ${u.okN} из ${u.n}`, `${u.okN} of ${u.n} checks passed`) : (UP.err ? (UP.err === 'check' ? T('свежие данные не прошли проверку', 'fresh data failed the check') : T('свежие данные не загрузились', 'fresh data didn’t load')) : T('обновите, чтобы взять свежие стаканы и переводы', 'update for fresh order books and transfers')));
-    return `<div class="updbar ${run ? 'run' : (u ? (ok ? 'ok' : 'warn') : (UP.err ? 'warn' : ''))}" id="updbar">
+      : (u ? T(`проверок пройдено: ${u.okN} из ${u.n}`, `${u.okN} of ${u.n} checks passed`) : (UP.err ? (UP.err === 'check' ? T('свежие данные не прошли проверку', 'fresh data failed the check') : (navigator.onLine === false ? T('нет сети — показана последняя сводка', 'offline — showing the last report') : T('свежие данные не загрузились', 'fresh data didn’t load'))) : T('обновите, чтобы взять свежие стаканы и переводы', 'update for fresh order books and transfers')));
+    return `<div class="updbar ${run ? 'run' : (u ? (ok ? 'ok' : 'warn') : (UP.err ? 'warn' : ''))}${sync ? ' sync' : ''}" id="updbar">
         <button type="button" class="ub-info" data-updopen><span class="ub-dot" aria-hidden="true"></span><span class="ub-t"><b>${title}</b><span>${sub}</span></span></button>
         <button type="button" class="btn sm ub-btn" data-upd ${run ? 'disabled' : ''}>${ico('refresh', run ? 'spin' : '')}<span>${run ? T('Обновляю', 'Updating') : T('Обновить', 'Update')}</span></button>
       </div>`;
@@ -3611,13 +3746,122 @@ details.upd-more[open] summary{margin-bottom:8px}
     if (u) { if (u.disabled) return; if (S.archived) { S.view = null; S.archived = false; renderAll(); } openUpd(true); return; }
     if (e.target.closest('[data-updopen]')) openUpd(false);
   });
-  // вернулись на вкладку через 10+ минут — тихо обновляем
-  document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState !== 'visible' || UP.run || !S.base) return;
-    if (Date.now() - Math.max(UP.at, UP.last) > 10 * 60e3) runUpdate({ toast: true });
+  // пока страница открыта и на виду — тихо обновляемся раз в 2 минуты; вернулись на вкладку — тоже
+  const AUTO_MS = 2 * 60e3;
+  const autoTick = () => {
+    if (document.visibilityState !== 'visible' || UP.run || !S.base || S.archived || navigator.onLine === false) return;
+    if (Date.now() - Math.max(UP.at || 0, UP.last || 0) >= AUTO_MS) runUpdate({ silent: true });
+  };
+  setInterval(autoTick, 15e3);
+  document.addEventListener('visibilitychange', autoTick);
+  window.addEventListener('online', () => { setStatus(); paintUpd(); if (S.base && !UP.run) runUpdate({ silent: true }); });
+  window.addEventListener('offline', () => { setStatus(); paintUpd(); });
+
+  // потяните страницу вниз, когда она в самом верху, — данные обновятся (как в банковских приложениях)
+  (function pullToRefresh() {
+    if (!('ontouchstart' in window)) return;
+    const ind = document.createElement('div');
+    ind.className = 'ptr'; ind.setAttribute('aria-hidden', 'true');
+    ind.innerHTML = `<span class="ptr-c">${ico('refresh')}</span>`;
+    document.body.appendChild(ind);
+    const TRIG = 62, MAX = 104, circ = ind.firstChild;
+    let P = null;
+    const show = (dy, ready) => { ind.style.transform = `translate(-50%, ${(dy - 50).toFixed(1)}px)`; ind.style.opacity = String(Math.min(1, dy / 36)); circ.style.transform = `rotate(${(dy * 3.4).toFixed(0)}deg)`; ind.classList.toggle('ready', ready); };
+    const hide = () => { ind.classList.add('back'); ind.style.transform = ''; ind.style.opacity = '0'; setTimeout(() => { ind.classList.remove('back', 'ready', 'busy'); circ.style.transform = ''; }, 320); };
+    const skip = t => !$('#sheet').hidden || !$('#story').hidden || !!(t && t.closest && t.closest('#pchart, input, textarea, select, .sheet'));
+    document.addEventListener('touchstart', e => {
+      P = null;
+      if (e.touches.length !== 1 || window.scrollY > 2 || skip(e.target) || (UP.run && !UP.silent)) return;
+      P = { x0: e.touches[0].clientX, y0: e.touches[0].clientY, dy: 0, on: false };
+    }, { passive: true });
+    document.addEventListener('touchmove', e => {
+      if (!P) return;
+      const dx = e.touches[0].clientX - P.x0, d = e.touches[0].clientY - P.y0;
+      if (!P.on) {
+        if (Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(d)) { P = null; return; }   // горизонтальный жест — не наш
+        if (d < 10) { if (d < -4) P = null; return; }
+        if (window.scrollY > 2) { P = null; return; }
+        P.on = true; ind.classList.remove('back');
+      }
+      P.dy = Math.min(MAX, Math.max(0, d - 10) * 0.55);
+      if (e.cancelable) e.preventDefault();
+      show(P.dy, P.dy >= TRIG);
+    }, { passive: false });
+    const end = () => {
+      if (!P || !P.on) { P = null; return; }
+      const go = P.dy >= TRIG; P = null;
+      if (!go) { hide(); return; }
+      ind.classList.add('busy'); show(TRIG, true); circ.style.transform = '';
+      try { navigator.vibrate && navigator.vibrate(8); } catch (e) { }
+      runUpdate().then(u => {
+        hide();
+        if (u) toast(T(`Обновлено в ${tl(u.ts)}`, `Updated at ${tl(u.ts)}`));
+        else if (UP.err) toast(navigator.onLine === false ? T('Нет сети — показаны последние данные', 'Offline — showing the latest saved data') : T('Не удалось обновить — попробуйте ещё раз', 'Couldn’t update — try again'));
+      });
+    };
+    document.addEventListener('touchend', end, { passive: true });
+    document.addEventListener('touchcancel', end, { passive: true });
+  })();
+
+  // установить как приложение: Android и компьютер — системный запрос, iPhone — подсказка
+  let installEvt = null;
+  window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; });
+  window.addEventListener('appinstalled', () => { installEvt = null; toast(T('Приложение установлено', 'App installed')); });
+  const isStandalone = () => { try { return matchMedia('(display-mode: standalone)').matches || navigator.standalone === true; } catch (e) { return false; } };
+  const isIOS = () => /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  function installRowHtml() {
+    if (isStandalone()) return '';
+    const r = (attr, t, sub) => `<button type="button" class="row" ${attr}><span class="av">${ico('install')}</span><span class="t"><b>${t}</b><span>${sub}</span></span><span class="v faint">${ico('chev')}</span></button>`;
+    if (installEvt) return r('data-install', T('Установить как приложение', 'Install as an app'), T('значок на экране, открывается без браузера', 'home-screen icon, opens without the browser'));
+    if (isIOS()) return r('data-install-ios', T('Добавить на экран «Домой»', 'Add to Home Screen'), T('откроется как приложение', 'opens like an app'));
+    return '';
+  }
+  document.addEventListener('click', e => {
+    if (e.target.closest('[data-install]') && installEvt) { const ev = installEvt; installEvt = null; closeSheet(); try { ev.prompt(); } catch (err) { } return; }
+    if (e.target.closest('[data-install-ios]')) {
+      openSheet(T('На экран «Домой»', 'Add to Home Screen'), `<ol class="steps">
+        <li>${T('Откройте сайт в Safari.', 'Open the site in Safari.')}</li>
+        <li>${T('Нажмите «Поделиться»', 'Tap Share')} <span class="kbd">${ico('share')}</span> ${T('— внизу или вверху экрана.', '— at the bottom or top of the screen.')}</li>
+        <li>${T('Выберите «На экран “Домой”» и нажмите «Добавить».', 'Choose “Add to Home Screen”, then tap “Add”.')}</li></ol>
+        <p class="note">${T('Значок DOG Монитора появится рядом с приложениями. Сайт откроется на весь экран, сам обновит данные, а без сети покажет последние сохранённые.', 'The DOG Monitor icon appears next to your apps. It opens full-screen, refreshes its data by itself and shows the last saved data when offline.')}</p>`);
+    }
+  });
+
+  // оформление: как в системе, светлое или тёмное (выбор хранится в этом браузере)
+  const THEMES = [['auto', T('Авто', 'Auto')], ['light', T('Светлая', 'Light')], ['dark', T('Тёмная', 'Dark')]];
+  const themeNow = () => { const t = store.get('theme', 'auto'); return t === 'light' || t === 'dark' ? t : 'auto'; };
+  function setTheme(t) {
+    store.set('theme', t);
+    const r = document.documentElement;
+    if (t === 'auto') r.removeAttribute('data-theme'); else r.setAttribute('data-theme', t);
+    $$('meta[name="theme-color"]').forEach(m => { if (!m.dataset.c) m.dataset.c = m.media && /dark/.test(m.media) ? '#080B14' : '#EDEFF5'; m.setAttribute('content', t === 'auto' ? m.dataset.c : (t === 'dark' ? '#080B14' : '#EDEFF5')); });
+    $$('[data-theme-set]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.themeSet === t)));
+  }
+  function themeSwitch() {
+    const cur = themeNow();
+    return `<div class="langsw" role="group" aria-label="${T('Оформление', 'Appearance')}">${THEMES.map(([k, l]) => `<button type="button" data-theme-set="${k}" aria-pressed="${String(cur === k)}">${l}</button>`).join('')}</div>`;
+  }
+  document.addEventListener('click', e => { const b = e.target.closest('[data-theme-set]'); if (b) setTheme(b.dataset.themeSet); });
+
+  // поделиться ссылкой: на телефоне — системное меню, на компьютере — копируем
+  const siteUrl = () => location.origin + location.pathname + (RU ? '?lang=ru' : '') + (S.tab && S.tab !== 'overview' ? '#' + S.tab : '');
+  document.addEventListener('click', e => {
+    if (!e.target.closest('[data-share]')) return;
+    const url = siteUrl();
+    if (navigator.share) { navigator.share({ title: T('DOG Монитор', 'DOG Monitor'), url }).catch(() => { }); return; }
+    const done = () => toast(T('Ссылка скопирована', 'Link copied'));
+    try { navigator.clipboard.writeText(url).then(done, () => toast(url)); } catch (err) { toast(url); }
+  });
+
+  // клавиша R (или К в русской раскладке) — обновить
+  document.addEventListener('keydown', e => {
+    if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey || e.repeat) return;
+    const tg = e.target;
+    if (tg && (tg.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(tg.tagName))) return;
+    if ((e.key === 'r' || e.key === 'R' || e.key === 'к' || e.key === 'К') && $('#story').hidden) { e.preventDefault(); openUpd(true); }
   });
   // для проверки расчётов: ?debug=1 открывает состояние страницы в консоли (window.__dm)
-  try { if (/[?&]debug=1\b/.test(location.search)) window.__dm = { S, UP, buildLive }; } catch (e) { }
+  try { if (/[?&]debug=1\b/.test(location.search)) window.__dm = { S, UP, buildLive, runUpdate, softRender }; } catch (e) { }
 
   function renderAll() {
     const a = $('#archive');
@@ -3704,6 +3948,14 @@ details.upd-more[open] summary{margin-bottom:8px}
     S.db = db;
     startLive();
     runUpdate();                                         // свежие стаканы, топ-100 и переводы — параллельно с утренней сводкой
+    // офлайн-копия: сайт открывается и без сети (с последними сохранёнными данными), ставится на экран как приложение
+    try {
+      const okHost = location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+      if ('serviceWorker' in navigator && okHost && !/[?&]nosw=1\b/.test(location.search)) {
+        const reg = () => navigator.serviceWorker.register('sw.js').catch(() => { });
+        if (document.readyState === 'complete') setTimeout(reg, 1500); else window.addEventListener('load', () => setTimeout(reg, 1500));
+      }
+    } catch (e) { }
     let fallbackUnsub = null;
     const onCur = async d => {
       const prevId = S.lastId, first = !S.base;
