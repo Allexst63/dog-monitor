@@ -1,33 +1,6 @@
 {
- "updated": "2026-10-29T06:18:52Z",
+ "updated": "2026-10-30T06:18:14Z",
  "items": [
-  {
-   "title": "Dog падает на фоне доминирования продавцов и опускается ниже 200-дневной скользящей средней",
-   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6ae2e54f8b9d44168a83afa44167bcfe&url=https%3a%2f%2ftradersunion.com%2fru%2fnews%2fcryptocurrency-news%2fshow%2f3992999-dog-drops-11-09percent-to-usd0-000796%2f&c=16614225323028012790&mkt=en-us",
-   "src": "tradersunion",
-   "srcUrl": null,
-   "q": "\"DOG (Bitcoin)\"",
-   "d": "2026-10-28",
-   "ts": "2026-10-28T01:18Z"
-  },
-  {
-   "title": "Dog falls as sellers dominate and price slips below 200-day moving average",
-   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6ae2e54f8b9d44168a83afa44167bcfe&url=https%3a%2f%2ftradersunion.com%2fnews%2fcryptocurrency-news%2fshow%2f3992951-dog-drops-11-09percent-to-usd0-000796%2f&c=9031268303718662473&mkt=en-us",
-   "src": "tradersunion",
-   "srcUrl": null,
-   "q": "\"DOG (Bitcoin)\"",
-   "d": "2026-10-28",
-   "ts": "2026-10-28T01:18Z"
-  },
-  {
-   "title": "Convert 50 OCD to BTC — Onchain dog to Bitcoin Converter - CoinCodex",
-   "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5Na3Nhb1hscmc5WXF0S2daT2VUS0RkSGJmbW1wQVYxWWJ5S29DLVFvWVA2dTlwN21vQWZZZ01mbGg5UE5yNTBlUmhMVTd0YkdTZDhiVy1vbEctTnNNUUZYZ2luMmtheGg0bUdVYw?oc=5",
-   "src": "CoinCodex",
-   "srcUrl": "https://coincodex.com",
-   "q": "\"DOG (Bitcoin)\"",
-   "d": "2026-10-25",
-   "ts": "2026-10-25T03:12Z"
-  },
   {
    "title": "Dog (Bitcoin) Price Today in Australia | DOG to AUD Live Price & Chart - Binance",
    "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE0za1o4QmRtQzVGWWU2Mk9jWmtFcUVrRHFrSTZYV1hCelF1cFVRaEZ0cGpDQnFzWUZuTTF0dWpUbm1abU1QVDdQYTMxWEtmSnlyQ1I3dkFua3lRWml6bThzNnVsX2xSWkFMcWpJ?oc=5",
@@ -38,20 +11,24 @@
    "ts": "2026-10-23T12:15Z"
   }
  ],
- "errors": [],
+ "errors": [
+  "bing \"DOG•GO•TO•THE•MOON\": not well-formed (invalid token): line 1, column 41",
+  "bing \"DOG (Bitcoin)\": not well-formed (invalid token): line 1, column 41",
+  "bing \"$DOG\" bitcoin rune: not well-formed (invalid token): line 1, column 41"
+ ],
  "stat": [
   "google \"DOG•GO•TO•THE•MOON\": 14",
-  "google \"DOG (Bitcoin)\": 53",
-  "google \"C2 Blockchain\" DOG: 3",
+  "google \"DOG (Bitcoin)\": 17",
+  "google \"C2 Blockchain\" DOG: 4",
   "google Leonidas DOG bitcoin runes: 10",
   "google \"$DOG\" bitcoin rune: 10",
-  "google Bitcoin runes DOG exchange listing: 48",
-  "bing \"DOG•GO•TO•THE•MOON\": 7",
-  "bing \"DOG (Bitcoin)\": 12",
+  "google Bitcoin runes DOG exchange listing: 9",
+  "bing \"DOG•GO•TO•THE•MOON\": 0",
+  "bing \"DOG (Bitcoin)\": 0",
   "bing \"C2 Blockchain\" DOG: 7",
-  "bing Leonidas DOG bitcoin runes: 10",
-  "bing \"$DOG\" bitcoin rune: 12",
-  "bing Bitcoin runes DOG exchange listing: 10",
+  "bing Leonidas DOG bitcoin runes: 9",
+  "bing \"$DOG\" bitcoin rune: 0",
+  "bing Bitcoin runes DOG exchange listing: 11",
   "X: нет ключа X_BEARER_TOKEN"
  ]
 }
