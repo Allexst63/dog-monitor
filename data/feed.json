@@ -1,33 +1,47 @@
 {
- "updated": "2026-10-30T06:18:14Z",
+ "updated": "2026-10-31T06:15:55Z",
  "items": [
   {
-   "title": "Dog (Bitcoin) Price Today in Australia | DOG to AUD Live Price & Chart - Binance",
-   "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE0za1o4QmRtQzVGWWU2Mk9jWmtFcUVrRHFrSTZYV1hCelF1cFVRaEZ0cGpDQnFzWUZuTTF0dWpUbm1abU1QVDdQYTMxWEtmSnlyQ1I3dkFua3lRWml6bThzNnVsX2xSWkFMcWpJ?oc=5",
-   "src": "Binance",
-   "srcUrl": "https://www.binance.com",
+   "title": "THORChain’s RUNE Rallies as Binance Hack Funds Move Through Protocol",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6ae5879f0dab492fbcfc6acd5564e0b2&url=https%3a%2f%2fbitcoinist.com%2fthorchains-rune-rallies-as-binance-hack-funds-move-through-protocol%2f&c=17034571956311344205&mkt=en-us",
+   "src": "Bitcoinist",
+   "srcUrl": null,
+   "q": "\"$DOG\" bitcoin rune",
+   "d": "2026-10-30",
+   "ts": "2026-10-30T03:19Z"
+  },
+  {
+   "title": "THORChain’s RUNE jumps 13% after Binance’s record $6.3B hack",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6ae5879f0dab492fbcfc6acd5564e0b2&url=https%3a%2f%2fcointelegraph.com%2fmarkets%2frune-token-surges-binance-hack&c=10461154151507379631&mkt=en-us",
+   "src": "Cointelegraph",
+   "srcUrl": null,
+   "q": "\"$DOG\" bitcoin rune",
+   "d": "2026-10-30",
+   "ts": "2026-10-30T02:53Z"
+  },
+  {
+   "title": "DOG•GO•TO•THE•MOON价格",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6ae5879e6644410ba3a54c048ca97586&url=https%3a%2f%2fwww.okx.com%2fzh-hans%2fprice%2fdog%25E2%2580%25A2go%25E2%2580%25A2to%25E2%2580%25A2the%25E2%2580%25A2moon-dog&c=10595843722143744522&mkt=en-us",
+   "src": "okx",
+   "srcUrl": null,
    "q": "\"DOG•GO•TO•THE•MOON\"",
-   "d": "2026-10-23",
-   "ts": "2026-10-23T12:15Z"
+   "d": "2026-10-29",
+   "ts": "2026-10-29T00:00Z"
   }
  ],
- "errors": [
-  "bing \"DOG•GO•TO•THE•MOON\": not well-formed (invalid token): line 1, column 41",
-  "bing \"DOG (Bitcoin)\": not well-formed (invalid token): line 1, column 41",
-  "bing \"$DOG\" bitcoin rune: not well-formed (invalid token): line 1, column 41"
- ],
+ "errors": [],
  "stat": [
-  "google \"DOG•GO•TO•THE•MOON\": 14",
-  "google \"DOG (Bitcoin)\": 17",
+  "google \"DOG•GO•TO•THE•MOON\": 13",
+  "google \"DOG (Bitcoin)\": 43",
   "google \"C2 Blockchain\" DOG: 4",
   "google Leonidas DOG bitcoin runes: 10",
   "google \"$DOG\" bitcoin rune: 10",
-  "google Bitcoin runes DOG exchange listing: 9",
-  "bing \"DOG•GO•TO•THE•MOON\": 0",
-  "bing \"DOG (Bitcoin)\": 0",
+  "google Bitcoin runes DOG exchange listing: 10",
+  "bing \"DOG•GO•TO•THE•MOON\": 10",
+  "bing \"DOG (Bitcoin)\": 12",
   "bing \"C2 Blockchain\" DOG: 7",
-  "bing Leonidas DOG bitcoin runes: 9",
-  "bing \"$DOG\" bitcoin rune: 0",
+  "bing Leonidas DOG bitcoin runes: 11",
+  "bing \"$DOG\" bitcoin rune: 12",
   "bing Bitcoin runes DOG exchange listing: 11",
   "X: нет ключа X_BEARER_TOKEN"
  ]
