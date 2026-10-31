@@ -1,0 +1,1 @@
+{"status":"healthy","timestamp":"2026-10-31T14:30:16.006Z","version":"1.0.0","checks":{"redis":{"status":"ok","latency_ms":4},"holders_data":{"status":"ok","latency_ms":205,"details":"86269 holders, updated: 2026-10-31T09:26:51.858Z"},"transactions":{"status":"ok","details":"Cached in Redis"}},"uptime_seconds":260}
