@@ -10,47 +10,21 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Market snapshot (books, trades, candles, on-chain)
+      - name: Address and trade details
         run: |
           UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
-          NOW=$(date +%s)
-          mkdir -p mk
-          get() { curl -s -m 30 -A "$UA" -o "mk/$1.json" -w "$1 %{http_code} %{size_download}\n" "$2" >> mk/log.txt || echo "$1 ERR" >> mk/log.txt; sleep 0.7; }
-          snap() {
-            get "kraken_depth_$1" "https://api.kraken.com/0/public/Depth?pair=DOGUSD&count=500"
-            get "gate_book_$1" "https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0.00001&limit=100"
-            get "gate_raw_$1" "https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&limit=200"
-            get "mexc_$1" "https://api.mexc.com/api/v3/depth?symbol=DOGUSDT&limit=1000"
-            get "bingx_$1" "https://open-api.bingx.com/openApi/spot/v1/market/depth?symbol=DOG-USDT&limit=1000"
-            get "digifinex_$1" "https://openapi.digifinex.com/v3/order_book?symbol=dog_usdt&limit=150"
-            get "coinw_$1" "https://api.coinw.com/api/v1/public?command=returnOrderBook&symbol=DOG(RUNE)_USDT&size=100"
-          }
-          date -u +%FT%TZ > mk/t1.txt
-          snap 1
-          get gate_ticker "https://api.gateio.ws/api/v4/spot/tickers?currency_pair=DOG_USDT"
-          get kraken_ticker "https://api.kraken.com/0/public/Ticker?pair=DOGUSD"
-          get kraken_trades "https://api.kraken.com/0/public/Trades?pair=DOGUSD&count=1000"
-          get kraken_trades_24h "https://api.kraken.com/0/public/Trades?pair=DOGUSD&since=$(( (NOW-86400) ))000000000&count=1000"
-          get gate_trades "https://api.gateio.ws/api/v4/spot/trades?currency_pair=DOG_USDT&limit=1000"
-          get mexc_trades "https://api.mexc.com/api/v3/trades?symbol=DOGUSDT&limit=1000"
-          get kraken_h1 "https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=60&since=$((NOW-14*86400))"
-          get kraken_d1 "https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440&since=$((NOW-720*86400))"
-          get gate_h1 "https://api.gateio.ws/api/v4/spot/candlesticks?currency_pair=DOG_USDT&interval=1h&limit=336"
-          get gate_d1 "https://api.gateio.ws/api/v4/spot/candlesticks?currency_pair=DOG_USDT&interval=1d&limit=900"
-          get btc "https://api.exchange.coinbase.com/products/BTC-USD/ticker"
-          get btc_d1 "https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=86400"
-          get whales "https://www.dogdata.xyz/api/whale-alerts?threshold=5000000&limit=200"
-          get dd_top100 "https://www.dogdata.xyz/api/dog-rune/top-holders?limit=100"
-          get dd_health "https://www.dogdata.xyz/api/health"
-          get dd_markets "https://www.dogdata.xyz/api/markets"
-          get dd_stats "https://www.dogdata.xyz/api/dog-rune/stats"
-          get dd_age "https://www.dogdata.xyz/api/metrics/utxo-age"
-          sleep 150
-          date -u +%FT%TZ > mk/t2.txt
-          snap 2
-          cat mk/log.txt
+          mkdir -p mk2
+          get() { curl -s -m 40 -A "$UA" -o "mk2/$1.json" -w "$1 %{http_code} %{size_download}\n" "$2" >> mk2/log.txt || echo "$1 ERR" >> mk2/log.txt; sleep 1; }
+          get gate_wallet "https://www.dogdata.xyz/api/address/bitcoin/bc1pk8g4rztfkxs2q9c40g6keeknjw6aadx3kzu4suzlll0remfw7xxs5x9ctv?limit=40"
+          get rcv288 "https://www.dogdata.xyz/api/address/bitcoin/bc1pqp9s9276snfqsr4tacckhfuyqy2exaepgke79fl4nych88uezcss24hung?limit=20"
+          get h65 "https://www.dogdata.xyz/api/address/bitcoin/bc1pedfq00ccwdnay0kv98697lcnq2ewars82cj3zucanlqynv9vzk7q98q9nq?limit=20"
+          get h72 "https://www.dogdata.xyz/api/address/bitcoin/bc1pc4pxu7m3qa9jq4zel69nssksgq75jetyan2nwuguej3pwm50z83qsyhgug?limit=20"
+          get gate_tr_28 "https://api.gateio.ws/api/v4/spot/trades?currency_pair=DOG_USDT&from=1793170800&to=1793174400&limit=1000"
+          get gate_tr_30 "https://api.gateio.ws/api/v4/spot/trades?currency_pair=DOG_USDT&from=1793365200&to=1793368800&limit=1000"
+          get whales_1m "https://www.dogdata.xyz/api/whale-alerts?threshold=1000000&limit=200"
+          cat mk2/log.txt
       - name: Save results to branch
         run: |
           git config user.name "DOG Monitor bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add mk && git commit -m "Market snapshot" && git push origin HEAD:cors-check
+          git add mk2 && git commit -m "Address details" && git push origin HEAD:cors-check
