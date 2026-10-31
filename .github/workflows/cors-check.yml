@@ -7,22 +7,50 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - name: End-to-end check of the live site in Chromium
+      - name: Market snapshot (books, trades, candles, on-chain)
         run: |
-          npm init -y >/dev/null
-          npm i playwright@1.48.2 >/dev/null 2>&1
-          npx playwright install --with-deps chromium >/dev/null 2>&1
-          sleep 40
-          node e2e/quick.js
-          head -c 4000 e2e/result.json
+          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
+          NOW=$(date +%s)
+          mkdir -p mk
+          get() { curl -s -m 30 -A "$UA" -o "mk/$1.json" -w "$1 %{http_code} %{size_download}\n" "$2" >> mk/log.txt || echo "$1 ERR" >> mk/log.txt; sleep 0.7; }
+          snap() {
+            get "kraken_depth_$1" "https://api.kraken.com/0/public/Depth?pair=DOGUSD&count=500"
+            get "gate_book_$1" "https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0.00001&limit=100"
+            get "gate_raw_$1" "https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&limit=200"
+            get "mexc_$1" "https://api.mexc.com/api/v3/depth?symbol=DOGUSDT&limit=1000"
+            get "bingx_$1" "https://open-api.bingx.com/openApi/spot/v1/market/depth?symbol=DOG-USDT&limit=1000"
+            get "digifinex_$1" "https://openapi.digifinex.com/v3/order_book?symbol=dog_usdt&limit=150"
+            get "coinw_$1" "https://api.coinw.com/api/v1/public?command=returnOrderBook&symbol=DOG(RUNE)_USDT&size=100"
+          }
+          date -u +%FT%TZ > mk/t1.txt
+          snap 1
+          get gate_ticker "https://api.gateio.ws/api/v4/spot/tickers?currency_pair=DOG_USDT"
+          get kraken_ticker "https://api.kraken.com/0/public/Ticker?pair=DOGUSD"
+          get kraken_trades "https://api.kraken.com/0/public/Trades?pair=DOGUSD&count=1000"
+          get kraken_trades_24h "https://api.kraken.com/0/public/Trades?pair=DOGUSD&since=$(( (NOW-86400) ))000000000&count=1000"
+          get gate_trades "https://api.gateio.ws/api/v4/spot/trades?currency_pair=DOG_USDT&limit=1000"
+          get mexc_trades "https://api.mexc.com/api/v3/trades?symbol=DOGUSDT&limit=1000"
+          get kraken_h1 "https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=60&since=$((NOW-14*86400))"
+          get kraken_d1 "https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440&since=$((NOW-720*86400))"
+          get gate_h1 "https://api.gateio.ws/api/v4/spot/candlesticks?currency_pair=DOG_USDT&interval=1h&limit=336"
+          get gate_d1 "https://api.gateio.ws/api/v4/spot/candlesticks?currency_pair=DOG_USDT&interval=1d&limit=900"
+          get btc "https://api.exchange.coinbase.com/products/BTC-USD/ticker"
+          get btc_d1 "https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=86400"
+          get whales "https://www.dogdata.xyz/api/whale-alerts?threshold=5000000&limit=200"
+          get dd_top100 "https://www.dogdata.xyz/api/dog-rune/top-holders?limit=100"
+          get dd_health "https://www.dogdata.xyz/api/health"
+          get dd_markets "https://www.dogdata.xyz/api/markets"
+          get dd_stats "https://www.dogdata.xyz/api/dog-rune/stats"
+          get dd_age "https://www.dogdata.xyz/api/metrics/utxo-age"
+          sleep 150
+          date -u +%FT%TZ > mk/t2.txt
+          snap 2
+          cat mk/log.txt
       - name: Save results to branch
         run: |
           git config user.name "DOG Monitor bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add e2e && git commit -m "E2E results" && git push origin HEAD:cors-check
+          git add mk && git commit -m "Market snapshot" && git push origin HEAD:cors-check
