@@ -14,8 +14,8 @@ jobs:
         run: |
           UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
           NOW=$(date +%s)
-          mkdir -p mk3
-          get() { curl -s -m 40 -A "$UA" -H "Accept: application/json,text/html" -o "mk3/$1" -w "$1 %{http_code} %{size_download}\n" "$2" >> mk3/log.txt || echo "$1 ERR" >> mk3/log.txt; sleep 0.8; }
+          mkdir -p mk4
+          get() { curl -s -m 40 -A "$UA" -H "Accept: application/json,text/html" -o "mk4/$1" -w "$1 %{http_code} %{size_download}\n" "$2" >> mk4/log.txt || echo "$1 ERR" >> mk4/log.txt; sleep 0.8; }
           get btc_ticker.json "https://api.exchange.coinbase.com/products/BTC-USD/ticker"
           get btc_d1a.json "https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=86400"
           get btc_d1b.json "https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=86400&start=$(date -u -d @$((NOW-600*86400)) +%FT%TZ)&end=$(date -u -d @$((NOW-300*86400)) +%FT%TZ)"
@@ -35,9 +35,8 @@ jobs:
           get bybit_funding.json "https://api.bybit.com/v5/market/funding/history?category=linear&symbol=BTCUSDT&limit=60"
           get binance_oi.json "https://fapi.binance.com/futures/data/openInterestHist?symbol=BTCUSDT&period=1d&limit=60"
           get binance_funding.json "https://fapi.binance.com/fapi/v1/fundingRate?symbol=BTCUSDT&limit=60"
-          curl -s -m 40 -X POST -H "Content-Type: application/json" -d '{"type":"metaAndAssetCtxs"}' https://api.hyperliquid.xyz/info -o mk3/hl_ctx.json -w "hl_ctx %{http_code} %{size_download}\n" >> mk3/log.txt
+          curl -s -m 40 -X POST -H "Content-Type: application/json" -d '{"type":"metaAndAssetCtxs"}' https://api.hyperliquid.xyz/info -o mk4/hl_ctx.json -w "hl_ctx %{http_code} %{size_download}\n" >> mk4/log.txt
           get fng.json "https://api.alternative.me/fng/?limit=120"
-          get farside.html "https://farside.co.uk/btc/"
           for t in "%5EGSPC" "%5EIXIC" "DX-Y.NYB" "%5ETNX" "GC%3DF" "%5EVIX" "BTC-USD" "IBIT" "MSTR" "COIN"; do get "yf_$(echo $t | tr -dc 'A-Za-z0-9').json" "https://query1.finance.yahoo.com/v8/finance/chart/$t?range=1y&interval=1d"; done
           get dog_kraken_depth.json "https://api.kraken.com/0/public/Depth?pair=DOGUSD&count=500"
           get dog_gate_book.json "https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0.00001&limit=100"
@@ -51,9 +50,9 @@ jobs:
           get dog_gate_wallet.json "https://www.dogdata.xyz/api/address/bitcoin/bc1pk8g4rztfkxs2q9c40g6keeknjw6aadx3kzu4suzlll0remfw7xxs5x9ctv?limit=40"
           get dog_whales.json "https://www.dogdata.xyz/api/whale-alerts?threshold=5000000&limit=200"
           get dog_gate_trades.json "https://api.gateio.ws/api/v4/spot/trades?currency_pair=DOG_USDT&limit=1000"
-          cat mk3/log.txt
+          cat mk4/log.txt
       - name: Save results to branch
         run: |
           git config user.name "DOG Monitor bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add mk3 && git commit -m "Macro data" && git push origin HEAD:cors-check
+          git add mk4 && git commit -m "Market data refresh" && git push origin HEAD:cors-check
