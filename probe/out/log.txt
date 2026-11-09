@@ -1,0 +1,22 @@
+dd_health | HTTP/2 200  | access-control-allow-origin: * | 318B | https://www.dogdata.xyz/api/health
+dd_stats | HTTP/2 200  |  | 1836B | https://www.dogdata.xyz/api/dog-rune/stats
+dd_conc | HTTP/2 200  |  | 229B | https://www.dogdata.xyz/api/metrics/holder-concentration
+dd_top | HTTP/2 200  | access-control-allow-origin: * | 15834B | https://www.dogdata.xyz/api/dog-rune/top-holders?limit=100
+dd_holders1 | HTTP/2 200  |  | 8194B | https://www.dogdata.xyz/api/dog-rune/holders?page=1&limit=25
+dd_markets | HTTP/2 200  |  | 3361B | https://www.dogdata.xyz/api/markets
+dd_home | HTTP/2 200  | access-control-allow-origin: * | 50330B | https://www.dogdata.xyz/
+dd_home2 | HTTP/2 307  |  | 15B | https://dogdata.xyz/
+ord_kraken | HTTP/2 200  | access-control-allow-origin: * | 85583B | https://ordinals.com/address/bc1plzs2lltvv29k603w5m0aqma5e8w0n3pc77dt89l5w9hurmdfgd0swdhspn
+ord_rune | HTTP/2 406  | access-control-allow-origin: * | 17B | https://ordinals.com/rune/DOG%E2%80%A2GO%E2%80%A2TO%E2%80%A2THE%E2%80%A2MOON
+ord_status | HTTP/2 406  | access-control-allow-origin: * | 17B | https://ordinals.com/status
+hiro_holders | HTTP/2 403  |  | 42B | https://api.hiro.so/runes/v1/etchings/840000:3/holders?limit=5
+me_rune | HTTP/2 503  |  | 19B | https://api-mainnet.magiceden.dev/v2/ord/btc/runes/market/DOGGOTOTHEMOON/info
+unisat | HTTP/2 403  |  | 168B | https://open-api.unisat.io/v1/indexer/runes/840000:3/holders?start=0&limit=5
+ordiscan | HTTP/2 402  | access-control-allow-origin: * | 183B | https://api.ordiscan.com/v1/rune/DOGGOTOTHEMOON
+mempool_tip | HTTP/2 200  | access-control-allow-origin: * | 6B | https://mempool.space/api/blocks/tip/height
+mexc_depth | HTTP/2 200  |  | 5116B | https://api.mexc.com/api/v3/depth?symbol=DOGUSDT&limit=100
+mexc_trades | HTTP/2 200  |  | 8309B | https://api.mexc.com/api/v3/trades?symbol=DOGUSDT&limit=50
+bingx_depth | HTTP/2 403  |  | 0B | https://open-api.bingx.com/openApi/spot/v1/market/depth?symbol=DOG-USDT&limit=100
+cb_candles | HTTP/2 200  | access-control-allow-origin: * | 18662B | https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=86400&start=2024-04-20T00:00:00Z&end=2025-02-14T00:00:00Z
+gate_tr_from | HTTP/2 200  | access-control-allow-origin: * | 13815B | https://api.gateio.ws/api/v4/spot/trades?currency_pair=DOG_USDT&limit=100&from=1794236159
+done
