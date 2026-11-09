@@ -1,0 +1,6 @@
+phone2 before ["tvchart 342px canv 262/262px,262/262px,80/80px","dlchart 326px canv 246/246px,246/246px,80/80px","crchart 326px canv 262/262px,262/262px,64/64px"]
+phone2 after view shots ["tvchart 342px canv 262/262px,262/262px,80/80px","dlchart 326px canv 246/246px,246/246px,80/80px","crchart 326px canv 262/262px,262/262px,64/64px"]
+phone2 after full shot ["tvchart 342px canv 262/262px,262/262px,80/80px","dlchart 326px canv 246/246px,246/246px,80/80px","crchart 326px canv 262/262px,262/262px,64/64px"]
+desk1 before ["tvchart 1044px canv 964/964px,964/964px,80/80px","dlchart 1028px canv 948/948px,948/948px,80/80px","crchart 1028px canv 964/964px,964/964px,64/64px"]
+desk1 after view shots ["tvchart 1044px canv 964/964px,964/964px,80/80px","dlchart 1028px canv 948/948px,948/948px,80/80px","crchart 1028px canv 964/964px,964/964px,64/64px"]
+desk1 after full shot ["tvchart 1044px canv 964/964px,964/964px,80/80px","dlchart 1028px canv 948/948px,948/948px,80/80px","crchart 1028px canv 964/964px,964/964px,64/64px"]
