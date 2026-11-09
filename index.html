@@ -2762,10 +2762,11 @@ html{overscroll-behavior-y:contain}
     return { b, a, cov, covBy, srcs, step, minor };
   }
   function obRef(s, set) {
-    let bid = 0, ask = Infinity;
-    for (const k of set.keys) { const x = obSrc(k, s, S.bstep); if (!x) continue; if (x.bid > bid) bid = x.bid; if (x.ask < ask) ask = x.ask; }
-    const last = (S.bx === 'all' || S.bx === 'kraken') && !S.archived ? livePrice() : null;
-    return { bid: bid || null, ask: isFinite(ask) ? ask : null, mid: set.mid, last };
+    let bid = 0, ask = Infinity, bidEx = null, askEx = null;
+    for (const k of set.keys) { const x = obSrc(k, s, S.bstep); if (!x) continue; if (x.bid > bid) { bid = x.bid; bidEx = k; } if (x.ask < ask) { ask = x.ask; askEx = k; } }
+    // последняя сделка Kraken (онлайн) — только для стакана Kraken; у «всех бирж» середина — по Kraken и Gate
+    const last = S.bx === 'kraken' && !S.archived ? livePrice() : null;
+    return { bid: bid || null, ask: isFinite(ask) ? ask : null, mid: set.mid, last, bidEx, askEx };
   }
   function obCtx() {
     const s = V(); if (!s) return null;
@@ -2800,8 +2801,9 @@ html{overscroll-behavior-y:contain}
       for (const [p, q] of side === 'b' ? b.bids : b.asks) B.set(toU(p), (B.get(toU(p)) || 0) + q);
       const inA = u => side === 'b' ? u >= toU(a.cov.b) : (a.cov.a === Infinity || u <= toU(a.cov.a));
       const inB = u => side === 'b' ? u >= toU(b.cov.b) : (b.cov.a === Infinity || u <= toU(b.cov.a));
-      for (const [u, q1] of B) { const q0 = A.get(u) || 0; if (q1 >= OB_WALL && inA(u) && q1 - q0 >= Math.max(OB_WALL * 0.6, q0 * 0.25)) out.push({ x: ex, s: side, p: u / PU, q0, q1, k: q0 >= 1e6 ? 'up' : 'new', t: b.ft, m: obMidOf(b) }); }
-      for (const [u, q0] of A) { const q1 = B.get(u) || 0; if (q0 >= OB_WALL && inB(u) && q0 - q1 >= Math.max(OB_WALL * 0.6, q0 * 0.25)) out.push({ x: ex, s: side, p: u / PU, q0, q1, k: q1 < 1e6 ? 'gone' : 'down', t: b.ft, m: obMidOf(b) }); }
+      const m0 = obMidOf(b), near = u => !m0 || Math.abs(u / PU / m0 - 1) <= 0.5;
+      for (const [u, q1] of B) { const q0 = A.get(u) || 0; if (q1 >= OB_WALL && inA(u) && near(u) && q1 - q0 >= Math.max(OB_WALL * 0.6, q0 * 0.25)) out.push({ x: ex, s: side, p: u / PU, q0, q1, k: q0 >= 1e6 ? 'up' : 'new', t: b.ft, m: obMidOf(b) }); }
+      for (const [u, q0] of A) { const q1 = B.get(u) || 0; if (q0 >= OB_WALL && inB(u) && near(u) && q0 - q1 >= Math.max(OB_WALL * 0.6, q0 * 0.25)) out.push({ x: ex, s: side, p: u / PU, q0, q1, k: q1 < 1e6 ? 'gone' : 'down', t: b.ft, m: obMidOf(b) }); }
     }
     // исчезла и тут же появилась рядом с тем же объёмом — заявку переставили
     for (const g of out.filter(e => e.k === 'gone')) {
@@ -2884,7 +2886,8 @@ html{overscroll-behavior-y:contain}
     const midP = ref.last || ref.mid;
     const chg = !S.archived && liveChg() != null ? liveChg() : (s.price || {}).chg24;
     const spr = ref.bid && ref.ask ? (ref.ask - ref.bid) / ((ref.ask + ref.bid) / 2) * 100 : null;
-    const midRow = `<div class="ob-mid"><b class="${dir(chg)}" id="obmidp">${fp(midP)}</b><span class="pill ${dir(chg)}">${pillTxt(chg)}</span><span class="s">${spr != null ? (spr >= 0 ? T('спред ', 'spread ') + n(spr, 2) + '%' : T('цены бирж пересекаются', 'exchange prices overlap')) : ''}</span></div>`;
+    const cross = spr != null && spr < 0 && ref.bidEx && ref.askEx && ref.bidEx !== ref.askEx;
+    const midRow = `<div class="ob-mid"><b class="${dir(chg)}" id="obmidp">${fp(midP)}</b><span class="pill ${dir(chg)}">${pillTxt(chg)}</span><span class="s">${spr != null ? (spr >= 0 ? T('спред ', 'spread ') + n(spr, 2) + '%' : cross ? esc(T(`${EXN[ref.bidEx]} покупает дороже, чем ${EXN[ref.askEx]} продаёт`, `${EXN[ref.bidEx]} bids above ${EXN[ref.askEx]}’s ask`)) : T('цены бирж пересекаются', 'exchange prices overlap')) : ''}</span></div>`;
     const unitH = usdU ? T('Сумма, $', 'Value, $') : T('Кол-во, DOG', 'Amount, DOG');
     const tip = r => r.big >= OB_WALL ? ` title="${esc(T('Стенка', 'Wall'))}: ${esc(EXN[r.bigBy] || '')} ${qf(r.big)}"` : '';
     let body = '';
@@ -2973,7 +2976,7 @@ html{overscroll-behavior-y:contain}
     const [rt, rc] = ratio(b2.b, b2.a);
     const wl = (w, side) => w ? `<span class="s ${side === 'b' ? 'up' : 'down'}">${side === 'b' ? '↓' : '↑'} ${fp(w.p)} (${sg(pctOf(w.p, mid), 1)}%)</span>` : '';
     const tiles = [
-      [T('Спред', 'Spread'), spr == null ? '—' : (spr >= 0 ? n(spr, 2) + '%' : T('пересекаются', 'overlap')), ref.bid && ref.ask ? `<span class="s">${fp(ref.bid)} / ${fp(ref.ask)}</span>` : '', '', 'spread'],
+      [T('Спред', 'Spread'), spr == null ? '—' : (spr >= 0 ? n(spr, 2) + '%' : sg(spr, 2) + '%'), ref.bid && ref.ask ? `<span class="s">${fp(ref.bid)}${ref.bidEx && S.bx === 'all' ? ' ' + esc(EXN[ref.bidEx]) : ''} / ${fp(ref.ask)}${ref.askEx && S.bx === 'all' ? ' ' + esc(EXN[ref.askEx]) : ''}</span>` : '', spr != null && spr < 0 ? 'down' : '', 'spread'],
       [T('Перекос ±2%', 'Imbalance ±2%'), esc(rt), `<span class="s">${qf(b2.b)} / ${qf(b2.a)} DOG</span>`, rc, 'imb'],
       [T('Деньги ±2%', 'Liquidity ±2%'), `<span class="up">${usdC(b2.bv)}</span> <span class="sl">/</span> <span class="down">${usdC(b2.av)}</span>`, `<span class="s">${T('покупки / продажи', 'bids / asks')}</span>`, 'two', 'liq'],
       [T('Стенки рядом', 'Nearest walls'), wb || wa ? `<span class="up">${wb ? qf(wb.q) : '—'}</span> <span class="sl">/</span> <span class="down">${wa ? qf(wa.q) : '—'}</span>` : '—', wl(wb, 'b') + wl(wa, 'a'), 'two', 'walls']
@@ -3059,7 +3062,8 @@ html{overscroll-behavior-y:contain}
     </section>`;
   }
   // ---------- сделки: что реально исполнено по рынку (Kraken и Gate) ----------
-  // Стакан — намерения, сделки — факт. Первый запрос берёт последние 1000 сделок, дальше — только новые (мало трафика).
+  // Стакан — намерения, сделки — факт. Первый запрос берёт последние сделки (Kraken 200 ≈ полдня, Gate 300 ≈ 4 часа),
+  // дальше — только новые (Kraken: since, Gate: from), чтобы не гонять лишний трафик.
   const TR_KEEP = 3 * 3600e3;
   OB.tr = {};
   function trParse(k, d) {
@@ -3100,8 +3104,8 @@ html{overscroll-behavior-y:contain}
     const now = Date.now(), kr = OB.tr.kraken, gt = OB.tr.gate;
     const krInc = !!(kr && kr.last && now - kr.ft < 5 * 60e3), gtInc = !!(gt && now - gt.ft < 5 * 60e3);
     const jobs = [
-      ['kraken', krInc ? 'https://api.kraken.com/0/public/Trades?pair=DOGUSD&since=' + encodeURIComponent(kr.last) : 'https://api.kraken.com/0/public/Trades?pair=DOGUSD&count=1000', krInc],
-      ['gate', 'https://api.gateio.ws/api/v4/spot/trades?currency_pair=DOG_USDT&limit=' + (gtInc ? 200 : 1000), gtInc]
+      ['kraken', krInc ? 'https://api.kraken.com/0/public/Trades?pair=DOGUSD&since=' + encodeURIComponent(kr.last) : 'https://api.kraken.com/0/public/Trades?pair=DOGUSD&count=200', krInc],
+      ['gate', 'https://api.gateio.ws/api/v4/spot/trades?currency_pair=DOG_USDT&limit=' + (gtInc ? '100&from=' + Math.max(0, Math.floor(((gt.list[gt.list.length - 1] || {}).t || gt.ft) / 1000) - 2) : 300), gtInc]
     ];
     await Promise.all(jobs.map(async ([k, url, inc]) => { try { const r = await upGet(url, 8000); trPut(k, r.d, Date.now(), inc); } catch (e) { } }));
   }
