@@ -21,7 +21,7 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
@@ -31,6 +31,7 @@ jobs:
         if: ${{ github.event.inputs.mode != 'feed' && github.event.inputs.mode != 'wallets' }}
         env:
           DOGMON: ${{ runner.temp }}/dogmon
+          DOGMON_KIND: ${{ github.event_name == 'schedule' && 'утро' || 'запрос' }}
         run: python3 tools/daily.py run .
 
       - name: Средняя цена DOG у кошельков топ-100 и история цены

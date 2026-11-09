@@ -292,6 +292,100 @@ def f_chains():
     return d, '\n'.join(L)
 
 
+# ---------- свежие балансы топ-кошельков из блокчейна ----------
+# DOG DATA иногда днями не обновляет топ-100 (/api/dog-rune/holders). Тогда берём балансы DOG прямо из индекса рун
+# ordinals.com (официальный обозреватель ord): /address/<адрес> с Accept: application/json отдаёт runes_balances.
+# Кандидаты в топ-100: вчерашний топ-100 сайта, топ-100 и топ-10 DOG DATA, участники переводов от 5 млн DOG.
+# Чтобы войти в топ-100, нужно десятки миллионов DOG — такой приход виден в переводах от 5 млн.
+RUNE = 'DOG•GO•TO•THE•MOON'
+RAWDIR = [None]
+
+
+def ord_balance(a, tries=3):
+    last = None
+    for i in range(tries):
+        try:
+            req = urllib.request.Request(f'https://ordinals.com/address/{a}', headers={'User-Agent': UA, 'Accept': 'application/json'})
+            with urllib.request.urlopen(req, timeout=60) as r:
+                d = json.loads(r.read().decode('utf-8'))
+            rb = d.get('runes_balances') if isinstance(d, dict) else None
+            if rb is None:
+                raise ValueError('нет runes_balances')
+            for row in rb:
+                if isinstance(row, (list, tuple)) and len(row) >= 2 and row[0] == RUNE:
+                    return str(row[1])
+            return '0'
+        except (urllib.error.URLError, ValueError, TimeoutError, OSError) as e:
+            last = e
+            time.sleep(2 + 3 * i)
+    raise RuntimeError(f'{a}: {last}')
+
+
+def f_ordbal():
+    import concurrent.futures as cf
+    raw = RAWDIR[0]
+
+    def text(name):
+        try:
+            t = open(os.path.join(raw, name + '.txt'), encoding='utf-8').read()
+            return '' if t.startswith('UNAVAILABLE') else t
+        except OSError:
+            return ''
+    cand = {}
+
+    def add(a, why, b=None):
+        if isinstance(a, str) and (a.startswith('bc1') or a[:1] in '13') and 25 <= len(a) <= 90:
+            c = cand.setdefault(a, {'why': set(), 'b': None})
+            c['why'].add(why)
+            if b is not None:
+                c['b'] = max(c['b'] or 0, b)
+    for k in range(1, 5):
+        for ln in text(f'holders_{k}').splitlines():
+            p = ln.split(';')
+            if len(p) >= 3 and p[0].isdigit():
+                add(p[1], 'dd', float(p[2]) if p[2] not in ('', 'null') else None)
+    for ln in text('stats').splitlines():
+        p = ln.split(';')
+        if len(p) >= 3 and p[0].isdigit():
+            add(p[1], 'top10', float(p[2]) if p[2] not in ('', 'null') else None)
+    for ln in text('whales').splitlines():
+        p = ln.split(';')
+        if len(p) >= 4 and p[0][:2] == '20':
+            add(p[2], 'whale')
+            add(p[3], 'whale')
+    prev = os.path.join(os.path.dirname(os.path.abspath(raw)), 'prev', 'live', 'current.json')
+    try:
+        for x in json.load(open(prev, encoding='utf-8')).get('top100') or []:
+            add(x.get('a'), 'prev', float(x['b']) * 1e6 if x.get('b') is not None else None)
+    except (OSError, ValueError):
+        pass
+    if len(cand) < 100:
+        raise RuntimeError(f'мало кандидатов: {len(cand)}')
+    t0 = time.time()
+    res, err = {}, {}
+
+    def one(a):
+        time.sleep(0.15)
+        return a, ord_balance(a)
+    with cf.ThreadPoolExecutor(max_workers=4) as ex:
+        futs = [ex.submit(one, a) for a in cand]
+        for f in cf.as_completed(futs):
+            try:
+                a, b = f.result()
+                res[a] = b
+            except Exception as e:
+                err[str(e).split(':')[0]] = str(e)[:120]
+    ts = dt_iso(time.time())
+    L = [f'ts={ts}; asked={len(cand)}; ok={len(res)}; failed={len(err)}; secs={time.time() - t0:.0f}']
+    L += [f'{a};{b};{",".join(sorted(cand[a]["why"]))}' for a, b in sorted(res.items(), key=lambda kv: -float(kv[1]))]
+    L += [f'ERR;{a};{cand.get(a, {}).get("b") or 0}' for a in err]
+    return {'asked': len(cand), 'ok': len(res), 'failed': err}, '\n'.join(L)
+
+
+def dt_iso(t):
+    return time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime(t))
+
+
 def f_entity(a):
     d = get([h + f'/api/address/bitcoin/{a}?limit=1' for h in DD], tries=2)
     e, st = d.get('entity') or {}, d.get('stats') or {}
@@ -308,6 +402,7 @@ SOURCES = {
     'bitget_book': f_bitget, 'digifinex_book': f_digifinex, 'coinw_book': f_coinw, 'btc': f_btc,
     'ohlc_1d': ohlc(1440, 365 * 86400), 'ohlc_1h': ohlc(60, 7 * 86400),
     'dd_age': f_age, 'dd_airdrop': f_airdrop, 'dd_chains': f_chains,
+    'ordbal': f_ordbal,           # после holders_*, stats и whales: берёт из них кандидатов
 }
 
 
@@ -334,6 +429,7 @@ def save(raw, name, fn):
 def main():
     raw = sys.argv[1]
     os.makedirs(raw, exist_ok=True)
+    RAWDIR[0] = raw
     args = sys.argv[2:]
     if args and args[0] == '--entity':
         for a in args[1:]:

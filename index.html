@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>DOG Monitor — DOG price, order books and wallets</title>
-<meta name="description" content="Unofficial tracker for DOG•GO•TO•THE•MOON, the Bitcoin rune: live price and chart, order books from 7 exchanges, large transfers, the top 100 wallets, C2 Blockchain holdings and news. Updated every morning. Also in Russian.">
+<meta name="description" content="Unofficial tracker for DOG•GO•TO•THE•MOON, the Bitcoin rune: live price and chart, order books from 7 exchanges, TradingView-style charts with RSI, delta and the link to bitcoin, the top 100 wallets, C2 Blockchain holdings and news. Updated every morning. Also in Russian.">
 <link rel="alternate" hreflang="en" href="https://allexst63.github.io/dog-monitor/?lang=en">
 <link rel="alternate" hreflang="ru" href="https://allexst63.github.io/dog-monitor/?lang=ru">
 <link rel="alternate" hreflang="x-default" href="https://allexst63.github.io/dog-monitor/">
@@ -24,7 +24,7 @@
 <meta property="og:locale:alternate" content="ru_RU">
 <meta property="og:site_name" content="DOG Monitor">
 <meta property="og:title" content="DOG Monitor">
-<meta property="og:description" content="Unofficial tracker for DOG•GO•TO•THE•MOON: live price, order books, large transfers, the top 100 wallets and news. Live data with a self-check, a full report every morning.">
+<meta property="og:description" content="Unofficial tracker for DOG•GO•TO•THE•MOON: live price, order books, charts, the top 100 wallets and news. Live data with a self-check, a full report every morning.">
 <meta property="og:url" content="https://allexst63.github.io/dog-monitor/">
 <meta property="og:image" content="https://allexst63.github.io/dog-monitor/og.jpg">
 <meta property="og:image:width" content="1200">
@@ -367,15 +367,7 @@ tbody.click tr:hover td{background:var(--surface-2)}
 .obpause{margin-left:auto;border:1px solid var(--line);background:transparent;color:var(--ink-2);border-radius:999px;padding:3px 11px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
 .obpause[aria-pressed="true"]{background:var(--accent-soft);border-color:transparent;color:var(--accent-ink)}
 .obnote{padding:0 4px;font-size:12.5px}
-.obmet,.calc,.obfeedc{display:flex;flex-direction:column;gap:12px}
-.obm{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px;background:var(--line-2);border-radius:16px;overflow:hidden}
-.obm-t{display:flex;flex-direction:column;gap:2px;background:var(--surface-2);padding:11px 12px;min-width:0;border:0;font:inherit;color:inherit;text-align:left;cursor:pointer}
-.obm-t .l{font-size:12px;color:var(--ink-2)}
-.obm-t .v{font-family:var(--display);font-size:18px;font-weight:600;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
-.obm-t .s{font-size:11.5px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
-.obm-t .s.up,.obm-t .s.down{color:var(--ink-2)}
-.obm-t .v.two{font-size:16px}
-.obm-t .v .sl{color:var(--ink-3);font-weight:400}
+.obmet,.obfeedc{display:flex;flex-direction:column;gap:12px}
 .imb{display:flex;flex-direction:column;gap:7px}
 .imb-r{display:grid;grid-template-columns:38px minmax(0,1fr) auto;grid-template-areas:"k b t" ". n n";gap:2px 10px;align-items:center;font-size:12.5px;font-variant-numeric:tabular-nums}
 .imb-r .k{grid-area:k;color:var(--ink-3)} .imb-r .imb-b{grid-area:b} .imb-r .t{grid-area:t;font-weight:600;text-align:right;white-space:nowrap} .imb-r .n{grid-area:n;font-size:11.5px;color:var(--ink-3)}
@@ -384,24 +376,22 @@ tbody.click tr:hover td{background:var(--surface-2)}
 .imb-b i{position:absolute;top:0;bottom:0;display:block}
 .imb-b .b{right:50%;background:var(--bid);border-radius:4px 0 0 4px}
 .imb-b .a{left:50%;background:var(--ask);border-radius:0 4px 4px 0}
+.wh{display:flex;flex-direction:column;gap:12px}
+.wh-r{display:flex;flex-direction:column;gap:4px}
+.wh-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:13px}
+.wh-h .k{color:var(--ink-2)} .wh-h b{font-weight:600;white-space:nowrap}
+.wh-b{position:relative;height:10px;background:var(--surface-2);border-radius:5px}
+.wh-b::after{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:1.5px;background:var(--ink-3);opacity:.5}
+.wh-b i{position:absolute;top:0;bottom:0;display:block}
+.wh-b .b{right:50%;background:var(--bid);border-radius:5px 0 0 5px} .wh-b .a{left:50%;background:var(--ask);border-radius:0 5px 5px 0}
+.wh-n{display:flex;justify-content:space-between;gap:10px;font-size:12px;font-variant-numeric:tabular-nums}
+.obmet .events .ev small{display:block;font-size:12px;color:var(--ink-3)}
 .obh{border-top:1px solid var(--line-2);padding-top:10px}
 .obh-k{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;color:var(--ink-2)}
 .obh-k b{font-weight:600;white-space:nowrap}
 .obh-s{display:block;width:100%;height:44px;margin-top:6px}
 .obh-ax{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:var(--ink-3)}
-.calc-row{display:flex;gap:8px;flex-wrap:wrap}
-.calc-in{display:flex;align-items:center;gap:8px;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:0 12px}
-.calc-in:focus-within{border-color:var(--accent)}
-.calc-in input{flex:1;min-width:0;border:0;background:transparent;font:inherit;font-size:17px;font-weight:600;color:var(--ink);padding:10px 0;outline:none;font-variant-numeric:tabular-nums}
-.calc-in .u{color:var(--ink-3);font-weight:600}
-.calc-pre{display:flex;gap:6px;flex-wrap:wrap}
-.calc-pre .chip{padding:5px 11px;font-size:13px}
-.calc-kv{font-size:14px}
-.calc-kv dd{white-space:nowrap}
-.calc-ex{display:flex;flex-direction:column;gap:5px;border-top:1px solid var(--line-2);padding-top:10px;font-size:13px}
-.calc-ex-h{font-size:12.5px;color:var(--ink-3)}
-.calc-ex-r{display:flex;justify-content:space-between;gap:10px;font-variant-numeric:tabular-nums}
-.calc-ex-r .warn,span.warn{color:var(--warn)}
+span.warn{color:var(--warn)}
 .obfeed{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;font-size:13px;line-height:1.4}
 .obfeed li{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:8px;align-items:start}
 .obfeed .t{color:var(--ink-3);font-variant-numeric:tabular-nums}
@@ -411,39 +401,40 @@ tbody.click tr:hover td{background:var(--surface-2)}
 .row.stepr .v .ico{color:var(--accent)}
 .lvl .row{grid-template-columns:minmax(0,1fr) auto;padding:8px 14px;cursor:default}
 b.accent{color:var(--accent-ink)}
-.ta{display:flex;flex-direction:column;gap:14px}
-.ta-sum{display:flex;flex-direction:column;gap:2px;font-size:15px}
-.ta-sum b{font-weight:600}
-.ta-sum .faint{font-size:12.5px}
-.ta-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:2px;background:var(--line-2);border-radius:16px;overflow:hidden}
-.ta-it{background:var(--surface-2);padding:12px 14px;display:flex;flex-direction:column;gap:5px;min-width:0}
-.ta-it .l{font-size:12.5px;color:var(--ink-2)}
-.ta-it .v{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.2}
-.ta-it p{font-size:12.5px;color:var(--ink-2);line-height:1.45}
-.gauge,.bbar{position:relative;height:8px;border-radius:4px;margin-top:4px}
-.gauge{background:linear-gradient(to right,color-mix(in srgb,var(--ask) 30%,var(--surface-3)) 0 30%,var(--surface-3) 30% 70%,color-mix(in srgb,var(--bid) 30%,var(--surface-3)) 70%)}
-.bbar{background:linear-gradient(to right,var(--surface-3),color-mix(in srgb,var(--accent) 22%,var(--surface-3)),var(--surface-3))}
-.gauge i,.bbar i{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;background:var(--accent);border:2px solid var(--surface);transform:translate(-50%,-50%);box-shadow:0 1px 3px rgba(0,0,0,.25)}
-.gauge-ax{position:relative;height:14px;font-size:10.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
-.gauge-ax span{position:absolute;top:0;transform:translateX(-50%);white-space:nowrap}
-.gauge-ax span:first-child{left:0;transform:none} .gauge-ax span:last-child{right:0;left:auto;transform:none}
-.ta-it .v.sm{font-size:17px}
-.ta-sp{display:block;width:100%;height:56px;margin-top:4px}
-.ta-ma{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:4px 12px;font-size:13px;font-variant-numeric:tabular-nums;margin-top:2px}
-.ta-ma span:nth-child(3n){text-align:right;white-space:nowrap}
-.ta-h{font-size:15px;margin-top:2px}
-.ta-ch{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;font-size:14px;font-variant-numeric:tabular-nums;margin-top:2px}
-.ta-ch span:nth-child(2n){text-align:right;font-weight:600}
-.rgs{display:flex;flex-direction:column;gap:9px}
-.rg{display:grid;grid-template-columns:62px minmax(0,1fr);grid-template-areas:"k t" ". n";gap:3px 10px;align-items:center;font-size:12.5px}
-.rg .k{grid-area:k;color:var(--ink-2)} .rg .n{grid-area:n;font-size:11.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
-.rg-t{grid-area:t;position:relative;height:6px;border-radius:3px;background:linear-gradient(to right,color-mix(in srgb,var(--ask) 35%,var(--surface-3)),var(--surface-3),color-mix(in srgb,var(--bid) 35%,var(--surface-3)))}
-.rg-t i{position:absolute;top:50%;width:12px;height:12px;border-radius:50%;background:var(--ink);border:2px solid var(--surface);transform:translate(-50%,-50%)}
-@media (min-width:560px){.ta-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.chroot{display:flex;flex-direction:column;gap:26px}
+.tvbox{position:relative;padding:12px 8px 8px;display:flex;flex-direction:column;gap:6px}
+.tv-leg{display:flex;flex-direction:column;gap:2px;padding:0 6px;font-size:12px;font-variant-numeric:tabular-nums;color:var(--ink-2);min-height:52px}
+.tv-leg .l1{display:flex;flex-wrap:wrap;gap:2px 8px;align-items:baseline;font-size:13.5px}
+.tv-leg .l1 b{color:var(--ink);font-weight:600}
+.tv-leg .l2{display:flex;flex-wrap:wrap;gap:1px 10px}
+.tv-leg .l2 b{color:var(--ink);font-weight:500}
+.tv-leg .dot,.tv-ul .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;flex:none}
+.tvchart{position:relative;width:100%;min-height:200px}
+.tv-pl{position:absolute;left:14px;z-index:3;pointer-events:none;font-size:11.5px;color:var(--ink-2);font-variant-numeric:tabular-nums;background:color-mix(in srgb,var(--surface) 80%,transparent);border-radius:6px;padding:1px 4px}
+.tv-pl b{font-weight:600;margin-left:3px}
+.tv-pl b:not([style]){color:var(--ink)}
+.tv-wait{display:flex;align-items:center;justify-content:center;gap:8px;min-height:220px;color:var(--ink-2);font-size:13.5px;text-align:center;padding:16px}
+.tv-read{display:flex;flex-direction:column;gap:12px}
+.tv-mood{font-size:15.5px}
+.tv-mood b{font-weight:600}
+.tv-ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px;font-size:13.5px;line-height:1.45;color:var(--ink-2)}
+.tv-ul li{display:flex;align-items:baseline;gap:4px}
+.tv-ul li .dot{transform:translateY(-1px)}
+.tv-ul b{color:var(--ink);font-weight:600}
+.dlbox,.crbox{display:flex;flex-direction:column;gap:12px}
+.dl-big{font-family:var(--display);font-size:19px;line-height:1.3}
+.dl-big b{font-weight:600}
+.dl-big .faint{font-family:var(--body);font-size:13px}
+.dl-read{font-size:14px;line-height:1.45}
+#crread{display:flex;flex-direction:column;gap:10px}
+.crt{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px;background:var(--line-2);border-radius:16px;overflow:hidden}
+.crt>div{background:var(--surface-2);padding:12px 14px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.crt .l{font-size:12.5px;color:var(--ink-2)}
+.crt b{font-family:var(--display);font-size:22px;font-weight:600;line-height:1.2;font-variant-numeric:tabular-nums}
+.crt .s{font-size:12px;color:var(--ink-3);line-height:1.35}
+@media (min-width:900px){.crt{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media (min-width:900px){.obgrid{grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);align-items:start}}
-@media (min-width:1200px){.ta-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media (max-width:380px){.ob-r,.ob2 .h{font-size:12.5px;padding-inline:6px}.obtop .seg button{padding:6px 7px}.obm-t .v{font-size:16.5px}}
-
+@media (max-width:380px){.ob-r,.ob2 .h{font-size:12.5px;padding-inline:6px}.obtop .seg button{padding:6px 7px}}
 .trc{display:flex;flex-direction:column;gap:10px}
 .tr-sum{font-size:13.5px;line-height:1.45;color:var(--ink-2)}
 .tr-sum b{font-weight:600}
@@ -882,7 +873,7 @@ html{overscroll-behavior-y:contain}
       <main id="view">
         <section class="panel" data-panel="overview" id="p-overview"><div class="skel" aria-busy="true" aria-label="Loading data…"><div class="sk-st"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="sk sk-bar"></div><div class="sk sk-hero"></div><div class="sk-2"><div class="sk sk-tile"></div><div class="sk sk-tile"></div></div><div class="sk sk-card"></div></div></section>
         <section class="panel" data-panel="books" id="p-books" hidden></section>
-        <section class="panel" data-panel="flows" id="p-flows" hidden></section>
+        <section class="panel" data-panel="charts" id="p-charts" hidden></section>
         <section class="panel" data-panel="wallets" id="p-wallets" hidden></section>
         <section class="panel" data-panel="news" id="p-news" hidden></section>
         <section class="panel" data-panel="history" id="p-history" hidden></section>
@@ -998,7 +989,7 @@ html{overscroll-behavior-y:contain}
     ['https://www.dogdata.xyz', 'DOG DATA', T('холдеры, переводы, метрики — откуда трекер берёт ончейн-данные', 'holders, transfers, metrics — where this tracker gets its on-chain data')],
     ['https://c2dog.com', 'C2 Blockchain', T('публичная компания, которая копит DOG в казне', 'a public company that holds DOG in its treasury')]
   ];
-  const TABS = [['overview', T('Главное', 'Home'), 'home'], ['books', T('Стакан', 'Order book'), 'book'], ['flows', T('Переводы', 'Transfers'), 'flows'], ['wallets', T('Кошельки', 'Wallets'), 'wallet'], ['news', T('Новости', 'News'), 'news']];
+  const TABS = [['overview', T('Главное', 'Home'), 'home'], ['books', T('Стакан', 'Order book'), 'book'], ['charts', T('Графики', 'Charts'), 'candle'], ['wallets', T('Кошельки', 'Wallets'), 'wallet'], ['news', T('Новости', 'News'), 'news']];
   const EXTRA = [['history', T('История', 'History'), 'clock'], ['help', T('Справка', 'Guide'), 'help']];
   const TITLES = Object.fromEntries(TABS.concat(EXTRA).map(t => [t[0], t[1]]));
   const ICON = {
@@ -1045,8 +1036,8 @@ html{overscroll-behavior-y:contain}
     chartMode: store.get('chartMode', 'line') === 'candles' ? 'candles' : 'line', tre: null, live: null
   };
   const okTabs = TABS.concat(EXTRA).map(t => t[0]);
-  { const t = store.get('tab', null); if (okTabs.includes(t)) S.tab = t; }
-  { const h = (location.hash || '').replace('#', ''); if (okTabs.includes(h)) S.tab = h; }
+  { const t = store.get('tab', null); if (okTabs.includes(t)) S.tab = t; else if (t === 'flows') S.tab = 'charts'; }
+  { const h = (location.hash || '').replace('#', '').replace(/^flows$/, 'charts'); if (okTabs.includes(h)) S.tab = h; }
   const PERIODS = ['1Д', '1Н', '1М', '3М', '1Г', 'ВСЁ'];
   if (!PERIODS.includes(S.period)) S.period = '1М';
   const PER_BTN = { '1Д': T('1Д', '1D'), '1Н': T('1Н', '1W'), '1М': T('1М', '1M'), '3М': T('3М', '3M'), '1Г': T('1Г', '1Y'), 'ВСЁ': T('Всё', 'All') };
@@ -1243,7 +1234,12 @@ html{overscroll-behavior-y:contain}
     const ref = s.upd ? toDate(s.upd.ts) : toDate(s.ts);
     return ref && ref.getTime() - t.getTime() > 13 * 36e5 ? t : null;
   }
-  const staleTxt = t => T(`DOG DATA не обновляла топ-100 с ${dtl(t)} — изменения балансов пока не видны`, `DOG DATA hasn’t updated the top 100 since ${dtl(t)} — balance changes aren’t visible yet`);
+  const staleTxt = t => T(`Балансы топ-100 — на ${dtl(t)}: свежее получить не удалось ни у DOG DATA, ни из блокчейна — изменения пока не видны`, `Top-100 balances are as of ${dtl(t)}: neither DOG DATA nor the blockchain explorer gave fresher ones — changes aren’t visible yet`);
+  // с какого момента считаются изменения балансов: если в прошлой сводке топ-100 был старый, — с его даты
+  function topSince(s) {
+    const t = toDate(s.prevTop), p = s.prevTs ? toDate(s.prevTs) : null;
+    return t && p && p.getTime() - t.getTime() > 13 * 36e5 ? dtl(t) : prevLabel(s);
+  }
   function prevLabel(s) {
     const t = s.prevTs || (s.prevId ? s.prevId.replace(/^(\d{4}-\d\d-\d\d)T(\d\d)(\d\d)Z$/, '$1T$2:$3:00Z') : null);
     return t ? dtl(t) : null;
@@ -1320,7 +1316,7 @@ html{overscroll-behavior-y:contain}
     const u = s.upd;
     if (loud) {
       el.className = 'status run';
-      t.innerHTML = `${T('Обновляю…', 'Updating…')}<span class="long"> ${T('стаканы, топ-100, переводы', 'order books, top 100, transfers')}</span>`;
+      t.innerHTML = `${T('Обновляю…', 'Updating…')}<span class="long"> ${T('стаканы, холдеры, цена', 'order books, holders, price')}</span>`;
     } else if (off) {
       el.className = 'status warn';
       t.innerHTML = `${T('Нет сети', 'Offline')}<span class="long">${T(' · данные на ', ' · data as of ')}${esc(tl(u ? u.ts : s.ts))}</span>`;
@@ -1555,14 +1551,15 @@ html{overscroll-behavior-y:contain}
   // ---------- цена: график TradingView Lightweight Charts (Apache-2.0) ----------
   const LWC_URL = 'https://cdn.jsdelivr.net/npm/lightweight-charts@5.0.8/dist/lightweight-charts.standalone.production.js';
   let LW = window.LightweightCharts || null, lwState = LW ? 'ready' : 'loading';
+  function lwRedraw() { drawPrice(true); if (S.tab === 'charts' && typeof chDrawAll === 'function') chDrawAll(); }
   if (!LW) {
     try {
       const sc = document.createElement('script');
       sc.src = LWC_URL; sc.async = true;
-      sc.onload = () => { LW = window.LightweightCharts || null; lwState = LW && typeof LW.createChart === 'function' ? 'ready' : 'failed'; drawPrice(true); };
-      sc.onerror = () => { lwState = 'failed'; drawPrice(true); };
+      sc.onload = () => { LW = window.LightweightCharts || null; lwState = LW && typeof LW.createChart === 'function' ? 'ready' : 'failed'; lwRedraw(); };
+      sc.onerror = () => { lwState = 'failed'; lwRedraw(); };
       document.head.appendChild(sc);
-      setTimeout(() => { if (lwState === 'loading') { lwState = 'failed'; drawPrice(true); } }, 6000);
+      setTimeout(() => { if (lwState === 'loading') { lwState = 'failed'; lwRedraw(); } }, 6000);
     } catch (e) { lwState = 'failed'; }
   }
   // библиотека считает время в UTC — сдвигаем на часовой пояс читателя
@@ -1762,7 +1759,6 @@ html{overscroll-behavior-y:contain}
     const out = [], pr = s.price || {}, mid = pr.mid, c24 = pr.chg24;
     if (c24 != null && Math.abs(c24) >= 7) out.push(`Price ${sg(c24, 1)}% in 24h`);
     if (!s.prevId) return out;
-    const t = toDate(s.ts), pt = toDate(s.prevTs), longGap = !!(t && pt && t - pt > 30 * 36e5);
     const dist = p => { if (!mid) return ''; const d = (p / mid - 1) * 100; return Math.abs(d) < 0.5 ? ', right at the price' : ` (${sg(d, 0)}% from price)`; };
     let k = 0;
     for (const w of s.wallsDelta || []) {
@@ -1776,23 +1772,9 @@ html{overscroll-behavior-y:contain}
       else out.push(`${ex}: ${sd} order at ${m1s(p)} per 1M ${q1 > q0 ? 'grew' : 'shrank'} from ${n(q0, 1)} to ${mdog(q1)} DOG`);
       if (++k >= 4) break;
     }
-    const fl = s.flows || {}, byf = {}, done = new Set();
-    for (const g of fl.byEx || []) byf[g.n] = g;
     for (const g of (s.exch || {}).by || []) {
       const d = g.d; if (d == null || Math.abs(d) < 20) continue;
-      const fx = byf[g.n] || {}, day = (d > 0 ? fx.in : fx.out) || 0;
-      const extra = longGap && day >= 5 ? ` (${mdog(day)} in the last 24h)` : '';
-      out.push(d > 0 ? `${nameTr(g.n)}: ${mdog(d)} DOG arrived on the exchange${extra}` : `${nameTr(g.n)}: ${mdog(-d)} DOG left the exchange${extra}`);
-      done.add(g.n);
-    }
-    for (const [nm, fx] of Object.entries(byf)) {
-      if (done.has(nm)) continue;
-      if ((fx.in || 0) >= 20) out.push(`${nm}: ${mdog(fx.in)} DOG deposited in 24h`);
-      if ((fx.out || 0) >= 20) out.push(`${nm}: ${mdog(fx.out)} DOG withdrawn in 24h`);
-    }
-    k = 0;
-    for (const b of fl.big || []) {
-      if (b.typ === 'между кошельками' && (b.q || 0) >= 20) { out.push(`Transfer of ${mdog(b.q)} DOG: ${whoTxt(b.fn, b.fk, b.fr)} → ${whoTxt(b.tn, b.tk, b.tr)}`); if (++k >= 2) break; }
+      out.push(d > 0 ? `${nameTr(g.n)}: ${mdog(d)} DOG arrived on the exchange` : `${nameTr(g.n)}: ${mdog(-d)} DOG left the exchange`);
     }
     const mv = s.movers || {}, bal = {};
     for (const x of s.top100 || []) bal[x.a] = x.b;
@@ -1813,7 +1795,6 @@ html{overscroll-behavior-y:contain}
     const out = [], pr = s.price || {}, mid = pr.mid, c24 = pr.chg24;
     if (c24 != null && Math.abs(c24) >= 7) out.push(`цена за сутки ${sg(c24, 1)}%`);
     if (!s.prevId) return out;
-    const t = toDate(s.ts), pt = toDate(s.prevTs), longGap = !!(t && pt && t - pt > 30 * 36e5);
     const dist = p => { if (!mid) return ''; const d = (p / mid - 1) * 100; return Math.abs(d) < 0.5 ? ', у самой цены' : ` (${sg(d, 0)}% от цены)`; };
     let k = 0;
     for (const w of s.wallsDelta || []) {
@@ -1827,23 +1808,9 @@ html{overscroll-behavior-y:contain}
       else out.push(`${ex}: заявка на ${sd} по ${m1s(p)} за 1 млн ${q1 > q0 ? 'выросла' : 'уменьшилась'}: ${n(q0, 1)} → ${mdog(q1)} DOG`);
       if (++k >= 4) break;
     }
-    const fl = s.flows || {}, byf = {}, done = new Set();
-    for (const g of fl.byEx || []) byf[g.n] = g;
     for (const g of (s.exch || {}).by || []) {
       const d = g.d; if (d == null || Math.abs(d) < 20) continue;
-      const fx = byf[g.n] || {}, day = (d > 0 ? fx.in : fx.out) || 0;
-      const extra = longGap && day >= 5 ? ` (за последние сутки — ${mdog(day)})` : '';
-      out.push(d > 0 ? `${g.n}: на биржу пришло ${mdog(d)} DOG${extra}` : `${g.n}: с биржи ушло ${mdog(-d)} DOG${extra}`);
-      done.add(g.n);
-    }
-    for (const [nm, fx] of Object.entries(byf)) {
-      if (done.has(nm)) continue;
-      if ((fx.in || 0) >= 20) out.push(`${nm}: на биржу за сутки пришло ${mdog(fx.in)} DOG`);
-      if ((fx.out || 0) >= 20) out.push(`${nm}: с биржи за сутки ушло ${mdog(fx.out)} DOG`);
-    }
-    k = 0;
-    for (const b of fl.big || []) {
-      if (b.typ === 'между кошельками' && (b.q || 0) >= 20) { out.push(`перевод ${mdog(b.q)} DOG: ${ruWho(b.fn, b.fk, b.fr)} → ${ruWho(b.tn, b.tk, b.tr)}`); if (++k >= 2) break; }
+      out.push(d > 0 ? `${g.n}: на биржу пришло ${mdog(d)} DOG` : `${g.n}: с биржи ушло ${mdog(-d)} DOG`);
     }
     const mv = s.movers || {}, bal = {};
     for (const x of s.top100 || []) bal[x.a] = x.b;
@@ -1868,7 +1835,7 @@ html{overscroll-behavior-y:contain}
     if (ex.bal) parts.push(`На кошельках бирж лежит ${mdog(ex.bal)} DOG.`);
     const al = alertsRu(s);
     if (al.length) parts.push('Главное за сутки: ' + al.slice(0, 3).join('; ') + '.');
-    else if (s.prevId) parts.push('Крупных изменений за сутки не было: заявки в стаканах, балансы бирж и переводы — без сдвигов от 20 млн DOG.');
+    else if (s.prevId) parts.push('Крупных изменений за сутки не было: заявки в стаканах и балансы бирж — без сдвигов от 20 млн DOG.');
     return parts.join(' ');
   }
   function briefOf(s) {
@@ -1884,7 +1851,7 @@ html{overscroll-behavior-y:contain}
     if (ex.bal) parts.push(`Exchange wallets hold ${mdog(ex.bal)} DOG.`);
     const al = alertsEn(s);
     if (al.length) parts.push('Key moves: ' + al.slice(0, 3).join('; ') + '.');
-    else if (s.prevId) parts.push('No big changes in the last 24h: order books, exchange balances and transfers all moved by less than 20M DOG.');
+    else if (s.prevId) parts.push('No big changes in the last 24h: order books and exchange balances moved by less than 20M DOG.');
     return parts.join(' ');
   }
   // ---------- истории ----------
@@ -1917,13 +1884,6 @@ html{overscroll-behavior-y:contain}
       ws.push(`<div class="ssmall">${T('Все биржи вместе, в пределах 10% от цены', 'All exchanges combined, within 10% of the price')}</div><div class="stext">${T(`Хотят купить ${mdog(d10.b)} DOG, продать — ${mdog(d10.a)}`, `Buyers want ${mdog(d10.b)} DOG, sellers offer ${mdog(d10.a)}`)}</div><div class="sbar"><i style="flex:${(d10.b / tot).toFixed(3)};background:#2CC79A"></i><i style="flex:${(d10.a / tot).toFixed(3)};background:#FF6A70"></i></div><div class="ssmall">${d10.a ? (d10.b >= d10.a ? T('Покупателей больше в ' + n(d10.b / d10.a, 1) + ' раза', n(d10.b / d10.a, 1) + '× more buyers than sellers') : T('Продавцов больше в ' + n(d10.a / d10.b, 1) + ' раза', n(d10.a / d10.b, 1) + '× more sellers than buyers')) : ''}</div>`);
     }
     out.push({ key: 'walls', title: T('Заявки', 'Orders'), icon: 'wall', slides: ws, go: 'books' });
-
-    const fs = [];
-    if (fl.count != null) {
-      fs.push(`<div class="ssmall">${T('Переводы от 5 млн DOG за сутки', 'Transfers of 5M+ DOG in 24h')}</div><div class="sbig">${fl.count}</div><div class="sfacts"><div><span>${T('Завели на биржи', 'Sent to exchanges')}</span><b>${mdog(fl.toExch)}</b></div><div><span>${T('Вывели с бирж', 'Withdrawn from exchanges')}</span><b>${mdog(fl.fromExch)}</b></div></div><div class="ssmall">${T('На биржу DOG обычно заводят перед продажей, выводят — чтобы хранить у себя.', 'People usually move DOG to an exchange before selling, and withdraw it to hold.')}</div>`);
-      (fl.big || []).slice(0, 2).forEach(b => fs.push(`<div class="ssmall">${esc(when(b.ts || b.t))}</div><div class="sbig">${mdog(b.q)}</div><div class="stext">${esc(whoTxt(b.fn, b.fk, b.fr))} → ${esc(whoTxt(b.tn, b.tk, b.tr))}</div><div class="ssmall">${esc(typTr(b.typ))}, ${esc(usdM(b.q, pr.mid))}</div>`));
-      out.push({ key: 'flows', title: T('Переводы', 'Transfers'), icon: 'flows', slides: fs, go: 'flows' });
-    }
 
     const wsl = [];
     const stl = topStale(s);
@@ -2149,6 +2109,7 @@ html{overscroll-behavior-y:contain}
       r[4] = lp; r[2] = Math.max(r[2], lp); r[3] = Math.min(r[3], lp);
       try { HC.main.update(HC.vol ? { time: r[0] + TZ, open: r[1], high: r[2], low: r[3], close: r[4] } : { time: r[0] + TZ, value: r[4] }); } catch (e) { }
     }
+    chLive();
     const cap = $('#hcap'); if (cap) cap.textContent = T('капитализация ≈ ', 'market cap ≈ ') + usd(lp * SUPPLY);
     try { document.title = fpd(lp) + ' · ' + T('DOG Монитор', 'DOG Monitor'); } catch (e) { }
   }
@@ -2291,7 +2252,7 @@ html{overscroll-behavior-y:contain}
         <button type="button" class="bf" data-go="books" aria-label="${T('Открыть сводный стакан всех бирж', 'Open the combined order book')}">
           ${rows.map(([k, nm]) => { const b = s.books[k], d = b.d10 || {}, na = d.b == null && d.a == null; return `<span class="bf-row${b.off ? ' off' : ''}"><span class="bf-n"><span class="exlogo sm">${esc(nm[0])}</span>${esc(nm)}${b.old && s.upd ? '<sup class="faint">*</sup>' : ''}</span>${na ? `<span class="bf-na">${T('биржа отдаёт мало данных', 'exchange shares little data')}</span>` : half(d.b, 'b') + half(d.a, 'a')}</span>`; }).join('')}
         </button>
-        ${s.upd && rows.some(([k]) => s.books[k].old) ? (() => { const g = w => rows.filter(([k]) => s.books[k].old === w).map(([, nm]) => nm).join(', '); const c = g('cors'), f = g('fail'); return `<p class="oldnote">* ${T('из утренней сводки', 'from the morning report')} (${esc(tl(s.upd.baseTs))}): ${[c ? esc(c) + T(' — эти биржи не отвечают на запросы со страниц сайтов', ' — these exchanges don’t answer requests from web pages') : '', f ? esc(f) + T(' — не ответила при обновлении', ' — didn’t respond during the update') : ''].filter(Boolean).join('; ')}${rows.some(([k]) => s.books[k].old && s.books[k].off) ? T('. Бледные — в итоги не входят: цена с утра ушла больше чем на 3%', '. Faded ones are left out of the totals: the price has moved more than 3% since the morning') : ''}</p>`; })() : ''}
+        ${s.upd && rows.some(([k]) => s.books[k].old) ? (() => { const g = w => rows.filter(([k]) => s.books[k].old === w).map(([, nm]) => nm).join(', '); const c = g('cors'), f = g('fail'); return `<p class="oldnote">* ${T('из утренней сводки', 'from the morning report')} (${esc(tl(s.upd.baseTs))}): ${[c ? esc(c) + T(' — онлайн их стакан идёт только во вкладке «Стакан»', ' — their live order books run on the Order book tab only') : '', f ? esc(f) + T(' — не ответила при обновлении', ' — didn’t respond during the update') : ''].filter(Boolean).join('; ')}${rows.some(([k]) => s.books[k].old && s.books[k].off) ? T('. Бледные — в итоги не входят: цена с утра ушла больше чем на 3%', '. Faded ones are left out of the totals: the price has moved more than 3% since the morning') : ''}</p>`; })() : ''}
       </section>`;
   }
   const monY = ds => { const d = dOf(ds); if (!d) return ''; try { return new Intl.DateTimeFormat(LOC, { month: 'short', year: 'numeric' }).format(d).replace(/\s*г\.?$/, '').replace('.', ''); } catch (e) { return String(ds).slice(0, 7); } };
@@ -2371,7 +2332,6 @@ html{overscroll-behavior-y:contain}
     for (const x of (mv.up || []).slice(0, 3)) ev.push({ i: 'up', c: 'b', h: `${esc(whoTxt(x.n, x.k, x.r))} ${T('набрал', 'added')} <b>${mdog(x.d)} DOG</b>` });
     for (const x of (mv.down || []).slice(0, 3)) ev.push({ i: 'down', c: 'a', h: `${esc(whoTxt(x.n, x.k, x.r))} ${T('сбросил', 'sent out')} <b>${mdog(Math.abs(x.d))} DOG</b>` });
     for (const x of (mv.new || []).slice(0, 2)) ev.push({ i: 'plus', c: 'o', h: `${T('Новый в топ-100', 'New in the top 100')}: ${esc(whoTxt(x.n, x.k, x.r))}, ${mdog(x.b)} DOG` });
-    for (const b of ((s.flows || {}).big || []).slice(0, 3)) ev.push({ i: 'flows', c: b.typ === 'на биржу' ? 'a' : (b.typ === 'с биржи' ? 'b' : ''), h: `${mdog(b.q)} DOG ${esc(typTr(b.typ))}: ${esc(whoTxt(b.fn, b.fk, b.fr))} → ${esc(whoTxt(b.tn, b.tk, b.tr))}`, t: when(b.ts || b.t) });
     return ev;
   }
   const hbarsHtml = (by, maxB) => (by || []).map(g => `<div class="hb"><span><span class="kdot kd-${esc(g.k)}"></span>${esc(ownName(g.n, g.k))}${g.cnt > 1 ? ` <span class="faint">(${g.cnt} ${P(g.cnt, 'кошелёк', 'кошелька', 'кошельков', 'wallet', 'wallets')})</span>` : ''}</span><span><b>${mdog(g.bal)}</b>${g.d != null && Math.abs(g.d) >= 0.05 ? ` <span class="muted">${sg(g.d, 1)}</span>` : ''}</span><span class="track"><i style="width:${(g.bal / maxB * 100).toFixed(1)}%"></i></span></div>`).join('');
@@ -2448,19 +2408,11 @@ html{overscroll-behavior-y:contain}
           <li><b>${T('Стенка', 'Wall')}</b> <span style="display:inline-block;width:7px;height:7px;border-radius:2px;background:var(--accent);vertical-align:1px"></span> — ${T('одна заявка от 5 млн DOG на одной цене. Такие заявки часто сдерживают цену, но их могут снять в любой момент.', 'a single order of 5M+ DOG at one price. Such orders often hold the price back, but can be pulled at any moment.')}</li>
           <li>${T('Нажмите на строку — откроются подробности: какие биржи, точные цены внутри ступени, сколько нужно купить или продать, чтобы цена дошла до этого уровня.', 'Tap a row for details: which exchanges, the exact prices inside the step, how much would need to be bought or sold for the price to reach it.')}</li>
         </ul>
-        <p>${T('Пока открыт стакан, Kraken, Gate, DigiFinex и CoinW обновляются каждые 10 секунд прямо с бирж. MEXC и BingX не отвечают на запросы со страниц сайтов — их стакан из утренней сводки, его можно открыть отдельной кнопкой.', 'While the order book is open, Kraken, Gate, DigiFinex and CoinW refresh every 10 seconds straight from the exchanges. MEXC and BingX don’t answer requests from web pages — their books come from the morning report and can be opened with their own buttons.')}</p>
+        <p>${T('Пока открыт стакан, Kraken, Gate, DigiFinex и CoinW обновляются каждые 10 секунд прямо с бирж, а MEXC и BingX присылают изменения сами — по постоянному подключению (WebSocket). MEXC так отдаёт 20 ближних уровней с каждой стороны, BingX — 100. Если подключиться не получилось, у этих двух бирж стакан из утренней сводки — с пометкой.', 'While the order book is open, Kraken, Gate, DigiFinex and CoinW refresh every 10 seconds straight from the exchanges, while MEXC and BingX push their changes over a live connection (WebSocket). MEXC streams the nearest 20 levels on each side this way, BingX 100. If the connection fails, these two show the morning report’s book — marked as such.')}</p>
         <p class="note">${T('Стакан — это намерения, а не сделки: заявку можно снять за секунду. Это не инвестиционная рекомендация.', 'An order book shows intentions, not trades: an order can be pulled in a second. Not investment advice.')}</p>`],
-    calc: () => [T('Если купить или продать сразу', 'If you buy or sell right now'), `<p>${T('Покупка «по рынку» забирает самые дешёвые продажи из стакана, потом следующие — пока не наберётся нужная сумма. Поэтому средняя цена выходит хуже текущей, и тем хуже, чем больше сумма и тоньше стакан. Эта разница называется проскальзыванием.', 'A market buy takes the cheapest asks first, then the next ones, until the amount is filled. So the average price ends up worse than the current one — the bigger the amount and the thinner the book, the worse. That gap is called slippage.')}</p>
-        <p>${T('Калькулятор проходит по заявкам выбранной биржи (или всех бирж вместе) и показывает среднюю цену, сколько DOG получится и до какой цены дойдёт сделка.', 'The calculator walks through the orders of the selected exchange (or all exchanges combined) and shows the average price, how much DOG you’d get and how far the price would move.')}</p>
-        <p class="note">${T('Без комиссий бирж. Это расчёт по стакану в моменте, а не предложение купить или продать.', 'Exchange fees not included. A calculation on the current book, not an offer to buy or sell.')}</p>`],
-    ob_spread: () => [T('Спред', 'Spread'), `<p>${T('Разница между лучшей продажей и лучшей покупкой — сколько «теряется» на мгновенной покупке и продаже. Чем меньше спред, тем оживлённее торги.', 'The gap between the best ask and the best bid — what you’d lose buying and instantly selling. The smaller the spread, the more active the market.')}</p><p class="note">${T('Для всех бирж вместе — лучшая покупка и лучшая продажа среди всех бирж. Если цены бирж пересекаются, на одной бирже покупают дороже, чем продают на другой.', 'For all exchanges combined — the best bid and best ask across all of them. If prices overlap, one exchange is buying higher than another is selling.')}</p>`],
-    ob_imb: () => [T('Перекос стакана', 'Order book imbalance'), `<p>${T('Сравнение заявок на покупку и на продажу рядом с ценой: ±1%, ±2%, ±5% и ±10%. «Покупок ×2» — покупателей вдвое больше, чем продавцов.', 'Compares buy and sell orders near the price: ±1%, ±2%, ±5% and ±10%. “Buyers ×2” means twice as many buyers as sellers.')}</p><p>${T('Когда покупателей заметно больше, цене труднее падать, и наоборот. Но заявки снимают и ставят постоянно — это настроение в моменте, а не прогноз.', 'When buyers clearly outnumber sellers, it’s harder for the price to fall, and vice versa. But orders are placed and pulled all the time — it’s the mood of the moment, not a forecast.')}</p><p class="note">${T('Линия «за N минут» копится, пока открыт стакан: выше середины — покупок больше.', 'The “last N min” line builds up while the order book is open: above the middle — more buyers.')}</p>`],
-    ob_liq: () => [T('Деньги в стакане', 'Liquidity'), `<p>${T('Сколько долларов стоит в заявках в пределах 2% от цены: слева — покупки, справа — продажи. Это главный признак «глубины»: чем больше, тем меньше цена сдвинется от крупной сделки.', 'How many dollars sit in orders within 2% of the price: bids on the left, asks on the right. It’s the main sign of depth: the more there is, the less a large trade moves the price.')}</p>`],
-    ob_trades: () => [T('Сделки', 'Trades'), `<p>${T('Стакан показывает намерения, а сделки — то, что реально произошло. Сделка «по рынку» — кто-то купил или продал сразу, забрав заявку из стакана.', 'The order book shows intentions; trades show what actually happened. A market trade means someone bought or sold instantly, taking an order from the book.')}</p><ul class="plain"><li><b class="up">${T('Зелёная', 'Green')}</b> — ${T('покупатель забрал чью-то продажу (купил по рынку).', 'a buyer took someone’s ask (bought at market).')}</li><li><b class="down">${T('Красная', 'Red')}</b> — ${T('продавец забрал чью-то покупку (продал по рынку).', 'a seller hit someone’s bid (sold at market).')}</li></ul><p>${T('Полоска «Покупки / Продажи» — кто чаще торопился за последний час: если покупок по рынку больше, покупатели готовы платить дороже.', 'The Buys / Sells bar shows who was more in a hurry over the last hour: more market buys means buyers are willing to pay up.')}</p><p class="note">${T('Kraken и Gate — их сделки доступны прямо со страницы. Пока стакан открыт, сделки обновляются каждые 10 секунд.', 'Kraken and Gate — their trades are available straight from the page. While the order book is open, trades refresh every 10 seconds.')}</p>`],
-    ob_walls: () => [T('Стенки', 'Walls'), `<p>${T('Ближайшие к цене одиночные заявки от 5 млн DOG: зелёная — на покупку, красная — на продажу. В скобках — насколько они далеко от текущей цены.', 'The nearest single orders of 5M+ DOG: green to buy, red to sell. In brackets — how far they are from the current price.')}</p><p class="note">${T('Стенку могут снять в любой момент, иногда её ставят, чтобы повлиять на настроение.', 'A wall can be pulled at any moment; sometimes walls are placed to sway the mood.')}</p>`],
-    flows: () => [T('Что значат переводы', 'What transfers mean'), `<p>${T('Здесь все переводы от 5 млн DOG за сутки.', 'These are all transfers of 5M+ DOG over the last 24 hours.')}</p>
-        <ul class="plain"><li><b>${T('На биржу', 'To an exchange')}</b> — ${T('DOG завели на биржу. Так часто делают перед продажей.', 'DOG was moved onto an exchange. People often do this before selling.')}</li><li><b>${T('С биржи', 'From an exchange')}</b> — ${T('DOG вывели на свой кошелёк, чтобы хранить.', 'DOG was withdrawn to a personal wallet to hold.')}</li></ul>
-        <p class="note">${T('Это наблюдение, а не правило: биржи и сами перекладывают монеты между своими кошельками.', 'This is an observation, not a rule: exchanges also shuffle coins between their own wallets.')}</p>`],
+    delta: () => [T('Дельта', 'Delta'), `<p>${T('Каждая сделка на бирже — это встреча двух заявок. Одна уже стояла в стакане, а вторую кто-то отправил «по рынку», чтобы купить или продать сразу. Тот, кто нажал «по рынку», и есть инициатор: он готов платить за скорость.', 'Every trade matches two orders. One was already waiting in the order book; the other was sent “at market” by someone who wanted to buy or sell right away. Whoever hit “market” started the trade — they were willing to pay for speed.')}</p><p>${T('Дельта — это сколько DOG купили по рынку минус сколько продали по рынку. Плюс — покупатели напористее, минус — продавцы. Накопленная дельта (CVD) складывает эти числа подряд: линия растёт, пока покупают активнее.', 'Delta is DOG bought at market minus DOG sold at market. Plus — buyers are pushier, minus — sellers are. Cumulative delta (CVD) adds these numbers up over time: the line rises while buying dominates.')}</p><p>${T('Самое интересное — расхождение: если дельта в плюсе, а цена не растёт, значит, крупные продавцы стоят в стакане и забирают все покупки. И наоборот.', 'The interesting part is a mismatch: if delta is positive but the price isn’t rising, big sellers are sitting in the book absorbing all the buying. And vice versa.')}</p><p class="note">${T('Считаются сделки Kraken (DOG/USD) и Gate (DOG/USDT) — две крупные площадки, которые отдают полную ленту сделок прямо на страницу. Это картина рынка за выбранное время, а не прогноз.', 'Counts trades on Kraken (DOG/USD) and Gate (DOG/USDT) — two major venues that serve their full trade tape directly to the page. It’s a picture of the chosen period, not a forecast.')}</p>`],
+    ob_imb: () => [T('Кто сильнее у цены', 'Who’s stronger near the price'), `<p>${T('На биржах стоят заявки: «куплю, если цена опустится до…» (зелёные) и «продам, если поднимется до…» (красные). Здесь сложены все такие заявки рядом с ценой — в пределах 1%, 2%, 5% и 10% — и посчитано в долларах, кого больше.', 'Exchanges hold orders: “I’ll buy if the price drops to…” (green) and “I’ll sell if it rises to…” (red). Here all such orders near the price — within 1%, 2%, 5% and 10% — are added up in dollars to show who outweighs whom.')}</p><p>${T('Когда покупателей заметно больше, цене труднее падать: продавцам приходится «съесть» много заявок. И наоборот. Но заявку можно снять за секунду — это настроение рынка сейчас, а не прогноз.', 'When buyers clearly outweigh sellers, it’s harder for the price to fall: sellers would have to eat through many orders. And vice versa. But an order can be pulled in a second — it’s the market’s mood right now, not a forecast.')}</p><p class="note">${T('Линия внизу копится, пока открыт стакан: выше середины — покупателей больше.', 'The line at the bottom builds up while the order book is open: above the middle — more buyers.')}</p>`],
+    ob_trades: () => [T('Сделки', 'Trades'), `<p>${T('Стакан показывает намерения, а сделки — то, что реально произошло. Сделка «по рынку» — кто-то купил или продал сразу, забрав заявку из стакана.', 'The order book shows intentions; trades show what actually happened. A market trade means someone bought or sold instantly, taking an order from the book.')}</p><ul class="plain"><li><b class="up">${T('Зелёная', 'Green')}</b> — ${T('покупатель забрал чью-то продажу (купил по рынку).', 'a buyer took someone’s ask (bought at market).')}</li><li><b class="down">${T('Красная', 'Red')}</b> — ${T('продавец забрал чью-то покупку (продал по рынку).', 'a seller hit someone’s bid (sold at market).')}</li></ul><p>${T('Полоска «Покупки / Продажи» — кто чаще торопился за последний час: если покупок по рынку больше, покупатели готовы платить дороже.', 'The Buys / Sells bar shows who was more in a hurry over the last hour: more market buys means buyers are willing to pay up.')}</p><p class="note">${T('Сводка за час — по Kraken и Gate: их ленту сделок можно загрузить целиком. MEXC и BingX присылают сделки онлайн с момента, как вы открыли стакан, — они видны в списке.', 'The hourly summary uses Kraken and Gate, whose full trade tape can be loaded. MEXC and BingX stream trades live from the moment you open the order book — they appear in the list.')}</p>`],
     wallets: () => [T('Кто есть кто', 'Who’s who'), `<p>${T('Сто самых крупных кошельков DOG. Метки ставятся по данным DOG DATA, публикациям бирж и движению монет.', 'The hundred largest DOG wallets. Labels come from DOG DATA, exchange disclosures and how the coins move.')}</p>
         <ul class="plain"><li><span class="kdot kd-exchange"></span><b>${T('Биржи', 'Exchanges')}</b> — ${T('кошельки бирж и биржевые хранилища.', 'exchange wallets and exchange custody.')}</li><li><span class="kdot kd-treasury"></span><b>${T('Сервисы', 'Services')}</b> — ${T('казна проекта, распределители, маркет-мейкеры, маркетплейсы.', 'treasuries, distributors, market makers, marketplaces.')}</li><li><span class="kdot kd-private"></span><b>${T('Холдеры', 'Holders')}</b> — ${T('кошельки без метки биржи или сервиса; «крупный холдер» — с большим числом операций.', 'wallets with no exchange or service label; a “large holder” has many transactions.')}</li></ul>
         <p>${T('<b>Ср. цена покупок</b> — по какой цене в среднем кошелёк покупал и пополнялся после аирдропа (по цене дня поступления). Монеты с аирдропа бесплатные и в неё не входят — их доля написана отдельно. Зелёный процент — сейчас дороже этой цены, красный — дешевле.', '<b>Avg buy</b> — the average price at which the wallet bought or was topped up after the airdrop (each deposit at that day’s price). Airdropped coins were free and are left out — their share is shown separately. Green means DOG is above that price now, red means below.')}</p>
@@ -2537,7 +2489,8 @@ html{overscroll-behavior-y:contain}
   // Цены — настоящие (0.00081), шаг группировки — 0.0000001 … 0.0001, как «Order Book Depth» на Gate.
   // Пока вкладка открыта, стаканы Kraken, Gate, DigiFinex и CoinW обновляются каждые 10 секунд прямо со страницы
   // (Gate — два запроса: 100 ближних уровней точно и ступени по 0.00001 вглубь).
-  // MEXC и BingX отвечают только серверу — у них стакан из утренней сводки, ступенями по 0.00001.
+  // MEXC и BingX на обычные запросы со страниц не отвечают, зато пускают по WebSocket: MEXC — 20 ближних уровней
+  // и сделки (protobuf), BingX — 100 уровней и сделки (gzip). Если подключиться не вышло — стакан из утренней сводки.
   const OB_STEPS = [1e-7, 1e-6, 1e-5, 1e-4], OB_POLL = 10e3, OB_FRESH = 30 * 60e3, PU = 1e8, OB_WALL = 5e6;
   const OB = { ex: {}, gateAgg: null, t: 0, first: 0, run: null, timer: null, tick: null, err: {}, ev: [], hist: [] };
   { const v = store.get('bx', 'all'); S.bx = v === 'all' || (EXN[v] && v !== 'bitget') ? v : 'all'; }
@@ -2545,8 +2498,6 @@ html{overscroll-behavior-y:contain}
   { const v = store.get('bview', 'col'); S.bview = ['col', 'two', 'table'].includes(v) ? v : 'col'; }
   S.bunit = store.get('bunit', 'dog') === 'usd' ? 'usd' : 'dog';
   S.bpause = false; S.bmore = false;
-  { const v = store.get('taTf', '1h'); S.taTf = ['1h', '4h', '1d'].includes(v) ? v : '1h'; }
-  S.calc = (() => { const c = store.get('calc', {}) || {}; return { side: c.side === 'sell' ? 'sell' : 'buy', unit: c.unit === 'dog' ? 'dog' : 'usd', amt: c.amt > 0 && c.amt < 1e12 ? +c.amt : 1000 }; })();
   if (![0.02, 0.05, 0.10, 0.20, 0.30].includes(S.range)) S.range = 0.10;
 
   const toU = p => Math.round(p * PU);
@@ -2580,7 +2531,8 @@ html{overscroll-behavior-y:contain}
     ['digifinex', () => 'https://openapi.digifinex.com/v3/order_book?symbol=dog_usdt&limit=150'],
     ['coinw', () => 'https://api.coinw.com/api/v1/public?command=returnOrderBook&symbol=DOG(RUNE)_USDT&size=100']
   ];
-  const obFresh = x => !!x && Date.now() - x.ft < OB_FRESH;
+  const OB_WS_FRESH = 90e3;
+  const obFresh = x => !!x && Date.now() - x.ft < (x.ws ? OB_WS_FRESH : OB_FRESH);
   // разобранный ответ биржи → уровни [цена, DOG], где кончаются данные (cov), лучшие цены
   function obPut(k, d, t) {
     const ex = k === 'gateAgg' ? 'gate' : k;
@@ -2631,6 +2583,7 @@ html{overscroll-behavior-y:contain}
   function obLoop() {
     clearTimeout(OB.timer);
     const want = S.tab === 'books' && !S.archived && !S.bpause && document.visibilityState !== 'hidden' && navigator.onLine !== false && !!V();
+    wsWant(want);
     if (want && !OB.tick) OB.tick = setInterval(obAge, 1000);
     if (!want) { if (OB.tick) { clearInterval(OB.tick); OB.tick = null; } return; }
     // сделки сразу при открытии стакана (дальше — вместе со стаканом раз в 10 секунд)
@@ -2648,6 +2601,142 @@ html{overscroll-behavior-y:contain}
   }
   document.addEventListener('visibilitychange', () => obLoop());
   window.addEventListener('online', () => obLoop());
+
+  // ---------- MEXC и BingX онлайн: WebSocket ----------
+  // Подключаемся, только пока открыта вкладка «Стакан» (и через 30 секунд после ухода отключаемся).
+  const WSK = {
+    mexc: { url: 'wss://wbs-api.mexc.com/ws', lim: 20, sub: [{ method: 'SUBSCRIPTION', params: ['spot@public.limit.depth.v3.api.pb@DOGUSDT@20', 'spot@public.aggre.deals.v3.api.pb@100ms@DOGUSDT'] }] },
+    bingx: { url: 'wss://open-api-ws.bingx.com/market', lim: 100, sub: [{ id: 'dogbook', reqType: 'sub', dataType: 'DOG-USDT@depth100' }, { id: 'dogtrades', reqType: 'sub', dataType: 'DOG-USDT@trade' }] }
+  };
+  const WS = {};
+  const wsCan = k => 'WebSocket' in window && (k !== 'bingx' || (typeof DecompressionStream === 'function' && typeof Blob === 'function' && typeof Blob.prototype.stream === 'function'));
+  function wsOpen(k) {
+    const W = WS[k] || (WS[k] = { retry: 0, want: false });
+    if (!wsCan(k)) { W.state = 'off'; return; }
+    if (W.ws && W.ws.readyState <= 1) return;
+    clearTimeout(W.timer);
+    if (!W.want) { W.since = Date.now(); if (OB.tr[k] && OB.tr[k].ws) delete OB.tr[k]; }   // после перерыва лента сделок начинается заново
+    W.want = true;
+    let ws; try { ws = new WebSocket(WSK[k].url); } catch (e) { W.state = 'fail'; return; }
+    ws.binaryType = 'arraybuffer';
+    W.ws = ws; W.state = 'connecting'; W.t0 = Date.now();
+    ws.onopen = () => {
+      W.retry = 0;
+      WSK[k].sub.forEach(m => { try { ws.send(JSON.stringify(m)); } catch (e) { } });
+      clearInterval(W.ping);
+      if (k === 'mexc') W.ping = setInterval(() => { try { ws.send('{"method":"PING"}'); } catch (e) { } }, 20e3);
+    };
+    ws.onmessage = ev => { if (W.ws !== ws) return; if (k === 'mexc') mexcMsg(ev.data); else bingxMsg(ev.data); };
+    ws.onerror = () => { try { ws.close(); } catch (e) { } };
+    ws.onclose = () => {
+      clearInterval(W.ping);
+      if (W.ws !== ws) return;
+      W.ws = null; W.state = 'fail';
+      if (W.want) W.timer = setTimeout(() => { if (W.want) wsOpen(k); }, Math.min(60e3, 2000 * 2 ** Math.min(5, W.retry++)));
+    };
+  }
+  function wsClose(k) {
+    const W = WS[k]; if (!W) return;
+    W.want = false; clearTimeout(W.timer); clearInterval(W.ping);
+    const ws = W.ws; W.ws = null; W.state = 'off';
+    if (ws) { try { ws.close(); } catch (e) { } }
+  }
+  function wsWant(on) {
+    clearTimeout(OB.wsOff);
+    if (on) { wsOpen('mexc'); wsOpen('bingx'); }
+    else if (Object.values(WS).some(W => W.want)) OB.wsOff = setTimeout(() => { wsClose('mexc'); wsClose('bingx'); }, 30e3);
+  }
+  const wsSend = (k, msg) => { const W = WS[k]; if (W && W.ws && W.ws.readyState === 1) { try { W.ws.send(msg); } catch (e) { } } };
+  // соединение живо (пинг-понг), а стакан не менялся — значит, он по-прежнему верен
+  function wsAlive(k) {
+    const t = Date.now(), W = WS[k];
+    if (W) W.seen = t;
+    const r = OB.ex[k]; if (r && r.ws && t - r.ft < OB_WS_FRESH) r.ft = t;
+    const tr = OB.tr[k]; if (tr && tr.ws) tr.ft = t;
+  }
+  function wsBook(k, bids, asks) {
+    bids = bids.filter(x => x[0] > 0 && x[1] > 0).sort((a, b) => b[0] - a[0]);
+    asks = asks.filter(x => x[0] > 0 && x[1] > 0).sort((a, b) => a[0] - b[0]);
+    if (!bids.length || !asks.length || !(bids[0][0] < asks[0][0])) return;
+    const t = Date.now(), lim = WSK[k].lim, full = { b: bids.length < lim, a: asks.length < lim };
+    const rec = {
+      k, live: true, ws: true, gran: 0, ft: t, t, full,
+      bids: bids.map(x => [x[0], x[1], null]), asks: asks.map(x => [x[0], x[1], null]),
+      bid: bids[0][0], ask: asks[0][0],
+      cov: { b: full.b ? 0 : bids[bids.length - 1][0], a: full.a ? Infinity : asks[asks.length - 1][0] }
+    };
+    const W = WS[k] || {};
+    W.state = 'on'; W.seen = t;
+    // лента крупных заявок — сравниваем не чаще раза в 10 секунд, как у остальных бирж
+    if (!W.prev || t - W.prev.ft >= OB_POLL) { if (W.prev) obDiff(k, W.prev, rec); W.prev = rec; }
+    OB.ex[k] = rec;
+    if (!OB.first) OB.first = t;
+  }
+  function wsTrades(k, rows) {
+    const t = Date.now(), cur = OB.tr[k] && OB.tr[k].ws ? OB.tr[k] : { list: [], ids: new Set(), ft: t, from: t, last: null, ws: true };
+    const mid = ((V() || {}).price || {}).mid;
+    for (const x of rows) { if (cur.ids.has(x.id) || (mid && Math.abs(x.p / mid - 1) > 0.3)) continue; cur.ids.add(x.id); cur.list.push(x); }
+    cur.list.sort((a, b) => a.t - b.t);
+    if (cur.list.length > 500) { cur.list = cur.list.slice(-400); cur.ids = new Set(cur.list.map(x => x.id)); }
+    cur.ft = t; OB.tr[k] = cur;
+    if (!OB.wsTrT && S.tab === 'books' && !S.bpause) OB.wsTrT = setTimeout(() => { OB.wsTrT = null; const el = $('#obtr'); if (el && S.tab === 'books' && !S.bpause) el.innerHTML = trHtml(); }, 1500);
+  }
+  // MEXC присылает protobuf: разбираем только нужное — числа (varint) и строки/вложенные сообщения
+  const pbTD = typeof TextDecoder === 'function' ? new TextDecoder() : null;
+  function pbRead(u8) {
+    const out = []; let i = 0;
+    const vi = () => { let r = 0, m = 1, b; do { b = u8[i++]; r += (b & 127) * m; m *= 128; } while (b & 128 && i < u8.length); return r; };
+    while (i < u8.length) {
+      const tag = vi(), f = Math.floor(tag / 8), w = tag & 7;
+      if (w === 0) out.push([f, vi()]);
+      else if (w === 2) { const l = vi(); out.push([f, u8.subarray(i, i + l)]); i += l; }
+      else if (w === 1) i += 8; else if (w === 5) i += 4; else break;
+    }
+    return out;
+  }
+  const pbStr = v => v instanceof Uint8Array && pbTD ? pbTD.decode(v) : '';
+  function mexcMsg(data) {
+    if (typeof data === 'string') { wsAlive('mexc'); return; }            // подтверждение подписки или PONG
+    if (!pbTD) return;
+    let top; try { top = pbRead(new Uint8Array(data)); } catch (e) { return; }
+    for (const [f, v] of top) {
+      if (!(v instanceof Uint8Array)) continue;
+      if (f === 303) {                                                     // 20 ближних уровней
+        const bids = [], asks = [];
+        for (const [g, it] of pbRead(v)) {
+          if ((g !== 1 && g !== 2) || !(it instanceof Uint8Array)) continue;
+          let p = 0, q = 0;
+          for (const [h, x] of pbRead(it)) { if (h === 1) p = +pbStr(x); else if (h === 2) q = +pbStr(x); }
+          (g === 1 ? asks : bids).push([p, q]);
+        }
+        wsBook('mexc', bids, asks);
+      } else if (f === 314) {                                              // сделки
+        const rows = [];
+        for (const [g, it] of pbRead(v)) {
+          if (g !== 1 || !(it instanceof Uint8Array)) continue;
+          let p = 0, q = 0, ty = 0, t = 0, id = '';
+          for (const [h, x] of pbRead(it)) { if (h === 1) p = +pbStr(x); else if (h === 2) q = +pbStr(x); else if (h === 3) ty = x; else if (h === 4) t = x; else if (h === 5) id = pbStr(x); }
+          if (p > 0 && q > 0 && t) rows.push({ x: 'mexc', p, q, t, s: ty === 2 ? 'a' : 'b', id: 'm' + (id || t + '_' + p + '_' + q) });
+        }
+        if (rows.length) wsTrades('mexc', rows);
+      }
+    }
+  }
+  // BingX присылает JSON, сжатый gzip; раз в несколько секунд — Ping, на который надо ответить
+  async function bingxMsg(data) {
+    let txt = data;
+    if (typeof data !== 'string') { try { txt = await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream('gzip'))).text(); } catch (e) { return; } }
+    if (txt === 'Ping') { wsSend('bingx', 'Pong'); wsAlive('bingx'); return; }
+    let m; try { m = JSON.parse(txt); } catch (e) { return; }
+    if (m && m.ping) { wsSend('bingx', JSON.stringify({ pong: m.ping, time: m.time })); wsAlive('bingx'); return; }
+    const d = m && m.data, dt = String((m && m.dataType) || '');
+    if (!d) { wsAlive('bingx'); return; }
+    if (dt.includes('@depth') && Array.isArray(d.bids) && Array.isArray(d.asks)) wsBook('bingx', d.bids.map(x => [+x[0], +x[1]]), d.asks.map(x => [+x[0], +x[1]]));
+    else if (dt.includes('@trade')) {
+      const p = +d.p, q = +d.q, t = +d.T || +d.E;
+      if (p > 0 && q > 0 && t) wsTrades('bingx', [{ x: 'bingx', p, q, t, s: d.m ? 'a' : 'b', id: 'x' + (d.t != null ? d.t : t + '_' + d.p + '_' + d.q) }]);
+    }
+  }
 
   // источник стакана биржи для нужного шага: свежие уровни со страницы или утренняя сводка
   function obSrc(k, s, step) {
@@ -2855,7 +2944,13 @@ html{overscroll-behavior-y:contain}
       if (mn.length) parts.push(T(`${mn.map(k => EXN[k]).join(', ')} ${mn.length > 1 ? 'показывают' : 'показывает'} только ближние к цене заявки.`, `${mn.map(k => EXN[k]).join(', ')} ${mn.length > 1 ? 'show' : 'shows'} only orders close to the price.`));
     } else if (set.keys.length) {
       const x = obSrc(S.bx, s, c.step);
-      if (x && !x.live && !S.archived) parts.push(T(`Стакан ${EXN[S.bx]} — из утренней сводки (${tl(x.ft)}): эта биржа не отвечает на запросы со страниц сайтов.`, `${EXN[S.bx]} order book is from the morning report (${tl(x.ft)}): this exchange doesn’t answer requests from web pages.`));
+      const W = WS[S.bx];
+      if (x && !x.live && !S.archived) {
+        if (WSK[S.bx] && W && W.want && Date.now() - (W.since || 0) < 15e3) parts.push(T(`Подключаюсь к ${EXN[S.bx]} онлайн… Пока — стакан из утренней сводки (${tl(x.ft)}).`, `Connecting to ${EXN[S.bx]} live… Showing the morning report (${tl(x.ft)}) meanwhile.`));
+        else if (WSK[S.bx]) parts.push(T(`Стакан ${EXN[S.bx]} — из утренней сводки (${tl(x.ft)}): онлайн-подключение к бирже сейчас не работает.`, `${EXN[S.bx]} order book is from the morning report (${tl(x.ft)}): the live connection to this exchange isn’t working right now.`));
+        else parts.push(T(`Стакан ${EXN[S.bx]} — из утренней сводки (${tl(x.ft)}): эта биржа не отвечает на запросы со страниц сайтов.`, `${EXN[S.bx]} order book is from the morning report (${tl(x.ft)}): this exchange doesn’t answer requests from web pages.`));
+      }
+      if (x && x.ws && !S.archived) parts.push(T(`${EXN[S.bx]} онлайн отдаёт ${WSK[S.bx].lim} ближних уровней с каждой стороны.`, `${EXN[S.bx]} streams the nearest ${WSK[S.bx].lim} levels on each side.`));
       if (S.bx === 'gate' && c.step < 1e-5) parts.push(T(`Gate отдаёт 100 ближних уровней точно, глубже — ступенями по ${fpx(1e-5, 1e-5)}.`, 'Gate shares the nearest 100 levels exactly, deeper ones in 0.00001 steps.'));
     }
     return parts.length ? `<p class="note obnote">${esc(parts.join(' '))}</p>` : '';
@@ -2954,37 +3049,41 @@ html{overscroll-behavior-y:contain}
       ${obStatusHtml(c)}
       ${obNoteHtml(c)}`;
   }
-  // ---------- метрики стакана ----------
+  // ---------- кто сильнее у цены: понятная сводка стакана ----------
   function obMetricsHtml(c) {
     const { s, set, ref } = c;
     if (!set.keys.length || !set.mid) return '';
     const fine = obAgg(set.keys, s, obFineStep(set.keys, s)), mid = set.mid;
     const bands = [0.01, 0.02, 0.05, 0.10].map(f => obBand(fine, mid, f));
-    const b2 = bands[1];
-    const spr = ref.bid && ref.ask ? (ref.ask - ref.bid) / ((ref.ask + ref.bid) / 2) * 100 : null;
-    const ratio = (b, a) => {
+    const verdict = (b, a) => {
       if (b < 1 && a < 1) return [T('заявок нет', 'no orders'), ''];
-      if (a < 1) return [T('только покупки', 'buyers only'), 'up'];
-      if (b < 1) return [T('только продажи', 'sellers only'), 'down'];
-      const r = b / a;
-      if (r >= 1.1) return [T(`покупок ×${n(r, r >= 10 ? 0 : 1)}`, `buyers ×${n(r, r >= 10 ? 0 : 1)}`), 'up'];
-      if (r <= 1 / 1.1) return [T(`продаж ×${n(1 / r, 1 / r >= 10 ? 0 : 1)}`, `sellers ×${n(1 / r, 1 / r >= 10 ? 0 : 1)}`), 'down'];
-      return [T('поровну', 'even'), ''];
+      if (a < 1) return [T('только покупатели', 'buyers only'), 'up'];
+      if (b < 1) return [T('только продавцы', 'sellers only'), 'down'];
+      const r = b / a, k = x => n(x, x >= 10 ? 0 : 1);
+      if (r >= 1.1) return [T(`покупателей в ${k(r)} раза больше`, `${k(r)}× more buyers`), 'up'];
+      if (r <= 1 / 1.1) return [T(`продавцов в ${k(1 / r)} раза больше`, `${k(1 / r)}× more sellers`), 'down'];
+      return [T('примерно поровну', 'roughly even'), ''];
+    };
+    const row = x => {
+      const [t, cl] = verdict(x.b, x.a), m = Math.max(1, x.bv, x.av);
+      return `<div class="wh-r">
+        <div class="wh-h"><span class="k">${T(`в пределах ${n(x.f * 100, 0)}% от цены`, `within ${n(x.f * 100, 0)}% of the price`)}</span><b class="${cl}">${esc(t)}${x.pb || x.pa ? '*' : ''}</b></div>
+        <div class="wh-b" aria-hidden="true"><i class="b" style="width:${(x.bv / m * 50).toFixed(1)}%"></i><i class="a" style="width:${(x.av / m * 50).toFixed(1)}%"></i></div>
+        <div class="wh-n"><span class="up">${T('купят', 'buy')} ${qf(x.b)} · ${usdC(x.bv)}</span><span class="down">${T('продадут', 'sell')} ${qf(x.a)} · ${usdC(x.av)}</span></div>
+      </div>`;
     };
     const near = side => { const r = (side === 'b' ? fine.b : fine.a).find(x => x.big >= OB_WALL && Math.abs(x.p / mid - 1) <= 0.3); return r ? { p: r.bigP || r.p, q: r.big, k: r.bigBy } : null; };
     const wb = near('b'), wa = near('a');
-    const [rt, rc] = ratio(b2.b, b2.a);
-    const wl = (w, side) => w ? `<span class="s ${side === 'b' ? 'up' : 'down'}">${side === 'b' ? '↓' : '↑'} ${fp(w.p)} (${sg(pctOf(w.p, mid), 1)}%)</span>` : '';
-    const tiles = [
-      [T('Спред', 'Spread'), spr == null ? '—' : (spr >= 0 ? n(spr, 2) + '%' : sg(spr, 2) + '%'), ref.bid && ref.ask ? `<span class="s">${fp(ref.bid)}${ref.bidEx && S.bx === 'all' ? ' ' + esc(EXN[ref.bidEx]) : ''} / ${fp(ref.ask)}${ref.askEx && S.bx === 'all' ? ' ' + esc(EXN[ref.askEx]) : ''}</span>` : '', spr != null && spr < 0 ? 'down' : '', 'spread'],
-      [T('Перекос ±2%', 'Imbalance ±2%'), esc(rt), `<span class="s">${qf(b2.b)} / ${qf(b2.a)} DOG</span>`, rc, 'imb'],
-      [T('Деньги ±2%', 'Liquidity ±2%'), `<span class="up">${usdC(b2.bv)}</span> <span class="sl">/</span> <span class="down">${usdC(b2.av)}</span>`, `<span class="s">${T('покупки / продажи', 'bids / asks')}</span>`, 'two', 'liq'],
-      [T('Стенки рядом', 'Nearest walls'), wb || wa ? `<span class="up">${wb ? qf(wb.q) : '—'}</span> <span class="sl">/</span> <span class="down">${wa ? qf(wa.q) : '—'}</span>` : '—', wl(wb, 'b') + wl(wa, 'a'), 'two', 'walls']
-    ];
-    const tileH = ([l, v, sub, cl, key]) => `<button type="button" class="obm-t" data-obinfo="${key}"><span class="l">${esc(l)}</span><span class="v ${cl}">${v}</span>${sub}</button>`;
-    const bandRow = x => { const [t, cl] = ratio(x.b, x.a), m = Math.max(1, x.b, x.a); return `<div class="imb-r"><span class="k">±${n(x.f * 100, 0)}%</span><span class="imb-b"><i class="b" style="width:${(x.b / m * 50).toFixed(1)}%"></i><i class="a" style="width:${(x.a / m * 50).toFixed(1)}%"></i></span><span class="t ${cl}">${esc(t)}${x.pb || x.pa ? '*' : ''}</span><span class="n">${qf(x.b)} / ${qf(x.a)} DOG · ${usdC(x.bv)} / ${usdC(x.av)}</span></div>`; };
+    const spr = ref.bid && ref.ask ? (ref.ask - ref.bid) / ((ref.ask + ref.bid) / 2) * 100 : null;
+    const fact = (ic, cl, html) => `<div class="ev"><span class="ei ${cl}">${ico(ic)}</span><span>${html}</span></div>`;
+    const facts = [];
+    if (wb) facts.push(fact('down', 'b', T(`Ближайшая крупная покупка — <b>${qf(wb.q)} DOG</b> по ${fp(wb.p)}, на ${n(Math.abs(pctOf(wb.p, mid)), 1)}% ниже цены`, `Nearest big buy order — <b>${qf(wb.q)} DOG</b> at ${fp(wb.p)}, ${n(Math.abs(pctOf(wb.p, mid)), 1)}% below the price`) + (S.bx === 'all' && wb.k ? ` <small>${esc(EXN[wb.k])}</small>` : '')));
+    if (wa) facts.push(fact('up', 'a', T(`Ближайшая крупная продажа — <b>${qf(wa.q)} DOG</b> по ${fp(wa.p)}, на ${n(Math.abs(pctOf(wa.p, mid)), 1)}% выше цены`, `Nearest big sell order — <b>${qf(wa.q)} DOG</b> at ${fp(wa.p)}, ${n(Math.abs(pctOf(wa.p, mid)), 1)}% above the price`) + (S.bx === 'all' && wa.k ? ` <small>${esc(EXN[wa.k])}</small>` : '')));
+    if (spr != null) facts.push(fact('swap', '', spr >= 0
+      ? T(`Разница между лучшей покупкой и продажей — <b>${n(spr, 2)}%</b>`, `Gap between the best bid and ask — <b>${n(spr, 2)}%</b>`) + `<small>${fp(ref.bid)} / ${fp(ref.ask)}${spr > 1 ? T(' — торги вялые', ' — thin trading') : ''}</small>`
+      : T(`Цены бирж пересекаются: ${esc(EXN[ref.bidEx] || '')} покупает по ${fp(ref.bid)}, а ${esc(EXN[ref.askEx] || '')} продаёт по ${fp(ref.ask)}`, `Exchange prices overlap: ${esc(EXN[ref.bidEx] || '')} bids ${fp(ref.bid)} while ${esc(EXN[ref.askEx] || '')} asks ${fp(ref.ask)}`)));
     const partial = bands.some(x => x.pb || x.pa);
-    // история перекоса ±2% за время, пока открыт стакан
+    // как менялся перевес, пока открыт стакан
     let hist = '';
     const H = OB.hist.filter(h => Date.now() - h.t < 60 * 60e3);
     if (S.bx === 'all' && !S.archived && H.length >= 3) {
@@ -2992,64 +3091,18 @@ html{overscroll-behavior-y:contain}
       const t0 = H[0].t, t1 = H[H.length - 1].t || t0 + 1;
       const X = t => (t - t0) / Math.max(1, t1 - t0) * W, Y = v => Hh / 2 - v * (Hh / 2 - 3);
       const d = H.map((h, i) => `${i ? 'L' : 'M'}${X(h.t).toFixed(1)},${Y(vals[i]).toFixed(1)}`).join('');
-      const last = vals[vals.length - 1];
-      hist = `<div class="obh"><div class="obh-k"><span>${T('Перекос ±2% за', 'Imbalance ±2%, last')} ${Math.max(1, Math.round((t1 - t0) / 60e3))} ${T('мин', 'min')}</span><b class="${last > 0.05 ? 'up' : last < -0.05 ? 'down' : ''}">${last > 0 ? T('покупки', 'buyers') : T('продажи', 'sellers')} ${n(Math.abs(last) * 100, 0)}%</b></div>
+      hist = `<div class="obh"><div class="obh-k"><span>${T(`Как менялся перевес в пределах 2% — за ${Math.max(1, Math.round((t1 - t0) / 60e3))} мин`, `How the balance within 2% changed — last ${Math.max(1, Math.round((t1 - t0) / 60e3))} min`)}</span></div>
         <svg viewBox="0 0 ${W} ${Hh}" preserveAspectRatio="none" class="obh-s" aria-hidden="true"><line x1="0" x2="${W}" y1="${Hh / 2}" y2="${Hh / 2}" stroke="var(--line)" stroke-dasharray="3 4" vector-effect="non-scaling-stroke"/><path d="${d}" fill="none" stroke="var(--accent)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg>
-        <div class="obh-ax"><span>${esc(tl(t0))}</span><span>${T('выше линии — покупок больше', 'above the line — more buyers')}</span><span>${esc(tl(t1))}</span></div></div>`;
+        <div class="obh-ax"><span>${esc(tl(t0))}</span><span>${T('выше линии — покупателей больше', 'above the line — more buyers')}</span><span>${esc(tl(t1))}</span></div></div>`;
     }
-    return `<section class="group obmet" aria-label="${T('Метрики стакана', 'Order book metrics')}">
-      <div class="sec-head"><h3>${T('Метрики стакана', 'Order book metrics')}</h3><p>${S.bx === 'all' ? T('все биржи вместе', 'all exchanges combined') : esc(EXN[S.bx])}</p></div>
-      <div class="obm">${tiles.map(tileH).join('')}</div>
-      <div class="imb">${bands.map(bandRow).join('')}</div>
-      ${partial ? `<p class="note">* ${T('часть бирж не показывает заявки так далеко от цены — сумма может быть больше', 'some exchanges don’t show orders this far from the price — the real total may be larger')}</p>` : ''}
+    return `<section class="group obmet" aria-label="${T('Кто сильнее у цены', 'Who’s stronger near the price')}">
+      <div class="sec-head"><h3>${T('Кто сильнее у цены', 'Who’s stronger near the price')}</h3>${infoBtn('ob_imb')}</div>
+      <p class="note" style="margin-top:-6px">${S.bx === 'all' ? T('все биржи вместе', 'all exchanges combined') : esc(EXN[S.bx])} · ${T('заявки в долларах', 'orders in dollars')}</p>
+      <div class="wh">${bands.map(row).join('')}</div>
+      ${partial ? `<p class="note">* ${T('часть бирж не показывает заявки так далеко от цены — на деле может быть больше', 'some exchanges don’t show orders this far from the price — the real amount may be larger')}</p>` : ''}
+      <div class="events">${facts.join('')}</div>
       ${hist}
     </section>`;
-  }
-  // ---------- калькулятор: что будет, если купить или продать сразу ----------
-  function obFill(levels, amt, unit) {
-    let q = 0, v = 0, last = null, part = false;
-    for (const r of levels) {
-      const left = unit === 'usd' ? (amt - v) / r.p : amt - q;
-      if (left <= 1e-9) break;
-      const take = Math.min(r.q, left);
-      q += take; v += take * r.p; last = r.p; part = part || r.part;
-    }
-    const done = unit === 'usd' ? v >= amt * 0.9999 : q >= amt * 0.9999;
-    return { q, v, avg: q ? v / q : null, last, full: done, part };
-  }
-  function obCalcHtml() {
-    const c = S.calc, pre = c.unit === 'usd' ? [100, 1000, 10000, 50000] : [1e6, 10e6, 50e6, 100e6];
-    return `<section class="group calc" aria-label="${T('Калькулятор сделки', 'Trade calculator')}">
-      <div class="sec-head"><h3>${T('Если купить или продать сразу', 'If you buy or sell right now')}</h3>${infoBtn('calc')}</div>
-      <div class="calc-row"><span class="seg" role="group">${segB('calcside', 'buy', T('Купить', 'Buy'), c.side === 'buy')}${segB('calcside', 'sell', T('Продать', 'Sell'), c.side === 'sell')}</span><span class="seg" role="group" aria-label="${T('Сумма в', 'Amount in')}">${segB('calcunit', 'usd', '$', c.unit === 'usd')}${segB('calcunit', 'dog', 'DOG', c.unit === 'dog')}</span></div>
-      <label class="calc-in"><input id="calc-amt" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" value="${esc(n(c.amt, c.amt % 1 ? 2 : 0))}" aria-label="${c.unit === 'usd' ? T('Сумма в долларах', 'Amount in US dollars') : T('Количество DOG', 'Amount of DOG')}"><span class="u">${c.unit === 'usd' ? '$' : 'DOG'}</span></label>
-      <div class="calc-pre">${pre.map(v => `<button type="button" class="chip" data-calcpre="${v}">${c.unit === 'usd' ? usdC(v) : n(v / 1e6, 0) + 'M'}</button>`).join('')}</div>
-      <div id="calc-res" aria-live="polite"></div>
-    </section>`;
-  }
-  function obCalcRes(c) {
-    const el = $('#calc-res'); if (!el) return;
-    c = c || obCtx();
-    if (!c || !c.set.keys.length || !c.set.mid) { el.innerHTML = `<p class="note">${T('Нет данных стакана.', 'No order book data.')}</p>`; return; }
-    const { s, set } = c, mid = set.mid, cs = S.calc, buy = cs.side === 'buy';
-    const fill = keys => { const ag = obAgg(keys, s, obFineStep(keys, s)); return obFill(buy ? ag.a : ag.b, cs.amt, cs.unit); };
-    const r = fill(set.keys);
-    if (!r.q) { el.innerHTML = `<p class="note">${T('В стакане нет заявок на эту сторону.', 'No orders on this side of the book.')}</p>`; return; }
-    const sl = pctOf(r.avg, mid), lp = pctOf(r.last, mid);
-    let per = '';
-    if (S.bx === 'all' && set.keys.length > 1) {
-      const rows = set.keys.map(k => [k, fill([k])]).filter(x => x[1].q > 0).sort((a, b) => buy ? a[1].avg - b[1].avg : b[1].avg - a[1].avg);
-      per = `<div class="calc-ex"><div class="calc-ex-h">${T('На каждой бирже отдельно', 'On each exchange separately')}</div>${rows.map(([k, x]) => `<div class="calc-ex-r"><span>${esc(EXN[k])}</span><span>${x.full ? `${fp(x.avg)} <span class="faint">(${sg(pctOf(x.avg, mid), 2)}%)</span>` : `<span class="warn">${T('не хватит заявок', 'not enough orders')}</span> <span class="faint">${T('макс.', 'max')} ${cs.unit === 'usd' ? usdC(x.v) : qf(x.q)}</span>`}</span></div>`).join('')}</div>`;
-    }
-    el.innerHTML = `<dl class="kv calc-kv">
-        <dt>${T('Средняя цена', 'Average price')}</dt><dd>${fp(r.avg)} <span class="faint">(${sg(sl, 2)}%)</span></dd>
-        <dt>${buy ? T('Получите', 'You get') : T('Отдадите', 'You sell')}</dt><dd>${mdog(r.q / 1e6, 2)} DOG</dd>
-        <dt>${buy ? T('Заплатите', 'You pay') : T('Получите', 'You get')}</dt><dd>${usd(r.v)}</dd>
-        <dt>${T('Цена дойдёт до', 'Price reaches')}</dt><dd>${fp(r.last)} <span class="faint">(${sg(lp, 2)}%)</span></dd>
-      </dl>
-      ${!r.full ? `<p class="warnline">${T(`В видимом стакане не хватает заявок: исполнится только ${cs.unit === 'usd' ? usd(r.v) : mdog(r.q / 1e6, 1) + ' DOG'}.`, `Not enough visible orders: only ${cs.unit === 'usd' ? usd(r.v) : mdog(r.q / 1e6, 1) + ' DOG'} would fill.`)}</p>` : ''}
-      ${per}
-      <p class="note">${S.bx === 'all' && set.keys.length > 1 ? T('Сверху — как если бы заявки всех бирж были в одном стакане; на деле сделка идёт на одной бирже. ', 'Above: as if all exchanges were one book; a real trade fills on one exchange. ') : ''}${T('Без комиссий бирж; заявки могут измениться за секунды.', 'Exchange fees not included; orders can change within seconds.')}${r.part ? ' ' + T('Часть бирж не показывает глубокие уровни — оценка грубее.', 'Some exchanges hide deep levels — a rougher estimate.') : ''}</p>`;
   }
   // ---------- лента стакана ----------
   function obFeedHtml() {
@@ -3113,18 +3166,20 @@ html{overscroll-behavior-y:contain}
   function trHtml() {
     const s = V();
     if (!s || S.archived) return '';
-    const ks = ['kraken', 'gate'].filter(k => (S.bx === 'all' || S.bx === k) && OB.tr[k] && Date.now() - OB.tr[k].ft < OB_FRESH);
+    const ks = ['kraken', 'gate', 'mexc', 'bingx'].filter(k => (S.bx === 'all' || S.bx === k) && OB.tr[k] && Date.now() - OB.tr[k].ft < (OB.tr[k].ws ? 120e3 : OB_FRESH));
     if (!ks.length) return '';
+    // сводка за час — по биржам, чью ленту загружаем целиком (Kraken, Gate); MEXC и BingX — с момента подключения
+    const kS = ks.some(k => !OB.tr[k].ws) ? ks.filter(k => !OB.tr[k].ws) : ks, kX = ks.filter(k => !kS.includes(k));
     const L = [].concat(...ks.map(k => OB.tr[k].list)).sort((a, b) => b.t - a.t);
-    const now = Date.now(), from = Math.max(...ks.map(k => OB.tr[k].from || 0)), t0 = Math.max(now - 3600e3, from);
+    const now = Date.now(), from = Math.max(...kS.map(k => OB.tr[k].from || 0)), t0 = Math.max(now - 3600e3, from);
     let b = 0, a = 0, bv = 0, av = 0, cnt = 0, big = null;
-    for (const x of L) { if (x.t < t0) break; cnt++; if (x.s === 'b') { b += x.q; bv += x.q * x.p; } else { a += x.q; av += x.q * x.p; } if (!big || x.q > big.q) big = x; }
+    for (const x of L) { if (x.t < t0) break; if (!kS.includes(x.x)) continue; cnt++; if (x.s === 'b') { b += x.q; bv += x.q * x.p; } else { a += x.q; av += x.q * x.p; } if (!big || x.q > big.q) big = x; }
     const mins = Math.max(1, Math.round((now - t0) / 60e3)), tot = b + a;
     const sideT = x => x.s === 'b' ? T('покупка', 'buy') : T('продажа', 'sell');
     const list = L.slice(0, 12);
     return `<section class="group trc" aria-label="${T('Сделки', 'Trades')}">
       <div class="sec-head"><h3>${T('Сделки', 'Trades')}</h3>${infoBtn('ob_trades')}</div>
-      <p class="note" style="margin-top:-6px">${esc(ks.map(k => EXN[k]).join(T(' и ', ' and ')))} · ${T(`по рынку за ${mins} мин`, `market orders, last ${mins} min`)}</p>
+      <p class="note" style="margin-top:-6px">${esc(kS.map(k => EXN[k]).join(T(' и ', ' and ')))} · ${T(`по рынку за ${mins} мин`, `market orders, last ${mins} min`)}${kX.length ? esc(T(`; в списке также ${kX.map(k => EXN[k]).join(' и ')}`, `; the list also has ${kX.map(k => EXN[k]).join(' and ')}`)) : ''}</p>
       ${tot > 0 ? `<div class="obbs"><span class="b">${T('Покупки', 'Buys')} ${n(b / tot * 100, 0)}%</span><span class="obbs-bar" aria-hidden="true"><i class="b" style="width:${(b / tot * 100).toFixed(1)}%"></i><i class="a" style="width:${(a / tot * 100).toFixed(1)}%"></i></span><span class="a">${n(a / tot * 100, 0)}% ${T('Продажи', 'Sells')}</span></div>
       <p class="tr-sum">${T(`Купили <b class="up">${qf(b)}</b> DOG (≈ ${usdC(bv)}), продали <b class="down">${qf(a)}</b> (≈ ${usdC(av)}); ${n(cnt)} ${plural(cnt, 'сделка', 'сделки', 'сделок')}.`, `Bought <b class="up">${qf(b)}</b> DOG (≈ ${usdC(bv)}), sold <b class="down">${qf(a)}</b> (≈ ${usdC(av)}); ${n(cnt)} ${cnt === 1 ? 'trade' : 'trades'}.`)}${big ? ' ' + T(`Крупнейшая — ${qf(big.q)} по ${fp(big.p)} (${EXN[big.x]}, ${sideT(big)}).`, `Largest: ${qf(big.q)} at ${fp(big.p)} (${EXN[big.x]}, ${sideT(big)}).`) : ''}</p>` : `<p class="note">${T('За этот час сделок не было.', 'No trades in this hour.')}</p>`}
       ${list.length ? `<div class="trl" role="table"><div class="trl-r hd"><span>${T('Время', 'Time')}</span><span>${T('Цена, $', 'Price, $')}</span><span class="r">DOG</span><span class="r">${T('Биржа', 'Exch.')}</span></div>${list.map(x => `<div class="trl-r"><span class="faint">${tls(x.t)}</span><span class="${x.s === 'b' ? 'up' : 'down'}">${fpx(x.p, 1e-7)}</span><span class="r${x.q >= OB_WALL ? ' bigq' : ''}">${qf(x.q)}</span><span class="r faint">${esc(EXN[x.x])}</span></div>`).join('')}</div>` : ''}
@@ -3172,37 +3227,10 @@ html{overscroll-behavior-y:contain}
     };
     openSheet(T('Шаг цены', 'Price step'), `<p>${T('Заявки складываются в ступени выбранного размера — как кнопка «Order Book Depth» на бирже. Мелкий шаг — каждая цена у самого рынка, крупный — видно, где стоят большие объёмы.', 'Orders are grouped into steps of the chosen size — like “Order Book Depth” on an exchange. A fine step shows every price near the market; a big step shows where large amounts sit.')}</p>
       <div class="group flush rows" style="background:var(--surface-2)">${OB_STEPS.map(row).join('')}</div>
-      <p class="note">${T(`MEXC и BingX отвечают только серверу: их стаканы из утренней сводки, ступенями от ${fpx(1e-5, 1e-5)}.`, 'MEXC and BingX answer servers only: their books are from the morning report, in steps from 0.00001.')}</p>`);
+      <p class="note">${T(`MEXC и BingX онлайн отдают точные цены; если подключиться к ним не вышло, их стаканы — из утренней сводки, ступенями от ${fpx(1e-5, 1e-5)}.`, 'MEXC and BingX stream exact prices live; if that connection fails, their books come from the morning report, in steps from 0.00001.')}</p>`);
   }
 
-  // ---------- индикаторы цены (теханализ) по свечам Kraken ----------
-  const TA_TF = { '1h': [T('1ч', '1h'), 3600], '4h': [T('4ч', '4h'), 14400], '1d': [T('1д', '1d'), 86400] };
-  function taRows(s, tf) {
-    const c = s && s.chart; if (!c) return null;
-    let rows;
-    if (tf === '1d') rows = (c.d1 || []).map(r => r.slice());
-    else {
-      const h = (c.h1 || []).map(r => r.slice());
-      if (tf === '1h') rows = h;
-      else {
-        const m = new Map();
-        for (const r of h) {
-          const k = r[0] - r[0] % 14400, x = m.get(k);
-          if (!x) m.set(k, [k, r[1], r[2], r[3], r[4], r[5] || 0]);
-          else { x[2] = Math.max(x[2], r[2]); x[3] = Math.min(x[3], r[3]); x[4] = r[4]; x[5] += r[5] || 0; }
-        }
-        rows = [...m.values()].sort((a, b) => a[0] - b[0]);
-      }
-    }
-    if (!rows || rows.length < 16) return null;
-    const lp = !S.archived ? livePrice() : null, step = TA_TF[tf][1];
-    if (lp) {
-      const L = rows[rows.length - 1], nt = Math.floor(Date.now() / 1000);
-      if (nt >= L[0] && nt < L[0] + step) { L[4] = lp; L[2] = Math.max(L[2], lp); L[3] = Math.min(L[3], lp); }
-      else if (nt >= L[0] + step && nt < L[0] + 2 * step) rows.push([nt - nt % step, L[4], Math.max(L[4], lp), Math.min(L[4], lp), lp, 0]);
-    }
-    return rows;
-  }
+  // ---------- индикаторы: скользящие средние и RSI (для вкладки «Графики») ----------
   const taSma = (a, k) => a.map((_, i) => { if (i < k - 1) return null; let t = 0; for (let j = i - k + 1; j <= i; j++) t += a[j]; return t / k; });
   function taEma(a, k) {
     const out = new Array(a.length).fill(null), st = a.findIndex(v => v != null);
@@ -3223,107 +3251,6 @@ html{overscroll-behavior-y:contain}
     for (let i = k + 1; i < c.length; i++) { const d = c[i] - c[i - 1]; g = (g * (k - 1) + Math.max(d, 0)) / k; l = (l * (k - 1) + Math.max(-d, 0)) / k; out[i] = val(); }
     return out;
   }
-  function taCalc(rows) {
-    const c = rows.map(r => r[4]), N = c.length, last = c[N - 1];
-    const rsi = taRsi(c, 14);
-    const e12 = taEma(c, 12), e26 = taEma(c, 26);
-    const macd = c.map((_, i) => e12[i] != null && e26[i] != null ? e12[i] - e26[i] : null);
-    const sig = taEma(macd, 9), hist = macd.map((v, i) => v != null && sig[i] != null ? v - sig[i] : null);
-    const mid20 = taSma(c, 20);
-    const bb = c.map((v, i) => { if (mid20[i] == null) return null; let t = 0; for (let j = i - 19; j <= i; j++) t += (c[j] - mid20[i]) ** 2; const sd = Math.sqrt(t / 20); return { m: mid20[i], u: mid20[i] + 2 * sd, l: mid20[i] - 2 * sd, w: 4 * sd / mid20[i] }; });
-    let atr = null;
-    const tr = rows.map((r, i) => i ? Math.max(r[2] - r[3], Math.abs(r[2] - rows[i - 1][4]), Math.abs(r[3] - rows[i - 1][4])) : r[2] - r[3]);
-    if (N > 15) { atr = tr.slice(1, 15).reduce((a, b) => a + b, 0) / 14; for (let i = 15; i < N; i++) atr = (atr * 13 + tr[i]) / 14; }
-    const smas = [20, 50, 100, 200].map(k => [k, N >= k ? taSma(c, k)[N - 1] : null]).filter(x => x[1] != null);
-    return { c, last, rsi, macd, sig, hist, bb, atr, smas, N };
-  }
-  function taSpark(vals, lo, hi, guides, col) {
-    const W = 300, H = 56, v = vals.map(x => x == null ? null : Math.max(lo, Math.min(hi, x)));
-    const X = i => i / Math.max(1, v.length - 1) * W, Y = x => 3 + (1 - (x - lo) / (hi - lo)) * (H - 6);
-    let d = '', pen = false;
-    v.forEach((x, i) => { if (x == null) { pen = false; return; } d += `${pen ? 'L' : 'M'}${X(i).toFixed(1)},${Y(x).toFixed(1)}`; pen = true; });
-    const g = (guides || []).map(y => `<line x1="0" x2="${W}" y1="${Y(y).toFixed(1)}" y2="${Y(y).toFixed(1)}" stroke="var(--line)" stroke-dasharray="3 4" vector-effect="non-scaling-stroke"/>`).join('');
-    const band = guides && guides.length === 2 ? `<rect x="0" y="${Y(guides[1]).toFixed(1)}" width="${W}" height="${(Y(guides[0]) - Y(guides[1])).toFixed(1)}" fill="var(--surface-2)"/>` : '';
-    return `<svg class="ta-sp" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${band}${g}<path d="${d}" fill="none" stroke="${col || 'var(--accent)'}" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg>`;
-  }
-  function taBars(vals) {
-    const W = 300, H = 56, v = vals.filter(x => x != null), mx = Math.max(1e-18, ...v.map(Math.abs));
-    const bw = W / Math.max(1, vals.length);
-    return `<svg class="ta-sp" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><line x1="0" x2="${W}" y1="${H / 2}" y2="${H / 2}" stroke="var(--line)" vector-effect="non-scaling-stroke"/>${vals.map((x, i) => x == null ? '' : `<rect x="${(i * bw + bw * 0.15).toFixed(1)}" width="${(bw * 0.7).toFixed(1)}" y="${x >= 0 ? (H / 2 - x / mx * (H / 2 - 2)).toFixed(1) : H / 2}" height="${Math.max(0.5, Math.abs(x) / mx * (H / 2 - 2)).toFixed(1)}" fill="var(--${x >= 0 ? 'bid' : 'ask'})"/>`).join('')}</svg>`;
-  }
-  function taHtml(s) {
-    const tf = S.taTf, rows = taRows(s, tf);
-    const head = `<div class="sec-head"><h2>${T('Индикаторы цены', 'Price indicators')}</h2><span class="seg" role="group" aria-label="${T('Свечи', 'Candles')}">${Object.entries(TA_TF).map(([k, v]) => segB('tatf', k, v[0], tf === k)).join('')}</span></div>`;
-    if (!rows) return `${head}<div class="empty">${T('Нет свечей для расчёта.', 'No candles to calculate from.')}</div>`;
-    const A = taCalc(rows), N = A.N, last = A.last, tfn = TA_TF[tf][0];
-    const rsi = A.rsi[N - 1], mac = A.macd[N - 1], sig = A.sig[N - 1], h = A.hist[N - 1], hp = A.hist[N - 2], bb = A.bb[N - 1];
-    const items = [];
-    // RSI
-    if (rsi != null) {
-      const z = rsi >= 70 ? T('выше 70 — «перекупленность»: цена долго росла быстрее, чем падала', 'above 70 — “overbought”: the price has been rising faster than falling') : rsi <= 30 ? T('ниже 30 — «перепроданность»: цена долго падала быстрее, чем росла', 'below 30 — “oversold”: the price has been falling faster than rising') : rsi >= 50 ? T('между 50 и 70 — росты сильнее падений', 'between 50 and 70 — gains outweigh losses') : T('между 30 и 50 — падения сильнее ростов', 'between 30 and 50 — losses outweigh gains');
-      items.push(`<div class="ta-it"><span class="l">RSI (14) · ${esc(tfn)}</span><span class="v">${n(rsi, 0)}</span>
-        <span class="gauge" aria-hidden="true"><i style="left:${Math.max(0, Math.min(100, rsi)).toFixed(1)}%"></i></span><span class="gauge-ax" aria-hidden="true"><span>0</span><span style="left:30%">30</span><span style="left:70%">70</span><span>100</span></span>
-        ${taSpark(A.rsi.slice(-60), 0, 100, [30, 70])}<p>${esc(z)}.</p></div>`);
-    }
-    // MACD
-    if (mac != null && sig != null) {
-      const up = mac >= sig, grow = hp != null ? Math.abs(h) > Math.abs(hp) : null;
-      items.push(`<div class="ta-it"><span class="l">MACD (12, 26, 9) · ${esc(tfn)}</span><span class="v sm ${up ? 'up' : 'down'}">${up ? T('выше сигнальной', 'above signal') : T('ниже сигнальной', 'below signal')}</span>
-        ${taBars(A.hist.slice(-40))}<p>${esc(up ? (grow ? T('Импульс вверх усиливается.', 'Upward momentum is strengthening.') : T('Импульс вверх, но слабеет.', 'Upward momentum, but fading.')) : (grow ? T('Импульс вниз усиливается.', 'Downward momentum is strengthening.') : T('Импульс вниз, но слабеет.', 'Downward momentum, but fading.')))} ${esc(T('Столбики — разница линии MACD и сигнальной.', 'Bars show MACD minus its signal line.'))}</p></div>`);
-    }
-    // Боллинджер
-    if (bb) {
-      const pb = bb.u > bb.l ? (last - bb.l) / (bb.u - bb.l) : 0.5;
-      const ws = A.bb.filter(Boolean).map(x => x.w), rank = ws.filter(w => w <= bb.w).length / ws.length;
-      const where = pb > 1 ? T('цена выше верхней границы', 'price is above the upper band') : pb < 0 ? T('цена ниже нижней границы', 'price is below the lower band') : pb >= 0.8 ? T('цена у верхней границы', 'price is near the upper band') : pb <= 0.2 ? T('цена у нижней границы', 'price is near the lower band') : T('цена внутри канала', 'price is inside the band');
-      const narrow = rank <= 0.15 ? T(' Канал узкий: так узко было лишь ' + n(rank * 100, 0) + '% времени.', ' The band is narrow: this narrow only ' + n(rank * 100, 0) + '% of the time.') : rank >= 0.85 ? T(' Канал широкий — цена сильно колеблется.', ' The band is wide — the price swings a lot.') : '';
-      items.push(`<div class="ta-it"><span class="l">${T('Полосы Боллинджера (20, 2)', 'Bollinger Bands (20, 2)')} · ${esc(tfn)}</span><span class="v">${n(pb * 100, 0)}%</span>
-        <span class="bbar" aria-hidden="true"><i style="left:${Math.max(0, Math.min(100, pb * 100)).toFixed(1)}%"></i></span><span class="gauge-ax" aria-hidden="true"><span>${fp(bb.l)}</span><span>${fp(bb.u)}</span></span>
-        <p>${esc(where)} (${T('ширина', 'width')} ${n(bb.w * 100, 1)}%).${esc(narrow)}</p></div>`);
-    }
-    // средние
-    if (A.smas.length) {
-      items.push(`<div class="ta-it"><span class="l">${T('Скользящие средние', 'Moving averages')} · ${esc(tfn)}</span>
-        <div class="ta-ma">${A.smas.map(([k, v]) => { const d = (last / v - 1) * 100; return `<span>SMA ${k}</span><span>${fp(v)}</span><span class="${d >= 0 ? 'up' : 'down'}">${d >= 0 ? T('выше', 'above') : T('ниже', 'below')} ${n(Math.abs(d), 1)}%</span>`; }).join('')}</div>
-        <p>${esc(T(`Средняя цена закрытия за ${A.smas.map(x => x[0]).join(', ')} свечей и где сейчас цена относительно неё.`, `Average close over ${A.smas.map(x => x[0]).join(', ')} candles and where the price is now.`))}</p></div>`);
-    }
-    // волатильность и объём (объём — всегда за последние 24 часа по часовым свечам, против среднего за неделю)
-    if (A.atr) {
-      const hv = ((s.chart || {}).h1 || []).map(r => r[5] || 0);
-      const v24 = hv.length >= 24 ? hv.slice(-24).reduce((a, b) => a + b, 0) : null, days = Math.floor(hv.length / 24);
-      const avg = days >= 3 ? hv.slice(-days * 24).reduce((a, b) => a + b, 0) / days : null;
-      const vd = v24 && avg ? (v24 / avg - 1) * 100 : null;
-      items.push(`<div class="ta-it"><span class="l">${T('Размах и объём', 'Range and volume')} · ${esc(tfn)}</span><span class="v">${n(A.atr / last * 100, 1)}%</span>
-        <p>${esc(T(`Средний размах свечи (ATR 14) — ${n(A.atr / last * 100, 1)}% цены.`, `Average candle range (ATR 14) is ${n(A.atr / last * 100, 1)}% of the price.`))}${v24 ? ' ' + esc(T(`Объём Kraken за 24 ч: ${mdog(v24 / 1e6)} DOG${vd != null ? ` — ${Math.abs(vd) < 5 ? 'около среднего за неделю' : (vd > 0 ? 'на ' + n(vd, 0) + '% больше' : 'на ' + n(-vd, 0) + '% меньше') + ' среднего за неделю'}` : ''}.`, `Kraken volume over 24h: ${mdog(v24 / 1e6)} DOG${vd != null ? ` — ${Math.abs(vd) < 5 ? 'about the weekly average' : n(Math.abs(vd), 0) + '% ' + (vd > 0 ? 'above' : 'below') + ' the weekly average'}` : ''}.`)) : ''}</p></div>`);
-    }
-    // изменение цены за несколько периодов
-    {
-      const back = { '1h': [[6, T('6 ч', '6h')], [24, T('24 ч', '24h')], [N - 1, T('7 дней', '7 days')]], '4h': [[6, T('24 ч', '24h')], [18, T('3 дня', '3 days')], [N - 1, T('7 дней', '7 days')]], '1d': [[7, T('7 дней', '7 days')], [30, T('30 дней', '30 days')], [90, T('90 дней', '90 days')]] }[tf] || [];
-      const ch = back.filter(([k]) => k > 0 && N - 1 - k >= 0 && A.c[N - 1 - k]).map(([k, lab]) => [lab, (last / A.c[N - 1 - k] - 1) * 100]);
-      if (ch.length) items.push(`<div class="ta-it"><span class="l">${T('Изменение цены', 'Price change')}</span><div class="ta-ch">${ch.map(([lab, v]) => `<span>${esc(lab)}</span><span class="${v >= 0 ? 'up' : 'down'}">${sg(v, 1)}%</span>`).join('')}</div><p>${esc(T('Насколько цена сейчас выше или ниже, чем тогда (по закрытиям свечей Kraken).', 'How much higher or lower the price is now than back then (Kraken candle closes).'))}</p></div>`);
-    }
-    // общий импульс: RSI, MACD и средняя за 20 свечей
-    let sc = 0; const why = [];
-    if (rsi != null) { if (rsi > 55) { sc++; why.push('RSI ' + n(rsi, 0)); } else if (rsi < 45) { sc--; why.push('RSI ' + n(rsi, 0)); } }
-    if (mac != null && sig != null) { if (mac > sig) { sc++; why.push(T('MACD выше сигнальной', 'MACD above signal')); } else if (mac < sig) { sc--; why.push(T('MACD ниже сигнальной', 'MACD below signal')); } }
-    const s20 = (A.smas.find(x => x[0] === 20) || [])[1];
-    if (s20) { if (last > s20) { sc++; why.push(T('цена выше SMA 20', 'price above SMA 20')); } else { sc--; why.push(T('цена ниже SMA 20', 'price below SMA 20')); } }
-    const mood = sc >= 2 ? ['up', T('вверх', 'upward')] : sc <= -2 ? ['down', T('вниз', 'downward')] : ['', T('без явного направления', 'no clear direction')];
-    // диапазоны
-    const ch = s.chart || {}, ch1 = (ch.h1 || []), cd1 = (ch.d1 || []);
-    const rng = (rr, lab) => { if (!rr.length) return null; const hi = Math.max(...rr.map(r => r[2])), lo = Math.min(...rr.map(r => r[3])); return [lab, lo, hi]; };
-    const ranges = [rng(ch1.slice(-24), T('24 ч', '24h')), rng(ch1, T('7 дней', '7 days')), rng(cd1.slice(-30), T('30 дней', '30 days')), rng(cd1, T('год', 'year'))].filter(Boolean);
-    const rngH = ranges.map(([lab, lo, hi]) => { const p = hi > lo ? Math.max(0, Math.min(1, (last - lo) / (hi - lo))) : 0.5; return `<div class="rg"><span class="k">${esc(lab)}</span><span class="rg-t"><i style="left:${(p * 100).toFixed(1)}%"></i></span><span class="n">${fp(lo)} – ${fp(hi)}</span></div>`; }).join('');
-    return `${head}
-      <div class="group ta">
-        <div class="ta-sum"><span>${T('Импульс', 'Momentum')} (${esc(tfn)}): <b class="${mood[0]}">${esc(mood[1])}</b></span><span class="faint">${esc(why.join(' · '))}</span></div>
-        <div class="ta-grid">${items.join('')}</div>
-        ${rngH ? `<h3 class="ta-h">${T('Где цена в диапазоне', 'Where the price sits in its range')}</h3><div class="rgs">${rngH}</div>` : ''}
-        <p class="note">${T(`Свечи Kraken DOG/USD: ${N} шт. Индикаторы описывают прошлое движение цены и не предсказывают будущее — это не совет покупать или продавать.`, `Kraken DOG/USD candles: ${N}. Indicators describe past price moves and don’t predict the future — not a signal to buy or sell.`)}</p>
-      </div>`;
-  }
-
-  // ---------- глубина ----------
   function drawDepth() {
     const el = $('#dchart'); if (!el) return;
     const s = V(); if (!s) { el.innerHTML = ''; return; }
@@ -3403,7 +3330,7 @@ html{overscroll-behavior-y:contain}
       const nAll = (b.bids || []).length + (b.asks || []).length;
       html += `<div class="group book">
         <div class="book-top"><h3><span class="exlogo">${esc(nm[0])}</span>${esc(nm)}</h3><span class="meta">${b.old && s.upd ? `<span class="tag old">${T('утренняя сводка', 'morning report')}</span> ` : ''}${b.ats ? esc(when(b.ats)) : ''}</span></div>
-        ${b.old && s.upd ? `<p class="oldnote">${ico('info')}<span>${b.old === 'fail' ? T(`${nm} не ответила при обновлении, поэтому этот стакан — из утренней сводки. Попробуйте обновить ещё раз.`, `${nm} didn’t respond during the update, so this order book is from the morning report. Try updating again.`) : T(`${nm} не отвечает на запросы со страниц сайтов, поэтому этот стакан — из утренней сводки. Остальные биржи обновлены ${when(s.upd.ts)}.`, `${nm} doesn’t answer requests from web pages, so this order book is from the morning report. The other exchanges were updated ${when(s.upd.ts)}.`)}</span></p>` : ''}
+        ${b.old && s.upd ? `<p class="oldnote">${ico('info')}<span>${b.old === 'fail' ? T(`${nm} не ответила при обновлении, поэтому этот стакан — из утренней сводки. Попробуйте обновить ещё раз.`, `${nm} didn’t respond during the update, so this order book is from the morning report. Try updating again.`) : T(`Эта карточка ${nm} — по утренней сводке (остальные биржи обновлены ${when(s.upd.ts)}). Онлайн-стакан ${nm} — кнопка «${nm}» вверху вкладки.`, `This ${nm} card is from the morning report (the other exchanges were updated ${when(s.upd.ts)}). For ${nm}’s live order book, tap “${nm}” at the top of this tab.`)}</span></p>` : ''}
         <div class="bbo"><span>${T('лучшая покупка', 'best bid')} <b>${fp(b.bid)}</b></span><span>${T('лучшая продажа', 'best ask')} <b>${fp(b.ask)}</b></span>${spread != null ? `<span class="faint">${T('спред', 'spread')} ${n(spread, 2)}%</span>` : ''}</div>
         ${b.off ? `<div class="warnline">${T('Цена этой биржи отличается от остальных больше чем на 3% — в общие суммы она не входит.', 'This exchange’s price differs from the others by more than 3% — it’s excluded from the totals.')}</div>` : ''}
         <div class="depth">${depthRow('±2%', b.d2, maxv)}${depthRow('±5%', b.d5, maxv)}${depthRow('±10%', b.d10, maxv)}${depthRow('±25%', b.d25, maxv)}</div>
@@ -3447,18 +3374,15 @@ html{overscroll-behavior-y:contain}
           <div class="obx chips" id="obx" role="group" aria-label="${T('Биржа', 'Exchange')}"></div>
           <div class="obgrid">
             <div class="group obcard" id="obcard"></div>
-            <div class="obside"><div id="obmet"></div><div id="obtr"></div><div id="obcalc"></div><div id="obfeed"></div></div>
+            <div class="obside"><div id="obmet"></div><div id="obtr"></div><div id="obfeed"></div></div>
           </div>
         </div>
-        <div class="sec" id="obta"></div>
         <div class="sec" id="obdepth"></div>
         <div class="sec" id="obexs"></div>
         <div class="sec" id="obven"></div>
       </div>`;
     }
     $('#obx').innerHTML = obChipsHtml(s);
-    if (!(document.activeElement && document.activeElement.id === 'calc-amt')) $('#obcalc').innerHTML = obCalcHtml();
-    $('#obta').innerHTML = taHtml(s);
     $('#obdepth').innerHTML = `<div class="sec-head"><h2>${T('Глубина', 'Depth')}</h2><span class="seg" id="seg-range" role="group" aria-label="${T('Диапазон', 'Range')}">${[0.02, 0.05, 0.10, 0.20, 0.30].map(r => segB('range', r, '±' + Math.round(r * 100) + '%', S.range === r)).join('')}</span></div>
       <div class="group"><div class="legend-row" id="dtot"></div><div class="dchart" id="dchart"></div><p class="note">${T('Сколько DOG стоит в заявках от текущей цены до каждой точки. Водите пальцем по графику.', 'How much DOG sits in orders from the current price to each point. Drag across the chart.')}</p></div>`;
     const open = $$('#obexs details[open][data-k]').map(d => d.dataset.k);
@@ -3472,11 +3396,12 @@ html{overscroll-behavior-y:contain}
   function obPaint() {
     if (!$('#obroot')) return;
     const c = obCtx(); if (!c) return;
+    const ox = $('#obx'), oh = obChipsHtml(c.s);
+    if (ox && ox.dataset.h !== oh) { const xl = ox.scrollLeft; ox.innerHTML = oh; ox.dataset.h = oh; ox.scrollLeft = xl; }
     const sc = $('#obcard .scroll'), sl = sc ? sc.scrollLeft : 0;
     $('#obcard').innerHTML = obCardHtml(c);
     if (sl) { const n2 = $('#obcard .scroll'); if (n2) n2.scrollLeft = sl; }
     $('#obmet').innerHTML = obMetricsHtml(c);
-    obCalcRes(c);
     $('#obfeed').innerHTML = obFeedHtml();
     $('#obtr').innerHTML = trHtml();
     if (S.tab === 'books') drawDepth();
@@ -3501,16 +3426,7 @@ html{overscroll-behavior-y:contain}
     if (d.obstepsheet != null) { obStepSheet(); return; }
     if (d.obpause != null) { S.bpause = !S.bpause; if (!S.bpause) OB.t = 0; obPaint(); obLoop(); return; }
     if (d.obinfo) { openInfo('ob_' + d.obinfo); return; }
-    if (d.calcside) { S.calc.side = d.calcside; store.set('calc', S.calc); $('#obcalc').innerHTML = obCalcHtml(); obCalcRes(); return; }
-    if (d.calcunit) { if (S.calc.unit !== d.calcunit) { const mid = (obCtx() || {}).set; const m = mid && mid.mid; S.calc.unit = d.calcunit; if (m) S.calc.amt = d.calcunit === 'dog' ? Math.round(S.calc.amt / m / 1e5) * 1e5 || 1e6 : Math.round(S.calc.amt * m) || 100; store.set('calc', S.calc); } $('#obcalc').innerHTML = obCalcHtml(); obCalcRes(); return; }
-    if (d.calcpre) { S.calc.amt = +d.calcpre; store.set('calc', S.calc); const inp = $('#calc-amt'); if (inp) inp.value = n(S.calc.amt, 0); obCalcRes(); return; }
-    if (d.tatf) { S.taTf = d.tatf; store.set('taTf', S.taTf); const s = V(); if (s) $('#obta').innerHTML = taHtml(s); return; }
     if (d.range) { S.range = +d.range; $$('#seg-range button').forEach(x => x.setAttribute('aria-pressed', String(+x.dataset.range === S.range))); drawDepth(); return; }
-  });
-  $('#p-books').addEventListener('input', e => {
-    if (e.target.id !== 'calc-amt') return;
-    const v = parseFloat(String(e.target.value).replace(/[\s  ]/g, '').replace(EN ? /,/g : /,/g, EN ? '' : '.'));
-    if (isFinite(v) && v > 0) { S.calc.amt = Math.min(v, 1e12); store.set('calc', S.calc); obCalcRes(); }
   });
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-obstep]');
@@ -3522,59 +3438,467 @@ html{overscroll-behavior-y:contain}
     obPaint();
   });
 
-  // ---------- ПЕРЕВОДЫ ----------
-  function txSheet(b) {
-    const s = V(), mid = (s.price || {}).mid;
-    const side = (nm, k, a, r) => `<div class="row static" style="padding:8px 0">${avatar(nm, k)}<span class="t"><b>${esc(ownName(nm, k))}${r ? ' ' + NO + r : ''}</b><span>${esc(KIND_NAME[k] || KIND_NAME.unknown)}</span></span><span></span></div>${a ? `<div class="addrbox"><code>${esc(a)}</code>${copyBtn(a)}</div>` : ''}`;
-    openSheet(`${mdog(b.q)} DOG`, `<dl class="kv"><dt>${T('Когда', 'When')}</dt><dd>${esc(when(b.ts || b.t))}</dd><dt>${T('Тип', 'Type')}</dt><dd>${esc(typTr(b.typ))}</dd><dt>${T('В долларах', 'In dollars')}</dt><dd>${esc(usdM(b.q, mid) || '—')}</dd></dl>
-      <h3>${T('Откуда', 'From')}</h3>${side(b.fn, b.fk, b.from, b.fr)}<h3>${T('Куда', 'To')}</h3>${side(b.tn, b.tk, b.to, b.tr)}
-      ${b.tx ? `<div class="btns"><a class="btn" href="https://mempool.space/tx/${encodeURIComponent(b.tx)}" target="_blank" rel="noopener">${T('Открыть транзакцию', 'Open transaction')} ${ico('ext')}</a></div>` : ''}`);
+  // ---------- ГРАФИКИ: свечи как на TradingView (RSI и MACD под графиком), дельта и корреляция с биткоином ----------
+  // Свечи и сделки — Kraken (DOG/USD) и Gate (DOG/USDT) прямо со страницы; биткоин — Coinbase; DOG с начала торгов — data/prices.json.
+  const CH_TF = { '15m': [15, T('15м', '15m')], '1h': [60, T('1ч', '1h')], '4h': [240, T('4ч', '4h')], '1d': [1440, T('1д', '1d')] };
+  const CH_TTL = { '15m': 60e3, '1h': 3 * 60e3, '4h': 10 * 60e3, '1d': 30 * 60e3 };
+  const CH = { ohlc: {}, run: {}, tv: null, dl: null, cr: null, timer: null, drawn: {} };
+  { const v = store.get('chTf', '1h'); CH.tf = CH_TF[v] ? v : '1h'; }
+  CH.ind = Object.assign({ vol: true, ma: true, bb: false, rsi: true, macd: true }, store.get('chInd', {}) || {});
+  const DL = { data: {}, run: {} };
+  { const v = store.get('dlWin', '24h'); DL.win = v === '3d' ? '3d' : '24h'; }
+  const CR = { btc: null, run: null };
+
+  const hexA = (h, a) => { const m = String(h || '').trim().match(/^#?([0-9a-f]{6})$/i); if (!m) return h; const v = parseInt(m[1], 16); return `rgba(${v >> 16},${(v >> 8) & 255},${v & 255},${a})`; };
+  function chColors() {
+    const cs = getComputedStyle(document.documentElement), g = k => cs.getPropertyValue(k).trim();
+    return { bg: g('--surface'), ink: g('--ink'), ink2: g('--ink-2'), ink3: g('--ink-3'), line: g('--line'), line2: g('--line-2'), up: g('--bid'), down: g('--ask'), acc: g('--accent'), k1: g('--k1'), k2: g('--k2'), k5: g('--k5'), k3: g('--k3') };
   }
-  function renderFlows() {
-    const s = V(), el = $('#p-flows');
-    const fl = (s || {}).flows || {};
-    setBadge('flows', fl.count || '');
-    if (!s || fl.count == null) { el.innerHTML = `<div class="empty">${T('Нет данных о переводах.', 'No transfer data.')}</div>`; return; }
-    const mid = (s.price || {}).mid, net = fl.net;
-    let html = `<div class="sec"><div class="sec-head">${hInfo('h2', T('Переводы от 5 млн DOG за сутки', 'Transfers of 5M+ DOG in 24h'), 'flows')}<p>DOG DATA, ${esc(when((s.srcTs || {}).whales || s.ts))}</p></div>
-      <div class="sum4">
-        <div><div class="l">${T('Переводов', 'Transfers')}</div><div class="v">${fl.count}</div><div class="s">${T('от 5 млн DOG', '5M DOG and up')}</div></div>
-        <div><div class="l">${T('Завели на биржи', 'To exchanges')}</div><div class="v">${mdog(fl.toExch)}</div><div class="s">${esc(usdM(fl.toExch, mid) || 'DOG')}</div></div>
-        <div><div class="l">${T('Вывели с бирж', 'From exchanges')}</div><div class="v">${mdog(fl.fromExch)}</div><div class="s">${esc(usdM(fl.fromExch, mid) || 'DOG')}</div></div>
-        <div><div class="l">${T('Итог', 'Net')}</div><div class="v ${net > 0 ? 'down' : (net < 0 ? 'up' : '')}">${sg(net, 1)}${MLN}</div><div class="s">${net > 0 ? T('больше завели на биржи', 'more went to exchanges') : (net < 0 ? T('больше вывели с бирж', 'more left exchanges') : T('поровну', 'even'))}</div></div>
-      </div>
+  const lwOk = () => lwState === 'ready' && LW && typeof LW.createChart === 'function';
+  const lwSer = (chart, kind, opts, pane) => chart.addSeries(LW[kind + 'Series'], opts, pane || 0);
+  function lwChart(el, opts) {
+    const C = chColors();
+    return LW.createChart(el, Object.assign({
+      autoSize: true,
+      layout: { background: { type: 'solid', color: C.bg }, textColor: C.ink3, fontSize: 11, fontFamily: '"Golos Text", system-ui, sans-serif', attributionLogo: true, panes: { separatorColor: C.line, separatorHoverColor: C.line, enableResize: false } },
+      grid: { vertLines: { color: C.line2 }, horzLines: { color: C.line2 } },
+      rightPriceScale: { borderColor: C.line, minimumWidth: 64 },
+      timeScale: { borderColor: C.line, rightOffset: 3, tickMarkFormatter: tickFmt },
+      crosshair: { mode: 0, vertLine: { color: C.ink3, labelBackgroundColor: C.ink2 }, horzLine: { color: C.ink3, labelBackgroundColor: C.ink2 } },
+      handleScroll: { mouseWheel: true, pressedMouseMove: true, horzTouchDrag: true, vertTouchDrag: false },
+      handleScale: { mouseWheel: true, pinch: true, axisPressedMouseMove: { time: true, price: false } }
+    }, opts || {}));
+  }
+  function chKill(k) { if (CH[k]) { try { CH[k].chart.remove(); } catch (e) { } CH[k] = null; } }
+  // высоты панелей: «коэффициенты растяжения» не зависят от того, успел ли график узнать свой размер
+  function lwPanes(chart, hs) { try { chart.panes().forEach((p, i) => { if (hs[i] == null) return; if (typeof p.setStretchFactor === 'function') p.setStretchFactor(hs[i]); else p.setHeight(hs[i]); }); } catch (e) { } }
+  const chWait = msg => `<div class="tv-wait">${msg ? esc(msg) : `<span class="spinner" aria-hidden="true"></span>${T('Загружаю…', 'Loading…')}`}</div>`;
+  const lwFailTxt = () => T('Не удалось загрузить библиотеку графиков TradingView. Обновите страницу.', 'Couldn’t load the TradingView chart library. Reload the page.');
+
+  // ---------- свечи Kraken ----------
+  async function chOhlc(tf) {
+    const c = CH.ohlc[tf];
+    if (c && Date.now() - c.t < CH_TTL[tf]) return c.rows;
+    if (CH.run[tf]) return CH.run[tf];
+    CH.run[tf] = (async () => {
+      try {
+        const r = await upGet('https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=' + CH_TF[tf][0], 12000);
+        const rows = ohlcRows(r.d);
+        if (rows && rows.length > 30) { CH.ohlc[tf] = { t: Date.now(), rows }; return rows; }
+      } catch (e) { }
+      // не загрузились: оставляем прежние свечи или берём из сводки и пробуем снова через минуту
+      if (c) { c.t = Date.now() - CH_TTL[tf] + 60e3; return c.rows; }
+      const ch = (V() || {}).chart || {};
+      const fb = tf === '1h' && (ch.h1 || []).length ? ch.h1 : tf === '1d' && (ch.d1 || []).length ? ch.d1 : null;
+      if (fb) { CH.ohlc[tf] = { t: Date.now() - CH_TTL[tf] + 60e3, rows: fb, fb: true }; return fb; }
+      return null;
+    })().finally(() => { CH.run[tf] = null; });
+    return CH.run[tf];
+  }
+  // последняя свеча — по онлайн-цене Kraken
+  function chWithLive(rows, tf) {
+    const lp = !S.archived ? livePrice() : null;
+    if (!lp || !rows || !rows.length) return rows;
+    const step = CH_TF[tf][0] * 60, out = rows.map(r => r.slice()), L = out[out.length - 1], nt = Math.floor(Date.now() / 1000);
+    if (nt >= L[0] && nt < L[0] + step) { L[4] = lp; L[2] = Math.max(L[2], lp); L[3] = Math.min(L[3], lp); }
+    else if (nt >= L[0] + step && nt < L[0] + 2 * step) out.push([nt - nt % step, L[4], Math.max(L[4], lp), Math.min(L[4], lp), lp, 0]);
+    return out;
+  }
+  function chInd(rows) {
+    const c = rows.map(r => r[4]);
+    const e12 = taEma(c, 12), e26 = taEma(c, 26);
+    const mp = c.map((v, i) => e12[i] != null && e26[i] != null ? (e12[i] - e26[i]) / v * 100 : null);     // MACD в % от цены
+    const sig = taEma(mp, 9), hist = mp.map((v, i) => v != null && sig[i] != null ? v - sig[i] : null);
+    for (let i = 0; i < Math.min(c.length, 34); i++) { mp[i] = null; sig[i] = null; hist[i] = null; }   // пока средние «разгоняются», MACD не показываем
+    const m20 = taSma(c, 20);
+    const bb = c.map((v, i) => { if (m20[i] == null) return null; let t = 0; for (let j = i - 19; j <= i; j++) t += (c[j] - m20[i]) ** 2; const sd = Math.sqrt(t / 20); return { u: m20[i] + 2 * sd, l: m20[i] - 2 * sd }; });
+    const ma = [20, 50, 200].map(k => [k, taSma(c, k)]);
+    return { c, rsi: taRsi(c, 14), mp, sig, hist, bb, ma };
+  }
+
+  // ---------- главный график ----------
+  function chDrawTV() {
+    const el = $('#tvchart'); if (!el) return;
+    if (!lwOk()) { chKill('tv'); el.innerHTML = chWait(lwState === 'failed' ? lwFailTxt() : ''); return; }
+    const tf = CH.tf, raw = (CH.ohlc[tf] || {}).rows;
+    if (!raw) { el.innerHTML = chWait(); chOhlc(tf).then(r => { if (r && S.tab === 'charts' && CH.tf === tf) chDrawTV(); else if (!r && S.tab === 'charts') el.innerHTML = chWait(T('Свечи Kraken не загрузились. Попробуйте позже.', 'Kraken candles didn’t load. Try again later.')); }); return; }
+    const rows = chWithLive(raw, tf), A = chInd(rows), C = chColors(), intra = tf !== '1d';
+    const Tm = r => intra ? r[0] + TZ : r[0];
+    const keep = CH.tv && CH.tv.tf === tf ? (() => { try { return CH.tv.chart.timeScale().getVisibleLogicalRange(); } catch (e) { return null; } })() : null;
+    chKill('tv');
+    el.innerHTML = '';
+    const panes = [CH.ind.rsi ? 'rsi' : null, CH.ind.macd ? 'macd' : null].filter(Boolean);
+    const H0 = el.clientWidth < 560 ? 280 : 360, HP = el.clientWidth < 560 ? 104 : 120;
+    el.style.height = (H0 + panes.length * (HP + 1) + 28) + 'px';
+    const chart = lwChart(el, { timeScale: { borderColor: C.line, rightOffset: 3, barSpacing: intra ? 6 : 7, timeVisible: intra, secondsVisible: false, tickMarkFormatter: tickFmt },
+      localization: { locale: LOC, timeFormatter: t => intra ? fuDM(t) + ', ' + FU_T.format(ut(t)) : fuDM(t) + ' ' + FU_Y.format(ut(t)) } });
+    const pf = { type: 'custom', formatter: p => fpx(p, 1e-7), minMove: 1e-7 };
+    const cs = lwSer(chart, 'Candlestick', { upColor: C.up, downColor: C.down, wickUpColor: C.up, wickDownColor: C.down, borderVisible: false, priceFormat: pf }, 0);
+    cs.setData(rows.map(r => ({ time: Tm(r), open: r[1], high: r[2], low: r[3], close: r[4] })));
+    const ser = { cs, ma: [], bb: [] };
+    {
+      ser.vol = lwSer(chart, 'Histogram', { priceScaleId: 'vol', priceFormat: { type: 'custom', formatter: v => qf(v) }, lastValueVisible: false, priceLineVisible: false }, 0);
+      try { ser.vol.priceScale().applyOptions({ scaleMargins: { top: 0.8, bottom: 0 } }); } catch (e) { }
+      ser.vol.setData(rows.map(r => ({ time: Tm(r), value: r[5] || 0, color: hexA(r[4] >= r[1] ? C.up : C.down, 0.35) })));
+    }
+    const maCol = [C.k1, C.k2, C.k5];
+    if (CH.ind.ma) A.ma.forEach(([k, v], i) => {
+      if (v.filter(x => x != null).length < 2) return;
+      const s2 = lwSer(chart, 'Line', { color: maCol[i], lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false, priceFormat: pf }, 0);
+      s2.setData(rows.map((r, j) => v[j] == null ? { time: Tm(r) } : { time: Tm(r), value: v[j] }));
+      ser.ma.push([k, s2, maCol[i], v]);
+    });
+    if (CH.ind.bb) ['u', 'l'].forEach(key => {
+      const s2 = lwSer(chart, 'Line', { color: hexA(C.ink3, 0.8) || C.ink3, lineWidth: 1, lineStyle: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false, priceFormat: pf }, 0);
+      s2.setData(rows.map((r, j) => A.bb[j] ? { time: Tm(r), value: A.bb[j][key] } : { time: Tm(r) }));
+      ser.bb.push(s2);
+    });
+    let pi = 1;
+    if (CH.ind.rsi) {
+      ser.rsi = lwSer(chart, 'Line', { color: C.acc, lineWidth: 2, priceLineVisible: false, lastValueVisible: true, priceFormat: { type: 'custom', formatter: v => n(v, 0), minMove: 1 }, autoscaleInfoProvider: () => ({ priceRange: { minValue: 0, maxValue: 100 } }) }, pi);
+      ser.rsi.setData(rows.map((r, j) => A.rsi[j] == null ? { time: Tm(r) } : { time: Tm(r), value: A.rsi[j] }));
+      [[70, C.down], [30, C.up]].forEach(([p, col]) => ser.rsi.createPriceLine({ price: p, color: col, lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: '' }));
+      ser.rsi.createPriceLine({ price: 50, color: C.line, lineWidth: 1, lineStyle: 1, axisLabelVisible: false, title: '' });
+      ser.rsiPane = pi++;
+    }
+    if (CH.ind.macd) {
+      const mf = { type: 'custom', formatter: v => sg(v, 2) + '%', minMove: 0.0001 };
+      ser.hist = lwSer(chart, 'Histogram', { priceFormat: mf, priceLineVisible: false, lastValueVisible: false }, pi);
+      ser.hist.setData(rows.map((r, j) => {
+        const h = A.hist[j]; if (h == null) return { time: Tm(r) };
+        const p = A.hist[j - 1], grow = p == null || Math.abs(h) >= Math.abs(p);
+        return { time: Tm(r), value: h, color: hexA(h >= 0 ? C.up : C.down, grow ? 0.85 : 0.4) };
+      }));
+      ser.macd = lwSer(chart, 'Line', { color: C.k1, lineWidth: 2, priceLineVisible: false, lastValueVisible: true, priceFormat: mf }, pi);
+      ser.macd.setData(rows.map((r, j) => A.mp[j] == null ? { time: Tm(r) } : { time: Tm(r), value: A.mp[j] }));
+      ser.sig = lwSer(chart, 'Line', { color: C.k2, lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false, priceFormat: mf }, pi);
+      ser.sig.setData(rows.map((r, j) => A.sig[j] == null ? { time: Tm(r) } : { time: Tm(r), value: A.sig[j] }));
+      ser.macdPane = pi++;
+    }
+    lwPanes(chart, [H0].concat(panes.map(() => HP)));
+    // настройки правой шкалы у библиотеки общие для всех панелей — задаём их каждой панели отдельно и в конце
+    try { if (ser.rsiPane) chart.priceScale('right', ser.rsiPane).applyOptions({ scaleMargins: { top: 0.1, bottom: 0.08 } }); if (ser.macdPane) chart.priceScale('right', ser.macdPane).applyOptions({ scaleMargins: { top: 0.12, bottom: 0.08 } }); } catch (e) { }
+    try {
+      if (keep) chart.timeScale().setVisibleLogicalRange(keep);
+      else { const nB = intra ? (el.clientWidth < 560 ? 70 : 120) : (el.clientWidth < 560 ? 90 : 160); chart.timeScale().setVisibleLogicalRange({ from: Math.max(0, rows.length - nB), to: rows.length + 2 }); }
+    } catch (e) { }
+    CH.tv = { chart, tf, rows, A, ser, H0, HP };
+    // подписи над панелями — как у TradingView: значения под перекрестием или у последней свечи
+    const box = el.parentElement;
+    $$('.tv-pl', box).forEach(x => x.remove());
+    const mk = id => { const d = document.createElement('div'); d.className = 'tv-pl'; d.id = id; d.style.visibility = 'hidden'; box.appendChild(d); return d; };
+    if (ser.rsiPane) mk('tvl-rsi');
+    if (ser.macdPane) mk('tvl-macd');
+    requestAnimationFrame(() => requestAnimationFrame(tvLabels)); setTimeout(tvLabels, 300);
+    chart.subscribeCrosshairMove(param => {
+      if (!CH.tv || CH.tv.chart !== chart) return;
+      let i = rows.length - 1;
+      if (param && param.time != null) { const t = param.time; const k = rows.findIndex(r => Tm(r) === t); if (k >= 0) i = k; }
+      chLegend(i);
+    });
+    chLegend(rows.length - 1);
+    chRead();
+  }
+  // подписи RSI и MACD — в левом верхнем углу своих панелей, как на TradingView
+  function tvLabels() {
+    const tv = CH.tv, el = $('#tvchart'); if (!tv || !el) return;
+    const br = el.parentElement.getBoundingClientRect();
+    let ps = []; try { ps = tv.chart.panes(); } catch (e) { }
+    [['tvl-rsi', tv.ser.rsiPane], ['tvl-macd', tv.ser.macdPane]].forEach(([id, i]) => {
+      const lab = $('#' + id); if (!lab || i == null) return;
+      let pe = null; try { pe = ps[i] && ps[i].getHTMLElement(); } catch (e) { }
+      const top = pe ? pe.getBoundingClientRect().top - br.top : el.offsetTop + tv.H0 + 1 + (id === 'tvl-macd' && tv.ser.rsiPane ? tv.HP + 1 : 0);
+      lab.style.top = Math.round(top + 4) + 'px'; lab.style.visibility = '';
+    });
+  }
+  function chLegend(i) {
+    const tv = CH.tv; if (!tv) return;
+    const r = tv.rows[i], A = tv.A, prev = tv.rows[i - 1];
+    const chg = prev ? (r[4] / prev[4] - 1) * 100 : null;
+    const leg = $('#tvleg');
+    if (leg) leg.innerHTML = `<div class="l1"><b>DOG/USD</b><span class="faint">Kraken · ${esc(CH_TF[tv.tf][1])}</span><span class="${chg == null ? '' : chg >= 0 ? 'up' : 'down'}">${chg == null ? '' : sg(chg, 2) + '%'}</span></div>
+      <div class="l2"><span>${T('О', 'O')} <b>${fpx(r[1], 1e-7)}</b></span><span>${T('Макс', 'H')} <b>${fpx(r[2], 1e-7)}</b></span><span>${T('Мин', 'L')} <b>${fpx(r[3], 1e-7)}</b></span><span>${T('З', 'C')} <b>${fpx(r[4], 1e-7)}</b></span>${tv.ser.vol ? `<span>${T('Объём', 'Vol')} <b>${qf(r[5])}</b></span>` : ''}</div>
+      ${tv.ser.ma.length ? `<div class="l2">${tv.ser.ma.map(([k, , col, v]) => v[i] == null ? '' : `<span><i class="dot" style="background:${col}"></i>SMA ${k} <b>${fpx(v[i], 1e-7)}</b></span>`).join('')}</div>` : ''}`;
+    const lr = $('#tvl-rsi'); if (lr) lr.innerHTML = `RSI 14 <b>${A.rsi[i] == null ? '—' : n(A.rsi[i], 1)}</b>`;
+    const lm = $('#tvl-macd'); if (lm) lm.innerHTML = `MACD 12 26 9 <span class="faint">${T('в % от цены', 'as % of price')}</span> <b style="color:var(--k1)">${A.mp[i] == null ? '—' : sg(A.mp[i], 2)}</b> <b style="color:var(--k2)">${A.sig[i] == null ? '—' : sg(A.sig[i], 2)}</b>`;
+  }
+  // что видно на графике — простыми словами
+  function chRead() {
+    const el = $('#tvread'), tv = CH.tv; if (!el || !tv) return;
+    const A = tv.A, N = tv.rows.length, last = A.c[N - 1], out = [];
+    const tfn = CH_TF[tv.tf][1], rsi = A.rsi[N - 1];
+    if (rsi != null) out.push(['acc', `<b>RSI ${n(rsi, 0)}</b> — ` + (rsi >= 70 ? T('выше 70: цена долго росла быстрее, чем падала («перекупленность»)', 'above 70: the price has been rising faster than falling (“overbought”)') : rsi <= 30 ? T('ниже 30: цена долго падала быстрее, чем росла («перепроданность»)', 'below 30: the price has been falling faster than rising (“oversold”)') : rsi >= 50 ? T('между 50 и 70: росты сильнее падений', 'between 50 and 70: gains outweigh losses') : T('между 30 и 50: падения сильнее ростов', 'between 30 and 50: losses outweigh gains'))]);
+    const m = A.mp[N - 1], g = A.sig[N - 1], h = A.hist[N - 1], hp = A.hist[N - 2];
+    if (m != null && g != null) out.push(['k1', `<b>MACD</b> ${m >= g ? T('выше сигнальной линии — импульс вверх', 'above its signal line — upward momentum') : T('ниже сигнальной линии — импульс вниз', 'below its signal line — downward momentum')}${hp != null ? (Math.abs(h) >= Math.abs(hp) ? T(', усиливается', ', strengthening') : T(', слабеет', ', fading')) : ''}`]);
+    const mas = A.ma.filter(([, v]) => v[N - 1] != null).map(([k, v]) => [k, v[N - 1]]);
+    if (mas.length) {
+      const up = mas.filter(([, v]) => last >= v).map(([k]) => k), dn = mas.filter(([, v]) => last < v).map(([k]) => k);
+      out.push(['k2', `<b>${T('Средние', 'Averages')}</b>: ` + (up.length ? T(`цена выше SMA ${up.join(', ')}`, `price above SMA ${up.join(', ')}`) : '') + (up.length && dn.length ? T(', но ниже SMA ', ', but below SMA ') + dn.join(', ') : (!up.length ? T(`цена ниже SMA ${dn.join(', ')}`, `price below SMA ${dn.join(', ')}`) : '')) + ` (${T('средние цены закрытия за столько свечей', 'average closes over that many candles')})`]);
+    }
+    const bb = A.bb[N - 1];
+    if (bb && bb.u > bb.l) { const pb = (last - bb.l) / (bb.u - bb.l); out.push(['ink3', `<b>${T('Боллинджер', 'Bollinger')}</b>: ` + (pb > 1 ? T('цена выше верхней границы — сильный рывок вверх', 'price above the upper band — a strong upward push') : pb < 0 ? T('цена ниже нижней границы — сильный рывок вниз', 'price below the lower band — a strong downward push') : pb >= 0.8 ? T('цена у верхней границы канала', 'price near the upper band') : pb <= 0.2 ? T('цена у нижней границы канала', 'price near the lower band') : T('цена внутри обычного канала колебаний', 'price inside its usual range')) + ` (${T('ширина канала', 'band width')} ${n((bb.u - bb.l) / ((bb.u + bb.l) / 2) * 100, 1)}%)`]); }
+    let sc = 0;
+    if (rsi != null) sc += rsi > 55 ? 1 : rsi < 45 ? -1 : 0;
+    if (m != null && g != null) sc += m > g ? 1 : -1;
+    const s20 = (A.ma[0][1] || [])[N - 1]; if (s20) sc += last > s20 ? 1 : -1;
+    const mood = sc >= 2 ? ['up', T('вверх', 'upward')] : sc <= -2 ? ['down', T('вниз', 'downward')] : ['', T('без явного направления', 'no clear direction')];
+    el.innerHTML = `<div class="tv-mood">${T('Импульс на свечах', 'Momentum on')} ${esc(tfn)}${T('', ' candles')}: <b class="${mood[0]}">${esc(mood[1])}</b></div>
+      <ul class="tv-ul">${out.map(([c, h]) => `<li><i class="dot" style="background:var(--${c === 'acc' ? 'accent' : c})"></i><span>${h}</span></li>`).join('')}</ul>
+      <p class="note">${T('Свечи Kraken DOG/USD. Двигайте график пальцем, сводите и разводите пальцы для масштаба, нажмите и задержите палец — появится перекрестие со значениями. Индикаторы описывают прошлое движение цены и не предсказывают будущее.', 'Kraken DOG/USD candles. Drag to scroll, pinch to zoom, press and hold for a crosshair with values. Indicators describe past price moves and don’t predict the future.')}</p>`;
+  }
+  // онлайн-цена: последняя свеча обновляется на месте
+  function chLive() {
+    const tv = CH.tv; if (!tv || S.tab !== 'charts') return;
+    const lp = livePrice(); if (!lp) return;
+    const r = tv.rows[tv.rows.length - 1], step = CH_TF[tv.tf][0] * 60, nt = Math.floor(Date.now() / 1000);
+    if (!(nt >= r[0] && nt < r[0] + step)) return;
+    r[4] = lp; r[2] = Math.max(r[2], lp); r[3] = Math.min(r[3], lp);
+    try { tv.ser.cs.update({ time: tv.tf !== '1d' ? r[0] + TZ : r[0], open: r[1], high: r[2], low: r[3], close: r[4] }); } catch (e) { }
+  }
+
+  // ---------- дельта: кто давит по рынку (сделки Kraken и Gate) ----------
+  async function dlLoad(win) {
+    const c = DL.data[win];
+    if (c && Date.now() - c.t < 3 * 60e3) return c;
+    if (DL.run[win]) return DL.run[win];
+    DL.run[win] = (async () => {
+      const now = Date.now(), hours = win === '3d' ? 72 : 24, from = now - hours * 3600e3;
+      const out = [];
+      // Kraken: страницы по 1000 сделок с нужного момента
+      let since = String(Math.floor(from / 1000)) + '000000000', krOk = false;
+      for (let i = 0; i < 5; i++) {
+        let r = null; try { r = await upGet('https://api.kraken.com/0/public/Trades?pair=DOGUSD&count=1000&since=' + since, 12000); } catch (e) { break; }
+        let rows = []; try { rows = trParse('kraken', r.d); krOk = true; } catch (e) { break; }
+        out.push(...rows);
+        const last = (r.d.result || {}).last;
+        if (rows.length < 1000 || !last || String(last) === since) break;
+        since = String(last);
+      }
+      // Gate: окна по 6 часов от сейчас назад
+      const wins = [];
+      for (let t1 = Math.floor(now / 1000); t1 > from / 1000; t1 -= 6 * 3600) wins.push([Math.max(Math.floor(from / 1000), t1 - 6 * 3600), t1]);
+      let gtOk = false;
+      for (let i = 0; i < wins.length; i += 4) {
+        const part = await Promise.all(wins.slice(i, i + 4).map(([a, b]) => upGet(`https://api.gateio.ws/api/v4/spot/trades?currency_pair=DOG_USDT&limit=1000&from=${a}&to=${b}`, 12000).then(r => trParse('gate', r.d)).catch(() => null)));
+        part.forEach(p => { if (p) { gtOk = true; out.push(...p); } });
+      }
+      const seen = new Set(), mid = ((V() || {}).price || {}).mid;
+      const tr = out.filter(x => { if (x.t < from || seen.has(x.id) || (mid && Math.abs(x.p / mid - 1) > 0.3)) return false; seen.add(x.id); return true; }).sort((a, b) => a.t - b.t);
+      const res = { t: Date.now(), win, from, tr, krOk, gtOk };
+      if (tr.length) DL.data[win] = res;
+      return res;
+    })().finally(() => { DL.run[win] = null; });
+    return DL.run[win];
+  }
+  function dlBuckets(d) {
+    const step = d.win === '3d' ? 3600e3 : 900e3, t0 = Math.floor(d.from / step) * step, nB = Math.ceil((Date.now() - t0) / step);
+    const B = Array.from({ length: nB }, (_, i) => ({ t: t0 + i * step, b: 0, a: 0, v: 0, q: 0, p: null, kb: 0, ka: 0, gb: 0, ga: 0 }));
+    for (const x of d.tr) {
+      const i = Math.floor((x.t - t0) / step); if (i < 0 || i >= nB) continue;
+      const k = B[i];
+      if (x.s === 'b') k.b += x.q; else k.a += x.q;
+      if (x.x === 'kraken') { if (x.s === 'b') k.kb += x.q; else k.ka += x.q; } else { if (x.s === 'b') k.gb += x.q; else k.ga += x.q; }
+      k.v += x.q * x.p; k.q += x.q;
+    }
+    let cvd = 0, lastP = d.tr.length ? d.tr[0].p : null;
+    for (const k of B) { cvd += k.b - k.a; k.cvd = cvd; k.p = k.q ? k.v / k.q : lastP; lastP = k.p; }
+    return { B, step };
+  }
+  function dlSumHtml(d, bk) {
+    const B = bk.B, buy = B.reduce((x, k) => x + k.b, 0), sell = B.reduce((x, k) => x + k.a, 0), net = buy - sell, tot = buy + sell || 1;
+    const mid = ((V() || {}).price || {}).mid || (B[B.length - 1] || {}).p;
+    const p0 = (B.find(k => k.p != null) || {}).p, p1 = (B.slice().reverse().find(k => k.p != null) || {}).p, pc = p0 && p1 ? (p1 / p0 - 1) * 100 : null;
+    const kN = B.reduce((x, k) => x + k.kb - k.ka, 0), gN = B.reduce((x, k) => x + k.gb - k.ga, 0);
+    const span = d.win === '3d' ? T('за 3 дня', 'over 3 days') : T('за 24 часа', 'over 24 hours');
+    let read;
+    if (pc == null || Math.abs(net) < tot * 0.03) read = T('Покупки и продажи по рынку примерно уравновешены.', 'Market buys and sells are roughly balanced.');
+    else if (net > 0 && pc < -0.5) read = T('По рынку больше покупают, а цена всё равно снижается — продажи стоят в стакане заявками и забирают покупки.', 'More is bought at market, yet the price is falling — sell orders resting in the book are absorbing the buying.');
+    else if (net < 0 && pc > 0.5) read = T('По рынку больше продают, а цена всё равно растёт — крупные покупки стоят в стакане и держат цену.', 'More is sold at market, yet the price is rising — big resting buy orders are holding the price up.');
+    else if (net > 0) read = T('Покупатели активнее — и цена это подтверждает.', 'Buyers are more aggressive — and the price confirms it.');
+    else read = T('Продавцы активнее — и цена это подтверждает.', 'Sellers are more aggressive — and the price confirms it.');
+    return `<div class="obbs"><span class="b">${T('Покупки', 'Buys')} ${n(buy / tot * 100, 0)}%</span><span class="obbs-bar" aria-hidden="true"><i class="b" style="width:${(buy / tot * 100).toFixed(1)}%"></i><i class="a" style="width:${(sell / tot * 100).toFixed(1)}%"></i></span><span class="a">${n(sell / tot * 100, 0)}% ${T('Продажи', 'Sells')}</span></div>
+      <p class="dl-big">${T('Дельта', 'Delta')} ${esc(span)}: <b class="${net >= 0 ? 'up' : 'down'}">${net >= 0 ? '+' : '−'}${qf(Math.abs(net))} DOG</b> <span class="faint">≈ ${usdC(Math.abs(net) * (mid || 0))}</span></p>
+      <p class="tr-sum">${T(`Купили по рынку <b class="up">${qf(buy)}</b>, продали <b class="down">${qf(sell)}</b>. Kraken ${kN >= 0 ? '+' : '−'}${qf(Math.abs(kN))}, Gate ${gN >= 0 ? '+' : '−'}${qf(Math.abs(gN))}.`, `Bought at market <b class="up">${qf(buy)}</b>, sold <b class="down">${qf(sell)}</b>. Kraken ${kN >= 0 ? '+' : '−'}${qf(Math.abs(kN))}, Gate ${gN >= 0 ? '+' : '−'}${qf(Math.abs(gN))}.`)}${pc != null ? ' ' + T(`Цена ${esc(span)} ${sg(pc, 1)}%.`, `Price ${esc(span)}: ${sg(pc, 1)}%.`) : ''}</p>
+      <p class="dl-read">${esc(read)}</p>`;
+  }
+  function dlDraw() {
+    const el = $('#dlchart'), sm = $('#dlsum'); if (!el || !sm) return;
+    const d = DL.data[DL.win];
+    if (!d) {
+      el.innerHTML = chWait(); sm.innerHTML = '';
+      dlLoad(DL.win).then(r => { if (S.tab !== 'charts') return; if (r && r.tr.length) dlDraw(); else el.innerHTML = chWait(T('Сделки не загрузились. Попробуйте позже.', 'Trades didn’t load. Try again later.')); });
+      return;
+    }
+    const bk = dlBuckets(d);
+    sm.innerHTML = dlSumHtml(d, bk);
+    if (!lwOk()) { chKill('dl'); el.innerHTML = chWait(lwState === 'failed' ? lwFailTxt() : ''); return; }
+    chKill('dl'); el.innerHTML = '';
+    const C = chColors(), Tm = k => Math.floor(k.t / 1000) + TZ, narrow = el.clientWidth < 560;
+    const H0 = narrow ? 150 : 190, H1 = narrow ? 90 : 110, H2 = narrow ? 110 : 130;
+    el.style.height = (H0 + H1 + H2 + 2 + 28) + 'px';
+    const chart = lwChart(el, { timeScale: { borderColor: C.line, rightOffset: 2, timeVisible: true, secondsVisible: false, tickMarkFormatter: tickFmt }, localization: { locale: LOC, timeFormatter: t => fuDM(t) + ', ' + FU_T.format(ut(t)) } });
+    const pr = lwSer(chart, 'Line', { color: C.ink2, lineWidth: 2, title: T('цена', 'price'), priceLineVisible: false, priceFormat: { type: 'custom', formatter: p => fpx(p, 1e-7), minMove: 1e-7 } }, 0);
+    pr.setData(bk.B.map(k => k.p == null ? { time: Tm(k) } : { time: Tm(k), value: k.p }));
+    const dh = lwSer(chart, 'Histogram', { title: T('дельта', 'delta'), priceLineVisible: false, lastValueVisible: false, priceFormat: { type: 'custom', formatter: v => (v < 0 ? '−' : '') + qf(Math.abs(v)) } }, 1);
+    dh.setData(bk.B.map(k => ({ time: Tm(k), value: k.b - k.a, color: hexA(k.b - k.a >= 0 ? C.up : C.down, 0.8) })));
+    const cv = lwSer(chart, 'Area', { lineColor: C.acc, topColor: hexA(C.acc, 0.25), bottomColor: hexA(C.acc, 0.02), lineWidth: 2, title: 'CVD', priceLineVisible: false, priceFormat: { type: 'custom', formatter: v => (v < 0 ? '−' : '') + qf(Math.abs(v)) } }, 2);
+    cv.setData(bk.B.map(k => ({ time: Tm(k), value: k.cvd })));
+    lwPanes(chart, [H0, H1, H2]);
+    try { chart.timeScale().fitContent(); } catch (e) { }
+    CH.dl = { chart };
+  }
+
+  // ---------- DOG и биткоин с запуска DOG ----------
+  async function crBtc() {
+    if (CR.btc && Date.now() - CR.btc.t < 6 * 3600e3) return CR.btc.d;
+    if (CR.run) return CR.run;
+    CR.run = (async () => {
+      const c = store.get('btcd1', null), d = Object.assign({}, c && c.d ? c.d : {});
+      if (c && c.t && Date.now() - c.t < 6 * 3600e3 && Object.keys(d).length > 300) { CR.btc = { t: c.t, d }; return d; }
+      const have = Object.keys(d).sort(), startAll = Date.UTC(2024, 3, 20);
+      let st = have.length > 300 ? Date.parse(have[have.length - 1] + 'T00:00:00Z') - 3 * 864e5 : startAll;
+      const end = Date.now();
+      const iso = ms => new Date(ms).toISOString().slice(0, 19) + 'Z';
+      while (st < end) {
+        const en = Math.min(end, st + 299 * 864e5);
+        try {
+          const r = await upGet(`https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=86400&start=${iso(st)}&end=${iso(en)}`, 12000);
+          for (const x of Array.isArray(r.d) ? r.d : []) { const t = +x[0], cl = +x[4]; if (t && cl > 0) d[new Date(t * 1000).toISOString().slice(0, 10)] = cl; }
+        } catch (e) { }
+        st = en;
+        await pause(250);
+      }
+      if (Object.keys(d).length > 30) { store.set('btcd1', { t: Date.now(), d }); CR.btc = { t: Date.now(), d }; CR.fail = 0; }
+      else CR.fail = Date.now();
+      return d;
+    })().finally(() => { CR.run = null; });
+    return CR.run;
+  }
+  const corrOf = (a, b) => { const n2 = Math.min(a.length, b.length); if (n2 < 5) return null; let ma = 0, mb = 0; for (let i = 0; i < n2; i++) { ma += a[i]; mb += b[i]; } ma /= n2; mb /= n2; let sab = 0, sa = 0, sb = 0; for (let i = 0; i < n2; i++) { const x = a[i] - ma, y = b[i] - mb; sab += x * y; sa += x * x; sb += y * y; } return sa && sb ? sab / Math.sqrt(sa * sb) : null; };
+  const betaOf = (a, b) => { const n2 = Math.min(a.length, b.length); if (n2 < 5) return null; let ma = 0, mb = 0; for (let i = 0; i < n2; i++) { ma += a[i]; mb += b[i]; } ma /= n2; mb /= n2; let sab = 0, sb = 0; for (let i = 0; i < n2; i++) { sab += (a[i] - ma) * (b[i] - mb); sb += (b[i] - mb) ** 2; } return sb ? sab / sb : null; };
+  function crCalc(btc) {
+    const px = S.px && S.px.d; if (!px || !btc) return null;
+    const days = Object.keys(px).sort().filter(k => btc[k] > 0 && px[k] && px[k][3] > 0);
+    if (days.length < 40) return null;
+    const D = days.map(k => px[k][3]), B = days.map(k => btc[k]);
+    const rd = [null], rb = [null];
+    for (let i = 1; i < days.length; i++) { rd.push(Math.log(D[i] / D[i - 1])); rb.push(Math.log(B[i] / B[i - 1])); }
+    const roll = w => days.map((_, i) => i < w ? null : corrOf(rd.slice(i - w + 1, i + 1), rb.slice(i - w + 1, i + 1)));
+    const tail = w => [rd.slice(-w), rb.slice(-w)];
+    return {
+      days, D, B, c30: roll(30), c90: roll(90),
+      all: corrOf(rd.slice(1), rb.slice(1)), r30: corrOf(...tail(30)), r90: corrOf(...tail(90)),
+      b90: betaOf(...tail(90)), ball: betaOf(rd.slice(1), rb.slice(1)),
+      sats: D.map((v, i) => v / B[i] * 1e8)
+    };
+  }
+  const corrWord = c => c == null ? '—' : Math.abs(c) < 0.2 ? T('почти не связаны', 'barely linked') : Math.abs(c) < 0.4 ? T('слабая связь', 'weak link') : Math.abs(c) < 0.7 ? T('заметная связь', 'clear link') : T('сильная связь', 'strong link');
+  function crDraw() {
+    const el = $('#crchart'), st = $('#crstats'), rd = $('#crread'); if (!el || !st) return;
+    if (!S.px || !S.px.d) { el.innerHTML = chWait(); return; }
+    if (!CR.btc) {
+      if (CR.fail && Date.now() - CR.fail < 120e3) { chKill('cr'); st.innerHTML = ''; if (rd) rd.innerHTML = ''; el.innerHTML = chWait(T('Не удалось загрузить историю биткоина (Coinbase). Попробуйте позже.', 'Couldn’t load bitcoin history (Coinbase). Try again later.')); return; }
+      el.innerHTML = chWait(); crBtc().then(() => { if (S.tab === 'charts') crDraw(); }); return;
+    }
+    const R = crCalc(CR.btc.d);
+    if (!R) { el.innerHTML = chWait(T('Не удалось загрузить историю биткоина (Coinbase). Попробуйте позже.', 'Couldn’t load bitcoin history (Coinbase). Try again later.')); return; }
+    const L = R.days.length - 1, d0 = R.days[0];
+    const sat0 = R.sats[0], sat1 = R.sats[L];
+    const tile = (l, v, sub, cl) => `<div><span class="l">${esc(l)}</span><b class="${cl || ''}">${v}</b><span class="s">${esc(sub)}</span></div>`;
+    st.innerHTML = `<div class="crt">${[
+      tile(T('Связь за 90 дней', 'Link, last 90 days'), R.r90 == null ? '—' : n(R.r90, 2), corrWord(R.r90)),
+      tile(T('Связь с запуска', 'Link since launch'), R.all == null ? '—' : n(R.all, 2), corrWord(R.all)),
+      tile(T('Бета за 90 дней', 'Beta, 90 days'), R.b90 == null ? '—' : n(R.b90, 1), R.b90 == null ? '' : T(`BTC ±1% → DOG ±${n(Math.abs(R.b90), 1)}%`, `BTC ±1% → DOG ±${n(Math.abs(R.b90), 1)}%`)),
+      tile(T('1 DOG в сатоши', '1 DOG in sats'), n(sat1, sat1 >= 10 ? 1 : 2), T(`на старте ${n(sat0, sat0 >= 10 ? 1 : 2)} · ${sg((sat1 / sat0 - 1) * 100, 0)}%`, `at launch ${n(sat0, sat0 >= 10 ? 1 : 2)} · ${sg((sat1 / sat0 - 1) * 100, 0)}%`), sat1 >= sat0 ? 'up' : 'down')
+    ].join('')}</div>`;
+    const dogX = R.D[L] / R.D[0], btcX = R.B[L] / R.B[0];
+    rd.innerHTML = `<ul class="tv-ul">
+      <li><i class="dot" style="background:var(--accent)"></i><span>${T(`С ${esc(dml(dOf(d0)))} ${R.days[0].slice(0, 4)} DOG ${dogX >= 1 ? 'вырос в ' + n(dogX, 1) + ' раза' : 'подешевел на ' + n((1 - dogX) * 100, 0) + '%'}, биткоин ${btcX >= 1 ? 'вырос в ' + n(btcX, 1) + ' раза' : 'подешевел на ' + n((1 - btcX) * 100, 0) + '%'}.`, `Since ${esc(dml(dOf(d0)))} ${R.days[0].slice(0, 4)}, DOG is ${dogX >= 1 ? 'up ' + n(dogX, 1) + '×' : 'down ' + n((1 - dogX) * 100, 0) + '%'}, bitcoin is ${btcX >= 1 ? 'up ' + n(btcX, 1) + '×' : 'down ' + n((1 - btcX) * 100, 0) + '%'}.`)}</span></li>
+      <li><i class="dot" style="background:var(--k1)"></i><span>${T('Связь (корреляция) — от −1 до 1 по дневным изменениям цены: 1 — DOG и биткоин всегда двигаются вместе, 0 — никак не связаны, −1 — в разные стороны.', 'The link (correlation) runs from −1 to 1 on daily price changes: 1 — DOG and bitcoin always move together, 0 — unrelated, −1 — opposite ways.')}</span></li>
+      ${R.b90 != null ? `<li><i class="dot" style="background:var(--k2)"></i><span>${T(`Бета ${n(R.b90, 1)}: когда биткоин за день меняется на 1%, DOG в среднем меняется на ${n(Math.abs(R.b90), 1)}% в ту же сторону — ${Math.abs(R.b90) > 1 ? 'качается сильнее биткоина' : 'спокойнее биткоина'}.`, `Beta ${n(R.b90, 1)}: when bitcoin moves 1% in a day, DOG moves ${n(Math.abs(R.b90), 1)}% the same way on average — ${Math.abs(R.b90) > 1 ? 'swinging harder than bitcoin' : 'calmer than bitcoin'}.`)}</span></li>` : ''}
+    </ul><p class="note">${T('DOG — цена закрытия дня (Gate до июня 2025, потом Kraken), биткоин — Coinbase. Графики сверху вниз: рост с запуска (100 = день запуска, логарифмическая шкала), связь за 30 и 90 дней, сколько сатоши стоит 1 DOG.', 'DOG is the daily close (Gate until June 2025, then Kraken), bitcoin from Coinbase. Top to bottom: growth since launch (100 = launch day, log scale), the 30- and 90-day link, and how many sats 1 DOG costs.')}</p>`;
+    if (!lwOk()) { chKill('cr'); el.innerHTML = chWait(lwState === 'failed' ? lwFailTxt() : ''); return; }
+    chKill('cr'); el.innerHTML = '';
+    const C = chColors(), Tm = k => Date.parse(k + 'T00:00:00Z') / 1000, narrow = el.clientWidth < 560;
+    const H0 = narrow ? 200 : 260, H1 = narrow ? 100 : 120, H2 = narrow ? 100 : 120;
+    el.style.height = (H0 + H1 + H2 + 2 + 28) + 'px';
+    const chart = lwChart(el, { timeScale: { borderColor: C.line, rightOffset: 2, timeVisible: false, tickMarkFormatter: tickFmt }, localization: { locale: LOC, timeFormatter: t => fuDM(t) + ' ' + FU_Y.format(ut(t)) } });
+    const idx = { type: 'custom', formatter: v => n(v, v >= 100 ? 0 : 1), minMove: 0.1 };
+    const sd = lwSer(chart, 'Line', { color: C.acc, lineWidth: 2, title: 'DOG', priceLineVisible: false, priceFormat: idx }, 0);
+    sd.setData(R.days.map((k, i) => ({ time: Tm(k), value: R.D[i] / R.D[0] * 100 })));
+    const sb = lwSer(chart, 'Line', { color: C.k1, lineWidth: 2, title: 'BTC', priceLineVisible: false, priceFormat: idx }, 0);
+    sb.setData(R.days.map((k, i) => ({ time: Tm(k), value: R.B[i] / R.B[0] * 100 })));
+    const cf = { type: 'custom', formatter: v => n(v, 2), minMove: 0.01 }, rng = () => ({ priceRange: { minValue: -1, maxValue: 1 } });
+    const c90 = lwSer(chart, 'Line', { color: C.k1, lineWidth: 2, title: T('90 дн', '90d'), priceLineVisible: false, priceFormat: cf, autoscaleInfoProvider: rng }, 1);
+    c90.setData(R.days.map((k, i) => R.c90[i] == null ? { time: Tm(k) } : { time: Tm(k), value: R.c90[i] }));
+    const c30 = lwSer(chart, 'Line', { color: hexA(C.acc, 0.75), lineWidth: 1, title: T('30 дн', '30d'), priceLineVisible: false, priceFormat: cf, autoscaleInfoProvider: rng }, 1);
+    c30.setData(R.days.map((k, i) => R.c30[i] == null ? { time: Tm(k) } : { time: Tm(k), value: R.c30[i] }));
+    c90.createPriceLine({ price: 0, color: C.ink3, lineWidth: 1, lineStyle: 2, axisLabelVisible: false, title: '' });
+    const ss = lwSer(chart, 'Area', { lineColor: C.k5, topColor: hexA(C.k5, 0.22), bottomColor: hexA(C.k5, 0.02), lineWidth: 2, title: 'sats', priceLineVisible: false, priceFormat: { type: 'custom', formatter: v => n(v, v >= 10 ? 1 : 2), minMove: 0.01 } }, 2);
+    ss.setData(R.days.map((k, i) => ({ time: Tm(k), value: R.sats[i] })));
+    lwPanes(chart, [H0, H1, H2]);
+    // логарифмические шкалы — у роста и у сатоши; у связи обычная (опции правой шкалы у библиотеки общие, поэтому каждой панели явно)
+    try { chart.priceScale('right', 0).applyOptions({ mode: 1 }); chart.priceScale('right', 2).applyOptions({ mode: 1 }); chart.priceScale('right', 1).applyOptions({ mode: 0 }); } catch (e) { }
+    try { chart.timeScale().fitContent(); } catch (e) { }
+    CH.cr = { chart };
+  }
+
+  // ---------- вкладка «Графики» ----------
+  function renderCharts(soft) {
+    const el = $('#p-charts'); if (!el) return;
+    const s = V();
+    if (!s) { el.innerHTML = `<div class="empty">${T('Данных пока нет.', 'No data yet.')}</div>`; return; }
+    if (!$('#chroot', el)) {
+      el.innerHTML = `<div id="chroot" class="chroot">
+        <div class="sec">
+          <div class="sec-head"><h2>${T('Цена DOG', 'DOG price')}</h2><span class="seg" role="group" aria-label="${T('Свечи', 'Candles')}" id="ch-tf"></span></div>
+          <div class="chips" id="ch-ind" role="group" aria-label="${T('Индикаторы', 'Indicators')}"></div>
+          <div class="group tvbox"><div class="tv-leg" id="tvleg"></div><div class="tvchart" id="tvchart"></div></div>
+          <div class="group tv-read" id="tvread"></div>
+        </div>
+        <div class="sec">
+          <div class="sec-head">${hInfo('h2', T('Дельта: кто давит по рынку', 'Delta: who pushes at market'), 'delta')}<span class="seg" role="group" id="dl-win"></span></div>
+          <div class="group dlbox"><div id="dlsum"></div><div class="tvchart" id="dlchart"></div><p class="note">${T('Сверху вниз: цена, дельта за каждый отрезок (зелёный — покупали по рынку больше, красный — продавали) и накопленная дельта (CVD). Сделки Kraken и Gate.', 'Top to bottom: price, delta per bar (green — more bought at market, red — more sold) and cumulative delta (CVD). Kraken and Gate trades.')}</p></div>
+        </div>
+        <div class="sec">
+          <div class="sec-head"><h2>${T('DOG и биткоин', 'DOG and bitcoin')}</h2><p>${T('с запуска DOG, апрель 2024', 'since DOG’s launch, April 2024')}</p></div>
+          <div class="group crbox"><div id="crstats"></div><div class="tvchart" id="crchart"></div><div id="crread"></div></div>
+        </div>
       </div>`;
-    const big = (fl.big || []).slice().sort((x, y) => (y.ts || 0) - (x.ts || 0));
-    S._tx = big;
-    if (big.length) {
-      let last = null, rows = '';
-      big.forEach((b, i) => {
-        const d = toDate(b.ts) || null, key = d ? d.toDateString() : '';
-        if (key !== last) { rows += `<div class="day">${d ? esc(sameDay(d, new Date()) ? T('Сегодня', 'Today') : (sameDay(d, new Date(Date.now() - 864e5)) ? T('Вчера', 'Yesterday') : F_D.format(d))) : ''}</div>`; last = key; }
-        const io = b.typ === 'на биржу' ? 'in' : (b.typ === 'с биржи' ? 'out' : '');
-        rows += `<button type="button" class="row" data-tx="${i}"><span class="av ${io}">${ico(io === 'in' ? 'down' : (io === 'out' ? 'up' : 'swap'))}</span><span class="t"><b>${esc(whoTxt(b.fn, b.fk, b.fr))} → ${esc(whoTxt(b.tn, b.tk, b.tr))}</b><span>${esc(tl(b.ts))}, ${esc(typTr(b.typ))}</span></span><span class="v"><b>${mdog(b.q)}</b><span class="faint">${esc(usdM(b.q, mid))}</span></span></button>`;
-      });
-      html += `<div class="sec"><div class="sec-head"><h2>${T('Каждый перевод', 'Every transfer')}</h2><p>${T('биржи — по названию, кошельки — с местом в топ-100', 'exchanges by name, wallets by top-100 rank')}</p></div><div class="group flush rows">${rows}</div></div>`;
-    } else html += `<div class="empty">${T('Переводов от 5 млн DOG за сутки не было.', 'No transfers of 5M+ DOG in the last 24h.')}</div>`;
-    if ((fl.byEx || []).length) {
-      html += `<div class="sec"><div class="sec-head"><h2>${T('По биржам', 'By exchange')}</h2></div><div class="group scroll" style="padding:4px 6px"><table><thead><tr><th>${T('Биржа', 'Exchange')}</th><th class="r">${T('Завели', 'In')}</th><th class="r">${T('Вывели', 'Out')}</th><th class="r">${T('Итог', 'Net')}</th></tr></thead><tbody>
-        ${fl.byEx.map(g => { const d = (g.in || 0) - (g.out || 0); return `<tr><td>${esc(g.n)}</td><td class="r">${n(g.in, 1)}</td><td class="r">${n(g.out, 1)}</td><td class="r ${d > 0 ? 'down' : (d < 0 ? 'up' : 'faint')}">${sg(d, 1)}</td></tr>`; }).join('')}
-        </tbody></table></div><p class="note">${T('В миллионах DOG. «Итог» больше нуля — на биржу завели больше, чем вывели.', 'In millions of DOG. A positive net means more went in than came out.')}</p></div>`;
     }
-    const mv = s.movers || {}, pl = prevLabel(s);
-    const item = (x, kind) => `<button type="button" class="row" data-wal="${esc(x.a)}">${avatar(x.n, x.k)}<span class="t"><b>${esc(ownName(x.n, x.k))}${x.r || x.r0 ? ' ' + NO + (x.r || x.r0) : ''}</b><span class="addr">${esc(short(x.a))}</span></span><span class="v"><b class="${kind === 'out' ? 'faint' : dcls(x.d, x.k)}">${x.d != null ? sg(x.d, 1) + MLN : (x.b != null ? mdog(x.b) : (x.b0 != null ? T('было ', 'was ') + mdog(x.b0) : ''))}</b></span></button>`;
-    if (s.prevId) {
-      const groups = [['up', T('Набрали', 'Added')], ['down', T('Сбросили', 'Sent out')], ['new', T('Новые в топ-100', 'New in the top 100')], ['out', T('Вышли из топ-100', 'Left the top 100')]].filter(([k]) => (mv[k] || []).length);
-      html += `<div class="sec"><div class="sec-head"><h2>${T('Балансы изменились на 5 млн и больше', 'Balances that changed by 5M+')}</h2><p>${pl ? T('с ', 'since ') + esc(pl) : ''}</p></div>
-        ${groups.length ? `<div class="group flush rows">${groups.map(([k, t]) => `<div class="day">${t}</div>` + mv[k].map(x => item(x, k)).join('')).join('')}</div>` : `<div class="empty">${topStale(s) ? esc(staleTxt(topStale(s))) + '.' : T(`С ${esc(pl || 'прошлой сводки')} ни один кошелёк топ-100 не изменился на 5 млн DOG и больше.`, `Since ${esc(pl || 'the last report')}, no top-100 wallet changed by 5M DOG or more.`)}</div>`}</div>`;
-    }
-    el.innerHTML = html;
+    $('#ch-tf').innerHTML = Object.entries(CH_TF).map(([k, v]) => segB('chtf', k, v[1], CH.tf === k)).join('');
+    const IND = [['ma', T('Средние', 'Averages')], ['bb', T('Боллинджер', 'Bollinger')], ['rsi', 'RSI'], ['macd', 'MACD']];
+    $('#ch-ind').innerHTML = IND.map(([k, t]) => `<button type="button" class="chip" data-chind="${k}" aria-pressed="${String(!!CH.ind[k])}">${esc(t)}</button>`).join('');
+    $('#dl-win').innerHTML = segB('dlwin', '24h', T('24 ч', '24h'), DL.win === '24h') + segB('dlwin', '3d', T('3 дня', '3 days'), DL.win === '3d');
+    if (S.tab === 'charts' && !(soft && CH.tv)) chDrawAll();
   }
-  $('#p-flows').addEventListener('click', e => {
-    const t = e.target.closest('[data-tx]');
-    if (t) { const b = (S._tx || [])[+t.dataset.tx]; if (b) txSheet(b); return; }
-    const w = e.target.closest('[data-wal]');
-    if (w) walletSheet(w.dataset.wal);
+  function chDrawAll() {
+    if (!$('#chroot')) { renderCharts(); return; }
+    chDrawTV(); dlDraw(); crDraw();
+    chLoop();
+  }
+  // пока открыта вкладка — свечи обновляются раз в минуту, сделки для дельты — раз в 3 минуты
+  function chLoop() {
+    clearTimeout(CH.timer);
+    if (S.tab !== 'charts' || document.visibilityState === 'hidden') return;
+    CH.timer = setTimeout(async () => {
+      if (S.tab !== 'charts' || document.visibilityState === 'hidden') return;
+      const tf = CH.tf, old = (CH.ohlc[tf] || {}).t;
+      await chOhlc(tf);
+      if ((CH.ohlc[tf] || {}).t !== old && S.tab === 'charts') chDrawTV();
+      const dl = DL.data[DL.win];
+      if (!dl || Date.now() - dl.t > 3 * 60e3) { await dlLoad(DL.win); if (S.tab === 'charts') dlDraw(); }
+      if (!CR.btc && !CR.run && Date.now() - (CR.fail || 0) >= 120e3) { await crBtc(); if (S.tab === 'charts') crDraw(); }
+      chLoop();
+    }, 60e3);
+  }
+  document.addEventListener('visibilitychange', () => { if (S.tab === 'charts') chLoop(); });
+  $('#p-charts').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    const d = b.dataset;
+    if (d.chtf) { CH.tf = d.chtf; store.set('chTf', CH.tf); $$('#ch-tf button').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.chtf === CH.tf))); chDrawTV(); return; }
+    if (d.chind) { CH.ind[d.chind] = !CH.ind[d.chind]; store.set('chInd', CH.ind); b.setAttribute('aria-pressed', String(!!CH.ind[d.chind])); chDrawTV(); return; }
+    if (d.dlwin) { DL.win = d.dlwin; store.set('dlWin', DL.win); $$('#dl-win button').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.dlwin === DL.win))); dlDraw(); return; }
   });
 
   // ---------- КОШЕЛЬКИ ----------
@@ -3584,7 +3908,7 @@ html{overscroll-behavior-y:contain}
     const e = x || Object.assign({ a }, (s.entities || {})[a] || {});
     const mv = Object.values(s.movers || {}).flat().find(y => y.a === a);
     const nm = e.n, k = e.k || 'unknown';
-    const pl = prevLabel(s);
+    const pl = topSince(s);
     const ntx = noteTr(e.nt || e.note, e.nt_en || e.note_en);
     openSheet(ownName(nm, k), `<div class="row static" style="padding:0">${avatar(nm, k)}<span class="t"><b>${esc(ownName(nm, k))}</b><span>${x ? T('место №' + x.r + ' в топ-100', 'rank #' + x.r + ' in the top 100') : T('вне топ-100', 'outside the top 100')}</span></span><span>${kindTag(k)}</span></div>
       <dl class="kv">${x ? `<dt>${T('Баланс', 'Balance')}</dt><dd>${mdog(x.b, 2)} DOG</dd><dt>${T('Доля всех DOG', 'Share of all DOG')}</dt><dd>${n(x.b * 1e6 / SUPPLY * 100, 3)}%</dd><dt>${T('В долларах', 'In dollars')}</dt><dd>${esc(usdM(x.b, (s.price || {}).mid) || '—')}</dd>${x.d != null ? `<dt>${T('Изменение', 'Change')}${pl ? T(' с ', ' since ') + esc(pl) : ''}</dt><dd class="${dcls(x.d, x.k)}">${sg(x.d, 2)}${MLN}</dd>` : ''}${x.u ? `<dt>${T('Частей монет (UTXO)', 'Coin pieces (UTXOs)')}</dt><dd>${n(x.u)}</dd>` : ''}` : (mv && mv.b0 != null ? `<dt>${T('Был баланс', 'Previous balance')}</dt><dd>${mdog(mv.b0, 2)} DOG</dd>` : '')}</dl>
@@ -3669,14 +3993,14 @@ html{overscroll-behavior-y:contain}
 
   // ---------- кошельки: сводка за сутки ----------
   function walletsSummaryHtml(s) {
-    const mv = s.movers || {}, ex = s.exch || {}, pl = prevLabel(s);
+    const mv = s.movers || {}, ex = s.exch || {}, pl = topSince(s);
     if (!s.prevId) return '';
     const notEx = x => !isEx(x.k);
     const up = (mv.up || []).filter(notEx), dn = (mv.down || []).filter(notEx), nw = mv.new || [], out = mv.out || [];
     const sum = a => a.reduce((t, x) => t + (x.d || 0), 0);
     const ev = (icon, c, html, small) => `<div class="ev"><span class="ei ${c}">${ico(icon)}</span><span>${html}${small ? `<small>${small}</small>` : ''}</span></div>`;
     const items = [], stl = topStale(s);
-    if (stl) items.push(ev('alert', 'o', esc(staleTxt(stl)), T('Переводы от 5 млн DOG за сутки DOG DATA показывает — они в разделе «Переводы».', 'DOG DATA does show transfers of 5M+ DOG over 24h — see Transfers.')));
+    if (stl) items.push(ev('alert', 'o', esc(staleTxt(stl))));
     if (ex.d != null && !(stl && Math.abs(ex.d) < 0.05)) {
       const d = ex.d;
       items.push(Math.abs(d) < 0.05
@@ -3741,7 +4065,7 @@ html{overscroll-behavior-y:contain}
       const nt = noteTr(x.nt, x.nt_en);
       return `<button type="button" class="row wrow" data-wal="${esc(x.a)}">${avatar(x.n, x.k)}<span class="t"><b>${esc(['private', 'unknown'].includes(x.k) || !KIND_NAME[x.k] ? T('Холдер', 'Holder') : ownName(x.n, x.k))} <span class="faint" style="font-weight:500">${NO}${x.r}</span>${x.new ? ` <span class="tag hot">${T('новый', 'new')}</span>` : ''}</b><span class="sub">${nt ? esc(nt) : `<span class="addr">${esc(short(x.a))}</span>`}</span>${costLine(x.a, x.k)}</span>${sparkW(x.a, x.k)}<span class="v"><b>${mdog(x.b)}</b><span class="faint">${esc(usdM(x.b, mid))}</span>${hasD ? `<span class="dchip ${dcls(x.d, x.k)}">${sg(x.d, 1)}${MLN}</span>` : ''}</span></button>`;
     };
-    html += `<div class="sec"><div class="sec-head">${hInfo('h2', T('Топ-100 кошельков', 'Top 100 wallets'), 'wallets')}<p>${T(`держат ${n(s.top100pct, 2)}% всех DOG, холдеров всего ${n(s.holders)}`, `hold ${n(s.top100pct, 2)}% of all DOG; ${n(s.holders)} holders in total`)}${days > 1 ? T(` · линия — баланс за ${days} ${plural(days, 'день', 'дня', 'дней')}`, ` · the line shows the balance over ${days} days`) : ''}${S.cb ? T(' · ср. цена покупок — без аирдропа', ' · avg buy excludes the airdrop') : ''}${topStale(s) ? ` · <span class="tag warn">${T('DOG DATA на ', 'DOG DATA as of ')}${esc(dtl(topStale(s)))}</span>` : ''}</p></div>
+    html += `<div class="sec"><div class="sec-head">${hInfo('h2', T('Топ-100 кошельков', 'Top 100 wallets'), 'wallets')}<p>${T(`держат ${n(s.top100pct, 2)}% всех DOG, холдеров всего ${n(s.holders)}`, `hold ${n(s.top100pct, 2)}% of all DOG; ${n(s.holders)} holders in total`)}${days > 1 ? T(` · линия — баланс за ${days} ${plural(days, 'день', 'дня', 'дней')}`, ` · the line shows the balance over ${days} days`) : ''}${S.cb ? T(' · ср. цена покупок — без аирдропа', ' · avg buy excludes the airdrop') : ''}${topStale(s) ? ` · <span class="tag warn">${T('балансы на ', 'balances as of ')}${esc(dtl(topStale(s)))}</span>` : (s.top100Src === 'ordinals' && (s.srcTs || {}).top100 ? T(` · балансы на ${esc(dtl(s.srcTs.top100))} — из блокчейна`, ` · balances as of ${esc(dtl(s.srcTs.top100))}, straight from the blockchain`) : '')}</p></div>
       <div class="chips" role="group" aria-label="${T('Фильтр', 'Filter')}">${fbtn('all', T('Все', 'All'), 100)}${fbtn('moved', T('Изменились', 'Changed'), nMoved)}${fbtn('svc', T('Биржи и сервисы', 'Exchanges & services'), nSvc)}${fbtn('private', T('Холдеры', 'Holders'), 100 - nSvc)}</div>
       <label class="search">${ico('search')}<input id="wsearch" type="search" placeholder="${T('Адрес, место или метка', 'Address, rank or label')}" value="${esc(S.q)}" aria-label="${T('Поиск по адресу, месту или метке', 'Search by address, rank or label')}"></label>
       <div class="group flush rows" id="wlist">${rows.length ? rows.map(wrow).join('') : `<p class="note" style="padding:12px 16px">${T('Ничего не найдено.', 'Nothing found.')}</p>`}</div>
@@ -3851,22 +4175,23 @@ html{overscroll-behavior-y:contain}
       <div><h3>Home</h3><p>The DOG price in US dollars and a chart of trades on Kraken. Below the price you’ll see what <b>1 million DOG</b> costs — that’s easier to read than six zeros after the decimal point. The 1D, 1W, 1M, 3M, 1Y and All buttons change the period; “All” shows the whole history since trading began in April 2024. The candle button shows candlesticks and trading volume. The moon gets fuller when the price rises over 24 hours and thinner when it falls.</p>
         <p style="margin-top:8px">Below are four tiles: who is stronger near the price (buyers or sellers), how much DOG sits on exchanges, what share of coins is in profit, and how many coins haven’t moved for over a year. Tap a tile for a plain-language explanation.</p></div>
       <div><h3>Order book</h3><p>An order book is a list of orders on an exchange: who is ready to buy or sell DOG and at what price. The Order book section works like an exchange: real prices, asks on top, bids below.</p>
-        <ul><li><b>Price step</b> (the 0.00001 ▾ button) — like “Order Book Depth” on an exchange: orders are grouped into 0.0000001 / 0.000001 / 0.00001 / 0.0001 steps.</li><li><b>View</b>: column, two sides (bids left, asks right) or a table by exchange; amounts in DOG or dollars.</li><li><b>Exchange</b>: all combined or any one. While the section is open, Kraken, Gate, DigiFinex and CoinW refresh every 10 seconds.</li><li><b>Tap a row</b> for details: which exchanges, exact prices, and how much would need to be bought or sold for the price to reach that level.</li><li><b>Wall</b> (orange mark) — a single order of 5M+ DOG. Walls often hold the price, but can be pulled at any moment.</li><li><b>Metrics</b>: spread, buy/sell imbalance within ±1/2/5/10%, liquidity, nearest walls, a “buy or sell right now” calculator and a feed of large orders appearing or disappearing while the site is open.</li><li><b>Trades</b> — the latest Kraken and Gate trades and who bought or sold at market more often over the hour.</li><li><b>Price indicators</b>: RSI, MACD, Bollinger Bands, moving averages, range and volume from Kraken candles (1 hour, 4 hours, 1 day). They describe past price moves and promise nothing.</li></ul></div>
+        <ul><li><b>Price step</b> (the 0.00001 ▾ button) — like “Order Book Depth” on an exchange: orders are grouped into 0.0000001 / 0.000001 / 0.00001 / 0.0001 steps.</li><li><b>View</b>: column, two sides (bids left, asks right) or a table by exchange; amounts in DOG or dollars.</li><li><b>Exchange</b>: all combined or any one. While the section is open, Kraken, Gate, DigiFinex and CoinW refresh every 10 seconds, and MEXC and BingX stream their changes live.</li><li><b>Tap a row</b> for details: which exchanges, exact prices, and how much would need to be bought or sold for the price to reach that level.</li><li><b>Wall</b> (orange mark) — a single order of 5M+ DOG. Walls often hold the price, but can be pulled at any moment.</li><li><b>Who’s stronger near the price</b>: dollars in buy and sell orders within 1, 2, 5 and 10% of the price, the nearest big orders and the gap between the best prices — plus a feed of large orders appearing or disappearing while the site is open.</li><li><b>Trades</b> — the latest trades on Kraken, Gate, MEXC and BingX, and who bought or sold at market more often over the hour.</li></ul></div>
       <div><h3>Companies holding DOG</h3><p>Public companies that keep DOG in their treasury. Right now that’s C2 Blockchain (USA), which regularly reports its purchases. The steps on the chart are its holdings in each report, the dashed line is its 1.5B DOG goal. The company’s coins are held at Kraken, so it has no separate wallet in the top 100.</p></div>
-      <div><h3>Transfers</h3><p>Every transfer of 5M DOG or more in the last 24 hours: from where, to where and how much. “To an exchange” means DOG was moved onto an exchange (often done before selling); “from an exchange” means it was withdrawn to a personal wallet. Tap a transfer to see the addresses and the transaction itself.</p></div>
+      <div><h3>Charts</h3><p>Three charts that work like on an exchange (TradingView): drag to scroll, pinch to zoom, press and hold to see the values.</p><ul><li><b>DOG price</b> — Kraken candles for 15 minutes, 1 hour, 4 hours or 1 day, with volume. Below the candles run the RSI and MACD curves; moving averages and Bollinger Bands can be switched on. Under the chart, a plain-language reading of what the indicators show.</li><li><b>Delta</b> — who pushes at market: DOG bought at market minus DOG sold at market on Kraken and Gate over 24 hours or 3 days, bar by bar and added up (CVD), next to the price.</li><li><b>DOG and bitcoin</b> — since DOG’s launch in April 2024: how both have grown (log scale), how closely their daily moves are linked (correlation over 30 and 90 days), beta, and how many satoshis 1 DOG costs.</li></ul><p>Indicators describe past moves and don’t predict the future.</p></div>
       <div><h3>Wallets</h3><p>At the top: what changed since the last report and who owns DOG overall. Then the hundred largest DOG wallets. Blue labels are exchanges, pink are services, grey are private holders. The small line next to each wallet is its balance day by day; the dollar value is shown under the balance.</p>
-        <p style="margin-top:8px"><b>Avg buy</b> under a wallet’s description is the average price (per DOG) at which the wallet bought or was topped up after the airdrop: each deposit is valued at that day’s exchange price. Airdropped coins were free, so they’re left out of the average and their share is shown separately (“airdrop 40%”). The percentage shows how today’s price compares. Tap a wallet to see its balance, change, a larger chart, the average-cost details and an address you can copy. Exchange wallets have no average cost — they hold many customers’ coins.</p></div>
+        <p style="margin-top:8px"><b>Avg buy</b> under a wallet’s description is the average price (per DOG) at which the wallet bought or was topped up after the airdrop: each deposit is valued at that day’s exchange price. Airdropped coins were free, so they’re left out of the average and their share is shown separately (“airdrop 40%”). The percentage shows how today’s price compares. Tap a wallet to see its balance, change, a larger chart, the average-cost details and an address you can copy. Exchange wallets have no average cost — they hold many customers’ coins.</p>
+        <p style="margin-top:8px"><b>Fresh balances.</b> Every morning the balances of the top 100 are read straight from the Bitcoin blockchain (the rune index on ordinals.com), so the list stays current even when DOG DATA’s list lags behind. The holder count and labels come from DOG DATA.</p></div>
       <div><h3>How DOG is held</h3><ul><li><b>Average purchase price</b> — the average price at which coins last changed hands. If today’s price is lower, most holders bought higher.</li><li><b>In profit vs. at a loss</b> — what share of coins is now worth more or less than the price of its last transfer.</li><li><b>Held over a year</b> — the more coins that haven’t moved in over a year, the less holders are selling.</li></ul></div>
       <div><h3>News</h3><p>Every morning the update looks for posts on X (Leonidas, the official DOG accounts, DOG DATA), listings, delistings, research and company reports on DOG purchases. Each item links to its source.</p></div>
-      <div><h3>When it updates</h3><p>Every morning a full report with news is built on a server. On top of it, the page pulls fresh data itself — when you open it, every 2 minutes while it stays open, and whenever you tap <b>Update</b> (or pull the page down on a phone): order books from Kraken, Gate, DigiFinex and CoinW, the price chart, the top 100 wallets and exchange balances, the holder count, transfers of 5M+ DOG and the bitcoin price — and then checks itself: are the sources fresh, do exchange prices agree, is every book sane. MEXC and BingX don’t answer requests from web pages, so their order books stay from the morning report and are marked as such. The status at the top shows the time of the data; tap it to see what changed since the morning report and the full list of checks. The price itself updates live from Kraken.</p></div>
+      <div><h3>When it updates</h3><p>Every morning a full report with news is built on a server; wallet balances are taken straight from the blockchain. On top of it, the page pulls fresh data itself — when you open it, every 2 minutes while it stays open, and whenever you tap <b>Update</b> (or pull the page down on a phone): order books from Kraken, Gate, DigiFinex and CoinW, the price chart, the holder count and the bitcoin price (and the top 100, if DOG DATA has a newer list than the morning report) — and then checks itself: are the sources fresh, do exchange prices agree, is every book sane. MEXC and BingX order books arrive live over a separate connection while the Order book tab is open. The status at the top shows the time of the data; tap it to see what changed since the morning report and the full list of checks. The price itself updates live from Kraken.</p></div>
       <div><h3>Use it like an app</h3><p>In the ⋯ menu (Settings on a computer) choose <b>Install as an app</b> or, on an iPhone, <b>Add to Home Screen</b>. DOG Monitor then opens full-screen from its own icon, refreshes itself and shows the last saved data when there’s no connection. The same menu has the language and the appearance: automatic, light or dark. On a computer, press <b>R</b> to update.</p></div>
       <h2 id="sources">Sources and method</h2>
       <div class="foot-src">
-        <p><b>Sources.</b> Holders, the top 100, transfers of 5M+ DOG, trading venues, coin age, average purchase price, the airdrop and DOG on other chains come from DOG DATA (dogdata.xyz, which indexes the Bitcoin blockchain). Order books come from the public APIs of Kraken (DOG/USD), Gate, MEXC, BingX, DigiFinex, CoinW and Bitget (DOG/USDT). The price chart uses Kraken candles. C2 Blockchain holdings come from the company’s press releases. Price aggregator websites are not used.</p>
-        <p><b>Method.</b> The price is the median of the mid-prices of the Kraken, Gate, MEXC and BingX order books (on a live update — of Kraken and Gate). Market cap = price × 100B DOG. The combined order book adds up all exchanges at the chosen step (0.0000001–0.0001); Gate shares its nearest 100 levels exactly and deeper ones in 0.00001 steps; MEXC and BingX come from the morning report and aren’t part of the live combined book; an exchange whose price differs from the others by more than 3% is left out. A wall is a level of 5M DOG or more. Indicators use Kraken candles: RSI 14 (Wilder), MACD 12/26/9, Bollinger Bands 20/2, simple moving averages, ATR 14.</p>
+        <p><b>Sources.</b> The holder count, wallet labels, trading venues, coin age, average purchase price, the airdrop and DOG on other chains come from DOG DATA (dogdata.xyz, which indexes the Bitcoin blockchain). Top-100 balances are read every morning from the rune index on ordinals.com (the official ord explorer). Order books and trades come from the public APIs of Kraken (DOG/USD), Gate, MEXC, BingX, DigiFinex, CoinW and Bitget (DOG/USDT). Charts use Kraken candles and Kraken and Gate trades; bitcoin’s history comes from Coinbase; DOG’s full history uses Gate until June 2025 and Kraken after. C2 Blockchain holdings come from the company’s press releases. Price aggregator websites are not used.</p>
+        <p><b>Method.</b> The price is the median of the mid-prices of the Kraken, Gate, MEXC and BingX order books (on a live update — of Kraken and Gate). Market cap = price × 100B DOG. The combined order book adds up all exchanges at the chosen step (0.0000001–0.0001); Gate shares its nearest 100 levels exactly and deeper ones in 0.00001 steps; MEXC (nearest 20 levels) and BingX (100 levels) stream live — if that connection fails, they show the morning report and stay out of the live combined book; an exchange whose price differs from the others by more than 3% is left out. A wall is a level of 5M DOG or more. Indicators use Kraken candles: RSI 14 (Wilder), MACD 12/26/9 as a percentage of the price, Bollinger Bands 20/2, simple moving averages 20/50/200. Delta = DOG bought at market minus DOG sold at market (Kraken and Gate trades). The link to bitcoin is the Pearson correlation of daily log returns; beta is how much DOG moves on average per 1% move in bitcoin (90 days).</p>
         <p><b>Wallet owners.</b> Exchanges and services are labelled using DOG DATA tags, exchange disclosures and flow analysis. A label is an estimate, not a confirmed owner.</p>
         <p><b>Chart</b> built with <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener">Lightweight Charts™ by TradingView</a>.</p>
-        <p><b>This site</b> is an unofficial project, not affiliated with the DOG team, any exchange or C2 Blockchain, and it is not investment advice. It uses no cookies and no analytics; view settings (tab, chart period, language) are stored only in your browser. For fresh data, your browser requests public data directly from Kraken, Gate, DigiFinex, CoinW, Coinbase and DOG DATA. The Jost and Golos Text fonts (SIL OFL) are hosted on the site itself; the chart library loads from jsDelivr.</p>
+        <p><b>This site</b> is an unofficial project, not affiliated with the DOG team, any exchange or C2 Blockchain, and it is not investment advice. It uses no cookies and no analytics; view settings (tab, chart period, language) are stored only in your browser. For fresh data, your browser requests public data directly from Kraken, Gate, DigiFinex, CoinW, MEXC and BingX, Coinbase and DOG DATA. The Jost and Golos Text fonts (SIL OFL) are hosted on the site itself; the chart library loads from jsDelivr.</p>
         <p><b>Times</b> on the page are in <span id="tzname">your local time</span>.</p>
       </div></div>`;
   function renderHelp() {
@@ -3888,22 +4213,23 @@ html{overscroll-behavior-y:contain}
       <div><h3>Главная</h3><p>Цена DOG в долларах и график по сделкам на Kraken. Под ценой — сколько стоит <b>1 млн DOG</b>: так проще, чем шесть нулей после запятой. Язык сайта меняется в меню «⋯» вверху справа или на панели слева. Кнопки 1Д, 1Н, 1М, 3М, 1Г и «Всё» меняют период: день, неделя, месяц, три месяца, год и вся история с начала торгов в апреле 2024 года. Кнопка со свечами показывает японские свечи и объём торгов. Луна полнее, когда цена за сутки растёт, и тоньше, когда падает.</p>
         <p style="margin-top:8px">Ниже четыре плитки: кто сильнее у цены — покупатели или продавцы, сколько DOG лежит на биржах, какая доля монет в прибыли и сколько монет не двигались больше года. Нажмите на плитку — откроется объяснение простыми словами.</p></div>
       <div><h3>Стакан</h3><p>Стакан — список заявок на бирже: кто по какой цене готов купить или продать DOG. На главной у каждой биржи две полоски: <b class="up">зелёная</b> — сколько хотят купить, <b class="down">красная</b> — сколько хотят продать, в пределах 10% от цены. Раздел «Стакан» устроен как на бирже: настоящие цены, продажи сверху, покупки снизу.</p>
-        <ul><li><b>Шаг цены</b> (кнопка 0,00001 ▾) — как «Order Book Depth» на бирже: заявки складываются в ступени 0,0000001 / 0,000001 / 0,00001 / 0,0001.</li><li><b>Вид</b>: столбиком, «две стороны» (покупки слева, продажи справа) и таблица по биржам; объём — в DOG или в долларах.</li><li><b>Биржа</b>: все вместе или любая одна. Пока раздел открыт, Kraken, Gate, DigiFinex и CoinW обновляются каждые 10 секунд.</li><li><b>Нажмите на строку</b> — откроются подробности: какие биржи, точные цены, сколько нужно купить или продать, чтобы цена дошла до этого уровня.</li><li><b>Стенка</b> (оранжевая метка) — одна заявка от 5 млн DOG. Такие заявки часто удерживают цену, но их могут снять в любой момент.</li><li><b>Метрики</b>: спред, перекос покупок и продаж на ±1/2/5/10%, деньги в стакане, ближайшие стенки, калькулятор «купить или продать сразу» и лента — какие крупные заявки появились или исчезли, пока открыт сайт.</li><li><b>Сделки</b> — последние сделки Kraken и Gate и кто за час чаще покупал или продавал по рынку.</li><li><b>Индикаторы цены</b>: RSI, MACD, полосы Боллинджера, скользящие средние, размах и объём по свечам Kraken за 1 час, 4 часа и 1 день. Они описывают прошлое движение цены и ничего не обещают.</li></ul></div>
+        <ul><li><b>Шаг цены</b> (кнопка 0,00001 ▾) — как «Order Book Depth» на бирже: заявки складываются в ступени 0,0000001 / 0,000001 / 0,00001 / 0,0001.</li><li><b>Вид</b>: столбиком, «две стороны» (покупки слева, продажи справа) и таблица по биржам; объём — в DOG или в долларах.</li><li><b>Биржа</b>: все вместе или любая одна. Пока раздел открыт, Kraken, Gate, DigiFinex и CoinW обновляются каждые 10 секунд, а MEXC и BingX присылают изменения онлайн.</li><li><b>Нажмите на строку</b> — откроются подробности: какие биржи, точные цены, сколько нужно купить или продать, чтобы цена дошла до этого уровня.</li><li><b>Стенка</b> (оранжевая метка) — одна заявка от 5 млн DOG. Такие заявки часто удерживают цену, но их могут снять в любой момент.</li><li><b>Кто сильнее у цены</b>: сколько долларов в заявках на покупку и на продажу в пределах 1, 2, 5 и 10% от цены, ближайшие крупные заявки и разрыв между лучшими ценами — и лента: какие крупные заявки появились или исчезли, пока открыт сайт.</li><li><b>Сделки</b> — последние сделки Kraken, Gate, MEXC и BingX и кто за час чаще покупал или продавал по рынку.</li></ul></div>
       <div><h3>Компании, которые копят DOG</h3><p>Публичные компании, которые держат DOG в казне. Сейчас это C2 Blockchain (США): компания регулярно сообщает о покупках. Ступеньки на графике — её запасы по каждому отчёту, пунктир — цель 1,5 млрд DOG. Монеты компании хранятся на Kraken, поэтому отдельного кошелька в топ-100 у неё нет.</p></div>
-      <div><h3>Переводы</h3><p>Все переводы от 5 млн DOG за сутки: откуда, куда и сколько. «На биржу» — DOG завели на биржу (так часто делают перед продажей), «с биржи» — вывели на свой кошелёк. Нажмите на перевод, чтобы увидеть адреса и саму транзакцию.</p></div>
+      <div><h3>Графики</h3><p>Три графика, устроенные как на бирже (TradingView): двигайте пальцем, сводите и разводите пальцы для масштаба, нажмите и задержите палец — появятся значения.</p><ul><li><b>Цена DOG</b> — свечи Kraken за 15 минут, 1 час, 4 часа или 1 день, с объёмом. Под свечами — кривые RSI и MACD; можно включить скользящие средние и полосы Боллинджера. Под графиком — что показывают индикаторы, простыми словами.</li><li><b>Дельта</b> — кто давит по рынку: сколько DOG купили по рынку минус сколько продали на Kraken и Gate за 24 часа или 3 дня — по отрезкам и нарастающим итогом (CVD), рядом с ценой.</li><li><b>DOG и биткоин</b> — с запуска DOG в апреле 2024: как выросли оба (логарифмическая шкала), насколько связаны их дневные движения (корреляция за 30 и 90 дней), бета и сколько сатоши стоит 1 DOG.</li></ul><p>Индикаторы описывают прошлое движение и не предсказывают будущее.</p></div>
       <div><h3>Кошельки</h3><p>Вверху — что изменилось с прошлой сводки и кто владеет DOG. Ниже — сто самых крупных кошельков. Синие метки — биржи, розовые — сервисы, серые — частные холдеры. Линия у кошелька — его баланс по дням, под балансом — сумма в долларах.</p>
-        <p style="margin-top:8px"><b>Ср. цена покупок</b> под описанием кошелька — по какой цене (за 1 DOG) в среднем кошелёк покупал и пополнялся после аирдропа: каждое поступление оценивается по цене дня на бирже. Монеты с аирдропа достались бесплатно, в среднюю цену не входят, их доля написана отдельно («аирдроп 40%»). Процент — насколько цена сейчас выше или ниже. Нажмите на кошелёк — откроются баланс, изменение, большой график, подробности о средней цене и адрес. Для кошельков бирж средней цены нет: там монеты многих клиентов.</p></div>
+        <p style="margin-top:8px"><b>Ср. цена покупок</b> под описанием кошелька — по какой цене (за 1 DOG) в среднем кошелёк покупал и пополнялся после аирдропа: каждое поступление оценивается по цене дня на бирже. Монеты с аирдропа достались бесплатно, в среднюю цену не входят, их доля написана отдельно («аирдроп 40%»). Процент — насколько цена сейчас выше или ниже. Нажмите на кошелёк — откроются баланс, изменение, большой график, подробности о средней цене и адрес. Для кошельков бирж средней цены нет: там монеты многих клиентов.</p>
+        <p style="margin-top:8px"><b>Свежие балансы.</b> Каждое утро балансы топ-100 берутся прямо из блокчейна Bitcoin (индекс рун ordinals.com), поэтому список актуален, даже когда у DOG DATA он отстаёт. Число холдеров и метки владельцев — от DOG DATA.</p></div>
       <div><h3>Как держат DOG</h3><ul><li><b>Средняя цена покупки</b> — по какой цене монеты в среднем последний раз переходили из рук в руки. Если текущая цена ниже — большинство купило дороже.</li><li><b>В прибыли и в убытке</b> — какая доля монет сейчас стоит дороже или дешевле цены последнего перевода.</li><li><b>Лежат больше года</b> — чем больше монет не двигались больше года, тем меньше холдеры продают.</li></ul></div>
       <div><h3>Новости</h3><p>Каждое утро обновление ищет посты в X (Leonidas, официальные аккаунты DOG, DOG DATA), листинги, делистинги, исследования и отчёты компаний о покупках DOG. Ссылка всегда ведёт на источник.</p></div>
-      <div><h3>Когда обновляется</h3><p>Каждое утро на сервере собирается полная сводка с новостями. Поверх неё страница сама берёт свежие данные — при открытии, каждые 2 минуты, пока она открыта, и по кнопке <b>«Обновить»</b> (на телефоне можно просто потянуть страницу вниз): стаканы Kraken, Gate, DigiFinex и CoinW, график цены, топ-100 кошельков и балансы бирж, число холдеров, переводы от 5 млн DOG и цену биткоина — и проверяет себя: свежие ли источники, сходятся ли цены бирж, нет ли битых стаканов. MEXC и BingX не отвечают на запросы со страниц сайтов, поэтому их стаканы остаются из утренней сводки, с пометкой. Время данных видно вверху: нажмите на него, чтобы увидеть, что изменилось с утренней сводки, и полный список проверок. Цена обновляется онлайн с Kraken.</p></div>
+      <div><h3>Когда обновляется</h3><p>Каждое утро на сервере собирается полная сводка с новостями; балансы кошельков берутся прямо из блокчейна. Поверх неё страница сама берёт свежие данные — при открытии, каждые 2 минуты, пока она открыта, и по кнопке <b>«Обновить»</b> (на телефоне можно просто потянуть страницу вниз): стаканы Kraken, Gate, DigiFinex и CoinW, график цены, число холдеров и цену биткоина (и топ-100, если у DOG DATA список свежее утреннего) — и проверяет себя: свежие ли источники, сходятся ли цены бирж, нет ли битых стаканов. Стаканы MEXC и BingX приходят онлайн по отдельному подключению, пока открыта вкладка «Стакан». Время данных видно вверху: нажмите на него, чтобы увидеть, что изменилось с утренней сводки, и полный список проверок. Цена обновляется онлайн с Kraken.</p></div>
       <div><h3>Как приложение</h3><p>В меню «⋯» (на компьютере — «Настройки») выберите <b>«Установить как приложение»</b>, а на iPhone — <b>«Добавить на экран „Домой“»</b>. Тогда DOG Монитор открывается на весь экран со своего значка, сам обновляется, а без сети показывает последние сохранённые данные. В том же меню — язык и оформление: автоматическое, светлое или тёмное. На компьютере обновить можно клавишей <b>R</b>.</p></div>
       <h2 id="sources">Источники и расчёт</h2>
       <div class="foot-src">
-        <p><b>Источники.</b> Холдеры, топ-100, переводы от 5 млн DOG, площадки, возраст монет, средняя цена покупки, аирдроп и DOG в других сетях — DOG DATA (dogdata.xyz, индексирует блокчейн Bitcoin). Стаканы — публичные API бирж: Kraken (DOG/USD), Gate, MEXC, BingX, DigiFinex, CoinW, Bitget (DOG/USDT). График цены — свечи Kraken. Запасы C2 Blockchain — пресс-релизы компании. Сайты-агрегаторы цен не используются.</p>
-        <p><b>Расчёт.</b> Цена — медиана середин стаканов Kraken, Gate, MEXC и BingX (при онлайн-обновлении — Kraken и Gate). Капитализация = цена × 100 млрд DOG. Сводный стакан складывает уровни всех бирж с выбранным шагом (0,0000001–0,0001); Gate отдаёт 100 ближних уровней точно, дальше — ступенями по 0,00001; MEXC и BingX — из утренней сводки и в общий онлайн-стакан не входят; биржа, чья цена отличается от остальных больше чем на 3%, в сумму не входит. Стенка — уровень от 5 млн DOG. Индикаторы — по свечам Kraken: RSI 14 (по Уайлдеру), MACD 12/26/9, полосы Боллинджера 20/2, простые скользящие средние, ATR 14.</p>
+        <p><b>Источники.</b> Число холдеров, метки кошельков, площадки, возраст монет, средняя цена покупки, аирдроп и DOG в других сетях — DOG DATA (dogdata.xyz, индексирует блокчейн Bitcoin). Балансы топ-100 — каждое утро из индекса рун ordinals.com (официальный обозреватель ord). Стаканы и сделки — публичные API бирж: Kraken (DOG/USD), Gate, MEXC, BingX, DigiFinex, CoinW, Bitget (DOG/USDT). Графики — свечи Kraken и сделки Kraken и Gate; история биткоина — Coinbase; вся история DOG — Gate до июня 2025, дальше Kraken. Запасы C2 Blockchain — пресс-релизы компании. Сайты-агрегаторы цен не используются.</p>
+        <p><b>Расчёт.</b> Цена — медиана середин стаканов Kraken, Gate, MEXC и BingX (при онлайн-обновлении — Kraken и Gate). Капитализация = цена × 100 млрд DOG. Сводный стакан складывает уровни всех бирж с выбранным шагом (0,0000001–0,0001); Gate отдаёт 100 ближних уровней точно, дальше — ступенями по 0,00001; MEXC (20 ближних уровней) и BingX (100 уровней) приходят онлайн — если подключиться не вышло, у них стакан из утренней сводки и в общий онлайн-стакан они не входят; биржа, чья цена отличается от остальных больше чем на 3%, в сумму не входит. Стенка — уровень от 5 млн DOG. Индикаторы — по свечам Kraken: RSI 14 (по Уайлдеру), MACD 12/26/9 в процентах от цены, полосы Боллинджера 20/2, простые скользящие средние 20/50/200. Дельта = купленные по рынку DOG минус проданные (сделки Kraken и Gate). Связь с биткоином — корреляция Пирсона дневных логарифмических изменений цены; бета — на сколько процентов в среднем меняется DOG, когда биткоин меняется на 1% (за 90 дней).</p>
         <p><b>Владельцы кошельков.</b> Биржи и сервисы — по меткам DOG DATA, публикациям бирж и анализу потоков. Метка — оценка, а не подтверждение владельца.</p>
         <p><b>График</b> построен с помощью <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener">Lightweight Charts™ от TradingView</a>.</p>
-        <p><b>Сайт</b> — неофициальный проект, не связан с командой DOG, биржами и C2 Blockchain; не является инвестиционной рекомендацией. Сайт не использует cookies и аналитику; настройки вида (вкладка, период графика) хранятся только в вашем браузере. Свежие данные браузер запрашивает напрямую у Kraken, Gate, DigiFinex, CoinW, Coinbase и DOG DATA. Шрифты Jost и Golos Text (лицензия SIL OFL) хранятся на самом сайте; библиотека графика загружается с jsDelivr.</p>
+        <p><b>Сайт</b> — неофициальный проект, не связан с командой DOG, биржами и C2 Blockchain; не является инвестиционной рекомендацией. Сайт не использует cookies и аналитику; настройки вида (вкладка, период графика) хранятся только в вашем браузере. Свежие данные браузер запрашивает напрямую у Kraken, Gate, DigiFinex, CoinW, MEXC и BingX, Coinbase и DOG DATA. Шрифты Jost и Golos Text (лицензия SIL OFL) хранятся на самом сайте; библиотека графика загружается с jsDelivr.</p>
         <p><b>Время</b> на странице — <span id="tzname">местное</span>.</p>
       </div></div>`;
     try {
@@ -3917,6 +4243,7 @@ html{overscroll-behavior-y:contain}
     if (S.tab === 'overview') drawPrice();
     else if (S.tab === 'books') drawDepth();
     else if (S.tab === 'history') drawHistCharts();
+    else if (S.tab === 'charts') chDrawAll();
   }
   let rzT = null, lastW = window.innerWidth;
   window.addEventListener('resize', () => { if (Math.abs(window.innerWidth - lastW) < 2) return; lastW = window.innerWidth; clearTimeout(rzT); rzT = setTimeout(drawCharts, 120); });
@@ -3943,7 +4270,6 @@ html{overscroll-behavior-y:contain}
     ['btc', () => 'https://api.exchange.coinbase.com/products/BTC-USD/ticker', 0],
     ['top', () => DD_API + 'dog-rune/top-holders?limit=100', 0],
     ['ddh', () => DD_API + 'health', 200],
-    ['whales', () => DD_API + 'whale-alerts?threshold=5000000&limit=200', 400],
     ['h1', () => 'https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=60&since=' + (Math.floor(Date.now() / 1000) - 7 * 86400), 600],
     ['d1', () => 'https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440&since=' + (Math.floor(Date.now() / 1000) - 365 * 86400), 1200]
   ];
@@ -3963,7 +4289,6 @@ html{overscroll-behavior-y:contain}
     ['digifinex', ['digifinex'], 'DigiFinex', T('стакан', 'order book')],
     ['coinw', ['coinw'], 'CoinW', T('стакан', 'order book')],
     ['top', ['top', 'ddh'], 'DOG DATA', T('топ-100 кошельков и число холдеров', 'top 100 wallets and holder count')],
-    ['whales', ['whales'], 'DOG DATA', T('переводы от 5 млн DOG за сутки', 'transfers of 5M+ DOG in 24h')],
     ['btc', ['btc'], 'Coinbase', T('цена биткоина', 'bitcoin price')]
   ];
   const pause = ms => new Promise(r => setTimeout(r, ms));
@@ -4252,10 +4577,14 @@ html{overscroll-behavior-y:contain}
     const hm = hd.match(/(\d[\d,\s]*)\s*holders/i), hu = hd.match(/updated:\s*([0-9T:.+\-Z]+)/i);
     const holders = hm ? parseInt(hm[1].replace(/\D/g, ''), 10) : null, hT = hu ? toDate(hu[1]) : null;
     const prevTop = prevTopOf(base, prev);
+    // DOG DATA иногда днями не обновляет топ-100; утренняя сводка тогда берёт свежие балансы из блокчейна (ordinals.com) —
+    // такие данные свежее, и устаревший список со страницы их не перезаписывает
+    const baseTopT = toDate((base.srcTs || {}).top100), ddOld = !!(baseTopT && hT && hT.getTime() < baseTopT.getTime() - 60e3);
     let topLive = false;
-    if (raw.top) chk(okTop, okTop ? T('Топ-100: 100 кошельков, места 1–100, по убыванию', 'Top 100: 100 wallets, ranks 1–100, descending')
+    if (raw.top && ddOld) chk(true, T(`Топ-100 и холдеры — из утренней сводки (${dtl(baseTopT)}): у DOG DATA данные на ${dtl(hT)}, старее`, `Top 100 and holders from the morning report (${dtl(baseTopT)}): DOG DATA’s data is older (${dtl(hT)})`));
+    else if (raw.top) chk(okTop, okTop ? T('Топ-100: 100 кошельков, места 1–100, по убыванию', 'Top 100: 100 wallets, ranks 1–100, descending')
       : T(`Топ-100: пришло ${top.length} строк вместо 100 — оставлен утренний`, `Top 100: got ${top.length} rows instead of 100 — kept the morning list`));
-    if (okTop) {
+    if (okTop && !ddOld) {
       topLive = true;
       const was = new Map((base.top100 || []).map(x => [x.a, x]));
       const t100 = top.map(h => {
@@ -4298,42 +4627,12 @@ html{overscroll-behavior-y:contain}
       L.top100pct = rnd(sumOf(top.map(x => x.b)) / SUPPLY * 100, 3);
       if (base.top100pct != null) { const dv = L.top100pct - base.top100pct; chk(Math.abs(dv) <= 1, T(`Доля топ-100: ${n(L.top100pct, 2)}% (утром ${n(base.top100pct, 2)}%) — сходится`, `Top-100 share: ${n(L.top100pct, 2)}% (morning: ${n(base.top100pct, 2)}%) — consistent`)); }
     }
-    if (holders && holders > 1000) {
+    if (holders && holders > 1000 && !ddOld) {
       L.holders = holders;
       if (hT) { L.holdersAsof = L.top100Asof = hmU(hT.getTime()); L.srcTs = Object.assign({}, L.srcTs, { top100: isoS(hT.getTime()), stats: isoS(hT.getTime()) }); }
       const age = hT ? (now - hT.getTime()) / 36e5 : null;
       chk(age != null && age <= 13 && age > -0.3, T(`DOG DATA: холдеров ${n(holders)}, срез ${hT ? tl(hT) : '—'}${age != null ? ' (' + ago(hT) + ')' : ''}`, `DOG DATA: ${n(holders)} holders, snapshot ${hT ? tl(hT) : '—'}${age != null ? ' (' + ago(hT) + ')' : ''}`));
-    } else if (raw.ddh) chk(false, T('DOG DATA: не удалось прочитать число холдеров', 'DOG DATA: couldn’t read the holder count'));
-
-    // --- переводы от 5 млн за сутки ---
-    if (raw.whales) {
-      const al = firstList(raw.whales, 'txid') || firstList(raw.whales, 'total_dog_moved') || [];
-      const rank = new Map((L.top100 || []).map(x => [x.a, x.r]));
-      const rows = al.map(a => ({ t: toDate(a.timestamp), q: num(a.total_dog_moved), fr: addrOf(a.from), to: addrOf(a.to), tx: a.txid ? String(a.txid) : '' })).filter(x => x.t && x.q != null);
-      const day = rows.filter(x => x.t.getTime() >= now - 864e5).sort((a, b) => b.q - a.q);
-      let toX = 0, fromX = 0;
-      const exb = new Map(), big = [];
-      const addEx = (nm, i, q) => { const v = exb.get(nm) || [0, 0]; v[i] += q; exb.set(nm, v); };
-      for (const x of day) {
-        const fe = ent.get(x.fr), te = ent.get(x.to), fx = !!(fe && isExK2(fe.k)), tx = !!(te && isExK2(te.k));
-        let typ = 'между кошельками';
-        if (tx && !fx) { toX += x.q; addEx(te.n, 0, x.q); typ = 'на биржу'; }
-        else if (fx && !tx) { fromX += x.q; addEx(fe.n, 1, x.q); typ = 'с биржи'; }
-        else if (fx && tx) typ = 'между биржами';
-        const d = x.t;
-        big.push({ t: `${pad2(d.getUTCDate())}.${pad2(d.getUTCMonth() + 1)} ${pad2(d.getUTCHours())}:${pad2(d.getUTCMinutes())}`, ts: Math.floor(d.getTime() / 1000), q: rnd(x.q / 1e6), from: x.fr, to: x.to,
-          fr: rank.get(x.fr) || null, tr: rank.get(x.to) || null, fn: fe ? fe.n : 'Крупный холдер', fk: fe ? fe.k : 'unknown', tn: te ? te.n : 'Крупный холдер', tk: te ? te.k : 'unknown', typ, tx: x.tx });
-        for (const [a, e] of [[x.fr, fe], [x.to, te]]) if (e && !(L.entities || {})[a]) { L.entities = L.entities || {}; L.entities[a] = { n: e.n, k: e.k, note: e.note || '' }; }
-      }
-      L.flows = { toExch: rnd(toX / 1e6), fromExch: rnd(fromX / 1e6), net: rnd((toX - fromX) / 1e6), count: day.length,
-        byEx: [...exb].map(([nm, v]) => ({ n: nm, in: rnd(v[0] / 1e6), out: rnd(v[1] / 1e6) })).sort((a, b) => (b.in + b.out) - (a.in + a.out)), big: big.slice(0, 15) };
-      const wT = toDate(raw.whales.timestamp), decl = num(raw.whales.total_alerts);
-      if (wT) L.srcTs = Object.assign({}, L.srcTs, { whales: isoS(wT.getTime()) });
-      const wAge = wT ? (now - wT.getTime()) / 6e4 : null;
-      chk(wAge != null && wAge <= 120 && wAge > -15 && (decl == null || decl === al.length),
-        decl != null && decl !== al.length ? T(`Переводы от 5 млн: список неполный — ${al.length} из ${decl}`, `Transfers of 5M+: incomplete list — ${al.length} of ${decl}`)
-          : T(`Переводы от 5 млн за сутки: ${day.length}, DOG DATA на ${wT ? tl(wT) : '—'}`, `Transfers of 5M+ in 24h: ${day.length}, DOG DATA as of ${wT ? tl(wT) : '—'}`));
-    }
+    } else if (raw.ddh && !ddOld) chk(false, T('DOG DATA: не удалось прочитать число холдеров', 'DOG DATA: couldn’t read the holder count'));
 
     // --- BTC ---
     const bp = num((raw.btc || {}).price), bTm = toDate((raw.btc || {}).time);
@@ -4342,12 +4641,11 @@ html{overscroll-behavior-y:contain}
       if (chk(ok, T(`BTC (Coinbase): ${n(bp)} $, ${bTm ? tl(bTm) : '—'}`, `BTC (Coinbase): $${n(bp)}, ${bTm ? tl(bTm) : '—'}`))) { L.btc = Math.round(bp); L.srcTs = Object.assign({}, L.srcTs, { btc: isoS(bTm.getTime()) }); }
     }
 
-    const stl = raw.stale || {}, SRCN = { top: T('DOG DATA: топ-100', 'DOG DATA: top 100'), ddh: T('DOG DATA: число холдеров', 'DOG DATA: holder count'), whales: T('DOG DATA: переводы', 'DOG DATA: transfers'), btc: 'BTC (Coinbase)', gateTk: T('Gate: итоги за сутки', 'Gate: 24h stats') };
+    const stl = raw.stale || {}, SRCN = { top: T('DOG DATA: топ-100', 'DOG DATA: top 100'), ddh: T('DOG DATA: число холдеров', 'DOG DATA: holder count'), btc: 'BTC (Coinbase)', gateTk: T('Gate: итоги за сутки', 'Gate: 24h stats') };
     for (const k of Object.keys(SRCN)) if (stl[k]) chk(false, T(`${SRCN[k]}: нет ответа — данные на ${tl(raw.t[k])}`, `${SRCN[k]}: no response — data as of ${tl(raw.t[k])}`));
     if (!h1 && !d1) chk(false, T(`График Kraken: свечи не пришли — график из сводки ${rep}`, `Kraken chart: candles didn’t arrive — chart from the ${rep} report`));
     if (!raw.top) chk(false, T(`DOG DATA: топ-100 не загрузился — список из сводки ${rep}`, `DOG DATA: the top 100 didn’t load — list from the ${rep} report`));
     if (!raw.ddh) chk(false, T(`DOG DATA: число холдеров не загрузилось — из сводки ${rep}`, `DOG DATA: the holder count didn’t load — from the ${rep} report`));
-    if (!raw.whales) chk(false, T(`DOG DATA: переводы не загрузились — список из сводки ${rep}`, `DOG DATA: transfers didn’t load — list from the ${rep} report`));
     if (!raw.btc) chk(false, T('BTC (Coinbase): нет ответа', 'BTC (Coinbase): no response'));
 
     // --- изменения с прошлой сводки (подписи «с …» на сайте остаются верными) ---
@@ -4365,7 +4663,7 @@ html{overscroll-behavior-y:contain}
       : T('Прошлая сводка не загрузилась — изменения стенок взяты из утренней', 'The previous report didn’t load — wall changes are from the morning report'));
 
     const keptOld = kept.filter(ex => base.books[ex]), noCors = keptOld.filter(ex => !UP.LIVE.includes(ex));
-    if (noCors.length) info.push(T(`${noCors.map(e => EXN[e]).join(' и ')}: стаканы из сводки ${rep} — эти биржи не отвечают на запросы со страниц сайтов`, `${noCors.map(e => EXN[e]).join(' and ')}: order books from the ${rep} report — these exchanges don’t answer requests from web pages`));
+    if (noCors.length) info.push(T(`${noCors.map(e => EXN[e]).join(' и ')}: в сводке стаканы из ${rep}; онлайн они идут только во вкладке «Стакан»`, `${noCors.map(e => EXN[e]).join(' and ')}: order books from the ${rep} report here; they run live on the Order book tab only`));
     info.push(T(`Площадки и обороты, возраст монет, средняя цена покупки — из сводки ${rep} (DOG DATA отдаёт их только серверу)`, `Venues and volumes, coin age and average purchase price — from the ${rep} report (DOG DATA serves them to servers only)`));
 
     L.ts = isoS(now);
@@ -4374,13 +4672,13 @@ html{overscroll-behavior-y:contain}
     L.fresh = ck.every(c => c.ok);
     const okN = ck.filter(c => c.ok).length;
     L.upd = { ts: L.ts, baseId: base.id, baseTs: base.ts, baseKind: base.kind, n: ck.length, okN, info, kept: keptOld, topLive, dur: UP.dur,
-      baseChecks: base.checks || [], baseWarnings: base.warnings || [], diff: sinceItems(base, L, lv, bT, topLive, !!raw.whales) };
+      baseChecks: base.checks || [], baseWarnings: base.warnings || [], diff: sinceItems(base, L, lv, bT, topLive) };
     try { obSeed(raw); } catch (e) { }
     return L;
   }
 
   // что изменилось с утренней сводки — для итогов обновления
-  function sinceItems(base, L, lv, bT, topLive, flowsLive) {
+  function sinceItems(base, L, lv, bT, topLive) {
     const out = [], ev = (i, c, h, small) => out.push({ i, c, h, small });
     const pm = (base.price || {}).mid, m = (L.price || {}).mid;
     if (pm && m) { const d = (m / pm - 1) * 100; ev(d >= 0 ? 'up' : 'down', Math.abs(d) < 0.05 ? '' : (d > 0 ? 'b' : 'a'), T(`Цена: ${fpd(pm)} → <b>${fpd(m)}</b> (${sg(d, 1)}%)`, `Price: ${fpd(pm)} → <b>${fpd(m)}</b> (${sg(d, 1)}%)`), `${ONE_M}: ${m1s(pm)} → ${m1s(m)}`); }
@@ -4421,22 +4719,16 @@ html{overscroll-behavior-y:contain}
       if (nw.length) ev('plus', 'o', T(`${nw.length} ${plural(nw.length, 'новый кошелёк', 'новых кошелька', 'новых кошельков')} в топ-100`, `${nw.length} new ${nw.length === 1 ? 'wallet' : 'wallets'} in the top 100`), nw.slice(0, 3).map(y => NO + y.x.r + ' · ' + mdog(y.x.b)).join(', '));
       if (!moved.length && !nw.length) ev('check', '', T('Крупные холдеры с утра монеты не двигали', 'Large holders haven’t moved coins since the morning'), T('ни один кошелёк топ-100 вне бирж не изменился на 5 млн и больше', 'no non-exchange top-100 wallet changed by 5M+'));
     }
-    const wT = toDate(((base.srcTs || {}).whales) || base.ts), wS = wT ? wT.getTime() / 1000 : 0;
-    const fresh = ((L.flows || {}).big || []).filter(b => b.ts > wS).sort((a, b) => b.ts - a.ts);
-    if (flowsLive) {
-      if (fresh.length) fresh.slice(0, 3).forEach(b => ev('flows', b.typ === 'на биржу' ? 'a' : (b.typ === 'с биржи' ? 'b' : ''), `${T('Перевод', 'Transfer')} <b>${mdog(b.q)} DOG</b>: ${esc(whoTxt(b.fn, b.fk, b.fr))} → ${esc(whoTxt(b.tn, b.tk, b.tr))}`, `${esc(when(b.ts))}, ${esc(typTr(b.typ))}`));
-      else ev('flows', '', T('Новых переводов от 5 млн DOG с утра не было', 'No new transfers of 5M+ DOG since the morning'));
-    }
     if (base.holders && L.holders && L.holders !== base.holders) ev('person', '', T(`Холдеров: ${n(base.holders)} → <b>${n(L.holders)}</b> (${sg(L.holders - base.holders, 0)})`, `Holders: ${n(base.holders)} → <b>${n(L.holders)}</b> (${sg(L.holders - base.holders, 0)})`));
     if (base.btc && L.btc && L.btc !== base.btc) { const d = (L.btc / base.btc - 1) * 100; ev(d >= 0 ? 'up' : 'down', '', T(`Биткоин: ${n(base.btc)} → <b>${n(L.btc)} $</b> (${sg(d, 1)}%)`, `Bitcoin: $${n(base.btc)} → <b>$${n(L.btc)}</b> (${sg(d, 1)}%)`)); }
     return out;
   }
 
   // ---------- запуск ----------
-  // при автообновлении DOG DATA спрашиваем реже: топ-100 и холдеры меняются раз в несколько часов, переводы — не каждую минуту
-  const UP_SOFT = { top: 10 * 60e3, ddh: 10 * 60e3, whales: 5 * 60e3 };
+  // при автообновлении DOG DATA спрашиваем реже: топ-100 и холдеры меняются раз в несколько часов
+  const UP_SOFT = { top: 10 * 60e3, ddh: 10 * 60e3 };
   // источник не ответил, а его недавний ответ есть — показываем его (с пометкой в самопроверке), а не утренний
-  const UP_KEEP = { kraken: 10 * 60e3, gate: 10 * 60e3, gateTk: 10 * 60e3, gateRaw: 10 * 60e3, digifinex: 10 * 60e3, coinw: 10 * 60e3, btc: 10 * 60e3, top: 30 * 60e3, ddh: 30 * 60e3, whales: 30 * 60e3 };
+  const UP_KEEP = { kraken: 10 * 60e3, gate: 10 * 60e3, gateTk: 10 * 60e3, gateRaw: 10 * 60e3, digifinex: 10 * 60e3, coinw: 10 * 60e3, btc: 10 * 60e3, top: 30 * 60e3, ddh: 30 * 60e3 };
   function runUpdate(opt) {
     opt = opt || {};
     if (UP.run) { if (!opt.silent && UP.silent) { UP.silent = false; paintUpd(); setStatus(); } return UP.run; }
@@ -4456,7 +4748,7 @@ html{overscroll-behavior-y:contain}
         if (UP.silent && UP_SOFT[k] && prevRaw && prevRaw[k] && Date.now() - prevRaw.t[k] < UP_SOFT[k]) { reuse(k, 'cached'); UP.st[k] = { s: 'ok', ms: 0, cached: true }; return; }
         if (delay) await pause(delay);
         try {
-          const r = await upGet(url(), k === 'd1' || k === 'h1' || k === 'whales' ? 12000 : 9000);
+          const r = await upGet(url(), k === 'd1' || k === 'h1' ? 12000 : 9000);
           raw[k] = r.d; raw.t[k] = Date.now(); UP.st[k] = { s: 'ok', ms: r.ms };
           if (UP_TTL[k] && ohlcRows(r.d)) store.set('ohlc.' + k, { t: raw.t[k], d: r.d });
         } catch (e) {
@@ -4471,7 +4763,7 @@ html{overscroll-behavior-y:contain}
       raw.done = Date.now();
       UP.dur = raw.done - UP.t0;
       const fresh = k => UP.st[k] && UP.st[k].s === 'ok' && !UP.st[k].cached;
-      if (!['kraken', 'gate', 'digifinex', 'coinw', 'top', 'whales'].some(fresh)) { UP.err = navigator.onLine === false ? 'offline' : 'network'; return null; }
+      if (!['kraken', 'gate', 'digifinex', 'coinw', 'top'].some(fresh)) { UP.err = navigator.onLine === false ? 'offline' : 'network'; return null; }
       UP.raw = raw; UP.at = raw.done;
       await applyUpdate({ soft: true, now: !UP.silent });
       return S.cur && S.cur.upd ? S.cur.upd : null;
@@ -4530,7 +4822,7 @@ html{overscroll-behavior-y:contain}
     const open = $$('#p-books details[open][data-k]').map(d => d.dataset.k);
     renderBooks();
     open.forEach(k => { const d = $(`#p-books details[data-k="${k}"]`); if (d) d.open = true; });
-    renderFlows();
+    renderCharts(true);
     if (!(document.activeElement && document.activeElement.id === 'wsearch')) renderWallets();
     if (Math.abs(window.scrollY - y) > 1) window.scrollTo(0, y);
   }
@@ -4571,7 +4863,7 @@ html{overscroll-behavior-y:contain}
       return li(r.s === 'ok' ? 'ok' : 'bad', ico(r.s === 'ok' ? 'check' : 'alert'), esc(nm), esc(what), r.s === 'ok' ? (r.cached ? T('сохранено', 'cached') : n(Math.max(0.1, r.ms / 1000), 1) + T(' с', ' s')) : T('частично', 'partly'));
     }).join('');
     const kept = ['mexc', 'bingx'].filter(ex => S.base && (S.base.books || {})[ex]);
-    if (kept.length) h += li('info', ico('clock'), esc(kept.map(e => EXN[e]).join(', ')), T('стаканы — из утренней сводки: эти биржи не отвечают на запросы со страниц сайтов', 'order books from the morning report: these exchanges don’t answer requests from web pages'), rep);
+    if (kept.length) h += li('info', ico('clock'), esc(kept.map(e => EXN[e]).join(', ')), T('стаканы в сводке — утренние; онлайн — во вкладке «Стакан»', 'order books here are from the morning report; live on the Order book tab'), rep);
     return `<ul class="srcl">${h}</ul>`;
   }
   const chkLi = c => `<li><span class="${c.ok ? 'ok' : 'bad'}">${ico(c.ok ? 'check' : 'alert')}</span><span>${esc(chkTr(c.t))}</span></li>`;
@@ -4622,7 +4914,7 @@ html{overscroll-behavior-y:contain}
     const ok = u ? u.okN === u.n : false;
     const wt = x => sameDay(toDate(x), new Date()) ? tl(x) : when(x);
     const title = run ? T('Обновляю данные…', 'Updating data…') : (u ? `${T('Онлайн-данные на', 'Live data as of')} ${esc(wt(u.ts))}` : `${esc(KIND_TITLE[s.kind] || T('Сводка', 'Report'))} · ${esc(wt(s.ts))}`);
-    const sub = run ? T('стаканы, топ-100, переводы — прямо с бирж и DOG DATA', 'order books, top 100, transfers — straight from exchanges and DOG DATA')
+    const sub = run ? T('стаканы, холдеры и цена — прямо с бирж и DOG DATA', 'order books, holders and price — straight from exchanges and DOG DATA')
       : (u ? T(`проверок пройдено: ${u.okN} из ${u.n}`, `${u.okN} of ${u.n} checks passed`) : (UP.err ? (UP.err === 'check' ? T('свежие данные не прошли проверку', 'fresh data failed the check') : (navigator.onLine === false ? T('нет сети — показана последняя сводка', 'offline — showing the last report') : T('свежие данные не загрузились', 'fresh data didn’t load'))) : T('обновите, чтобы взять свежие стаканы и переводы', 'update for fresh order books and transfers')));
     return `<div class="updbar ${run ? 'run' : (u ? (ok ? 'ok' : 'warn') : (UP.err ? 'warn' : ''))}${sync ? ' sync' : ''}" id="updbar">
         <button type="button" class="ub-info" data-updopen><span class="ub-dot" aria-hidden="true"></span><span class="ub-t"><b>${title}</b><span>${sub}</span></span></button>
@@ -4754,9 +5046,9 @@ html{overscroll-behavior-y:contain}
   function renderAll() {
     const a = $('#archive');
     a.hidden = !S.archived;
-    if (S.archived && S.view) $('#archive-text').textContent = T(`Архив: сводка ${dtl(S.view.ts)}. Стаканы, кошельки и переводы — на тот момент.`, `Archive: report of ${dtl(S.view.ts)}. Order books, wallets and transfers as of that time.`);
+    if (S.archived && S.view) $('#archive-text').textContent = T(`Архив: сводка ${dtl(S.view.ts)}. Стаканы и кошельки — на тот момент.`, `Archive: report of ${dtl(S.view.ts)}. Order books and wallets as of that time.`);
     setStatus();
-    renderOverview(); renderBooks(); renderWallets(); renderFlows(); renderNews(); renderHistory();
+    renderOverview(); renderBooks(); renderWallets(); renderCharts(); renderNews(); renderHistory();
     drawCharts();
   }
   renderHelp();
@@ -4885,7 +5177,7 @@ html{overscroll-behavior-y:contain}
     }, () => { S.newsLoaded = true; renderNews(); });
     const loadWh = () => fetch('data/wallets.json?v=' + Math.floor(Date.now() / 60000), { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(d => { if (d && d.b) { S.wh = d; renderWallets(); } }).catch(() => { });
     const loadCb = () => fetch('data/costbasis.json?v=' + Math.floor(Date.now() / 60000), { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(d => { if (d && d.w) { S.cb = d; renderWallets(); } }).catch(() => { });
-    const loadPx = () => fetch('data/prices.json?v=' + Math.floor(Date.now() / 60000), { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(d => { if (d && d.d) { S.px = d; if (S.period === 'ВСЁ') { resetHero(); drawPrice(true); } } }).catch(() => { });
+    const loadPx = () => fetch('data/prices.json?v=' + Math.floor(Date.now() / 60000), { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(d => { if (d && d.d) { const had = !!S.px; S.px = d; if (S.period === 'ВСЁ') { resetHero(); drawPrice(true); } if (!had && S.tab === 'charts') crDraw(); } }).catch(() => { });
     loadWh(); loadCb(); loadPx(); setInterval(() => { if (document.visibilityState !== 'hidden') { loadWh(); loadCb(); loadPx(); } }, 15 * 60e3);
     db.doc('meta/audit').onSnapshot(snap => { S.audit = snap.exists ? snap.data() : null; }, () => { });
     db.doc('meta/treasuries').onSnapshot(snap => { S.tre = snap.exists ? snap.data() : null; refreshHomeParts(); }, () => { });

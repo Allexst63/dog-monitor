@@ -22,6 +22,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 BASE = os.environ.get('DOGMON', '/tmp/dogmon')
 RAW, PREV, OUT, CFG = (os.path.join(BASE, d) for d in ('raw', 'prev', 'out', 'cfg'))
 NOW = dt.datetime.now(dt.timezone.utc)
+# плановый запуск — «утренняя сводка», запуск вручную — «сводка по запросу» (так и подписывается на сайте)
+KIND = os.environ.get('DOGMON_KIND') if os.environ.get('DOGMON_KIND') in ('утро', 'запрос') else 'утро'
 
 
 def jload(p, default=None):
@@ -102,7 +104,7 @@ def brief(s):
     if al:
         parts.append('Главное за сутки: ' + '; '.join(al[:3]) + '.')
     elif s.get('prevId'):
-        parts.append('Крупных изменений за сутки не было: заявки в стаканах, балансы бирж и переводы — без сдвигов от 20 млн DOG.')
+        parts.append('Крупных изменений за сутки не было: заявки в стаканах и балансы бирж — без сдвигов от 20 млн DOG.')
     txt = ' '.join(parts)
     return txt if len(txt) <= 680 else txt[:680].rsplit(';', 1)[0] + '.'
 
@@ -144,7 +146,7 @@ def run(site):
     prepare(site)
     ok, total, failed = fetch()
     dm = os.path.join(BASE, 'dogmon.py')
-    out = sh(dm, 'compute', 'утро')
+    out = sh(dm, 'compute', KIND)
     refetched, looked = [], 0
     for _ in range(2):                      # повторные запросы источников, которые не прошли проверку
         rf = [x for x in line(out, 'REFETCH') if not x.startswith('entity_')]
@@ -157,7 +159,7 @@ def run(site):
         if lk:
             looked += len(lk)
             fetch(entity=lk)
-        out = sh(dm, 'compute', 'утро')
+        out = sh(dm, 'compute', KIND)
     failed = [n for n in failed if open(os.path.join(RAW, n + '.txt'), encoding='utf-8').read().startswith('UNAVAILABLE')]
     print(out[-2500:])
     s = jload(os.path.join(OUT, 'snapshot.json'))

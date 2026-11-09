@@ -606,14 +606,44 @@ def compute(kind):
     odd = [k for k, v in lus.items() if v != hold_t]
     if odd:
         chk(False, 'топ-100: страницы из разных срезов (' + ', '.join(map(str, odd)) + ')', [f'holders_{k}' for k in odd])
-    fresh('holders', hold_t, 'dogdata: топ-100')
+    # --- свежие балансы из блокчейна (ordinals.com): DOG DATA иногда днями не обновляет топ-100 ---
+    top_src = 'dogdata'
+    ob = raw('ordbal')
+    if ob:
+        okb, errs = {}, []
+        for ln in ob.splitlines():
+            p = [x.strip() for x in ln.split(';')]
+            if len(p) >= 2 and re.fullmatch(ADDR, p[0]) and fnum(p[1]) is not None:
+                okb[p[0]] = fnum(p[1])
+            elif len(p) >= 3 and p[0] == 'ERR':
+                errs.append((p[1], fnum(p[2]) or 0.0))
+        ob_t = parse_time(kv(ob, 'ts'))
+        ranked = sorted(okb.items(), key=lambda kv_: -kv_[1])
+        cut = ranked[99][1] if len(ranked) >= 100 else None
+        # не ответившие адреса не должны быть кандидатами в топ-100 (последний известный баланс заметно ниже 100-го места)
+        risky = [a for a, b in errs if cut is None or b >= cut * 0.8]
+        newer = ob_t is not None and (hold_t is None or ob_t > hold_t + dt.timedelta(minutes=30))
+        if cut is not None and not risky and newer:
+            dd_fresh = hold_t is not None and (NOW - hold_t).total_seconds() < 86400
+            dd_u = {x[1]: x[3] for x in top} if dd_fresh else {}
+            top = [(i + 1, a, b, dd_u.get(a, 0)) for i, (a, b) in enumerate(ranked[:100])]
+            hold_t, top_src = ob_t, 'ordinals'
+            chk(True, f'топ-100: свежие балансы из блокчейна (ordinals.com) — {len(okb)} адресов, {hm(ob_t)}')
+        elif not newer:
+            pass
+        else:
+            warns.append(f'ordinals.com: балансы получены не полностью ({len(okb)} адресов, без ответа {len(errs)}) — топ-100 от DOG DATA')
+            if 'ordbal' not in refetch:
+                refetch.append('ordbal')
+    fresh('holders', hold_t, 'ordinals.com: топ-100' if top_src == 'ordinals' else 'dogdata: топ-100')
     ok100 = len(top) == 100 and len({x[1] for x in top}) == 100
     ok100 = ok100 and all(top[i][2] >= top[i + 1][2] - 1e-6 for i in range(len(top) - 1))
     chk(ok100, f'топ-100: {len(top)} строк, места 1–100, по убыванию' if ok100 else
         f'топ-100: {len(top)} строк — порядок/полнота нарушены', None if ok100 else [f'holders_{k}' for k in range(1, 5)])
     if stats.get('top10') and len(top) >= 10:
         same_cut = stats.get('t') and hold_t and abs((stats['t'] - hold_t).total_seconds()) < 60
-        mism = [r for r, a, b in stats['top10'] if r <= len(top) and (top[r - 1][1] != a or abs(top[r - 1][2] - b) > 1e4)]
+        tolb = (lambda b: max(1e4, b * 0.02)) if top_src == 'ordinals' else (lambda b: 1e4)   # балансы бирж за несколько часов меняются
+        mism = [r for r, a, b in stats['top10'] if r <= len(top) and (top[r - 1][1] != a or abs(top[r - 1][2] - b) > tolb(b))]
         if same_cut:
             chk(not mism, 'топ-10 совпадает в двух источниках' if not mism else f'топ-10 расходится с топ-100: места {mism}',
                 None if not mism else ['stats', 'holders_1'])
@@ -891,13 +921,14 @@ def compute(kind):
         'v': 4, 'id': snap_id, 'ts': iso(NOW), 'label': NOW.strftime('%d.%m · %H:%M UTC'), 'kind': kind,
         'fresh': not stale, 'pipeline': VERSION, 'btc': round(btc) if btc else None,
         'price': price, 'venues': venues, 'books': books, 'totals': totals, 'wallsDelta': walls_delta[:16],
-        'holders': int(holders) if holders else None, 'holdersAsof': hm(hold_t),
+        'holders': int(holders) if holders else None, 'holdersAsof': hm((stats.get('t') if stats.get('holders') else conc.get('t')) or hold_t),
         'top10pct': r2(top10pct, 3), 'top100pct': r2(top100pct, 3), 'top100Asof': hm(hold_t),
         'conc': {'top10': conc.get('top10_supply_pct'), 'top100': conc.get('top100_supply_pct'),
                  'top1000': conc.get('top1000_supply_pct'), 'gini': conc.get('gini_coefficient')},
         'top100': top100, 'movers': movers, 'exch': exch, 'flows': flows, 'delta': delta, 'entities': entities,
         'prevId': prev_id, 'prevTs': (prev or {}).get('ts'), 'prevLabel': (prev or {}).get('label'), 'prevKind': (prev or {}).get('kind'),
         'checks': checks, 'warnings': warns, 'closed': closed, 'brief': '', 'report': '', 'chart': chart, 'health': health,
+        'top100Src': top_src, 'prevTop': ((prev or {}).get('srcTs') or {}).get('top100'),   # на какой момент были балансы, с которыми сравниваем
         'srcTs': {'top100': iso(hold_t), 'stats': iso(stats.get('t')), 'conc': iso(conc.get('t')),
                   'markets': iso(markets.get('t')), 'whales': iso(wt_t), 'btc': iso(bt_t),
                   'ohlc': (chart or {}).get('asof'), 'health': (health or {}).get('asof')}}
@@ -1156,35 +1187,13 @@ def highlights(s):
         k += 1
         if k >= 4:
             break
-    # биржи: баланс с прошлой сводки и переводы за сутки
-    fl = s.get('flows') or {}
-    byf = {g['n']: g for g in fl.get('byEx') or []}
-    done = set()
+    # биржи: баланс с прошлой сводки (по топ-100). Переводы от 5 млн с сайта убраны — в «Главном» их тоже нет
     for g in (s.get('exch') or {}).get('by') or []:
         d = g.get('d')
         if d is None or abs(d) < ALERT_EXCH:
             continue
-        f = byf.get(g['n']) or {}
-        day = (f.get('in') if d > 0 else f.get('out')) or 0
-        extra = f" (за последние сутки — {rmln(day)})" if long_gap and day >= MOVE_MIN else ''
-        out.append(f"🔺 {g['n']}: на биржу пришло {rmln(d)} DOG{extra}" if d > 0 else
-                   f"🔻 {g['n']}: с биржи ушло {rmln(-d)} DOG{extra}")
-        done.add(g['n'])
-    for n, f in byf.items():
-        if n in done:
-            continue
-        if (f.get('in') or 0) >= ALERT_FLOW:
-            out.append(f"🔺 {n}: на биржу за сутки пришло {rmln(f['in'])} DOG")
-        if (f.get('out') or 0) >= ALERT_FLOW:
-            out.append(f"🔻 {n}: с биржи за сутки ушло {rmln(f['out'])} DOG")
-    # крупные переводы между кошельками
-    k = 0
-    for b in fl.get('big') or []:
-        if b.get('typ') == 'между кошельками' and (b.get('q') or 0) >= ALERT_FLOW:
-            out.append(f"🐋 Перевод {rmln(b['q'])} DOG: {who(b['fn'], b['fk'], b.get('fr'))} → {who(b['tn'], b['tk'], b.get('tr'))}, {b['t']} UTC")
-            k += 1
-            if k >= 2:
-                break
+        out.append(f"🔺 {g['n']}: на биржу пришло {rmln(d)} DOG" if d > 0 else
+                   f"🔻 {g['n']}: с биржи ушло {rmln(-d)} DOG")
     # крупные холдеры (не биржи)
     mv = s.get('movers') or {}
     bal = {x['a']: x['b'] for x in s.get('top100') or []}
@@ -1227,7 +1236,7 @@ def message(site=None):
         L.append(f'Главное {since}:')
         L += al
     else:
-        L.append(f'Крупного {since} не было: стенки, балансы бирж и переводы — без изменений от 20 млн DOG.')
+        L.append(f'Крупного {since} не было: стенки и балансы бирж — без изменений от 20 млн DOG.')
     try:
         writes = json.load(open(os.path.join(OUT, 'writes.json'), encoding='utf-8'))
     except Exception:
