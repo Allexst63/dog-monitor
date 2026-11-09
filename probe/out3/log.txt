@@ -1,0 +1,24 @@
+deployed after 0 s
+charts.wait 
+charts.legend DOG/USD Kraken · 1h −1.02% O 0.0007830 H 0.0007830 L 0.0007630 C 0.0007800 Vol 2.348M SMA 20 0.0007652 SMA 50 0.0007835 SMA 200 0.0008121
+charts.read Momentum on 1h candles: upward RSI 53 — between 50 and 70: gains outweigh losses MACD above its signal line — upward momentum, strengthening Averages: price above SMA 20, but below SMA 50, 200 (average closes over that many candles) Bollinger: price near the upper band (band width 5.2%) Kraken DOG/USD candles. Drag to scroll, pinch to zoom, press and hold for a crosshair with values. Indicators describe past price moves and don’t predict the future.
+charts.delta Buys 50% 50% Sells Delta over 24 hours: −394.7K DOG ≈ $302 Bought at market 90.39M, sold 90.78M. Kraken −410.3K, Gate +15.63K. Price over 24 hours: −0.8%. Market buys and sells are roughly balanced.
+charts.corr Link, last 90 days 0.63 clear link Link since launch 0.52 clear link Beta, 90 days 1.7 BTC ±1% → DOG ±1.7% 1 DOG in sats 1.03 at launch 7.14 · −86%
+charts.corrread Since 25 Apr 2024, DOG is down 83%, bitcoin is up 1.2×. The link (correlation) runs from −1 to 1 on daily price changes: 1 — DOG and bitcoin always move together, 0 — unrelated, −1 — opposite ways. Beta 1.7: when bitcoin moves 1% in a day, DOG moves 1.7% the same way on average — swinging harder than bitcoin. DOG is the daily close (Gate until June 2025, then Kraken), bitcoin from Coinbase. Top to bottom: growth since launch (100 = launch day, log scale), the 30- and 90-day link, and how many sats 1 DOG costs.
+charts.15m DOG/USD Kraken · 15m 0%
+charts.4h DOG/USD Kraken · 4h −1.02%
+charts.1d DOG/USD Kraken · 1d +0.65%
+charts.delta3d Delta over 3 days: −7.644M DOG ≈ $5.8K
+charts.errors []
+books.chips All exchanges | Kraken | Gate | MEXC | BingX | DigiFinex | CoinW
+books.status Live · just now Pause
+books.note Combined: Kraken, Gate, MEXC, BingX, DigiFinex, CoinW. MEXC, BingX, CoinW show only orders close to the price.
+books.trades Kraken and Gate · market orders, last 60 min; the list also has MEXC and BingX
+books.tradeEx BingX,BingX,MEXC,MEXC,Gate,Gate,Gate,Gate,Kraken,Kraken,Kraken,Kraken
+books.feed Order book feed orders of 5M+ DOG while the site is open 00:31 Kraken: buy order 5.671M at 0.000742 is gone — pulled or filled 00:31 Kraken: buy order at 0.000654 grew: 2.578M → 7.136M 00:31 Kraken: buy order at 0.000651 shrank: 9.735M → 5.158M 00:31 Kraken: new buy order 5.671M at 0.000742 (−3.8%) 00:31 Kraken: buy order 7.723M at 0.000653 is gone — pulled or filled 00:31 Kraken: buy order at 0.000651 grew: 4.577M → 9.735M 00:31 Kraken: buy order at 0.000736 shrank: 13.85M → 10.37M
+books.mexc Live · just now Pause || MEXC streams the nearest 20 levels on each side.
+books.bingx Live · 6s ago Pause || BingX streams the nearest 100 levels on each side.
+books.errors []
+wallets.heads Что изменилось с 8 нояб 10:25 | Кто владеет DOG все 100 млрд монет | DOG на биржах 22,92 млрд DOG, 22,9% всех монет | Топ-100 кошельков держат 40,88% всех DOG, холдеров всего 86 284 · линия — баланс за 26 дней · ср. цена покупок — без аирдропа · балансы на 4 нояб 22:28 | Как держат DOG DOG DATA, срез 9 нояб 09:28
+wallets.errors []
+desk.errors []
