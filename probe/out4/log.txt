@@ -1,0 +1,6 @@
+browser 130.0.6723.31
+dom [{"id":"tvchart","cw":342,"ch":518,"chart":"342pxx518px","tds":[[0,262,80],[342],[0,262,80]],"canv":["262x280/262px","262x280/262px","80x280/80px","80x280/80px","262x104/262px","262x104/262px"]},{"id":"dlchart","cw":326,"ch":380,"chart":"326pxx380px","tds":[[0,246,80],[326],[0,246,80]],"canv":["246x150/246px","246x150/246px","80x150/80px","80x150/80px","246x90/246px","246x90/246px"]},{"id":"crchart","cw":326,"ch":430,"chart":"326pxx430px","tds":[[0,262,64],[326],[0,262,64]],"canv":["262x200/262px","262x200/262px","64x200/64px","64x200/64px","262x100/262px","262x100/262px"]}]
+fonts Jost:loaded, Golos Text:loaded
+exp {"E1_default_autosize":{"ps":46,"ts":296,"lbl":46},"E2_custom_format":{"ps":78,"ts":264,"lbl":78},"E3_font":{"ps":80,"ts":262,"lbl":80},"E4_minwidth":{"ps":78,"ts":264,"lbl":78},"E5_locale":{"ps":78,"ts":264,"lbl":78},"E6_explicit_width":{"ps":78,"ts":264,"lbl":78},"E7_panes_attr":{"ps":78,"ts":264,"lbl":78}}
+exp2 {"afterMain":64,"afterRsi":64,"afterMacd":64,"final":{"ps0":80,"ts":262,"w":"342px"}}
+errors []
