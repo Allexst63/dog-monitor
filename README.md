@@ -1,8 +1,9 @@
 # DOG Monitor · DOG Монитор
 
 **https://allexst63.github.io/dog-monitor/** — an unofficial tracker for **DOG•GO•TO•THE•MOON** (Bitcoin rune 840000:3):
-live price and full-history chart, order books from 7 exchanges, large transfers, the top 100 wallets with daily balances and
-average cost, how DOG is held, C2 Blockchain holdings and news — in plain words. English by default, Russian in the “⋯” menu
+live price and full-history chart, an exchange-style order book across 7 exchanges (real prices, 0.0000001–0.0001 grouping,
+10-second refresh, trades, depth, slippage calculator, RSI/MACD/Bollinger indicators), large transfers, the top 100 wallets with daily
+balances and average cost, how DOG is held, C2 Blockchain holdings and news — in plain words. English by default, Russian in the “⋯” menu
 (or `?lang=ru`). A full report is built every morning by GitHub Actions; on top of it, every time the site opens or you tap
 **Update**, the page pulls fresh order books, the top 100, holder count, transfers and the price chart straight from the exchanges
 and DOG DATA and checks itself.
@@ -34,11 +35,27 @@ and DOG DATA and checks itself.
   свечи Kraken, BTC с Coinbase, топ-100, число холдеров и переводы от 5 млн из DOG DATA.
 - Расчёт тот же, что в `tools/dogmon.py` (стенки, глубина, сводный стакан, изменения с прошлой сводки, балансы бирж, переводы);
   сверено с Python на одинаковых ответах API.
+- Если DOG DATA давно не обновляла топ-100 (больше 13 часов), сайт так и пишет — вместо «балансы без изменений».
 - Самопроверка: ответили ли источники, свежие ли данные, нет ли перевёрнутого стакана, сходятся ли цены бирж (±3%),
   правдоподобна ли цена (резкий ход принимается, только если его подтверждают две биржи), сходится ли топ-100.
   Итог — в листе «Обновление и проверка» вместе со списком «что изменилось с утренней сводки».
 - MEXC и BingX на запросы со страниц не отвечают, поэтому их стаканы остаются из утренней сводки (помечены);
   площадки и обороты, возраст монет и средняя цена покупки — тоже из утренней сводки.
+
+## Стакан (вкладка «Стакан»)
+- Как на бирже: настоящие цены (0.00081), продажи сверху, покупки снизу; шаг группировки — 0.0000001 / 0.000001 / 0.00001 / 0.0001
+  (кнопка «0.00001 ▾», как «Order Book Depth» на Gate); виды — столбиком, «две стороны» и таблица по биржам; объём в DOG или в $.
+- Биржа — все вместе или любая одна. «Все биржи» — только свежие стаканы (Kraken, Gate, DigiFinex, CoinW); MEXC и BingX отвечают
+  только серверу, их стаканы из утренней сводки (ступени по 0.00001) открываются отдельно.
+- Пока вкладка открыта и видна, стаканы и сделки обновляются каждые 10 секунд (`OB` в `index.html`). Gate — два запроса:
+  100 ближних уровней точно (`interval=0`) и ступени по 0.00001 вглубь; на мелком шаге они склеиваются без двойного счёта.
+- Нажатие на строку — подробности уровня: биржи, точные цены внутри ступени, сколько нужно купить/продать до этого уровня.
+- Метрики: спред, перекос ±1/2/5/10%, деньги в стакане ±2%, ближайшие стенки (от 5 млн DOG), история перекоса за сеанс,
+  калькулятор «купить/продать сразу» (средняя цена, проскальзывание, по каждой бирже), лента крупных заявок (появились/исчезли/
+  переставлены — пока открыт сайт), сделки Kraken и Gate (кто чаще покупал или продавал по рынку за час).
+- Индикаторы по свечам Kraken (1ч / 4ч / 1д): RSI 14, MACD 12/26/9, полосы Боллинджера 20/2, SMA 20/50/100/200, ATR 14, объём,
+  изменение цены, где цена в диапазоне 24 ч / 7 дней / 30 дней / года. Описывают прошлое и ничего не предсказывают.
+- Цена за 1 млн DOG осталась только на «Главном» — для новичков; в остальных разделах цены настоящие.
 
 ## Как приложение
 - Пока страница открыта, она сама обновляется каждые 2 минуты (DOG DATA — реже: топ-100 и холдеры раз в 10 минут, переводы раз в 5),
