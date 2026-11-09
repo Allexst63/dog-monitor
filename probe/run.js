@@ -1,37 +1,78 @@
-// Временная проверка: образцы сообщений WebSocket MEXC и BingX из браузера на адресе сайта
-const { chromium } = require('playwright');
+// Temporary check of the live site after the Charts / MEXC+BingX update: real data from a real browser on the site's origin
+const { chromium, devices } = require('playwright');
 const fs = require('fs');
-const OUT = 'probe/out2';
+const OUT = 'probe/out3';
 fs.mkdirSync(OUT, { recursive: true });
+const SITE = 'https://allexst63.github.io/dog-monitor/';
+const log = [];
+const L = (...a) => { const s = a.map(x => typeof x === 'string' ? x : JSON.stringify(x)).join(' '); log.push(s); console.log(s); };
 (async () => {
+  // wait until the new version is deployed
+  for (let i = 0; i < 40; i++) {
+    try { const r = await fetch(SITE + 'index.html?cb=' + Date.now()); const t = await r.text(); if (t.includes('wbs-api.mexc.com')) { L('deployed after', i * 15, 's'); break; } } catch (e) { }
+    await new Promise(r => setTimeout(r, 15000));
+  }
   const b = await chromium.launch();
-  const p = await (await b.newContext()).newPage();
-  await p.goto('https://allexst63.github.io/dog-monitor/robots.txt', { waitUntil: 'load', timeout: 60000 });
-  const res = await p.evaluate(async () => {
-    const gunzip = async buf => new Response(new Blob([buf]).stream().pipeThrough(new DecompressionStream('gzip'))).text();
-    const b64 = u8 => { let s = ''; for (let i = 0; i < u8.length; i++) s += String.fromCharCode(u8[i]); return btoa(s); };
-    const run = (url, subs, gz, n, ms) => new Promise(res => {
-      const msgs = []; let done = false; const ws = new WebSocket(url); ws.binaryType = 'arraybuffer';
-      const fin = () => { if (done) return; done = true; try { ws.close(); } catch (e) { } res(msgs); };
-      ws.onopen = () => subs.forEach(s => ws.send(JSON.stringify(s)));
-      ws.onmessage = async ev => {
-        let t;
-        if (typeof ev.data === 'string') t = ev.data;
-        else if (gz) t = await gunzip(ev.data);
-        else t = 'B64 ' + b64(new Uint8Array(ev.data));
-        if (t === 'Ping') { ws.send('Pong'); msgs.push('Ping'); return; }
-        msgs.push(t);
-        if (msgs.length >= n) fin();
-      };
-      ws.onclose = ev => { msgs.push('close ' + ev.code); fin(); };
-      setTimeout(fin, ms);
-    });
-    return {
-      bingx: await run('wss://open-api-ws.bingx.com/market', [{ id: 'd1', reqType: 'sub', dataType: 'DOG-USDT@depth100' }, { id: 't1', reqType: 'sub', dataType: 'DOG-USDT@trade' }], true, 14, 30000),
-      mexc_deals: await run('wss://wbs-api.mexc.com/ws', [{ method: 'SUBSCRIPTION', params: ['spot@public.aggre.deals.v3.api.pb@100ms@DOGUSDT'] }], false, 6, 45000),
-      mexc_depth: await run('wss://wbs-api.mexc.com/ws', [{ method: 'SUBSCRIPTION', params: ['spot@public.limit.depth.v3.api.pb@DOGUSDT@20'] }], false, 3, 15000)
-    };
-  });
-  fs.writeFileSync(OUT + '/ws.json', JSON.stringify(res, null, 1));
+  const mk = async (opts) => { const ctx = await b.newContext(opts); const p = await ctx.newPage(); const errs = []; p.on('console', m => { if (m.type() === 'error') errs.push(m.text().slice(0, 200)); }); p.on('pageerror', e => errs.push('PAGEERROR ' + e.message)); return { ctx, p, errs }; };
+  const phone = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, locale: 'en-US', timezoneId: 'Asia/Dubai' };
+  const txt = (p, sel) => p.evaluate(s => [...document.querySelectorAll(s)].map(x => x.innerText.replace(/\s+/g, ' ').trim()).join(' | '), sel).catch(e => 'ERR ' + e.message);
+  // 1. Charts
+  {
+    const { ctx, p, errs } = await mk(phone);
+    await p.goto(SITE + '?nosw=1#charts', { waitUntil: 'load', timeout: 60000 });
+    await p.waitForTimeout(25000);
+    L('charts.wait', await txt(p, '.tv-wait'));
+    L('charts.legend', await txt(p, '#tvleg'));
+    L('charts.read', await txt(p, '#tvread'));
+    L('charts.delta', await txt(p, '#dlsum'));
+    L('charts.corr', await txt(p, '#crstats'));
+    L('charts.corrread', await txt(p, '#crread'));
+    await p.screenshot({ path: OUT + '/charts_phone.png', fullPage: true });
+    for (const tf of ['15m', '4h', '1d']) { await p.click(`#ch-tf [data-chtf="${tf}"]`).catch(() => { }); await p.waitForTimeout(4000); L('charts.' + tf, await txt(p, '#tvleg .l1')); }
+    await p.click('#dl-win [data-dlwin="3d"]').catch(() => { }); await p.waitForTimeout(12000); L('charts.delta3d', await txt(p, '#dlsum .dl-big'));
+    L('charts.errors', errs);
+    await ctx.close();
+  }
+  // 2. Order book: all exchanges, then MEXC and BingX alone
+  {
+    const { ctx, p, errs } = await mk(phone);
+    await p.addInitScript(() => { try { localStorage.setItem('dogmon.bx', JSON.stringify('all')); } catch (e) { } });
+    await p.goto(SITE + '?nosw=1#books', { waitUntil: 'load', timeout: 60000 });
+    await p.waitForTimeout(35000);
+    L('books.chips', await txt(p, '#obx [data-obex]'));
+    L('books.status', await txt(p, '#obcard .obst'));
+    L('books.note', await txt(p, '#obcard .obnote'));
+    L('books.trades', await txt(p, '#obtr .note'));
+    L('books.tradeEx', await p.evaluate(() => [...document.querySelectorAll('#obtr .trl-r:not(.hd) span:last-child')].map(x => x.innerText).join(',')).catch(() => ''));
+    L('books.feed', await txt(p, '#obfeed'));
+    await p.screenshot({ path: OUT + '/books_all.png' });
+    for (const k of ['mexc', 'bingx']) {
+      await p.click(`#obx [data-obex="${k}"]`).catch(() => { }); await p.waitForTimeout(3000);
+      L('books.' + k, await txt(p, '#obcard .obst'), '||', await txt(p, '#obcard .obnote'));
+      await p.locator('#obcard').screenshot({ path: OUT + `/books_${k}.png` }).catch(() => { });
+    }
+    L('books.errors', errs);
+    await ctx.close();
+  }
+  // 3. Wallets header, Russian
+  {
+    const { ctx, p, errs } = await mk(Object.assign({}, phone, { locale: 'ru-RU' }));
+    await p.goto(SITE + '?nosw=1&lang=ru#wallets', { waitUntil: 'load', timeout: 60000 });
+    await p.waitForTimeout(15000);
+    L('wallets.heads', await txt(p, '#p-wallets .sec-head'));
+    await p.screenshot({ path: OUT + '/wallets_ru.png' });
+    L('wallets.errors', errs);
+    await ctx.close();
+  }
+  // 4. Desktop, dark, charts
+  {
+    const { ctx, p, errs } = await mk({ viewport: { width: 1360, height: 900 }, deviceScaleFactor: 1, colorScheme: 'dark', locale: 'en-US', timezoneId: 'Asia/Dubai' });
+    await p.goto(SITE + '?nosw=1#charts', { waitUntil: 'load', timeout: 60000 });
+    await p.waitForTimeout(25000);
+    await p.screenshot({ path: OUT + '/charts_desktop_dark.png', fullPage: true });
+    L('desk.errors', errs);
+    await ctx.close();
+  }
   await b.close();
+  fs.writeFileSync(OUT + '/log.txt', log.join('\n'));
 })().catch(e => { fs.writeFileSync(OUT + '/err.txt', String(e && e.stack || e)); });
