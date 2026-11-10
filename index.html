@@ -427,6 +427,11 @@ table.pf{width:100%;border-collapse:collapse;font-size:14.5px;font-variant-numer
 table.pf th{font-weight:500;font-size:12.5px;color:var(--ink-2);padding:2px 0 6px}
 table.pf td{padding:8px 0;border-top:1px solid var(--line-2)}
 table.pf .r{text-align:right;font-weight:600}
+table.vol td{padding:9px 0;vertical-align:middle}table.vol tr:first-child td{border-top:0}table.vol .r{padding-left:10px;white-space:nowrap}table.vol .faint{font-weight:500;width:38px}
+table.vol .vb{width:34%;padding:0 4px 0 10px}table.vol .vb i{display:block;height:8px;border-radius:4px;background:var(--k1);min-width:3px}
+.tiers{display:flex;align-items:center;gap:18px;flex-wrap:wrap}.tiers .donut{width:120px;height:120px;flex:none}
+.tiers ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px;font-size:14px;flex:1;min-width:170px}
+.tiers li{display:flex;align-items:center;gap:8px}.tiers li b{margin-left:auto;font-variant-numeric:tabular-nums}.tiers .key{width:10px;height:10px;border-radius:3px;flex:none}
 .rng{position:relative;height:8px;border-radius:999px;margin:8px 0 6px;background:linear-gradient(90deg,var(--ask),var(--surface-3) 50%,var(--bid))}
 .rng i{position:absolute;top:-4px;width:4px;height:16px;margin-left:-2px;border-radius:2px;background:var(--ink)}
 .tv-when{margin-left:auto;font-size:12px;color:var(--ink-2);background:var(--surface-3);border-radius:999px;padding:1px 9px;white-space:nowrap}
@@ -1010,7 +1015,7 @@ html{overscroll-behavior-y:contain}
     ['https://www.dogdata.xyz', 'DOG DATA', T('холдеры, переводы, метрики — откуда трекер берёт ончейн-данные', 'holders, transfers, metrics — where this tracker gets its on-chain data')],
     ['https://c2dog.com', 'C2 Blockchain', T('публичная компания, которая копит DOG в казне', 'a public company that holds DOG in its treasury')]
   ];
-  const TABS = [['overview', T('Главное', 'Home'), 'home'], ['books', T('Стакан', 'Order book'), 'book'], ['charts', T('Графики', 'Charts'), 'candle'], ['wallets', T('Кошельки', 'Wallets'), 'wallet'], ['news', T('Новости', 'News'), 'news']];
+  const TABS = [['overview', T('Главное', 'Home'), 'home'], ['books', T('Стакан', 'Order book'), 'book'], ['charts', T('Графики', 'Charts'), 'candle'], ['wallets', T('Кошельки', 'Wallets'), 'wallet']];   // вкладки «Новости» больше нет: без доступа к X она почти всегда пустая
   const EXTRA = [['history', T('История', 'History'), 'clock'], ['help', T('Справка', 'Guide'), 'help']];
   const TITLES = Object.fromEntries(TABS.concat(EXTRA).map(t => [t[0], t[1]]));
   const ICON = {
@@ -1941,7 +1946,7 @@ html{overscroll-behavior-y:contain}
     }
 
     const fresh = freshNews();
-    if (fresh.length) out.push({ key: 'news', title: T('Новости', 'News'), icon: 'news', go: 'news', slides: fresh.length ? fresh.slice(0, 3).map(nw => `<div class="ssmall">${esc(NEWS_NAME[nw.kind] || NEWS_NAME['новость'])}${nw.src ? ', ' + esc(srcTr(nw)) : ''}</div><div class="stext">${esc(nTitle(nw))}</div>${nSum(nw) ? `<div class="ssmall">${esc(nSum(nw))}</div>` : ''}<div class="story-cta"><a class="btn" href="${esc(nw.url)}" target="_blank" rel="noopener">${T('Открыть источник', 'Open source')}</a></div>`) : [`<div class="stext">${T('За последние сутки новостей о DOG не нашлось.', 'No DOG news in the last 24 hours.')}</div><div class="ssmall">${T('Утреннее обновление каждый день ищет посты в X, листинги, делистинги и отчёты компаний. Архив — во вкладке «Новости».', 'Every morning the update looks for posts on X, listings, delistings and company reports. The archive is in the News tab.')}</div>`] });
+    if (false) out.push({ key: 'news', title: T('Новости', 'News'), icon: 'news', go: 'news', slides: fresh.length ? fresh.slice(0, 3).map(nw => `<div class="ssmall">${esc(NEWS_NAME[nw.kind] || NEWS_NAME['новость'])}${nw.src ? ', ' + esc(srcTr(nw)) : ''}</div><div class="stext">${esc(nTitle(nw))}</div>${nSum(nw) ? `<div class="ssmall">${esc(nSum(nw))}</div>` : ''}<div class="story-cta"><a class="btn" href="${esc(nw.url)}" target="_blank" rel="noopener">${T('Открыть источник', 'Open source')}</a></div>`) : [`<div class="stext">${T('За последние сутки новостей о DOG не нашлось.', 'No DOG news in the last 24 hours.')}</div><div class="ssmall">${T('Утреннее обновление каждый день ищет посты в X, листинги, делистинги и отчёты компаний. Архив — во вкладке «Новости».', 'Every morning the update looks for posts on X, listings, delistings and company reports. The archive is in the News tab.')}</div>`] });
     return out;
   }
   function sparkSvg(pts, label) {
@@ -2341,6 +2346,7 @@ html{overscroll-behavior-y:contain}
       <p class="note">${T('Цифры — из пресс-релизов компании', 'Figures come from the company’s press releases')}${S.tre && S.tre.updated ? T(', проверено ', ', checked ') + esc(dtl(S.tre.updated)) : ''}. ${T('Новые отчёты утреннее обновление добавляет само.', 'The morning update adds new reports automatically.')}</p>`);
   }
   function newsPreviewHtml() {
+    return '';
     if (!S.newsLoaded || !S.news.length) return '';
     const fresh = new Set(freshNews());
     return `<section class="group flush np" aria-label="${T('Новости', 'News')}">
@@ -3854,7 +3860,7 @@ html{overscroll-behavior-y:contain}
       if (pf) {
         const back = k => Math.max(0, L - k), pc = (A, k) => (A[L] / A[back(k)] - 1) * 100;
         const cell = v => `<td class="r ${v >= 0 ? 'up' : 'down'}">${sg(v, Math.abs(v) >= 100 ? 0 : 1)}%</td>`;
-        const rows = [[T('Неделя', 'Week'), 7], [T('Месяц', 'Month'), 30], [T('3 месяца', '3 months'), 90], [T('Год', 'Year'), 365], [T('С запуска', 'Since launch'), L]].filter(x => x[1] <= L);
+        const rows = [[T('Неделя', 'Week'), 7], [T('Месяц', 'Month'), 30], [T('3 месяца', '3 months'), 90], [T('Год', 'Year'), 365],].filter(x => x[1] <= L);
         const yr = R.D.slice(-365), hi = Math.max(...yr), lo = Math.min(...yr), cur = R.D[L], pos = hi > lo ? (cur - lo) / (hi - lo) * 100 : 50;
         pf.innerHTML = `<table class="pf"><thead><tr><th></th><th class="r">DOG</th><th class="r">BTC</th></tr></thead><tbody>${rows.map(([t, k]) => `<tr><td>${esc(t)}</td>${cell(pc(R.D, k))}${cell(pc(R.B, k))}</tr>`).join('')}</tbody></table>
           <div class="metric"><div class="mh"><span>${T('Цена в диапазоне за год', 'Price within its 1-year range')}</span><b>${fpd(cur)}</b></div>
@@ -3946,11 +3952,22 @@ html{overscroll-behavior-y:contain}
           <div class="sec-head"><h2>${T('Как менялась цена', 'How the price has moved')}</h2><p>${T('DOG и биткоин за те же сроки', 'DOG and bitcoin over the same periods')}</p></div>
           <div class="group" id="pfbox"></div>
         </div>
+        <div class="sec" id="volsec"></div>
         <div class="sec">
           <div class="sec-head"><h2>${T('DOG и биткоин', 'DOG and bitcoin')}</h2><p>${T('с запуска DOG, апрель 2024', 'since DOG’s launch, April 2024')}</p></div>
           <div class="group crbox"><div id="crstats"></div><div class="tv-leg crleg" id="crleg"></div><div class="tvchart" id="crchart"></div><div id="crread"></div></div>
         </div>
       </div>`;
+    }
+    {
+      const vs = $('#volsec'), ven = (s.venues || []).filter(v => v.v > 0).sort((a, b) => b.v - a.v), tot = ven.reduce((a, v) => a + v.v, 0);
+      if (vs) vs.innerHTML = !tot ? '' : (() => {
+        const top = ven.slice(0, 6), rest = ven.slice(6).reduce((a, v) => a + v.v, 0), mx = top[0].v;
+        const row = (nm, v) => `<tr><td>${esc(nm)}</td><td class="vb"><i style="width:${(v / mx * 100).toFixed(1)}%"></i></td><td class="r">${usd(v)}</td><td class="r faint">${n(v / tot * 100, 0)}%</td></tr>`;
+        return `<div class="sec-head"><h2>${T('Где торгуют DOG', 'Where DOG trades')}</h2><p>${T('объём за сутки', '24h volume')} — ${usd(tot)}</p></div>
+          <div class="group"><table class="pf vol"><tbody>${top.map(v => row(v.n, v.v)).join('')}${rest > 0 ? row(T('Остальные', 'Others'), rest) : ''}</tbody></table>
+          <p class="note">${T('По данным DOG DATA из сводки', 'From DOG DATA, as of the report')} ${esc(dtl(s.ts))}.</p></div>`;
+      })();
     }
     $('#ch-tf').innerHTML = Object.entries(CH_TF).map(([k, v]) => segB('chtf', k, v[1], CH.tf === k)).join('');
     const IND = [['ma', T('Средние', 'Averages')], ['bb', T('Боллинджер', 'Bollinger')], ['rsi', 'RSI'], ['macd', 'MACD']];
@@ -4119,12 +4136,22 @@ html{overscroll-behavior-y:contain}
       ${(() => { const hc = holdersCost(); if (!hc) return ''; const v = vsAvg(hc.buy); return `<div class="own-cost"><span class="t">${T('Крупные холдеры покупали и пополняли кошельки в среднем по', 'Large holders bought and topped up at an average of')} <b>${fpd(hc.buy)}</b>${v ? ` — ${T('сейчас', 'now')} <b class="${v.cls}">${v.txt}</b>` : ''}.</span><small>${T(`Ещё ${n(hc.free * 100, 0)}% их монет — с аирдропа, бесплатно, в среднюю цену не входят. ${hc.k} ${plural(hc.k, 'кошелёк', 'кошелька', 'кошельков')} топ-100 без бирж.`, `Another ${n(hc.free * 100, 0)}% of their coins came free from the airdrop and are left out. ${hc.k} top-100 wallets excluding exchanges.`)}</small></div>`; })()}</div></div>`;
   }
 
+  // сколько кошельков какого размера (по списку холдеров DOG DATA): круговая диаграмма
+  function tiersHtml(s) {
+    const t = (s.health || {}).tiers; if (!t || !t.n || !s.holders) return '';
+    const g = k => t.n[k] || 0, tot = Math.max(s.holders, g('1000000'));
+    const parts = [[T('10 млн DOG и больше', '10M DOG and more'), g('10000000'), 'var(--k1)'], [T('5–10 млн', '5–10M'), g('5000000') - g('10000000'), 'var(--k5)'],
+      [T('1–5 млн', '1–5M'), g('1000000') - g('5000000'), 'var(--accent)'], [T('меньше 1 млн', 'under 1M'), tot - g('1000000'), 'var(--surface-3)']].filter(x => x[1] >= 0);
+    return `<div class="sec"><div class="sec-head"><h2>${T('Кошельки по размеру', 'Wallets by size')}</h2><p>${T('всего', 'total')} ${n(tot)}</p></div>
+      <div class="group"><div class="tiers">${donut(parts.slice(0, 3).map(x => [x[1] / Math.max(1, g('1000000')) * 100, x[2]]))}<ul>${parts.map(x => `<li><span class="key" style="background:${x[2]}"></span>${esc(x[0])}<b>${n(x[1])}</b><span class="faint">${n(x[1] / tot * 100, x[1] / tot < 0.1 ? 1 : 0)}%</span></li>`).join('')}</ul></div>
+      <p class="note">${T('Круг — только кошельки от 1 млн DOG (их', 'The ring shows only wallets with 1M DOG or more (')}${T(' ', '')}${n(g('1000000'))}${T('); остальные 9 из 10 кошельков держат меньше.', ' of them); the other 9 in 10 wallets hold less.')} ${T('По списку холдеров DOG DATA на', 'From DOG DATA’s holder list as of')} ${esc(dtl(t.asof))}.</p></div></div>`;
+  }
   function renderWallets() {
     const s = V(), el = $('#p-wallets');
     if (!s || !s.top100) { el.innerHTML = s || S.ready ? `<div class="empty">${T('Нет данных топ-100.', 'No top-100 data.')}</div>` : skelHtml(); return; }
     const ex = s.exch || {}, pl = prevLabel(s), mid = (s.price || {}).mid;
     const maxB = Math.max(1e-9, ...(ex.by || []).map(g => g.bal));
-    let html = walletsSummaryHtml(s) + ownersHtml(s) + (s.health && s.health.rp ? healthHtml(s) : '');
+    let html = walletsSummaryHtml(s) + ownersHtml(s) + tiersHtml(s) + (s.health && s.health.rp ? healthHtml(s) : '');
     html += `<div class="sec"><div class="sec-head">${hInfo('h2', T('DOG на биржах', 'DOG on exchanges'), 'exch')}<p>${mdog(ex.bal)} DOG, ${n(ex.pct, 1)}% ${T('всех монет', 'of all coins')}${ex.d != null && Math.abs(ex.d) >= 0.05 ? `, ${T('за период', 'change')} ${sg(ex.d, 1)}${MLN}` : ''}</p></div>
       <div class="group"><div class="hbars">${hbarsHtml(ex.by, maxB)}</div></div>
       <p class="note">${T('Изменения — в миллионах DOG', 'Changes are in millions of DOG')}${pl ? T(' с ', ' since ') + esc(pl) : ''}.</p></div>`;

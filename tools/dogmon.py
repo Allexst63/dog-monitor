@@ -458,6 +458,11 @@ def build_health(mid):
             h['air'] = {'n': int(a['total_recipients']), 'hold': int(a['still_holding']), 'sold': int(a.get('sold_everything') or 0),
                         'ret': r2(a.get('retention_rate'), 1), 'bal': r2(dog(a['total_current_balance']) / 1e6, 1) if a.get('total_current_balance') else None,
                         'acc': int(a['accumulated']) if a.get('accumulated') is not None else None, 'asof': iso(t)}
+    tr = raw('dd_tiers')                # число кошельков от 10, 5 и 1 млн DOG (необязательный источник)
+    if tr:
+        tn = {k: int(v) for k, v in re.findall(r'^tier;(\d+);(\d+)', tr, re.M)}
+        if len(tn) == 3 and tn['10000000'] <= tn['5000000'] <= tn['1000000']:
+            h['tiers'] = {'n': tn, 'asof': iso(parse_time(kv(tr, 'last_updated')))}
     ch = raw('dd_chains')
     if ch:
         t = parse_time(kv(ch, 'last_updated'))

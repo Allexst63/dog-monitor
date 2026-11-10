@@ -283,6 +283,37 @@ def f_airdrop():
     return d, '\n'.join(L)
 
 
+def f_tiers():
+    """сколько кошельков держит от 10 млн, 5 млн и 1 млн DOG: список холдеров DOG DATA отсортирован по балансу,
+    поэтому место последнего кошелька с балансом не ниже порога и есть их число — ищем его делением пополам по страницам"""
+    cache = {}
+
+    def page(k):
+        if k not in cache:
+            d = get([h + f'/api/dog-rune/holders?page={k}&limit=25' for h in DD], tries=2)
+            cache[k] = (first_list(d, 'address'), d)
+            time.sleep(0.15)
+        return cache[k]
+    rows, d0 = page(1)
+    pages = int(g(d0, 'pagination', 'total_pages') or 0)
+    if not rows or pages < 10:
+        raise RuntimeError('нет списка холдеров')
+    L = [f"last_updated={s(d0.get('last_updated'))}; total={s(g(d0, 'pagination', 'total'))}"]
+    for thr in (10e6, 5e6, 1e6):
+        lo, hi = 1, pages                      # первая страница, где последний кошелёк уже ниже порога
+        while lo < hi:
+            mid = (lo + hi) // 2
+            r = page(mid)[0]
+            if r and float(r[-1].get('total_dog') or 0) >= thr:
+                lo = mid + 1
+            else:
+                hi = mid
+        r = page(lo)[0]
+        cnt = (lo - 1) * 25 + sum(1 for x in r if float(x.get('total_dog') or 0) >= thr)
+        L.append(f'tier;{int(thr)};{cnt}')
+    return {'pages': pages, 'asked': len(cache)}, '\n'.join(L)
+
+
 def f_chains():
     d = get([h + '/api/multichain/stats' for h in DD])
     L = [f"last_updated={s(d.get('last_updated'))}; total_holders={s(d.get('total_holders'))}"]
@@ -537,7 +568,7 @@ SOURCES = {
     'gate_book': f_gate_book, 'gate_ticker': f_gate_ticker, 'mexc_book': f_mexc, 'bingx_book': f_bingx,
     'bitget_book': f_bitget, 'digifinex_book': f_digifinex, 'coinw_book': f_coinw, 'btc': f_btc,
     'ohlc_1d': ohlc(1440, 365 * 86400), 'ohlc_1h': ohlc(60, 7 * 86400),
-    'dd_age': f_age, 'dd_airdrop': f_airdrop, 'dd_chains': f_chains,
+    'dd_age': f_age, 'dd_airdrop': f_airdrop, 'dd_chains': f_chains, 'dd_tiers': f_tiers,
     'ordbal': f_ordbal,           # после holders_*, stats и whales: берёт из них кандидатов
 }
 

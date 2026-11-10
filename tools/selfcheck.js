@@ -121,8 +121,7 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
     await shot('7-wallets-held');
 
     // 5. новости, история
-    await tab('news');
-    add(await page.evaluate(() => document.querySelector('#p-news').textContent.trim().length > 40), 'Новости: вкладка открывается', 'News: the tab opens');
+    add(await page.evaluate(() => !document.querySelector('#tabbar [data-tab="news"]')), 'Вкладки «Новости» нет (убрана)', 'No “News” tab (removed)');
     await page.evaluate(() => { const b = document.querySelector('[data-tab="history"]'); if (b) b.click(); });
     await page.waitForTimeout(600);
     add(await page.evaluate(() => document.querySelectorAll('#p-history tbody tr').length >= 3), 'История: список обновлений показан', 'History: the list of updates is shown');
