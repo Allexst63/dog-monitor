@@ -10,20 +10,12 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
       - name: Server-side checks
-        run: bash probe/curl.sh || true
-      - name: Browser checks from the live site
         run: |
-          npm init -y >/dev/null
-          npm i playwright@1.48.2 >/dev/null 2>&1
-          npx playwright install --with-deps chromium >/dev/null 2>&1
-          node probe/run.js || true
-          ls -la probe/out5 || true
+          mkdir -p probe/out6
+          python3 -u probe/probe6.py all 2>&1 | tee probe/out6/log.txt || true
       - name: Save results
         run: |
           git config user.name "DOG Monitor bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add probe/out5 && git commit -m "Probe results" && git push origin HEAD:probe
+          git add probe/out6 && git commit -m "Probe results" && git push origin HEAD:probe
