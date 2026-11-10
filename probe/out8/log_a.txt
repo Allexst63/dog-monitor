@@ -1,0 +1,21 @@
+== lightweight-charts
+npm tarball == jsDelivr: identical
+bcdca2a528db7c9b386918c99c544bde3eda3f0204ec2d23a64411d4cb4686c9  probe/out8/lightweight-charts.standalone.production.js
+ 11347 probe/out8/LICENSE
+    63 probe/out8/NOTICE
+180427 probe/out8/lightweight-charts.standalone.production.js
+   178 probe/out8/log_a.txt
+142331 probe/out8/typings.d.ts
+334346 total
+== TradingView symbol
+200 389806 https://www.tradingview.com/symbols/DOGUSD/?exchange=KRAKEN
+<title>DOG Price Today — DOGUSD Chart — TradingView</title>
+200 73867 https://www.tradingview.com/chart/?symbol=KRAKEN%3ADOGUSD
+<title>Live stock, index, futures, Forex and Bitcoin charts on TradingView</title>
+200 420593 https://www.tradingview.com/symbols/DOGUSDT/?exchange=GATEIO
+<title>Dog/Tether Price Today — DOGUSDT Chart — TradingView</title>
+404 156040 https://www.tradingview.com/symbols/NOSUCHPAIRXYZ/?exchange=KRAKEN
+<title>Page not found — TradingView</title>
+{"symbols_remaining":0,"symbols":[{"symbol":"DOGUSD","description":"DOG / U. S. Dollar","type":"spot","exchange":"Kraken","found_by_isin":false,"found_by_cusip":false,"currency_code":"USD","currency-logoid":"country/US","base-currency-logoid":"crypto/XTVCDOGG","logo":{"style":"single","logoid":"crypto/XTVCDOGG"},"provider_id":"kraken","source_logoid":"source/KRAKEN","source2":{"id":"KRAKEN","name":"Kraken","description":"Kraken"},"source_id":"KRAKEN","typespecs":["crypto"],"prefix":"KRAKEN"},{"symbol":"DOGEUSD.PM","description":"DOGEUSD Multi Collateral Perpetual Futures Contract","type":"swap","exchange":"Kraken","found_by_isin":false,"found_by_cusip":false,"currency_code":"USD","currency-logoid":"country/US","base-currency-logoid":"crypto/XTVCDOGE","logo":{"style":"single","logoid":"crypto/XTVCDOGE"},"provider_id":"kraken","source_logoid":"source/KRAKEN","source2":{"id":"KRAKEN","name":"Kraken","description":"Kraken"},"source_id":"KRAKEN","typespecs":["crypto","perpetual"],"prefix":"KRAKEN"},{"symbol":"DOTUSD.PM","description":"DOTUSD Multi Collateral Perpetual Futures Contract","type":"swap","exchange":"Kraken","found_by_isin":false,"found_by_cusip":false,"currency_code":"USD","
+== coinbase btc daily
+[[1794268800,74253.01,75340.23,75257.77,74525.94,1981.39557394],[1794182400,73636,75500,74756.52,75259.28,10186.63613065],[1794096000,73477,76094.99,75753.95,74754.08,3709.69063831],[1794009600,75452.88,76152.43,75731.05,75753.96,2438.26653906],[1793923200,74722,76306.26,75969.06,75731.04,8332.69452
