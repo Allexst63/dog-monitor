@@ -1,8 +1,13 @@
-name: Утреннее обновление DOG Монитора
+name: Обновление DOG Монитора
 
 on:
   schedule:
-    - cron: '41 5 * * *'     # каждый день ~05:41 UTC (GitHub может запускать с задержкой до получаса)
+    # Полная сводка 4 раза в день. Время — UTC; GitHub запускает плановые задачи с задержкой 10–50 минут.
+    # По времени UTC+1 (зимой) это примерно 7:30, 12:50, 17:50 и 22:20.
+    - cron: '41 5 * * *'      # утренняя сводка (после неё — ежедневное сообщение)
+    - cron: '11 11 * * *'     # днём
+    - cron: '11 16 * * *'     # вечером
+    - cron: '41 20 * * *'     # на ночь
   workflow_dispatch:
     inputs:
       mode:
@@ -31,12 +36,13 @@ jobs:
         if: ${{ github.event.inputs.mode != 'feed' && github.event.inputs.mode != 'wallets' }}
         env:
           DOGMON: ${{ runner.temp }}/dogmon
-          DOGMON_KIND: ${{ github.event_name == 'schedule' && 'утро' || 'запрос' }}
+          # утро — утренняя сводка, база — плановая сводка в течение дня, запрос — запуск вручную
+          DOGMON_KIND: ${{ github.event_name != 'schedule' && 'запрос' || github.event.schedule == '41 5 * * *' && 'утро' || 'база' }}
         run: python3 tools/daily.py run .
 
-      - name: Средняя цена DOG у кошельков топ-100 и история цены
+      - name: Средняя цена DOG у кошельков топ-100, история цены DOG и биткоина
         if: ${{ github.event.inputs.mode != 'feed' }}
-        continue-on-error: true      # не мешает утренней сводке: при ошибке остаётся вчерашний расчёт
+        continue-on-error: true      # не мешает сводке: при ошибке остаётся прошлый расчёт
         timeout-minutes: 12
         run: python3 tools/costbasis.py .
 
@@ -46,6 +52,18 @@ jobs:
         env:
           X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
         run: python3 tools/newsfeed.py data/feed.json 7
+
+      - name: Автопроверка сайта в браузере (со свежими данными, до выкладки)
+        id: selfcheck
+        if: ${{ github.event.inputs.mode != 'feed' }}
+        continue-on-error: true      # итог пишется в data/selfcheck.json и виден на сайте; сводку не задерживает
+        timeout-minutes: 8
+        run: |
+          mkdir -p "$RUNNER_TEMP/pw" && cd "$RUNNER_TEMP/pw"
+          npm init -y >/dev/null 2>&1
+          npm i --no-audit --no-fund playwright-core@1.48.2 >/dev/null 2>&1
+          cd "$GITHUB_WORKSPACE"
+          NODE_PATH="$RUNNER_TEMP/pw/node_modules" node tools/selfcheck.js . data/selfcheck.json
 
       - name: Выкладка на сайт
         run: |
@@ -59,6 +77,17 @@ jobs:
             git push origin HEAD:main && exit 0
             git pull --rebase origin main
           done
+          exit 1
+
+      - name: Проверка выкладки (живой сайт отдаёт новую сводку)
+        if: ${{ github.event.inputs.mode != 'feed' && github.event.inputs.mode != 'wallets' }}
+        timeout-minutes: 12
+        run: python3 tools/livecheck.py . https://allexst63.github.io/dog-monitor/
+
+      - name: Итог автопроверки
+        if: ${{ always() && steps.selfcheck.outcome == 'failure' }}
+        run: |
+          echo "::error::Автопроверка сайта нашла проблемы — см. шаг «Автопроверка сайта в браузере» и data/selfcheck.json"
           exit 1
 
       - name: Сырые ответы источников (для проверки)

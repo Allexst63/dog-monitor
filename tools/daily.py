@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """DOG Монитор — ежедневное обновление сайта без участия человека.
 
-    python3 tools/daily.py run  <site_dir>              сбор данных → расчёт → data/ сайта (GitHub Actions, каждое утро)
+    python3 tools/daily.py run  <site_dir>              сбор данных → расчёт → data/ сайта (GitHub Actions, 4 раза в день)
     python3 tools/daily.py news <site_dir> <news.json>  добавить новости (их отбирает задача Claude) в data/news.json
     python3 tools/daily.py message <site_dir> [статус]  короткое сообщение по текущей сводке сайта
     python3 tools/daily.py sync <site_dir> <db_dir> <out_dir>  список записей для базы дашборда (ArtifactData batch):
@@ -22,8 +22,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 BASE = os.environ.get('DOGMON', '/tmp/dogmon')
 RAW, PREV, OUT, CFG = (os.path.join(BASE, d) for d in ('raw', 'prev', 'out', 'cfg'))
 NOW = dt.datetime.now(dt.timezone.utc)
-# плановый запуск — «утренняя сводка», запуск вручную — «сводка по запросу» (так и подписывается на сайте)
-KIND = os.environ.get('DOGMON_KIND') if os.environ.get('DOGMON_KIND') in ('утро', 'запрос') else 'утро'
+# плановые запуски: утренний — «утренняя сводка» (утро), остальные в течение дня — «сводка» (база);
+# запуск вручную — «сводка по запросу» (так и подписывается на сайте)
+KIND = os.environ.get('DOGMON_KIND') if os.environ.get('DOGMON_KIND') in ('утро', 'база', 'запрос') else 'утро'
+KIND_HEAD = {'утро': 'Автоматическое утреннее обновление', 'база': 'Плановое обновление в течение дня', 'запрос': 'Обновление по запросу'}
 
 
 def jload(p, default=None):
@@ -59,7 +61,8 @@ def prepare(site):
     shutil.copy(os.path.join(HERE, 'dogmon.py'), os.path.join(BASE, 'dogmon.py'))
     shutil.copy(os.path.join(HERE, 'labels.json'), os.path.join(CFG, 'config', 'labels.json'))
     data = os.path.join(site, 'data')
-    snaps = sorted(glob.glob(os.path.join(data, 'snapshots', '*.json')), reverse=True)[:3]
+    # сводки за последние ~3 дня: плановая сводка сравнивается со сводкой суточной давности (dogmon.load_prev)
+    snaps = sorted(glob.glob(os.path.join(data, 'snapshots', '*.json')), reverse=True)[:14]
     os.makedirs(os.path.join(PREV, 'snapshots'), exist_ok=True)
     for p in snaps:
         shutil.copy(p, os.path.join(PREV, 'snapshots', os.path.basename(p)))
@@ -114,7 +117,7 @@ def audit(s, fetch_ok, fetch_all, failed, looked, refetched):
     ok = sum(1 for c in ch if c.get('ok'))
     books = s.get('books') or {}
     names = {'kraken': 'Kraken', 'gate': 'Gate', 'mexc': 'MEXC', 'bingx': 'BingX', 'coinw': 'CoinW', 'digifinex': 'DigiFinex', 'bitget': 'Bitget'}
-    items = [f'Автоматическое утреннее обновление: проверка данных {ok} из {len(ch)}',
+    items = [f'{KIND_HEAD.get(KIND, KIND_HEAD["утро"])}: проверка данных {ok} из {len(ch)}',
              f'Источники: получено {fetch_ok} из {fetch_all}' + (f' (повторно запрошено: {len(refetched)})' if refetched else ''),
              f"Стаканы {len(books)} из 7 бирж: " + ', '.join(names.get(k, k) for k in books)]
     closed = s.get('closed') or {}
@@ -189,6 +192,27 @@ def message(site, status=None):
     shutil.copy(os.path.join(site, 'data', 'live.json'), os.path.join(OUT, 'snapshot.json'))
     jdump([], os.path.join(OUT, 'writes.json'))
     print(sh(os.path.join(BASE, 'dogmon.py'), 'message', *([status] if status else [])).strip())
+    line = selfcheck_line(site)
+    if line:
+        print(line)
+
+
+def selfcheck_line(site):
+    """итог автопроверки сайта (tools/selfcheck.js → data/selfcheck.json): одна строка для сообщения"""
+    sc = jload(os.path.join(site, 'data', 'selfcheck.json'))
+    if not isinstance(sc, dict) or not sc.get('n'):
+        return None
+    try:
+        t = dt.datetime.strptime(sc['ts'][:19], '%Y-%m-%dT%H:%M:%S').replace(tzinfo=dt.timezone.utc)
+    except Exception:
+        return None
+    when = t.strftime('%d.%m %H:%M UTC')
+    bad = [x.get('t', '') for x in sc.get('items') or [] if not x.get('ok')]
+    if (NOW - t).total_seconds() > 36 * 3600:
+        return f'⚠️ Самопроверка сайта давно не запускалась (последняя — {when})'
+    if bad:
+        return f"⚠️ Самопроверка сайта ({when}): {sc.get('okN')}/{sc.get('n')} — " + '; '.join(bad[:2])
+    return f"✅ Самопроверка сайта: {sc.get('okN')}/{sc.get('n')} ({when})"
 
 
 def sync(site, db, out):

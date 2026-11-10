@@ -293,20 +293,57 @@ def f_chains():
 
 
 # ---------- свежие балансы топ-кошельков из блокчейна ----------
-# DOG DATA иногда днями не обновляет топ-100 (/api/dog-rune/holders). Тогда берём балансы DOG прямо из индекса рун
+# DOG DATA иногда днями не обновляет топ-100 (/api/dog-rune/holders). Поэтому балансы DOG берём прямо из индекса рун
 # ordinals.com (официальный обозреватель ord): /address/<адрес> с Accept: application/json отдаёт runes_balances.
-# Кандидаты в топ-100: вчерашний топ-100 сайта, топ-100 и топ-10 DOG DATA, участники переводов от 5 млн DOG.
-# Чтобы войти в топ-100, нужно десятки миллионов DOG — такой приход виден в переводах от 5 млн.
+# ordinals.com стоит за балансировщиком, и больше половины его серверов отвечают «406 JSON API disabled» — это не лимит
+# и не ошибка адреса: тот же запрос через долю секунды попадает на другой сервер и проходит. Поэтому спрашиваем до 16 раз.
+# Если адрес так и не ответил — второй независимый источник: API кошелька Xverse (rune-balance). Им же сверяем
+# несколько адресов, чтобы убедиться, что балансы настоящие (строка xcheck).
+# Кандидаты в топ-100: вчерашний топ-100 сайта, места 1–150 и топ-10 DOG DATA, участники переводов от 5 млн DOG.
+# Чтобы войти в топ-100, нужны десятки миллионов DOG — такой приход виден в переводах от 5 млн.
 RUNE = 'DOG•GO•TO•THE•MOON'
+RUNE_ID = '840000:3'
 RAWDIR = [None]
+ORD_TRIES = 10          # попыток на адрес: отвечает примерно каждая третья-восьмая (остальные серверы — «406»)
+ORD_GAP = 0.4           # секунд между запросами к ordinals.com (все потоки вместе) — чтобы не упереться в лимит
+ORD_BUDGET = 150        # секунд на опрос ordinals.com (сначала самые крупные); кто не успел — спрашиваем у Xverse
+XV_GAP = 0.5
+XV_BUDGET = 120
+REUSE_MIN = 20          # повторный запуск в той же сводке: балансы моложе стольких минут заново не спрашиваем
 
 
-def ord_balance(a, tries=3):
+class Pace:
+    """общий для всех потоков интервал между запросами и общая пауза, если сервер просит притормозить"""
+
+    def __init__(self, gap):
+        import threading
+        self.gap, self.next, self.lock = gap, 0.0, threading.Lock()
+
+    def wait(self):
+        with self.lock:
+            now = time.time()
+            t = max(now, self.next)
+            self.next = t + self.gap
+        if t > now:
+            time.sleep(t - now)
+
+    def hold(self, secs):
+        with self.lock:
+            self.next = max(self.next, time.time() + secs)
+
+
+def ord_balance(a, pace=None, deadline=None, stat=None, tries=ORD_TRIES):
     last = None
+    stat = stat if stat is not None else {}
     for i in range(tries):
+        if stat.get('blocked') or (deadline and time.time() > deadline):
+            raise RuntimeError('ordinals.com: ' + ('лимит запросов' if stat.get('blocked') else 'не успел за отведённое время'))
+        if pace:
+            pace.wait()
+        stat['req'] = stat.get('req', 0) + 1
         try:
             req = urllib.request.Request(f'https://ordinals.com/address/{a}', headers={'User-Agent': UA, 'Accept': 'application/json'})
-            with urllib.request.urlopen(req, timeout=60) as r:
+            with urllib.request.urlopen(req, timeout=30) as r:
                 d = json.loads(r.read().decode('utf-8'))
             rb = d.get('runes_balances') if isinstance(d, dict) else None
             if rb is None:
@@ -315,10 +352,53 @@ def ord_balance(a, tries=3):
                 if isinstance(row, (list, tuple)) and len(row) >= 2 and row[0] == RUNE:
                     return str(row[1])
             return '0'
+        except urllib.error.HTTPError as e:
+            last = f'HTTP {e.code}'
+            if e.code == 406:                       # попали на сервер без JSON — следующий запрос уйдёт на другой
+                stat['n406'] = stat.get('n406', 0) + 1
+                continue
+            if e.code in (403, 429, 503):           # просят притормозить: общая пауза; повторяется — уходим к запасному источнику
+                stat['limit'] = stat.get('limit', 0) + 1
+                if stat['limit'] >= 10:
+                    stat['blocked'] = True
+                if pace:
+                    pace.hold(8)
+                continue
+            time.sleep(1)
         except (urllib.error.URLError, ValueError, TimeoutError, OSError) as e:
-            last = e
-            time.sleep(2 + 3 * i)
-    raise RuntimeError(f'{a}: {last}')
+            last = str(e)[:80]
+            time.sleep(1)
+    raise RuntimeError(f'ordinals.com: {last}')
+
+
+def xverse_balance(a, pace=None, deadline=None, tries=2):
+    """баланс DOG адреса по данным кошелька Xverse (второй независимый индекс рун)"""
+    from decimal import Decimal
+    last = None
+    for i in range(tries):
+        if deadline and time.time() > deadline:
+            raise RuntimeError('xverse: не успел за отведённое время')
+        if pace:
+            pace.wait()
+        try:
+            req = urllib.request.Request(f'https://api-3.xverse.app/v2/address/{a}/rune-balance?includeUnconfirmed=false',
+                                         headers={'User-Agent': UA, 'Accept': 'application/json'})
+            with urllib.request.urlopen(req, timeout=20) as r:
+                d = json.loads(r.read().decode('utf-8'))
+            if not isinstance(d, list):
+                raise ValueError('ответ не список')
+            for row in d:
+                if isinstance(row, dict) and (row.get('id') == RUNE_ID or row.get('runeName') == RUNE):
+                    return format(Decimal(int(row['amount'])).scaleb(-int(row.get('divisibility', 5))), 'f')
+            return '0'
+        except urllib.error.HTTPError as e:
+            last = f'HTTP {e.code}'
+            if e.code in (403, 429) and pace:
+                pace.hold(6)
+        except (urllib.error.URLError, ValueError, TypeError, KeyError, TimeoutError, OSError) as e:
+            last = str(e)[:80]
+            time.sleep(1)
+    raise RuntimeError(f'xverse: {last}')
 
 
 def f_ordbal():
@@ -344,6 +424,13 @@ def f_ordbal():
             p = ln.split(';')
             if len(p) >= 3 and p[0].isdigit():
                 add(p[1], 'dd', float(p[2]) if p[2] not in ('', 'null') else None)
+    for k in (5, 6):                      # места 101–150 DOG DATA: соседи по границе топ-100 (необязательно)
+        try:
+            d = get([h + f'/api/dog-rune/holders?page={k}&limit=25' for h in DD], tries=2)
+            for h in first_list(d, 'address'):
+                add(h.get('address'), 'dd150', float(h['total_dog']) if h.get('total_dog') is not None else None)
+        except Exception as e:
+            print(f'ORDBAL кандидаты, страница {k}: {str(e)[:120]}')
     for ln in text('stats').splitlines():
         p = ln.split(';')
         if len(p) >= 3 and p[0].isdigit():
@@ -362,24 +449,73 @@ def f_ordbal():
     if len(cand) < 100:
         raise RuntimeError(f'мало кандидатов: {len(cand)}')
     t0 = time.time()
-    res, err = {}, {}
+    res, src, err = {}, {}, {}
+    # повторный запрос в той же сводке: уже полученные несколько минут назад балансы заново не спрашиваем
+    old = text('ordbal')
+    if old:
+        import re
+        m = re.search(r'ts=(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ)', old)
+        try:
+            age = time.time() - __import__('calendar').timegm(time.strptime(m.group(1), '%Y-%m-%dT%H:%M:%SZ')) if m else 1e9
+        except ValueError:
+            age = 1e9
+        if 0 <= age < REUSE_MIN * 60:
+            for ln in old.splitlines():
+                p = ln.split(';')
+                if len(p) >= 2 and p[0] in cand:
+                    try:
+                        float(p[1])
+                    except ValueError:
+                        continue
+                    res[p[0]], src[p[0]] = p[1], (p[3] if len(p) > 3 and p[3] in ('ord', 'xv') else 'ord')
+    reused = len(res)
+    todo = [a for a in cand if a not in res]
+    # сначала те, кто важнее для топ-100 (по последнему известному балансу), — если время выйдет, не ответят только мелкие
+    todo.sort(key=lambda a: -(cand[a]['b'] or 0))
+    stat = {}
+    pace, dl = Pace(ORD_GAP), time.time() + ORD_BUDGET
 
     def one(a):
-        time.sleep(0.15)
-        return a, ord_balance(a)
-    with cf.ThreadPoolExecutor(max_workers=4) as ex:
-        futs = [ex.submit(one, a) for a in cand]
+        return a, ord_balance(a, pace, dl, stat)
+    miss = {}
+    with cf.ThreadPoolExecutor(max_workers=3) as ex:
+        futs = {ex.submit(one, a): a for a in todo}
         for f in cf.as_completed(futs):
             try:
                 a, b = f.result()
-                res[a] = b
+                res[a], src[a] = b, 'ord'
             except Exception as e:
-                err[str(e).split(':')[0]] = str(e)[:120]
+                miss[futs[f]] = str(e)[:120]
+    t_ord = time.time() - t0
+    # кто не ответил — спрашиваем у второго источника
+    xp, xdl = Pace(XV_GAP), time.time() + XV_BUDGET
+    for a in sorted(miss, key=lambda a: -(cand[a]['b'] or 0)):
+        try:
+            res[a], src[a] = xverse_balance(a, xp, xdl), 'xv'
+        except Exception as e:
+            err[a] = f'{miss[a]}; {str(e)[:100]}'
+    # сверка со вторым источником: 6 адресов с разных мест списка, расхождение до 0,5% (или 1 млн DOG) — норма
+    ranked = sorted((a for a in res if src[a] == 'ord' and float(res[a]) > 0), key=lambda a: -float(res[a]))
+    xc_ok, xc_bad, xc_err = 0, [], 0
+    for a in ranked[10:100:15][:6]:
+        try:
+            xb, ob = float(xverse_balance(a, xp, time.time() + 25, tries=1)), float(res[a])
+            if abs(xb - ob) <= max(1e6, ob * 0.005):
+                xc_ok += 1
+            else:
+                xc_bad.append(f'{a[:10]}… {ob / 1e6:.2f}M/{xb / 1e6:.2f}M')
+        except Exception:
+            xc_err += 1
     ts = dt_iso(time.time())
-    L = [f'ts={ts}; asked={len(cand)}; ok={len(res)}; failed={len(err)}; secs={time.time() - t0:.0f}']
-    L += [f'{a};{b};{",".join(sorted(cand[a]["why"]))}' for a, b in sorted(res.items(), key=lambda kv: -float(kv[1]))]
+    n_xv = sum(1 for v in src.values() if v == 'xv')
+    L = [f'ts={ts}; asked={len(cand)}; ok={len(res)}; failed={len(err)}; xverse={n_xv}; '
+         f'xcheck={xc_ok}/{xc_ok + len(xc_bad)}; xcheck_err={xc_err}; reused={reused}; requests={stat.get("req", 0)}; '
+         f'no_json={stat.get("n406", 0)}; limited={stat.get("limit", 0)}; secs_ord={t_ord:.0f}; secs={time.time() - t0:.0f}']
+    if xc_bad:
+        L.append('XBAD;' + ' | '.join(xc_bad))
+    L += [f'{a};{b};{",".join(sorted(cand[a]["why"]))};{src[a]}' for a, b in sorted(res.items(), key=lambda kv: -float(kv[1]))]
     L += [f'ERR;{a};{cand.get(a, {}).get("b") or 0}' for a in err]
-    return {'asked': len(cand), 'ok': len(res), 'failed': err}, '\n'.join(L)
+    return {'asked': len(cand), 'ok': len(res), 'xverse': n_xv, 'failed': err, 'stat': stat, 'xcheck': [xc_ok, xc_bad, xc_err]}, '\n'.join(L)
 
 
 def dt_iso(t):

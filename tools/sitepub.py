@@ -12,8 +12,9 @@ import os
 import re
 import sys
 
-KEEP_SNAPSHOTS = 60     # полных сводок в архиве сайта
-KEEP_HIST = 400         # строк истории
+KEEP_SNAPSHOTS = 60     # дней в архиве сводок сайта
+KEEP_FULL_DAYS = 3       # за столько последних дней храним все сводки, дальше — по одной в день
+KEEP_HIST = 360         # строк истории (4 сводки в день — три месяца)
 KEEP_NEWS = 300         # новостей
 STRIP = ('report',)     # служебный текст для Telegram-отчёта на сайте не нужен
 ID_RE = re.compile(r'^[\w.:-]{1,80}$')
@@ -69,14 +70,22 @@ def apply(site, coll, doc_id, data):
 
 
 def prune(site):
+    """Архив сводок: за последние KEEP_FULL_DAYS дней — все (сайт обновляется несколько раз в день, и каждая сводка
+    сравнивается со сводкой суточной давности), за более ранние дни — по одной, последней за день; всего не больше
+    KEEP_SNAPSHOTS дней. Текущую сводку не трогаем."""
     sd = os.path.join(site, 'data', 'snapshots')
     if not os.path.isdir(sd):
         return 0
     live = jload(os.path.join(site, 'data', 'live.json')) if os.path.exists(os.path.join(site, 'data', 'live.json')) else {}
     files = sorted((f for f in os.listdir(sd) if f.endswith('.json')), reverse=True)
-    removed = 0
-    for f in files[KEEP_SNAPSHOTS:]:
-        if f[:-5] != live.get('id'):
+    days = sorted({f[:10] for f in files}, reverse=True)
+    full, keep_days = set(days[:KEEP_FULL_DAYS]), set(days[:KEEP_SNAPSHOTS])
+    seen, removed = set(), 0
+    for f in files:                     # от новых к старым: первая встреченная за день — последняя сводка этого дня
+        day = f[:10]
+        keep = day in full or (day in keep_days and day not in seen)
+        seen.add(day)
+        if not keep and f[:-5] != live.get('id'):
             os.remove(os.path.join(sd, f))
             removed += 1
     return removed

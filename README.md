@@ -2,36 +2,46 @@
 
 **https://allexst63.github.io/dog-monitor/** — an unofficial tracker for **DOG•GO•TO•THE•MOON** (Bitcoin rune 840000:3):
 live price and full-history chart, an exchange-style order book across 7 exchanges (real prices, 0.0000001–0.0001 grouping,
-live updates, trades, depth, a plain “who’s stronger near the price” readout), TradingView-style charts (candles with RSI and MACD
-panes, delta/CVD from trades, DOG vs bitcoin since launch), the top 100 wallets with daily balances and average cost, how DOG is held,
+live updates, trades, depth, a plain “who’s stronger near the price” readout), TradingView-style charts (candles from 15 minutes to 1 week with RSI and MACD
+panes, DOG vs bitcoin since launch), the top 100 wallets with daily balances and average cost, how DOG is held,
 C2 Blockchain holdings and news — in plain words. English by default, Russian in the “⋯” menu (or `?lang=ru`).
-A full report is built every morning by GitHub Actions (wallet balances straight from the blockchain); on top of it, every time
-the site opens or you tap **Update**, the page pulls fresh order books, holders and the price chart and checks itself.
+A full report is built 4 times a day by GitHub Actions (wallet balances straight from the blockchain) and checked in a real browser
+before it goes live; on top of it, every time the site opens or you tap **Update**, the page pulls fresh order books, holders and
+the price chart and checks itself. The site opens instantly from the last saved copy and refreshes in the background.
 
 Неофициальный монитор токена **DOG•GO•TO•THE•MOON** (руна Bitcoin 840000:3): цена и график, стаканы 7 бирж, графики как на бирже
-(RSI, MACD, дельта, связь с биткоином), топ-100 кошельков, «как держат DOG», запасы C2 Blockchain и новости — простыми словами.
+(свечи от 15 минут до недели, RSI, MACD, связь с биткоином), топ-100 кошельков, «как держат DOG», запасы C2 Blockchain и новости — простыми словами.
 Язык — английский по умолчанию, русский — в меню «⋯» или по ссылке `?lang=ru`.
 
 ## Как устроено
 - `index.html` — весь сайт (одна страница, без сборки).
-- `data/` — сводки в JSON. Их каждое утро кладёт автоматическое обновление (`tools/sitepub.py`); страница сама перечитывает данные раз в 5 минут.
+- `data/` — сводки в JSON. Их 4 раза в день кладёт автоматическое обновление (`tools/sitepub.py`); страница сама перечитывает данные раз в 5 минут.
   - `live.json` — текущая сводка, `snapshots/` — архив полных сводок (последние 60),
   - `hist.json` — история итогов, `news.json` — новости, `treasuries.json` — запасы компаний, `audit.json` — самопроверка,
   - `wallets.json` — балансы кошельков топ-100 по дням (мини-графики), `costbasis.json` — средняя цена DOG у кошельков топ-100,
-    `prices.json` — цена DOG по дням с начала торгов (Kraken, раньше — Gate): график «Всё», средняя цена, связь с биткоином.
+    `prices.json` — цена DOG по дням с начала торгов (Kraken, раньше — Gate): график «Всё», недельные свечи, средняя цена,
+    `btc.json` — цена биткоина по дням (Coinbase) для графика «DOG и биткоин», `selfcheck.json` — итог автопроверки сайта.
+- `vendor/` — библиотека графиков TradingView Lightweight Charts (своя копия: графики не зависят от чужого CDN).
 - `fonts/`, `icons/`, `og.jpg`, `manifest.webmanifest` — шрифты, иконки, картинка для превью ссылки, установка на экран телефона.
 
 ## Автообновление
-- **Каждое утро (~05:41 UTC)** GitHub Actions (`.github/workflows/daily.yml`) сам собирает стаканы 7 бирж, свечи Kraken,
+- **4 раза в день** (05:41, 11:11, 16:11 и 20:41 UTC; GitHub запускает с задержкой 10–50 минут) GitHub Actions
+  (`.github/workflows/daily.yml`) сам собирает стаканы 7 бирж, свечи Kraken,
   данные DOG DATA (`tools/fetch.py`), считает сводку (`tools/dogmon.py` через `tools/daily.py`) и кладёт её в `data/`.
   Затем `tools/costbasis.py` догружает новые переводы кошельков топ-100 (DOG DATA) и пересчитывает их среднюю цену.
-  Запустить вручную: вкладка Actions → «Утреннее обновление DOG Монитора» → Run workflow
+  Запустить вручную: вкладка Actions → «Обновление DOG Монитора» → Run workflow
   (`full` — всё, `wallets` — только средние цены кошельков, `feed` — только кандидаты в новости).
-  Ручной запуск подписывается на сайте как «Сводка по запросу», плановый — «Утренняя сводка».
+  Ручной запуск подписывается на сайте как «Сводка по запросу», первый плановый — «Утренняя сводка», остальные — «Сводка».
+  Каждая плановая сводка сравнивается со сводкой суточной давности, поэтому «изменения» — всегда за сутки.
+  В архиве (`data/snapshots/`) за последние 3 дня лежат все сводки, за более ранние — по одной в день (60 дней).
 - **Свежие кошельки каждый день.** DOG DATA иногда днями не обновляет список топ-100 (`/api/dog-rune/holders`), хотя число
-  холдеров (`/api/dog-rune/stats`) и концентрация у неё свежие. Поэтому `tools/fetch.py` (источник `ordbal`) каждое утро берёт
+  холдеров (`/api/dog-rune/stats`) и концентрация у неё свежие. Поэтому `tools/fetch.py` (источник `ordbal`) при каждом обновлении берёт
   балансы DOG прямо из индекса рун **ordinals.com** (`/address/<адрес>`, `Accept: application/json` → `runes_balances`)
-  для всех кандидатов: вчерашний топ-100, топ-100 и топ-10 DOG DATA, участники переводов от 5 млн DOG. Чтобы попасть в топ-100,
+  для всех кандидатов: прошлый топ-100, места 1–150 и топ-10 DOG DATA, участники переводов от 5 млн DOG.
+  ordinals.com стоит за балансировщиком, и большинство его серверов отвечает «406 JSON API disabled» — это не лимит:
+  запрос повторяется (до 10 раз, не чаще 2,5 запроса в секунду, 150 секунд на всё), а кто так и не ответил — берётся
+  из второго независимого индекса, API кошелька **Xverse** (`/v2/address/<адрес>/rune-balance`). Шесть адресов каждый раз
+  сверяются в обоих источниках (проверка «балансы подтверждает второй источник»). Чтобы попасть в топ-100,
   нужны десятки миллионов DOG — такой приход виден в переводах. `tools/dogmon.py` пересобирает топ-100 по этим балансам
   (`top100Src: "ordinals"`), если ответили все, кто мог бы в него попасть; иначе — список DOG DATA с пометкой о дате.
   Изменения балансов на сайте подписываются «с <даты>» — с момента, на который были прошлые балансы (`prevTop`).
@@ -67,20 +77,25 @@ the site opens or you tap **Update**, the page pulls fresh order books, holders 
 - Цена за 1 млн DOG осталась только на «Главном» — для новичков; в остальных разделах цены настоящие.
 
 ## Графики (вкладка «Графики»)
-- **Цена DOG** — TradingView Lightweight Charts: свечи Kraken 15м / 1ч / 4ч / 1д с объёмом, под ними панели RSI 14 (линии 70/30)
+- **Цена DOG** — TradingView Lightweight Charts: свечи Kraken 15м / 1ч / 4ч / 1д / 1н с объёмом (недельные собираются из дневных, понедельник–воскресенье UTC), под ними панели RSI 14 (линии 70/30)
   и MACD 12/26/9 в % от цены; по желанию SMA 20/50/200 и полосы Боллинджера 20/2. Под графиком — что показывают индикаторы, словами.
   Последняя свеча двигается вместе с онлайн-ценой Kraken; свечи обновляются раз в минуту, пока вкладка открыта.
-- **Дельта** — сделки Kraken (`Trades` с `since`) и Gate (окна по 6 часов) за 24 часа или 3 дня: покупки по рынку минус продажи,
-  по отрезкам и нарастающим итогом (CVD), рядом с ценой; разбор расхождений «дельта против цены».
 - **DOG и биткоин** — с запуска DOG (апрель 2024): рост обоих (логарифмическая шкала, 100 = день запуска), корреляция дневных
-  логарифмических изменений за 30 и 90 дней и за всё время, бета за 90 дней, сколько сатоши стоит 1 DOG. Биткоин — дневные свечи
-  Coinbase (кэш в браузере на 6 часов), DOG — `data/prices.json`.
+  логарифмических изменений за 30 и 90 дней и за всё время, бета за 90 дней, сколько сатоши стоит 1 DOG. Биткоин — `data/btc.json` (дневные свечи
+  Coinbase, обновляет сервер), DOG — `data/prices.json`. Нажатие на день показывает значения всех линий в этот день —
+  над графиком и на правой шкале. Значок TradingView на любом графике открывает DOG/USD (Kraken) на TradingView.
 
 ## Как приложение
 - Пока страница открыта, она сама обновляется каждые 2 минуты (DOG DATA — реже: топ-100 и холдеры раз в 10 минут),
   перерисовка без мигания: график получает новые свечи на месте, раскрытые блоки и прокрутка сохраняются.
 - На телефоне — «потяните вниз, чтобы обновить»; на компьютере — клавиша R.
-- `sw.js` — офлайн-копия: свои файлы сначала из сети, без сети — последняя сохранённая версия страницы и данных.
+- Мгновенный запуск: `sw.js` отдаёт страницу, шрифты и библиотеку графиков из сохранённой копии и обновляет их в фоне
+  (вышла новая версия сайта — страница перезагрузится сама); последние `data/*.json` и свечи лежат в браузере
+  (localStorage), поэтому сайт сразу показывает прошлые данные, а свежие подставляет следом. Без сети — работает офлайн.
+- **Автопроверка.** Перед каждой выкладкой `tools/selfcheck.js` открывает сайт со свежими данными в Chrome (экран телефона)
+  и проходит по вкладкам: цена, графики, недельные свечи, нажатия, кошельки, «как держат DOG», русская версия, свежесть
+  данных; итог — `data/selfcheck.json` (лист «Обновление и проверка» и строка в утреннем сообщении). После выкладки
+  `tools/livecheck.py` ждёт, пока живой сайт отдаст новую сводку. Если что-то не так — задача в Actions краснеет.
 - Меню «⋯» (на компьютере — «Настройки»): обновить, язык, оформление (авто/светлое/тёмное), установка как приложение
   (Android и компьютер — системный запрос, iPhone — подсказка «На экран „Домой“»), поделиться ссылкой.
 

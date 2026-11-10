@@ -286,7 +286,9 @@ def classify(info):
 
 # ---------- прошлый снимок ----------
 def load_prev(kind):
-    """утро/база: прошлый утренний снимок (коллекция snapshots, старше 12 ч); день/тест: прошлое обновление (≥30 мин)."""
+    """утро/база (плановые сводки, несколько раз в день): сводка суточной давности — та из архива (snapshots), чей возраст
+    ближе всего к 24 ч (в пределах 16–40 ч); нет такой — последняя старше 12 ч. Так «изменения за сутки» остаются
+    изменениями за сутки, сколько бы раз в день ни обновлялся сайт. запрос/день/тест: прошлое обновление (≥30 мин)."""
     docs = []
     for path in glob.glob(os.path.join(PREV, '**', '*.json'), recursive=True):
         coll = os.path.basename(os.path.dirname(path))
@@ -309,6 +311,11 @@ def load_prev(kind):
     docs.sort(key=lambda x: x[0])
     pool = docs
     if kind in ('утро', 'база'):
+        age = lambda x: (NOW - x[0]).total_seconds() / 3600
+        day = [x for x in docs if x[3] == 'snapshots' and 16 <= age(x) <= 40]
+        if day:
+            t, d, i, c = min(day, key=lambda x: abs(age(x) - 24))
+            return d, i
         old = [x for x in docs if x[0] <= NOW - dt.timedelta(hours=12)]
         pool = [x for x in old if x[3] == 'snapshots'] or old or docs
     t, d, i, c = pool[-1]
@@ -628,11 +635,20 @@ def compute(kind):
             dd_u = {x[1]: x[3] for x in top} if dd_fresh else {}
             top = [(i + 1, a, b, dd_u.get(a, 0)) for i, (a, b) in enumerate(ranked[:100])]
             hold_t, top_src = ob_t, 'ordinals'
-            chk(True, f'топ-100: свежие балансы из блокчейна (ordinals.com) — {len(okb)} адресов, {hm(ob_t)}')
+            n_xv = int(fnum(kv(ob, 'xverse')) or 0)
+            chk(True, f'топ-100: свежие балансы из блокчейна (ordinals.com) — {len(okb)} адресов, {hm(ob_t)}'
+                + (f'; {n_xv} из них — по данным Xverse' if n_xv else ''))
+            xm = re.match(r'(\d+)/(\d+)', kv(ob, 'xcheck') or '')
+            if xm and int(xm.group(2)):
+                okx = int(xm.group(1)) == int(xm.group(2))
+                if okx:
+                    chk(True, f'топ-100: балансы подтверждает второй источник (Xverse) — {xm.group(1)} из {xm.group(2)} выборочно')
+                else:
+                    warns.append(f'ordinals.com и Xverse расходятся в балансах: совпало {xm.group(1)} из {xm.group(2)} выборочных адресов')
         elif not newer:
             pass
         else:
-            warns.append(f'ordinals.com: балансы получены не полностью ({len(okb)} адресов, без ответа {len(errs)}) — топ-100 от DOG DATA')
+            warns.append(f'блокчейн (ordinals.com, Xverse): балансы получены не полностью ({len(okb)} адресов, без ответа {len(errs)}) — топ-100 от DOG DATA')
             if 'ordbal' not in refetch:
                 refetch.append('ordbal')
     fresh('holders', hold_t, 'ordinals.com: топ-100' if top_src == 'ordinals' else 'dogdata: топ-100')

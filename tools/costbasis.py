@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """DOG Монитор — средняя цена DOG у кошельков топ-100 (для GitHub Actions, после tools/daily.py run).
 
-    python3 tools/costbasis.py <site_dir>            посчитать и записать data/prices.json и data/costbasis.json
+    python3 tools/costbasis.py <site_dir>            посчитать и записать data/prices.json, data/btc.json и data/costbasis.json
     python3 tools/costbasis.py <site_dir> --offline  то же без сети: только из уже сохранённых файлов (для проверки)
 
 Как считается «средняя цена» кошелька:
@@ -15,7 +15,8 @@
   * история переводов кэшируется в data/costbasis.json, каждое утро догружаются только новые переводы;
   * если баланс по истории не сходится с балансом DOG DATA больше чем на 0,5% — пересчитываем с нуля; если и тогда
     не сходится — см. reconcile(): при недостающих отправках цена остаётся верной (ax='out'), иначе не показываем.
-Цены DOG — только с бирж (агрегаторы цен не используются). В сеть ходит только по HTTPS к dogdata.xyz, Kraken и Gate.
+Цены DOG — только с бирж (агрегаторы цен не используются). В сеть ходит только по HTTPS к dogdata.xyz, Kraken, Gate
+и Coinbase (дневные цены биткоина для сравнения с DOG — data/btc.json).
 """
 import bisect
 import datetime as dt
@@ -92,6 +93,33 @@ def fetch_prices(old):
             px[t] = v
             src[t] = ((old or {}).get('s') or {}).get(t, '?')
     return px, src
+
+
+def fetch_btc(old):
+    """{дата: цена закрытия BTC/USD} — дневные свечи Coinbase с запуска DOG (для графика «DOG и биткоин» на сайте).
+    Первый раз грузит всю историю (по 300 дней за запрос), дальше — только последние дни."""
+    d = dict((old or {}).get('d') or {})
+    today = NOW.strftime('%Y-%m-%d')
+    have = sorted(d)
+    st = dt.datetime(2024, 4, 20, tzinfo=dt.timezone.utc)
+    if len(have) > 300:
+        st = max(st, dt.datetime.strptime(have[-1], '%Y-%m-%d').replace(tzinfo=dt.timezone.utc) - dt.timedelta(days=5))
+    n = 0
+    while st < NOW:
+        en = min(NOW, st + dt.timedelta(days=299))
+        try:
+            rows = get('https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=86400'
+                       f'&start={st:%Y-%m-%dT%H:%M:%SZ}&end={en:%Y-%m-%dT%H:%M:%SZ}')
+            for r in rows if isinstance(rows, list) else []:
+                t = dt.datetime.fromtimestamp(int(r[0]), dt.timezone.utc).strftime('%Y-%m-%d')
+                if float(r[4]) > 0 and t <= today:
+                    d[t] = float(r[4])
+                    n += 1
+        except Exception as e:
+            print('BTC ERR', str(e)[:160])
+        st = en
+        time.sleep(0.3)
+    return d, n
 
 
 def price_on(px, dates, t):
@@ -191,6 +219,16 @@ def main():
            'src': 'Kraken DOG/USD' + (f' с {k_from}' if k_from else '') + ', раньше — Gate DOG/USDT; цена закрытия дня (UTC)',
            'd': {t: [round(v, 9) for v in px[t]] for t in dates}, 's': {t: src.get(t, '?') for t in dates}},
           os.path.join(data, 'prices.json'))
+
+    if not offline:
+        try:
+            btc, nb = fetch_btc(jload(os.path.join(data, 'btc.json'), {}))
+            if len(btc) > 300:
+                jdump({'updated': NOW.strftime('%Y-%m-%dT%H:%M:%SZ'), 'src': 'Coinbase BTC-USD, цена закрытия дня (UTC)',
+                       'd': {t: btc[t] for t in sorted(btc)}}, os.path.join(data, 'btc.json'))
+            print(f'BTC: {len(btc)} дней, получено {nb}')
+        except Exception as e:
+            print('BTC ERR', str(e)[:160])
 
     old = jload(os.path.join(data, 'costbasis.json'), {}) or {}
     cache = (old.get('c') or {}) if old.get('v') == 2 else {}   # v2: средняя цена без аирдропа — пересчёт с нуля
