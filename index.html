@@ -423,6 +423,12 @@ b.accent{color:var(--accent-ink)}
 .tv-ul li .dot{transform:translateY(-1px)}
 .tv-ul b{color:var(--ink);font-weight:600}
 .crbox{display:flex;flex-direction:column;gap:12px}
+table.pf{width:100%;border-collapse:collapse;font-size:14.5px;font-variant-numeric:tabular-nums;margin-bottom:6px}
+table.pf th{font-weight:500;font-size:12.5px;color:var(--ink-2);padding:2px 0 6px}
+table.pf td{padding:8px 0;border-top:1px solid var(--line-2)}
+table.pf .r{text-align:right;font-weight:600}
+.rng{position:relative;height:8px;border-radius:999px;margin:8px 0 6px;background:linear-gradient(90deg,var(--ask),var(--surface-3) 50%,var(--bid))}
+.rng i{position:absolute;top:-4px;width:4px;height:16px;margin-left:-2px;border-radius:2px;background:var(--ink)}
 .tv-when{margin-left:auto;font-size:12px;color:var(--ink-2);background:var(--surface-3);border-radius:999px;padding:1px 9px;white-space:nowrap}
 .tv-when.pin{background:var(--ink);color:var(--surface)}
 .tv-open{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;font-size:13.5px;font-weight:500;color:var(--ink);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:7px 13px}
@@ -779,7 +785,7 @@ ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;f
 .ub-t{display:flex;flex-direction:column;min-width:0;line-height:1.35}
 .ub-t b{font-size:14px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ub-t span{font-size:12.5px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ub-btn{flex:none;background:var(--accent-soft);color:var(--accent-ink)}
+.ub-btn{flex:none;background:transparent;color:var(--ink-2);border:1px solid var(--line);font-weight:500}
 .ub-btn .ico{width:17px;height:17px}
 .updsheet{display:flex;flex-direction:column;gap:16px}
 .upd-head{display:grid;grid-template-columns:46px minmax(0,1fr);gap:12px;align-items:center;background:var(--surface-2);border-radius:18px;padding:12px 14px}
@@ -1105,7 +1111,8 @@ html{overscroll-behavior-y:contain}
   const usdM = (q, mid) => (q && mid) ? '≈ ' + usd(q * 1e6 * mid) : '';
   // цена за 1 млн DOG — понятнее, чем шесть нулей после запятой
   const m1 = p => { if (p == null || isNaN(p)) return '—'; const v = p * 1e6; return n(v, Math.abs(v - Math.round(v)) >= 0.05 ? 1 : 0); };
-  const m1s = p => p == null || isNaN(p) ? '—' : dol(m1(p));
+  const m1usd = p => p == null || isNaN(p) ? '—' : dol(m1(p));          // «1 млн DOG ≈ …» — только в шапке «Главного»
+  const m1s = p => fpd(p);                                                // везде цены настоящие, как в стакане: 0.000600
   const PER1M = T('за 1 млн', 'per 1M');
   const ONE_M = T('1 млн DOG', '1M DOG');
   function plural(k, one, few, many) { k = Math.abs(k) % 100; const k1 = k % 10; if (k > 10 && k < 20) return many; if (k1 > 1 && k1 < 5) return few; if (k1 === 1) return one; return many; }
@@ -1277,16 +1284,16 @@ html{overscroll-behavior-y:contain}
     const nm = EXN[w.x] || w.x;
     if (EN) {
       const sd = w.s === 'b' ? 'buy' : 'sell';
-      if (w.k === 'новая') return `${nm}: new ${sd} order for ${mdog(w.q1)} DOG at ${m1s(w.p)} per 1M`;
-      if (w.k === 'снята') return `${nm}: ${sd} order for ${mdog(w.q0)} DOG at ${m1s(w.p)} per 1M was pulled`;
-      if (w.k === 'переставлена') return `${nm}: ${sd} order for ${mdog(w.q0)} DOG moved from ${m1s(w.p0)} to ${m1s(w.p)} per 1M`;
-      return `${nm}: ${sd} order at ${m1s(w.p)} per 1M ${w.q1 > w.q0 ? 'grew' : 'shrank'} from ${mdog(w.q0)} to ${mdog(w.q1)} DOG`;
+      if (w.k === 'новая') return `${nm}: new ${sd} order for ${mdog(w.q1)} DOG at ${m1s(w.p)}`;
+      if (w.k === 'снята') return `${nm}: ${sd} order for ${mdog(w.q0)} DOG at ${m1s(w.p)} was pulled`;
+      if (w.k === 'переставлена') return `${nm}: ${sd} order for ${mdog(w.q0)} DOG moved from ${m1s(w.p0)} to ${m1s(w.p)}`;
+      return `${nm}: ${sd} order at ${m1s(w.p)} ${w.q1 > w.q0 ? 'grew' : 'shrank'} from ${mdog(w.q0)} to ${mdog(w.q1)} DOG`;
     }
     const sd = w.s === 'b' ? 'на покупку' : 'на продажу';
-    if (w.k === 'новая') return `${nm}: новая заявка ${sd} ${mdog(w.q1)} DOG по ${m1s(w.p)} за 1 млн`;
-    if (w.k === 'снята') return `${nm}: снята заявка ${sd} ${mdog(w.q0)} DOG по ${m1s(w.p)} за 1 млн`;
-    if (w.k === 'переставлена') return `${nm}: заявку ${sd} ${mdog(w.q0)} DOG переставили с ${m1s(w.p0)} на ${m1s(w.p)} за 1 млн`;
-    return `${nm}: заявка ${sd} по ${m1s(w.p)} за 1 млн — было ${mdog(w.q0)}, стало ${mdog(w.q1)} DOG`;
+    if (w.k === 'новая') return `${nm}: новая заявка ${sd} ${mdog(w.q1)} DOG по ${m1s(w.p)}`;
+    if (w.k === 'снята') return `${nm}: снята заявка ${sd} ${mdog(w.q0)} DOG по ${m1s(w.p)}`;
+    if (w.k === 'переставлена') return `${nm}: заявку ${sd} ${mdog(w.q0)} DOG переставили с ${m1s(w.p0)} на ${m1s(w.p)}`;
+    return `${nm}: заявка ${sd} по ${m1s(w.p)} — было ${mdog(w.q0)}, стало ${mdog(w.q1)} DOG`;
   }
 
   // ---------- навигация ----------
@@ -1546,7 +1553,7 @@ html{overscroll-behavior-y:contain}
   function setHero(price, chg, label, scrub) {
     const p = $('#hprice'), pill = $('#hpill'), lab = $('#hlabel');
     if (p && p.firstChild && price != null) p.firstChild.nodeValue = fp(price);
-    const m = $('#h1m'); if (m && price != null) m.textContent = ONE_M + ' ≈ ' + m1s(price);
+    const m = $('#h1m'); if (m && price != null) m.textContent = ONE_M + ' ≈ ' + m1usd(price);
     if (pill) { pill.className = 'pill ' + dir(chg); pill.textContent = pillTxt(chg); }
     if (lab) lab.textContent = label || '';
     const h = $('#p-overview .hero'); if (h) h.classList.toggle('scrub', !!scrub);
@@ -1790,10 +1797,10 @@ html{overscroll-behavior-y:contain}
       if (Math.max(q0, q1) < 20 || (mid && Math.abs(p / mid - 1) > 0.3)) continue;
       if ((w.k === 'выросла' || w.k === 'уменьшилась') && Math.abs(q1 - q0) < 10) continue;
       const ex = EXN[w.x] || w.x, sd = w.s === 'b' ? 'buy' : 'sell';
-      if (w.k === 'новая') out.push(`${ex}: new ${sd} order for ${mdog(q1)} DOG at ${m1s(p)} per 1M${dist(p)}`);
-      else if (w.k === 'снята') out.push(`${ex}: ${sd} order for ${mdog(q0)} DOG at ${m1s(p)} per 1M was pulled`);
-      else if (w.k === 'переставлена') out.push(`${ex}: ${sd} order for ${mdog(q1)} DOG moved from ${m1s(+w.p0 || p)} to ${m1s(p)} per 1M${dist(p)}`);
-      else out.push(`${ex}: ${sd} order at ${m1s(p)} per 1M ${q1 > q0 ? 'grew' : 'shrank'} from ${n(q0, 1)} to ${mdog(q1)} DOG`);
+      if (w.k === 'новая') out.push(`${ex}: new ${sd} order for ${mdog(q1)} DOG at ${m1s(p)}${dist(p)}`);
+      else if (w.k === 'снята') out.push(`${ex}: ${sd} order for ${mdog(q0)} DOG at ${m1s(p)} was pulled`);
+      else if (w.k === 'переставлена') out.push(`${ex}: ${sd} order for ${mdog(q1)} DOG moved from ${m1s(+w.p0 || p)} to ${m1s(p)}${dist(p)}`);
+      else out.push(`${ex}: ${sd} order at ${m1s(p)} ${q1 > q0 ? 'grew' : 'shrank'} from ${n(q0, 1)} to ${mdog(q1)} DOG`);
       if (++k >= 4) break;
     }
     for (const g of (s.exch || {}).by || []) {
@@ -1826,10 +1833,10 @@ html{overscroll-behavior-y:contain}
       if (Math.max(q0, q1) < 20 || (mid && Math.abs(p / mid - 1) > 0.3)) continue;
       if ((w.k === 'выросла' || w.k === 'уменьшилась') && Math.abs(q1 - q0) < 10) continue;
       const ex = EXN[w.x] || w.x, sd = w.s === 'b' ? 'покупку' : 'продажу';
-      if (w.k === 'новая') out.push(`${ex}: новая заявка на ${sd} ${mdog(q1)} DOG по ${m1s(p)} за 1 млн${dist(p)}`);
-      else if (w.k === 'снята') out.push(`${ex}: снята заявка на ${sd} ${mdog(q0)} DOG по ${m1s(p)} за 1 млн`);
-      else if (w.k === 'переставлена') out.push(`${ex}: заявку на ${sd} ${mdog(q1)} DOG переставили с ${m1s(+w.p0 || p)} на ${m1s(p)} за 1 млн${dist(p)}`);
-      else out.push(`${ex}: заявка на ${sd} по ${m1s(p)} за 1 млн ${q1 > q0 ? 'выросла' : 'уменьшилась'}: ${n(q0, 1)} → ${mdog(q1)} DOG`);
+      if (w.k === 'новая') out.push(`${ex}: новая заявка на ${sd} ${mdog(q1)} DOG по ${m1s(p)}${dist(p)}`);
+      else if (w.k === 'снята') out.push(`${ex}: снята заявка на ${sd} ${mdog(q0)} DOG по ${m1s(p)}`);
+      else if (w.k === 'переставлена') out.push(`${ex}: заявку на ${sd} ${mdog(q1)} DOG переставили с ${m1s(+w.p0 || p)} на ${m1s(p)}${dist(p)}`);
+      else out.push(`${ex}: заявка на ${sd} по ${m1s(p)} ${q1 > q0 ? 'выросла' : 'уменьшилась'}: ${n(q0, 1)} → ${mdog(q1)} DOG`);
       if (++k >= 4) break;
     }
     for (const g of (s.exch || {}).by || []) {
@@ -1890,7 +1897,7 @@ html{overscroll-behavior-y:contain}
     const out = [];
     const sentences = briefOf(s).split(/(?<=[.!?])\s+(?=[А-ЯA-Z0-9«])/).filter(Boolean);
     const sp = priceSeries(s, '1Д');
-    const sl = [`${moonSvg(pr.chg24, 's', 96)}<div class="ssmall">${T('DOG сейчас', 'DOG right now')}</div><div class="sbig">${fpd(pr.mid)}</div><div class="ssmall">${ONE_M} ≈ ${m1s(pr.mid)}</div>${sp ? sparkSvg(sp.pts, sp.src === 'Kraken' ? T('последние сутки на Kraken', 'last 24h on Kraken') : T('по обновлениям трекера', 'from tracker updates')) : ''}<div class="stext">${pr.chg24 != null ? (Math.abs(pr.chg24) < 0.05 ? T('За сутки цена не изменилась', 'The price is flat over 24h') : (pr.chg24 > 0 ? T('За сутки выросла на ', 'Up ') : T('За сутки снизилась на ', 'Down ')) + n(Math.abs(pr.chg24), 1) + '%' + T('', ' over 24h')) : ''}</div><div class="ssmall">${T('Капитализация около ', 'Market cap about ')}${usd(pr.cap * 1e6)}.</div>`];
+    const sl = [`${moonSvg(pr.chg24, 's', 96)}<div class="ssmall">${T('DOG сейчас', 'DOG right now')}</div><div class="sbig">${fpd(pr.mid)}</div><div class="ssmall">${ONE_M} ≈ ${m1usd(pr.mid)}</div>${sp ? sparkSvg(sp.pts, sp.src === 'Kraken' ? T('последние сутки на Kraken', 'last 24h on Kraken') : T('по обновлениям трекера', 'from tracker updates')) : ''}<div class="stext">${pr.chg24 != null ? (Math.abs(pr.chg24) < 0.05 ? T('За сутки цена не изменилась', 'The price is flat over 24h') : (pr.chg24 > 0 ? T('За сутки выросла на ', 'Up ') : T('За сутки снизилась на ', 'Down ')) + n(Math.abs(pr.chg24), 1) + '%' + T('', ' over 24h')) : ''}</div><div class="ssmall">${T('Капитализация около ', 'Market cap about ')}${usd(pr.cap * 1e6)}.</div>`];
     const chunks = [];
     for (const t of sentences) { if (chunks.length && (chunks[chunks.length - 1] + ' ' + t).length < 190) chunks[chunks.length - 1] += ' ' + t; else chunks.push(t); }
     chunks.slice(0, 3).forEach(c => sl.push(`<div class="stext">${esc(c)}</div>`));
@@ -1900,7 +1907,7 @@ html{overscroll-behavior-y:contain}
 
     const wd = (s.wallsDelta || []).slice(0, 4);
     const bw = biggestWall(s, 'b', 0.25), aw = biggestWall(s, 'a', 0.25);
-    const ws = [`<div class="ssmall">${T('Стенка — одна крупная заявка от 5 млн DOG. Такие заявки часто удерживают цену.', 'A wall is a single large order of 5M DOG or more. Walls often hold the price in place.')}</div><div class="sfacts">${bw ? `<div><span>${T('Крупнейшая на покупку', 'Largest buy order')}</span><b>${mdog(bw.q)} · ${esc(EXN[bw.x])}</b></div><div><span>${T('по цене', 'at')}</span><b>${m1s(bw.p)} ${PER1M}</b></div>` : ''}${aw ? `<div><span>${T('Крупнейшая на продажу', 'Largest sell order')}</span><b>${mdog(aw.q)} · ${esc(EXN[aw.x])}</b></div><div><span>${T('по цене', 'at')}</span><b>${m1s(aw.p)} ${PER1M}</b></div>` : ''}</div>`];
+    const ws = [`<div class="ssmall">${T('Стенка — одна крупная заявка от 5 млн DOG. Такие заявки часто удерживают цену.', 'A wall is a single large order of 5M DOG or more. Walls often hold the price in place.')}</div><div class="sfacts">${bw ? `<div><span>${T('Крупнейшая на покупку', 'Largest buy order')}</span><b>${mdog(bw.q)} · ${esc(EXN[bw.x])}</b></div><div><span>${T('по цене', 'at')}</span><b>${m1s(bw.p)}</b></div>` : ''}${aw ? `<div><span>${T('Крупнейшая на продажу', 'Largest sell order')}</span><b>${mdog(aw.q)} · ${esc(EXN[aw.x])}</b></div><div><span>${T('по цене', 'at')}</span><b>${m1s(aw.p)}</b></div>` : ''}</div>`];
     if (wd.length) ws.push(`<div class="ssmall">${T('Что поменялось', 'What changed')}${prevLabel(s) ? T(' с ', ' since ') + esc(prevLabel(s)) : ''}</div>` + wd.map(w => `<div class="stext" style="font-size:19px">${esc(wallText(w))}</div>`).join(''));
     else ws.push(`<div class="stext">${T('Крупные заявки с прошлой сводки не менялись.', 'Large orders haven’t changed since the last report.')}</div>`);
     if (d10.b != null && d10.a != null) {
@@ -1934,7 +1941,7 @@ html{overscroll-behavior-y:contain}
     }
 
     const fresh = freshNews();
-    out.push({ key: 'news', title: T('Новости', 'News'), icon: 'news', go: 'news', slides: fresh.length ? fresh.slice(0, 3).map(nw => `<div class="ssmall">${esc(NEWS_NAME[nw.kind] || NEWS_NAME['новость'])}${nw.src ? ', ' + esc(srcTr(nw)) : ''}</div><div class="stext">${esc(nTitle(nw))}</div>${nSum(nw) ? `<div class="ssmall">${esc(nSum(nw))}</div>` : ''}<div class="story-cta"><a class="btn" href="${esc(nw.url)}" target="_blank" rel="noopener">${T('Открыть источник', 'Open source')}</a></div>`) : [`<div class="stext">${T('За последние сутки новостей о DOG не нашлось.', 'No DOG news in the last 24 hours.')}</div><div class="ssmall">${T('Утреннее обновление каждый день ищет посты в X, листинги, делистинги и отчёты компаний. Архив — во вкладке «Новости».', 'Every morning the update looks for posts on X, listings, delistings and company reports. The archive is in the News tab.')}</div>`] });
+    if (fresh.length) out.push({ key: 'news', title: T('Новости', 'News'), icon: 'news', go: 'news', slides: fresh.length ? fresh.slice(0, 3).map(nw => `<div class="ssmall">${esc(NEWS_NAME[nw.kind] || NEWS_NAME['новость'])}${nw.src ? ', ' + esc(srcTr(nw)) : ''}</div><div class="stext">${esc(nTitle(nw))}</div>${nSum(nw) ? `<div class="ssmall">${esc(nSum(nw))}</div>` : ''}<div class="story-cta"><a class="btn" href="${esc(nw.url)}" target="_blank" rel="noopener">${T('Открыть источник', 'Open source')}</a></div>`) : [`<div class="stext">${T('За последние сутки новостей о DOG не нашлось.', 'No DOG news in the last 24 hours.')}</div><div class="ssmall">${T('Утреннее обновление каждый день ищет посты в X, листинги, делистинги и отчёты компаний. Архив — во вкладке «Новости».', 'Every morning the update looks for posts on X, listings, delistings and company reports. The archive is in the News tab.')}</div>`] });
     return out;
   }
   function sparkSvg(pts, label) {
@@ -2180,7 +2187,7 @@ html{overscroll-behavior-y:contain}
           <div class="hero-main"><div class="hero-pair">${T('DOG · цена в долларах', 'DOG · price in US dollars')}<span class="live" id="hlive" hidden><i></i>${T('онлайн', 'live')}</span></div>
             <div class="hero-price tnum${EN ? ' en' : ''}" id="hprice">${fp(pr.mid)}${RU ? '<small>$</small>' : ''}</div>
             <div class="hero-chg"><span class="pill ${dir(chg)}" id="hpill">${pillTxt(chg)}</span><span id="hlabel">${PER_NAME[S.period]}</span></div>
-            <div class="hero-1m" id="h1m">${ONE_M} ≈ ${m1s(pr.mid)}</div>
+            <div class="hero-1m" id="h1m">${ONE_M} ≈ ${m1usd(pr.mid)}</div>
           </div>
           ${moonSvg(pr.chg24)}
         </div>
@@ -3842,6 +3849,19 @@ html{overscroll-behavior-y:contain}
       tile(T('1 DOG в сатоши', '1 DOG in sats'), n(sat1, sat1 >= 10 ? 1 : 2), T(`на старте ${n(sat0, sat0 >= 10 ? 1 : 2)} · ${sg((sat1 / sat0 - 1) * 100, 0)}%`, `at launch ${n(sat0, sat0 >= 10 ? 1 : 2)} · ${sg((sat1 / sat0 - 1) * 100, 0)}%`), sat1 >= sat0 ? 'up' : 'down')
     ].join('')}</div>`;
     const dogX = R.D[L] / R.D[0], btcX = R.B[L] / R.B[0];
+    {
+      const pf = $('#pfbox');
+      if (pf) {
+        const back = k => Math.max(0, L - k), pc = (A, k) => (A[L] / A[back(k)] - 1) * 100;
+        const cell = v => `<td class="r ${v >= 0 ? 'up' : 'down'}">${sg(v, Math.abs(v) >= 100 ? 0 : 1)}%</td>`;
+        const rows = [[T('Неделя', 'Week'), 7], [T('Месяц', 'Month'), 30], [T('3 месяца', '3 months'), 90], [T('Год', 'Year'), 365], [T('С запуска', 'Since launch'), L]].filter(x => x[1] <= L);
+        const yr = R.D.slice(-365), hi = Math.max(...yr), lo = Math.min(...yr), cur = R.D[L], pos = hi > lo ? (cur - lo) / (hi - lo) * 100 : 50;
+        pf.innerHTML = `<table class="pf"><thead><tr><th></th><th class="r">DOG</th><th class="r">BTC</th></tr></thead><tbody>${rows.map(([t, k]) => `<tr><td>${esc(t)}</td>${cell(pc(R.D, k))}${cell(pc(R.B, k))}</tr>`).join('')}</tbody></table>
+          <div class="metric"><div class="mh"><span>${T('Цена в диапазоне за год', 'Price within its 1-year range')}</span><b>${fpd(cur)}</b></div>
+          <div class="rng"><i style="left:${Math.max(0, Math.min(100, pos)).toFixed(1)}%"></i></div>
+          <div class="lg" style="justify-content:space-between"><span>${T('минимум', 'low')} ${fpd(lo)} · ${sg((cur / lo - 1) * 100, 0)}%</span><span>${T('максимум', 'high')} ${fpd(hi)} · ${sg((cur / hi - 1) * 100, 0)}%</span></div></div>`;
+      }
+    }
     rd.innerHTML = `<ul class="tv-ul">
       <li><i class="dot" style="background:var(--accent)"></i><span>${T(`С ${esc(dml(dOf(d0)))} ${R.days[0].slice(0, 4)} DOG ${dogX >= 1 ? 'вырос в ' + n(dogX, 1) + ' раза' : 'подешевел на ' + n((1 - dogX) * 100, 0) + '%'}, биткоин ${btcX >= 1 ? 'вырос в ' + n(btcX, 1) + ' раза' : 'подешевел на ' + n((1 - btcX) * 100, 0) + '%'}.`, `Since ${esc(dml(dOf(d0)))} ${R.days[0].slice(0, 4)}, DOG is ${dogX >= 1 ? 'up ' + n(dogX, 1) + '×' : 'down ' + n((1 - dogX) * 100, 0) + '%'}, bitcoin is ${btcX >= 1 ? 'up ' + n(btcX, 1) + '×' : 'down ' + n((1 - btcX) * 100, 0) + '%'}.`)}</span></li>
       <li><i class="dot" style="background:var(--k1)"></i><span>${T('Связь (корреляция) — от −1 до 1 по дневным изменениям цены: 1 — DOG и биткоин всегда двигаются вместе, 0 — никак не связаны, −1 — в разные стороны.', 'The link (correlation) runs from −1 to 1 on daily price changes: 1 — DOG and bitcoin always move together, 0 — unrelated, −1 — opposite ways.')}</span></li>
@@ -3921,6 +3941,10 @@ html{overscroll-behavior-y:contain}
           <div class="chips" id="ch-ind" role="group" aria-label="${T('Индикаторы', 'Indicators')}"></div>
           <div class="group tvbox"><div class="tv-leg" id="tvleg"></div><div class="tvchart" id="tvchart"></div></div>
           <div class="group tv-read" id="tvread"></div>
+        </div>
+        <div class="sec">
+          <div class="sec-head"><h2>${T('Как менялась цена', 'How the price has moved')}</h2><p>${T('DOG и биткоин за те же сроки', 'DOG and bitcoin over the same periods')}</p></div>
+          <div class="group" id="pfbox"></div>
         </div>
         <div class="sec">
           <div class="sec-head"><h2>${T('DOG и биткоин', 'DOG and bitcoin')}</h2><p>${T('с запуска DOG, апрель 2024', 'since DOG’s launch, April 2024')}</p></div>
@@ -4974,7 +4998,7 @@ html{overscroll-behavior-y:contain}
     const wt = x => sameDay(toDate(x), new Date()) ? tl(x) : when(x);
     const title = run ? T('Обновляю данные…', 'Updating data…') : (u ? `${T('Онлайн-данные на', 'Live data as of')} ${esc(wt(u.ts))}` : `${esc(KIND_TITLE[s.kind] || T('Сводка', 'Report'))} · ${esc(wt(s.ts))}`);
     const sub = run ? T('стаканы, холдеры и цена — прямо с бирж и DOG DATA', 'order books, holders and price — straight from exchanges and DOG DATA')
-      : (u ? T(`проверок пройдено: ${u.okN} из ${u.n}`, `${u.okN} of ${u.n} checks passed`) : (UP.err ? (UP.err === 'check' ? T('свежие данные не прошли проверку', 'fresh data failed the check') : (navigator.onLine === false ? T('нет сети — показана последняя сводка', 'offline — showing the last report') : T('свежие данные не загрузились', 'fresh data didn’t load'))) : T('обновите, чтобы взять свежие стаканы и переводы', 'update for fresh order books and transfers')));
+      : (u ? T(`проверок пройдено: ${u.okN} из ${u.n}`, `${u.okN} of ${u.n} checks passed`) : (UP.err ? (UP.err === 'check' ? T('свежие данные не прошли проверку', 'fresh data failed the check') : (navigator.onLine === false ? T('нет сети — показана последняя сводка', 'offline — showing the last report') : T('свежие данные не загрузились', 'fresh data didn’t load'))) : T('данные обновляются сами', 'data refreshes by itself')));
     return `<div class="updbar ${run ? 'run' : (u ? (ok ? 'ok' : 'warn') : (UP.err ? 'warn' : ''))}${sync ? ' sync' : ''}" id="updbar">
         <button type="button" class="ub-info" data-updopen><span class="ub-dot" aria-hidden="true"></span><span class="ub-t"><b>${title}</b><span>${sub}</span></span></button>
         <button type="button" class="btn sm ub-btn" data-upd ${run ? 'disabled' : ''}>${ico('refresh', run ? 'spin' : '')}<span>${run ? T('Обновляю', 'Updating') : T('Обновить', 'Update')}</span></button>
