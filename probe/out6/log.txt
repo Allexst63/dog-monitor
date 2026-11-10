@@ -1,0 +1,137 @@
+
+=== hiro holders (name): HTTP 403 0.1s 43b :: https://api.hiro.so/runes/v1/etchings/DOGGOTOTHEMOON/holders?limit=60&offset=0
+   headers: {'Content-Type': 'application/json', 'cf-cache-status': 'BYPASS', 'Server': 'cloudflare', 'CF-RAY': 'a583b55018e399e2-IAD'}
+   shape: {message: str(Missing Authentication Token)}
+
+=== hiro holders (id): HTTP 403 0.0s 43b :: https://api.hiro.so/runes/v1/etchings/840000:3/holders?limit=60&offset=0
+   headers: {'Content-Type': 'application/json', 'cf-cache-status': 'BYPASS', 'Server': 'cloudflare', 'CF-RAY': 'a583b5508bb7d6e4-IAD'}
+   shape: {message: str(Missing Authentication Token)}
+
+=== hiro address: HTTP 403 0.1s 43b :: https://api.hiro.so/runes/v1/addresses/bc1pa756wm6mfe88ff3dlpk9p0qljkv45c6a36hrgyn9phraps4mtgps4pxt58/balances?limit=20
+   headers: {'Content-Type': 'application/json', 'cf-cache-status': 'BYPASS', 'Server': 'cloudflare', 'CF-RAY': 'a583b550dd8bcd1b-IAD'}
+   shape: {message: str(Missing Authentication Token)}
+
+=== hiro etching: HTTP 403 0.1s 43b :: https://api.hiro.so/runes/v1/etchings/840000:3
+   headers: {'Content-Type': 'application/json', 'cf-cache-status': 'BYPASS', 'Server': 'cloudflare', 'CF-RAY': 'a583b551281fcc0c-IAD'}
+   shape: {message: str(Missing Authentication Token)}
+
+=== dogdata address: HTTP 200 0.4s 1330b :: https://www.dogdata.xyz/api/address/bitcoin/bc1pa756wm6mfe88ff3dlpk9p0qljkv45c6a36hrgyn9phraps4mtgps4pxt58?limit=1
+   shape: {address: str(bc1pa756wm6mfe88ff3dlpk9p0qljkv45c6a36hr), status: str(holder), holder: {rank: 51, total_dog: 100775764.50154, total_amount: 10077576450154, utxo_count: 7, percentile: 0.0591}, forensic: None, labels: [2× {id: str(shark), text: str(Shark), description: str(100M+ DOG)}], entity: None, transactions: [1× {txid: str(803265f50d823c15c48bbd67c9e1bcc52aba0fe5), block_height: 889341, timestamp: str(2025-03-25T08:32:30+00:00), direction: str(in), amount_dog: 6970.10191, counterparty: str(bc1pk8g4rztfkxs2q9c40g6keeknjw6aadx3kzu4), counterparties: [1× str(bc1pk8g4rztfkxs2q9c40g6keeknjw6aadx3kzu4)], total_dog_moved: 6970.10191, fee_sats: 1428}], tx_count: 7, stats: {total_received_dog: 100775764.50153999, total_sent_dog: 0, first_tx_timestamp: str(2025-01-27T18:56:32+00:00), last_tx_timestamp: str(2025-03-25T08:32:30+00:00), first_tx_block: 881092, last_tx_block: 889341, largest_single_receive: 37573984.47986, largest_single_send: 0}, pagination: {offset: 0, limit: 1, total: 7, has_more: True, direction: str(all)}, last_updated: str(2026-11-10T08:32:44.134Z), metadata: {indexed_blocks: 975278, last_updated: str(2026-11-10T08:32:44.134Z), total_holders: 86284, block_range: {from: 840654, to: 975278}}}
+    address = "bc1pa756wm6mfe88ff3dlpk9p0qljkv45c6a36hrgyn9phraps4mtgps4pxt58"
+    status = "holder"
+    holder = {"rank": 51, "total_dog": 100775764.50154, "total_amount": 10077576450154, "utxo_count": 7, "percentile": 0.0591}
+    forensic = null
+    labels = [{"id": "shark", "text": "Shark", "description": "100M+ DOG"}, {"id": "top100", "text": "Top 100 Holder", "description": "Rank #51"}]
+    entity = null
+    tx_count = 7
+    stats = {"total_received_dog": 100775764.50153999, "total_sent_dog": 0, "first_tx_timestamp": "2025-01-27T18:56:32+00:00", "last_tx_timestamp": "2025-03-25T08:32:30+00:00", "first_tx_block": 881092, "last_tx_block": 889341, "largest_single_receive": 37573984.47986, "largest_single_send": 0}
+    pagination = {"offset": 0, "limit": 1, "total": 7, "has_more": true, "direction": "all"}
+    last_updated = "2026-11-10T08:32:44.134Z"
+    metadata = {"indexed_blocks": 975278, "last_updated": "2026-11-10T08:32:44.134Z", "total_holders": 86284, "block_range": {"from": 840654, "to": 975278}}
+
+=== dogdata top-holders: HTTP 200 1.6s 15834b :: https://www.dogdata.xyz/api/dog-rune/top-holders?limit=100
+   shape: {topHolders: [100× {address: str(bc1plzs2lltvv29k603w5m0aqma5e8w0n3pc77dt), total_amount: 1372962218016360, total_dog: 13729622180.1636, utxo_count: 906, rank: 1}]}
+   keys: {'topHolders': 'list'}
+
+=== dogdata holders limit=100: HTTP 200 0.4s 8194b :: https://www.dogdata.xyz/api/dog-rune/holders?page=1&limit=100
+   shape: {data: [25× {rank: 1, address: str(bc1plzs2lltvv29k603w5m0aqma5e8w0n3pc77dt), total_amount: 1372962218016360, total_dog: 13729622180.1636, utxo_count: 906}], pagination: {page: 1, limit: 25, total: 86284, total_pages: 3452, has_more: True}, last_updated: str(2026-11-04T18:28:25.392Z), holders: [25× {rank: 1, address: str(bc1plzs2lltvv29k603w5m0aqma5e8w0n3pc77dt), total_amount: 1372962218016360, total_dog: 13729622180.1636, utxo_count: 906}], metadata: {runeId: str(840000:3), divisibility: 5, sou
+   keys: {'data': 'list', 'pagination': 'dict', 'last_updated': '2026-11-04T18:28:25.392Z', 'holders': 'list', 'metadata': 'dict'}
+
+=== dogdata health: HTTP 200 0.3s 318b :: https://www.dogdata.xyz/api/health
+   shape: {status: str(healthy), timestamp: str(2026-11-10T08:32:46.489Z), version: str(1.0.0), checks: {redis: {status: str(ok), latency_ms: 16}, holders_data: {status: str(ok), latency_ms: 196, details: str(86284 holders, updated: 2026-11-04T18:28)}, transactions: {status: str(ok), details: str(Cached in Redis)}}, uptime_seconds: 1757}
+    {"status": "healthy", "timestamp": "2026-11-10T08:32:46.489Z", "version": "1.0.0", "checks": {"redis": {"status": "ok", "latency_ms": 16}, "holders_data": {"status": "ok", "latency_ms": 196, "details": "86284 holders, updated: 2026-11-04T18:28:25.392Z"}, "transactions": {"status": "ok", "details": "Cached in Redis"}}, "uptime_seconds": 1757}
+
+=== dogdata stats: HTTP 200 0.1s 1836b :: https://www.dogdata.xyz/api/dog-rune/stats
+   shape: {total_holders: 86324, total_utxos: 240532, total_supply: 100000000000, circulating_supply: 99975593192.83, burned: 24406807.16999817, burned_pct: 0.0244, top10_holders: [10× {rank: 1, address: str(bc1plzs2lltvv29k603w5m0aqma5e8w0n3pc77dt), total_amount: 1363172787057595, total_dog: 13631727870.57595, utxo_count: 940}], rune_id: str(840000:3), divisibility: 5, source: str(redis), last_updated: str(2026-11-10T07:28:51.335Z)}
+
+=== magiceden balance: HTTP 503 0.2s 19b :: https://api-mainnet.magiceden.dev/v2/ord/btc/runes/wallet/balances/bc1pa756wm6mfe88ff3dlpk9p0qljkv45c6a36hrgyn9phraps4mtgps4pxt58/DOGGOTOTHEMOON
+   headers: {'Content-Type': 'text/plain; charset=UTF-8', 'Server': 'cloudflare', 'cf-cache-status': 'BYPASS', 'CF-RAY': 'a583b563eaaa0556-IAD'}
+   body: b'no healthy upstream'
+
+=== magiceden rune info: HTTP 503 0.1s 19b :: https://api-mainnet.magiceden.dev/v2/ord/btc/runes/market/DOGGOTOTHEMOON/info
+   headers: {'Content-Type': 'text/plain; charset=UTF-8', 'Server': 'cloudflare', 'cf-cache-status': 'BYPASS', 'CF-RAY': 'a583b564fdd17075-IAD'}
+   body: b'no healthy upstream'
+
+=== unisat nokey: HTTP 403 0.3s 168b :: https://open-api.unisat.io/v1/indexer/address/bc1pa756wm6mfe88ff3dlpk9p0qljkv45c6a36hrgyn9phraps4mtgps4pxt58/runes/840000%3A3/balance
+   headers: {'Content-Type': 'application/json; charset=utf-8', 'Server': 'cloudflare', 'cf-cache-status': 'DYNAMIC', 'CF-RAY': 'a583b565c99ce056-IAD'}
+   shape: {code: -2004, msg: str(exceeded the request limit for unauthent), data: None}
+
+=== unisat holders nokey: HTTP 403 0.3s 168b :: https://open-api.unisat.io/v1/indexer/runes/840000%3A3/holders?start=0&limit=20
+   headers: {'Content-Type': 'application/json; charset=utf-8', 'Server': 'cloudflare', 'cf-cache-status': 'DYNAMIC', 'CF-RAY': 'a583b5678bb4202a-IAD'}
+   shape: {code: -2004, msg: str(exceeded the request limit for unauthent), data: None}
+
+=== xverse: HTTP 200 0.8s 394b :: https://api-3.xverse.app/v2/address/bc1pa756wm6mfe88ff3dlpk9p0qljkv45c6a36hrgyn9phraps4mtgps4pxt58/rune-balance?includeUnconfirmed=false
+   shape: [1× {amount: 10077576450154, divisibility: 5, symbol: str(🐕), runeName: str(DOG•GO•TO•THE•MOON), inscriptionId: str(e79134080a83fe3e0e06ed6990c5a9b63b362313), id: str(840000:3), mintable: False, priceChangePercentage24h: 1.87477, currentPrice: 0.00076688, marketCap: 76688233, totalVolume: 340915}]
+
+=== bestinslot nokey: HTTP None 0.0s 51b :: https://api.bestinslot.xyz/v3/runes/holders?rune_id=840000:3&sort_by=balance&order=desc&offset=0&count=20
+   headers: {}
+   body: b"URLError(gaierror(-2, 'Name or service not known'))"
+
+=== geniidata nokey: HTTP 200 0.2s 76b :: https://api.geniidata.com/api/1/runes/840000:3/holders?limit=20&offset=0
+   shape: {code: 1001, message: str(Invalid API key,please contact bd@geniid)}
+
+=== okx nokey: HTTP 404 0.3s 68b :: https://www.okx.com/api/v5/explorer/btc/address-balance-list?address=bc1pa756wm6mfe88ff3dlpk9p0qljkv45c6a36hrgyn9phraps4mtgps4pxt58&symbol=runes
+   headers: {'Content-Type': 'application/json;charset=UTF-8', 'CF-Ray': 'a583b5704bca578a-IAD', 'CF-Cache-Status': 'DYNAMIC', 'Server': 'cloudflare'}
+   shape: {code: str(50404), data: [0× ], msg: str(URL not found.)}
+
+=== ordiscan nokey: HTTP 402 0.2s 183b :: https://api.ordiscan.com/v1/address/bc1pa756wm6mfe88ff3dlpk9p0qljkv45c6a36hrgyn9phraps4mtgps4pxt58/runes
+   headers: {'Content-Type': 'application/json; charset=utf-8', 'cf-cache-status': 'DYNAMIC', 'Cache-Control': 'private', 'Server': 'cloudflare', 'CF-RAY': 'a583b5720c86c96c-IAD'}
+   shape: {error: {message: str(Payment required. Send a payment via the)}}
+
+=== ord rune: HTTP 406 0.1s 17b :: https://ordinals.com/rune/DOG%E2%80%A2GO%E2%80%A2TO%E2%80%A2THE%E2%80%A2MOON
+   headers: {'Content-Type': 'text/plain; charset=utf-8', 'cf-cache-status': 'BYPASS', 'Server': 'cloudflare', 'CF-RAY': 'a583b5730ca1c10e-IAD'}
+   body: b'JSON API disabled'
+
+=== kraken 1w: HTTP 200 0.2s 6672b :: https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=10080
+   shape: {error: [0× ], result: {DOGUSD: [72× [8× 1750896000]], last: 1793232000}}
+   weekly rows: 72 first [1750896000, '0.006000', '0.006010', '0.003690', '0.004260'] Thu 2025-06-26 last [1793836800, '0.000891', '0.000898', '0.000728', '0.000767'] Thu 2026-11-05
+
+=== kraken 1d: HTTP 200 0.1s 45353b :: https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440
+   shape: {error: [0× ], result: {DOGUSD: [502× [8× 1750982400]], last: 1794182400}}
+   daily rows: 502 first Fri 2025-06-27 last Tue 2026-11-10
+
+##### ordinals.com: 14 запросов подряд без пауз
+   0 HTTP 200   0.2s   85859b bal=13638848456.86529
+   1 HTTP 406   0.1s      17b bal=None
+   headers: {'Date': 'Tue, 10 Nov 2026 08:32:49 GMT', 'Content-Type': 'text/plain; charset=utf-8', 'Content-Length': '17', 'Connection': 'close', 'content-security-policy': "default-src 'self'", 'strict-transport-security': 'max-age=31536000; includeSubDomains; preload', 'access-control-allow-origin': '*', 'Nel': '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}', 'cf-cache-status': 'BYPASS', 'Report-To': '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=84VeS6xhz%2BQWwEPqqZfHQ6zRV5kzhq3ajocmqM5knsveHKT8Tib0kaM5vgK0vGQCPlkXNleqmPGoN8Kz%2BdKV92draOwPVMNhjG%2F9W10CNYsGhfD4BPxtxWDiwh1%2BGg%3D%3D"}]}', 'Server': 'cloudflare', 'CF-RAY': 'a583b576c8dcf784-IAD', 'alt-svc': 'h3=":443"; ma=86400'}
+   body: b'JSON API disabled'
+   2 HTTP 406   0.1s      17b bal=None
+   3 HTTP 200   0.3s  226019b bal=2697620897.63591
+   4 HTTP 406   0.1s      17b bal=None
+   5 HTTP 406   0.1s      17b bal=None
+   6 HTTP 200   0.1s    8438b bal=1135469082.3351
+   7 HTTP 406   0.1s      17b bal=None
+   8 HTTP 406   0.1s      17b bal=None
+   9 HTTP 200   0.1s    1194b bal=487039939.5447
+  10 HTTP 200   0.1s   13449b bal=395433882.05286
+  11 HTTP 200   0.1s    2056b bal=431439984.46
+  12 HTTP 406   0.3s      17b bal=None
+  13 HTTP 406   0.1s      17b bal=None
+##### пауза 25 с, затем 14 запросов с шагом 2 с
+   0 HTTP 406   0.1s      17b bal=None
+   headers: {'Content-Type': 'text/plain; charset=utf-8', 'Server': 'cloudflare', 'CF-RAY': 'a583b6205a13c3b9-IAD'} b'JSON API disabled'
+   1 HTTP 200   0.1s    2609b bal=319952000
+   2 HTTP 200   0.1s     676b bal=310000000
+   3 HTTP 406   0.1s      17b bal=None
+   headers: {'Content-Type': 'text/plain; charset=utf-8', 'Server': 'cloudflare', 'CF-RAY': 'a583b6486b02c10e-IAD'} b'JSON API disabled'
+   4 HTTP 406   0.1s      17b bal=None
+   headers: {'Content-Type': 'text/plain; charset=utf-8', 'Server': 'cloudflare', 'CF-RAY': 'a583b655cd3df784-IAD'} b'JSON API disabled'
+   5 HTTP 200   0.1s   48331b bal=243411942.42067
+   6 HTTP 200   0.2s   72213b bal=217685560.98126
+   7 HTTP 406   0.1s      17b bal=None
+   headers: {'Content-Type': 'text/plain; charset=utf-8', 'Server': 'cloudflare', 'CF-RAY': 'a583b67e09d8c953-IAD'} b'JSON API disabled'
+   8 HTTP 406   0.1s      17b bal=None
+   headers: {'Content-Type': 'text/plain; charset=utf-8', 'Server': 'cloudflare', 'CF-RAY': 'a583b68b6d2ec3b9-IAD'} b'JSON API disabled'
+   9 HTTP 406   0.1s      17b bal=None
+   headers: {'Content-Type': 'text/plain; charset=utf-8', 'Server': 'cloudflare', 'CF-RAY': 'a583b698bdc3c814-IAD'} b'JSON API disabled'
+  10 HTTP 406   0.1s      17b bal=None
+   headers: {'Content-Type': 'text/plain; charset=utf-8', 'Server': 'cloudflare', 'CF-RAY': 'a583b6a60bc41ffa-IAD'} b'JSON API disabled'
+  11 HTTP 200   0.1s    4404b bal=217957533.72209
+  12 HTTP 406   0.1s      17b bal=None
+   headers: {'Content-Type': 'text/plain; charset=utf-8', 'Server': 'cloudflare', 'CF-RAY': 'a583b6c0bbf9c953-IAD'} b'JSON API disabled'
+  13 HTTP 406   0.1s      17b bal=None
+   headers: {'Content-Type': 'text/plain; charset=utf-8', 'Server': 'cloudflare', 'CF-RAY': 'a583b6ce0dd77abc-IAD'} b'JSON API disabled'
+##### самые тяжёлые адреса (биржи): размер ответа
+  bc1plzs2lltvv2 HTTP 406   0.1s 17b bal=None
+  bc1pzsx4xvghxm HTTP 200   0.1s 10792b bal=3428346444.123
+  bc1pk8g4rztfkx HTTP 406   0.1s 17b bal=None
