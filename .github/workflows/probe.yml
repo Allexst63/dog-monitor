@@ -7,24 +7,19 @@ permissions:
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Library and links
-        timeout-minutes: 5
+      - name: Live site in a browser
         run: |
-          mkdir -p probe/out8
-          bash probe/round8a.sh 2>&1 | tee probe/out8/log_a.txt || true
-      - name: Save results (a)
+          sleep 150
+          mkdir -p "$RUNNER_TEMP/pw" && cd "$RUNNER_TEMP/pw" && npm init -y >/dev/null 2>&1 && npm i --no-audit --no-fund playwright-core@1.48.2 >/dev/null 2>&1
+          cd "$GITHUB_WORKSPACE" && mkdir -p probe/out9 /tmp/site/data
+          curl -sS -o /tmp/site/data/live.json "https://allexst63.github.io/dog-monitor/data/live.json?cb=$RANDOM"
+          NODE_PATH="$RUNNER_TEMP/pw/node_modules" node probe/selfcheck.js /tmp/site probe/out9/selfcheck.json --shots probe/out9 --url https://allexst63.github.io/dog-monitor/ 2>&1 | tee probe/out9/log.txt || true
+      - name: Save results
         if: always()
         run: |
           git config user.name "DOG Monitor bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add probe/out8 && git commit -m "Probe results (a)" && git push origin HEAD:probe || true
-      - name: Top-100 balances
-        timeout-minutes: 14
-        run: bash probe/round8b.sh 2>&1 | tee probe/out8/log_b.txt || true
-      - name: Save results (b)
-        if: always()
-        run: |
-          git add probe/out8 && git commit -m "Probe results (b)" && git push origin HEAD:probe || true
+          git add probe/out9 && git commit -m "Probe results" && git push origin HEAD:probe || true
