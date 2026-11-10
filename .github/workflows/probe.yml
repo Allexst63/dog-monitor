@@ -12,10 +12,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Server-side checks
         run: |
-          mkdir -p probe/out6
-          python3 -u probe/probe6.py all 2>&1 | tee probe/out6/log.txt || true
+          mkdir -p probe/out7
+          bash probe/round7.sh 2>&1 | tee probe/out7/log.txt || true
       - name: Save results
         run: |
           git config user.name "DOG Monitor bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add probe/out6 && git commit -m "Probe results" && git push origin HEAD:probe
+          git add probe/out7 && git commit -m "Probe results" && git push origin HEAD:probe
