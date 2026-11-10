@@ -10,12 +10,21 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
-      - name: Server-side checks
+      - name: Library and links
+        timeout-minutes: 5
         run: |
-          mkdir -p probe/out7
-          bash probe/round7.sh 2>&1 | tee probe/out7/log.txt || true
-      - name: Save results
+          mkdir -p probe/out8
+          bash probe/round8a.sh 2>&1 | tee probe/out8/log_a.txt || true
+      - name: Save results (a)
+        if: always()
         run: |
           git config user.name "DOG Monitor bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add probe/out7 && git commit -m "Probe results" && git push origin HEAD:probe
+          git add probe/out8 && git commit -m "Probe results (a)" && git push origin HEAD:probe || true
+      - name: Top-100 balances
+        timeout-minutes: 14
+        run: bash probe/round8b.sh 2>&1 | tee probe/out8/log_b.txt || true
+      - name: Save results (b)
+        if: always()
+        run: |
+          git add probe/out8 && git commit -m "Probe results (b)" && git push origin HEAD:probe || true
