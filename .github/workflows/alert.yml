@@ -1,0 +1,40 @@
+name: Сигнал о резком движении цены DOG
+
+on:
+  schedule:
+    - cron: '7,22,37,52 * * * *'     # каждые 15 минут (GitHub может задерживать запуск)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dogmon-alert
+  cancel-in-progress: false
+
+jobs:
+  alert:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      # состояние (о чём уже писали, кому писать) хранится в кэше Actions, а не в репозитории
+      - uses: actions/cache/restore@v4
+        with:
+          path: .alert
+          key: alert-state-${{ github.run_id }}
+          restore-keys: alert-state-
+      - name: Проверка цены и сообщение в Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          ALERT_1H: '5'
+          ALERT_24H: '10'
+        run: mkdir -p .alert && python3 tools/alert.py .alert/state.json
+      - uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: .alert
+          key: alert-state-${{ github.run_id }}
