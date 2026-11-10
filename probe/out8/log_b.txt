@@ -1,0 +1,16 @@
+FETCH ok  stats: total_holders=86322
+FETCH ok  holders_1: last_updated=2026-11-04T18:28:25.392Z
+FETCH ok  holders_2: last_updated=2026-11-04T18:28:25.392Z
+FETCH ok  holders_3: last_updated=2026-11-04T18:28:25.392Z
+FETCH ok  holders_4: last_updated=2026-11-04T18:28:25.392Z
+FETCH ok  whales: timestamp=2026-11-10T08:53:14.518Z
+FETCH ok  ordbal: ts=2026-11-10T08:59:31Z; asked=153; ok=153; failed=0; xverse=72; xcheck=5/5; xcheck_err=0; reused=0; requests=678; no_json=597; limited=0; s
+FETCH_DONE ok=7/7
+ts=2026-11-10T08:59:31Z; asked=153; ok=153; failed=0; xverse=72; xcheck=5/5; xcheck_err=0; reused=0; requests=678; no_json=597; limited=0; secs_ord=271; secs=376
+bc1plzs2lltvv29k603w5m0aqma5e8w0n3pc77dt89l5w9hurmdfgd0swdhspn;13638749389.56529;dd,prev,top10,whale;ord
+xverse rows: 72  err rows: 0  rows: 154
+{'asked': 153, 'ok': 153, 'xverse': 72, 'failed': [], 'stat': {'req': 678, 'n406': 597}, 'xcheck': [5, [], 0]}
+== second run right away (reuse)
+FETCH ok  ordbal: ts=2026-11-10T08:59:34Z; asked=153; ok=153; failed=0; xverse=72; xcheck=5/5; xcheck_err=0; reused=153; requests=0; no_json=0; limited=0; sec
+FETCH_DONE ok=1/1
+ts=2026-11-10T08:59:34Z; asked=153; ok=153; failed=0; xverse=72; xcheck=5/5; xcheck_err=0; reused=153; requests=0; no_json=0; limited=0; secs_ord=0; secs=2
