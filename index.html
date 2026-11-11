@@ -427,22 +427,21 @@ table.pf td{padding:8px 0;border-top:1px solid var(--line-2)}
 table.pf .r{text-align:right;font-weight:600}
 table.vol td{padding:9px 0;vertical-align:middle}table.vol tr:first-child td{border-top:0}table.vol .r{padding-left:10px;white-space:nowrap}table.vol .faint{font-weight:500;width:38px}
 table.vol .vb{width:34%;padding:0 4px 0 10px}table.vol .vb i{display:block;height:8px;border-radius:4px;background:var(--k1);min-width:3px}
-.trings{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:380px;margin:14px auto 0}
+.trings{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:330px;margin:10px auto 0}
 .tring{position:relative;aspect-ratio:1;width:100%}
 .tring svg{width:100%;height:100%;display:block;overflow:visible}
 .tring circle[data-tier]{cursor:pointer;pointer-events:stroke;transition:stroke-width .18s}
 .tring .c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none;line-height:1.15}
-.tring .c b{font-size:clamp(19px,6vw,25px);font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-.tring .c span{font-size:11.5px;color:var(--ink-2);margin-top:3px}
-.trc{text-align:center;font-size:12.5px;font-weight:600;color:var(--ink-2);margin-top:8px}
+.tring .c b{font-size:21px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.tring .c span{font-size:12px;color:var(--ink-2);margin-top:3px}
 .tlist{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column;gap:2px;font-size:14.5px}
 .tlist .hd{display:grid;grid-template-columns:minmax(0,1fr) 70px 58px;gap:8px;padding:0 10px 2px 28px;font-size:11.5px;color:var(--ink-3);text-align:right}
 .tlist button{width:100%;display:grid;grid-template-columns:10px minmax(0,1fr) 70px 58px;gap:8px;align-items:center;border:0;background:transparent;color:var(--ink);font:inherit;text-align:left;padding:9px 10px;border-radius:12px;cursor:pointer;font-variant-numeric:tabular-nums}
 .tlist button[aria-pressed="true"]{background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line)}
 .tlist .key{width:10px;height:10px;border-radius:3px}
-.tlist .w{text-align:right;color:var(--ink-2)}.tlist .s{text-align:right;font-weight:700}
-.tinfo{margin-top:10px;padding:12px 14px;border-radius:14px;background:var(--surface-2);font-size:14.5px;line-height:1.45}
-.tinfo b{font-variant-numeric:tabular-nums}.tinfo small{display:block;margin-top:4px;font-size:12.5px;color:var(--ink-2)}
+.tlist .w{text-align:right;color:var(--ink-2)}.tlist .s{text-align:right;font-weight:600}
+.tinfo{margin-top:10px;padding:12px 14px;border-radius:14px;background:var(--surface-2);font-size:14.5px;line-height:1.45;border-left:3px solid var(--tc,var(--line))}
+.tinfo b{font-variant-numeric:tabular-nums;font-weight:600}.tinfo small{display:block;margin-top:4px;font-size:12.5px;color:var(--ink-2)}
 .rng{position:relative;height:8px;border-radius:999px;margin:8px 0 6px;background:linear-gradient(90deg,var(--ask),var(--surface-3) 50%,var(--bid))}
 .rng i{position:absolute;top:-4px;width:4px;height:16px;margin-left:-2px;border-radius:2px;background:var(--ink)}
 .tv-when{margin-left:auto;font-size:12px;color:var(--ink-2);background:var(--surface-3);border-radius:999px;padding:1px 9px;white-space:nowrap}
@@ -4149,10 +4148,10 @@ html{overscroll-behavior-y:contain}
 
   // у кого сколько DOG: два кольца рядом — доля кошельков и доля монет одной и той же группы; нажатие выбирает группу
   function ring1(parts, sel) {
-    const r = 46, w = 13, c = 2 * Math.PI * r, gap = 2.2; let off = 0;
+    const r = 50, w = 7, c = 2 * Math.PI * r, gap = 2; let off = 0;
     const segs = parts.map(([v, col], i) => {
       const full = Math.max(0, Math.min(100, v || 0)) / 100 * c, len = Math.max(v > 0 ? 1.4 : 0, full - gap), on = sel === i;
-      const o = len > 0 ? `<circle data-tier="${i}" r="${r}" cx="60" cy="60" fill="none" stroke="${col}" stroke-width="${on ? w + 5 : w}" stroke-dasharray="${len.toFixed(2)} ${(c - len).toFixed(2)}" stroke-dashoffset="${(-off - gap / 2).toFixed(2)}"/>${full < 14 ? `<circle data-tier="${i}" r="${r}" cx="60" cy="60" fill="none" stroke="transparent" stroke-width="${w + 10}" stroke-dasharray="14 ${(c - 14).toFixed(2)}" stroke-dashoffset="${(-off - full / 2 + 7).toFixed(2)}"/>` : ''}` : '';
+      const o = len > 0 ? `<circle data-tier="${i}" r="${r}" cx="60" cy="60" fill="none" stroke="${col}" stroke-width="${on ? w + 4 : w}" stroke-linecap="butt" stroke-dasharray="${len.toFixed(2)} ${(c - len).toFixed(2)}" stroke-dashoffset="${(-off - gap / 2).toFixed(2)}"/>${full < 14 ? `<circle data-tier="${i}" r="${r}" cx="60" cy="60" fill="none" stroke="transparent" stroke-width="${w + 14}" stroke-dasharray="14 ${(c - 14).toFixed(2)}" stroke-dashoffset="${(-off - full / 2 + 7).toFixed(2)}"/>` : ''}` : '';
       off += full; return o;
     }).join('');
     return `<svg viewBox="0 0 120 120" aria-hidden="true"><g transform="rotate(-90 60 60)"><circle r="${r}" cx="60" cy="60" fill="none" stroke="var(--surface-3)" stroke-width="${w}"/>${segs}</g></svg>`;
@@ -4164,19 +4163,19 @@ html{overscroll-behavior-y:contain}
     if (t && t.n && H) {
       const tot = Math.max(H, g('1000000')), all = 100000, sums = !!t.dog;   // млн DOG
       size = { sums, asof: t.asof, tot, rows: [
-        [T('от 10 млн DOG', '10M+ DOG'), g('10000000'), sums ? d('10000000') : null, 'var(--k4)'],
+        [T('от 10 млн DOG', '10M+ DOG'), g('10000000'), sums ? d('10000000') : null, 'var(--accent)'],
         [T('5–10 млн', '5–10M'), g('5000000') - g('10000000'), sums ? d('5000000') - d('10000000') : null, 'var(--k1)'],
         [T('1–5 млн', '1–5M'), g('1000000') - g('5000000'), sums ? d('1000000') - d('5000000') : null, 'var(--k5)'],
-        [T('меньше 1 млн', 'under 1M'), tot - g('1000000'), sums ? Math.max(0, all - d('1000000')) : null, 'var(--k7)']
+        [T('меньше 1 млн', 'under 1M'), tot - g('1000000'), sums ? Math.max(0, all - d('1000000')) : null, 'var(--k-pr)']
       ].map(([name, cnt, dog, col]) => ({ name, cnt, dog, col, wp: cnt / tot * 100, sp: dog == null ? null : dog / all * 100 })) };
     }
     const c = s.conc || {}, p10 = s.top10pct || c.top10, p100 = s.top100pct || c.top100, p1k = c.top1000;
     if (H > 1000 && p10 > 0 && p100 > p10 && p1k > p100 && p1k < 100) {
       top = { tot: H, rows: [
-        [T('Топ-10', 'Top 10'), 10, p10, 'var(--k4)', null],
+        [T('Топ-10', 'Top 10'), 10, p10, 'var(--accent)', null],
         [T('Места 11–100', 'Ranks 11–100'), 90, p100 - p10, 'var(--k1)', [100, p100]],
         [T('Места 101–1000', 'Ranks 101–1,000'), 900, p1k - p100, 'var(--k5)', [1000, p1k]],
-        [T('Все остальные', 'Everyone else'), H - 1000, 100 - p1k, 'var(--k7)', null]
+        [T('Все остальные', 'Everyone else'), H - 1000, 100 - p1k, 'var(--k-pr)', null]
       ].map(([name, cnt, sp, col, cum]) => ({ name, cnt, sp, dog: sp * 1000, col, cum, wp: cnt / H * 100 })) };
     }
     return { size, top };
@@ -4188,7 +4187,7 @@ html{overscroll-behavior-y:contain}
     const sel = S.tierSel == null ? 0 : Math.min(S.tierSel, R.length - 1), x = R[sel];
     const pc = v => v == null ? '—' : n(v, v < 0.095 ? 2 : v < 9.95 ? 1 : 0) + '%', W = k => `${n(k)} ${P(k, 'кошелёк', 'кошелька', 'кошельков', 'wallet', 'wallets')}`;
     const mid = (s.price || {}).mid;
-    const one = (parts, v, cap) => `<div><div class="tring">${ring1(parts, sel)}<div class="c"><b>${pc(v)}</b></div></div><div class="trc">${cap}</div></div>`;
+    const one = (parts, v, cap) => `<div><div class="tring">${ring1(parts, sel)}<div class="c"><b>${pc(v)}</b><span>${cap}</span></div></div></div>`;
     const rings = one(R.map(r => [r.wp, r.col]), x.wp, T('кошельков', 'of wallets')) + (coins ? one(R.map(r => [r.sp, r.col]), x.sp, T('монет', 'of coins')) : '');
     let info;
     if (coins) {
@@ -4204,7 +4203,7 @@ html{overscroll-behavior-y:contain}
     return `<div class="sec" id="tiers-sec"><div class="sec-head c"><h2>${T('У кого сколько DOG', 'Who holds how much')}</h2>${D.size && D.top ? `<span class="seg" role="group" aria-label="${T('Как делить кошельки', 'How to group wallets')}">${segB('tmode', 'size', T('По размеру', 'By size'), mode === 'size')}${segB('tmode', 'top', T('Самые крупные', 'Largest'), mode === 'top')}</span>` : ''}</div>
       <div class="group"><div class="trings"${coins ? '' : ' style="grid-template-columns:minmax(0,180px);justify-content:center"'}>${rings}</div>
       <ul class="tlist"><li class="hd"><span></span><span>${T('кошельков', 'wallets')}</span><span>${coins ? T('монет', 'coins') : T('доля', 'share')}</span></li>${R.map((r, i) => `<li><button type="button" data-tier="${i}" aria-pressed="${String(i === sel)}"><span class="key" style="background:${r.col}"></span><span>${esc(r.name)}</span><span class="w">${n(r.cnt)}</span><span class="s">${pc(coins ? r.sp : r.wp)}</span></button></li>`).join('')}</ul>
-      <div class="tinfo" aria-live="polite">${info}</div>
+      <div class="tinfo" style="--tc:${x.col}" aria-live="polite">${info}</div>
       <p class="note" style="margin-top:10px">${asof}${T(`Всего кошельков: ${n(M.tot)}. Среди крупных — биржи: на их кошельках лежат монеты многих людей.`, `${n(M.tot)} wallets in total. The large ones include exchanges, whose wallets hold coins of many people.`)}</p></div></div>`;
   }
   function renderWallets() {
