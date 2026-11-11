@@ -460,9 +460,18 @@ def build_health(mid):
                         'acc': int(a['accumulated']) if a.get('accumulated') is not None else None, 'asof': iso(t)}
     tr = raw('dd_tiers')                # число кошельков от 10, 5 и 1 млн DOG (необязательный источник)
     if tr:
-        tn = {k: int(v) for k, v in re.findall(r'^tier;(\d+);(\d+)', tr, re.M)}
+        rows = re.findall(r'^tier;(\d+);(\d+)(?:;(\d+))?', tr, re.M)
+        tn = {k: int(v) for k, v, _ in rows}
         if len(tn) == 3 and tn['10000000'] <= tn['5000000'] <= tn['1000000']:
             h['tiers'] = {'n': tn, 'asof': iso(parse_time(kv(tr, 'last_updated')))}
+            # сколько монет у этих кошельков в сумме, млн DOG (необязательно: только если прошли весь список и суммы правдоподобны)
+            td = {k: float(q) for k, _, q in rows if q}
+            if len(td) == 3 and 0 < td['10000000'] <= td['5000000'] <= td['1000000'] <= SUPPLY \
+                    and td['10000000'] >= tn['10000000'] * 10e6 and td['1000000'] >= tn['1000000'] * 1e6:
+                h['tiers']['dog'] = {k: round(q / 1e6, 1) for k, q in td.items()}
+                t1000 = fnum(kv(tr, 'top1000'))
+                if t1000:
+                    h['tiers']['top1000'] = round(t1000 / SUPPLY * 100, 2)
     ch = raw('dd_chains')
     if ch:
         t = parse_time(kv(ch, 'last_updated'))

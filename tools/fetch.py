@@ -284,34 +284,69 @@ def f_airdrop():
 
 
 def f_tiers():
-    """сколько кошельков держит от 10 млн, 5 млн и 1 млн DOG: список холдеров DOG DATA отсортирован по балансу,
-    поэтому место последнего кошелька с балансом не ниже порога и есть их число — ищем его делением пополам по страницам"""
+    """сколько кошельков держит от 10 млн, 5 млн и 1 млн DOG и сколько у них монет в сумме: список холдеров DOG DATA
+    отсортирован по балансу, поэтому место последнего кошелька с балансом не ниже порога и есть их число — ищем его
+    делением пополам по страницам; затем проходим все страницы до порога 1 млн и складываем балансы (до 3 минут;
+    не успели или не сошлось — остаются только числа кошельков)"""
     cache = {}
+    ps = [25]
 
     def page(k):
         if k not in cache:
-            d = get([h + f'/api/dog-rune/holders?page={k}&limit=25' for h in DD], tries=2)
+            d = get([h + f'/api/dog-rune/holders?page={k}&limit={ps[0]}' for h in DD], tries=2)
             cache[k] = (first_list(d, 'address'), d)
             time.sleep(0.15)
         return cache[k]
+    try:                                       # страницы по 100 — вчетверо меньше запросов, если сервер так умеет
+        d = get([h + '/api/dog-rune/holders?page=1&limit=100' for h in DD], tries=1)
+        r = first_list(d, 'address')
+        if len(r) == 100 and int(g(d, 'pagination', 'total_pages') or 0) >= 10:
+            ps[0] = 100
+            cache[1] = (r, d)
+    except Exception:
+        pass
     rows, d0 = page(1)
     pages = int(g(d0, 'pagination', 'total_pages') or 0)
     if not rows or pages < 10:
         raise RuntimeError('нет списка холдеров')
+    bal = lambda x: float(x.get('total_dog') or 0)
     L = [f"last_updated={s(d0.get('last_updated'))}; total={s(g(d0, 'pagination', 'total'))}"]
+    cnt, last = {}, 1
     for thr in (10e6, 5e6, 1e6):
         lo, hi = 1, pages                      # первая страница, где последний кошелёк уже ниже порога
         while lo < hi:
             mid = (lo + hi) // 2
             r = page(mid)[0]
-            if r and float(r[-1].get('total_dog') or 0) >= thr:
+            if r and bal(r[-1]) >= thr:
                 lo = mid + 1
             else:
                 hi = mid
         r = page(lo)[0]
-        cnt = (lo - 1) * 25 + sum(1 for x in r if float(x.get('total_dog') or 0) >= thr)
-        L.append(f'tier;{int(thr)};{cnt}')
-    return {'pages': pages, 'asked': len(cache)}, '\n'.join(L)
+        cnt[thr] = (lo - 1) * ps[0] + sum(1 for x in r if bal(x) >= thr)
+        last = max(last, lo)
+    sums, seen, top1000, t0 = {}, 0, 0.0, time.time()
+    try:
+        tot = {thr: 0.0 for thr in cnt}
+        for k in range(1, last + 1):
+            if time.time() - t0 > 180:
+                raise RuntimeError('не успели')
+            for x in page(k)[0]:
+                b = bal(x)
+                if seen < 1000:
+                    top1000 += b
+                seen += 1
+                for thr in tot:
+                    if b >= thr:
+                        tot[thr] += b
+        if seen >= cnt[1e6]:
+            sums = tot
+    except Exception as e:
+        L[0] += f'; sums=нет ({e})'
+    for thr in (10e6, 5e6, 1e6):
+        L.append(f'tier;{int(thr)};{cnt[thr]}' + (f';{sums[thr]:.0f}' if sums else ''))
+    if sums and seen >= 1000:
+        L.append(f'top1000={top1000:.0f}')
+    return {'pages': pages, 'page_size': ps[0], 'asked': len(cache)}, '\n'.join(L)
 
 
 def f_chains():
