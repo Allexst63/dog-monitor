@@ -1,18 +1,9 @@
 {
- "updated": "2026-11-11T06:38:46Z",
+ "updated": "2026-11-11T10:00:39Z",
  "items": [
   {
-   "title": "10 New Coinbase Listings to Watch in 2026",
-   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af40d7917a641108eacd19840a0d82a&url=https%3a%2f%2f99bitcoins.com%2fcryptocurrency%2fnew-coinbase-listings%2f&c=12719441724415490587&mkt=en-us",
-   "src": "99Bitcoins",
-   "srcUrl": null,
-   "q": "Bitcoin runes DOG exchange listing",
-   "d": "2026-11-09",
-   "ts": "2026-11-09T02:14Z"
-  },
-  {
    "title": "Dog (Bitcoin)-Kurs aktuell",
-   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af40d78818a45c8a76f22227a018eb8&url=https%3a%2f%2fwww.btc-echo.de%2fkurs%2fdog-go-to-the-moon-rune%2f&c=7317942782322456228&mkt=en-us",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af43cc9a88f4547a188f0c7634cce29&url=https%3a%2f%2fwww.btc-echo.de%2fkurs%2fdog-go-to-the-moon-rune%2f&c=7317942782322456228&mkt=en-us",
    "src": "BTC-ECHO",
    "srcUrl": null,
    "q": "\"DOG•GO•TO•THE•MOON\"",
@@ -20,8 +11,26 @@
    "ts": "2026-11-08T07:59Z"
   },
   {
+   "title": "Core Lightning Tells Bitcoin Node Operators to Rotate Runes After New Security Fixes",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af43ccac6a04a1cbe8aa486145a241f&url=https%3a%2f%2fcoincentral.com%2fcore-lightning-tells-bitcoin-node-operators-to-rotate-runes-after-new-security-fixes%2f&c=10882310715501041477&mkt=en-us",
+   "src": "CoinCentral",
+   "srcUrl": null,
+   "q": "\"$DOG\" bitcoin rune",
+   "d": "2026-11-06",
+   "ts": "2026-11-06T03:15Z"
+  },
+  {
+   "title": "Что стоит за последним снижением цены Dog на 13,7%?",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af43cca4d0943d3aef1c1d018e25d92&url=https%3a%2f%2ftradersunion.com%2fru%2fnews%2fcryptocurrency-news%2fshow%2f4120786-dog-bitcoin-drops-13-71percent-today%2f&c=3776708401231367546&mkt=en-us",
+   "src": "tradersunion",
+   "srcUrl": null,
+   "q": "\"DOG (Bitcoin)\"",
+   "d": "2026-11-05",
+   "ts": "2026-11-05T11:31Z"
+  },
+  {
    "title": "What's behind Dog's latest 13.7% price pullback?",
-   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af40d7817b0423abaaf7c281d9dfc27&url=https%3a%2f%2ftradersunion.com%2fnews%2fcryptocurrency-news%2fshow%2f4120744-dog-bitcoin-drops-13-71percent-today%2f&c=15630996815616381153&mkt=en-us",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af43cca4d0943d3aef1c1d018e25d92&url=https%3a%2f%2ftradersunion.com%2fnews%2fcryptocurrency-news%2fshow%2f4120744-dog-bitcoin-drops-13-71percent-today%2f&c=15630996815616381153&mkt=en-us",
    "src": "tradersunion",
    "srcUrl": null,
    "q": "\"DOG (Bitcoin)\"",
@@ -31,9 +40,9 @@
  ],
  "errors": [],
  "stat": [
-  "google \"DOG•GO•TO•THE•MOON\": 17",
+  "google \"DOG•GO•TO•THE•MOON\": 16",
   "google \"DOG (Bitcoin)\": 16",
-  "google \"C2 Blockchain\" DOG: 4",
+  "google \"C2 Blockchain\" DOG: 5",
   "google Leonidas DOG bitcoin runes: 10",
   "google \"$DOG\" bitcoin rune: 10",
   "google Bitcoin runes DOG exchange listing: 10",
