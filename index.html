@@ -44,7 +44,7 @@
   --accent:#F7931A; --accent-ink:#A4500A; --accent-soft:#FCEBD6; --on-accent:#1E1404;
   --bid:#1baf7a; --ask:#e34948; --bid-soft:rgba(27,175,122,.15); --ask-soft:rgba(227,73,72,.13);
   --up:#0B7D56; --down:#C0353B; --warn:#9C5F00; --warn-soft:#FFF1D6; --ok-soft:#E1F4EB;
-  --k1:#2a78d6; --k2:#eb6834; --k3:#1baf7a; --k4:#eda100; --k5:#e87ba4; --k6:#008300; --k-pr:#8A91A5; --k-un:#5C647B;
+  --k1:#2a78d6; --k2:#eb6834; --k3:#1baf7a; --k4:#eda100; --k5:#e87ba4; --k7:#6250d6; --k6:#008300; --k-pr:#8A91A5; --k-un:#5C647B;
   --o1:#86b6ef; --o2:#3987e5; --o3:#1c5cab; --o4:#0d366b;
   --space-0:#0A0F25; --space-1:#131B41; --space-2:#26306E; --card-ink:#F3F4FA; --card-ink-2:rgba(243,244,250,.68); --card-line:rgba(255,255,255,.10);
   --chart-line:#FFB35E;
@@ -61,7 +61,7 @@
     --accent:#F7931A; --accent-ink:#FFB45E; --accent-soft:#33220E; --on-accent:#1E1404;
     --bid:#199e70; --ask:#e66767; --bid-soft:rgba(25,158,112,.2); --ask-soft:rgba(230,103,103,.17);
     --up:#3DD39C; --down:#FF7C80; --warn:#F0B456; --warn-soft:#2B2112; --ok-soft:#10261D;
-    --k1:#3987e5; --k2:#d95926; --k3:#199e70; --k4:#c98500; --k5:#d55181; --k6:#008300; --k-pr:#7F879E; --k-un:#A1A8BC;
+    --k1:#3987e5; --k2:#d95926; --k3:#199e70; --k4:#c98500; --k5:#d55181; --k7:#9085e9; --k6:#008300; --k-pr:#7F879E; --k-un:#A1A8BC;
     --o1:#184f95; --o2:#2a78d6; --o3:#6da7ec; --o4:#b7d3f6;
     --space-0:#0A0F25; --space-1:#121A3E; --space-2:#222C66; --card-line:rgba(255,255,255,.09);
     --shadow-hero:0 18px 44px -20px rgba(0,0,0,.8); --shadow-pop:0 24px 60px -16px rgba(0,0,0,.75);
@@ -74,7 +74,7 @@
   --accent:#F7931A; --accent-ink:#FFB45E; --accent-soft:#33220E; --on-accent:#1E1404;
   --bid:#199e70; --ask:#e66767; --bid-soft:rgba(25,158,112,.2); --ask-soft:rgba(230,103,103,.17);
   --up:#3DD39C; --down:#FF7C80; --warn:#F0B456; --warn-soft:#2B2112; --ok-soft:#10261D;
-  --k1:#3987e5; --k2:#d95926; --k3:#199e70; --k4:#c98500; --k5:#d55181; --k6:#008300; --k-pr:#7F879E; --k-un:#A1A8BC;
+  --k1:#3987e5; --k2:#d95926; --k3:#199e70; --k4:#c98500; --k5:#d55181; --k7:#9085e9; --k6:#008300; --k-pr:#7F879E; --k-un:#A1A8BC;
   --o1:#184f95; --o2:#2a78d6; --o3:#6da7ec; --o4:#b7d3f6;
   --space-0:#0A0F25; --space-1:#121A3E; --space-2:#222C66; --card-line:rgba(255,255,255,.09);
   --shadow-hero:0 18px 44px -20px rgba(0,0,0,.8); --shadow-pop:0 24px 60px -16px rgba(0,0,0,.75);
@@ -259,6 +259,7 @@ p{margin:0}
 .mood-legend small{display:block;font-size:12.5px}
 .vd-price{margin-top:10px;padding-top:10px;border-top:1px solid var(--line-2);font-size:14px}
 .bbo b{color:var(--ink);font-weight:600}
+table.ven{width:100%;table-layout:auto}table.ven small{display:block;font-size:12px;color:var(--ink-3);font-weight:400;margin-top:1px}table.ven td{vertical-align:top}
 .bdet{border-top:1px solid var(--line-2);padding-top:8px}
 .bdet summary{cursor:pointer;font-size:14px;font-weight:600;color:var(--accent-ink);list-style:none;padding:4px 0}
 .bdet summary::-webkit-details-marker{display:none}
@@ -426,26 +427,22 @@ table.pf td{padding:8px 0;border-top:1px solid var(--line-2)}
 table.pf .r{text-align:right;font-weight:600}
 table.vol td{padding:9px 0;vertical-align:middle}table.vol tr:first-child td{border-top:0}table.vol .r{padding-left:10px;white-space:nowrap}table.vol .faint{font-weight:500;width:38px}
 table.vol .vb{width:34%;padding:0 4px 0 10px}table.vol .vb i{display:block;height:8px;border-radius:4px;background:var(--k1);min-width:3px}
-.tiers{display:flex;align-items:center;gap:10px 20px;flex-wrap:wrap;margin-top:14px}
-.tring{position:relative;width:168px;height:168px;flex:none;margin-inline:auto}
+.trings{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:380px;margin:14px auto 0}
+.tring{position:relative;aspect-ratio:1;width:100%}
 .tring svg{width:100%;height:100%;display:block;overflow:visible}
-.tring circle[data-tier]{cursor:pointer;pointer-events:stroke;transition:opacity .2s,stroke-width .2s}
-.tring.has-sel circle[data-tier]{opacity:.6}.tring.has-sel circle[data-tier].on{opacity:1}
-.tring .c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none;padding:0 44px;line-height:1.15}
-.tring .c b{font-size:25px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-.tring .c span{font-size:11.5px;color:var(--ink-2);margin-top:2px}
-.tlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;flex:1;min-width:200px;font-size:14px}
-.tlist .hd{display:grid;grid-template-columns:minmax(0,1fr) 64px 58px;gap:8px;padding:0 10px 2px 28px;font-size:11.5px;color:var(--ink-3);text-align:right}
-.tlist button{width:100%;display:grid;grid-template-columns:10px minmax(0,1fr) 64px 58px;gap:8px;align-items:center;border:0;background:transparent;color:var(--ink);font:inherit;text-align:left;padding:8px 10px;border-radius:10px;cursor:pointer;font-variant-numeric:tabular-nums}
+.tring circle[data-tier]{cursor:pointer;pointer-events:stroke;transition:stroke-width .18s}
+.tring .c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none;line-height:1.15}
+.tring .c b{font-size:clamp(19px,6vw,25px);font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.tring .c span{font-size:11.5px;color:var(--ink-2);margin-top:3px}
+.trc{text-align:center;font-size:12.5px;font-weight:600;color:var(--ink-2);margin-top:8px}
+.tlist{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column;gap:2px;font-size:14.5px}
+.tlist .hd{display:grid;grid-template-columns:minmax(0,1fr) 70px 58px;gap:8px;padding:0 10px 2px 28px;font-size:11.5px;color:var(--ink-3);text-align:right}
+.tlist button{width:100%;display:grid;grid-template-columns:10px minmax(0,1fr) 70px 58px;gap:8px;align-items:center;border:0;background:transparent;color:var(--ink);font:inherit;text-align:left;padding:9px 10px;border-radius:12px;cursor:pointer;font-variant-numeric:tabular-nums}
 .tlist button[aria-pressed="true"]{background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line)}
 .tlist .key{width:10px;height:10px;border-radius:3px}
 .tlist .w{text-align:right;color:var(--ink-2)}.tlist .s{text-align:right;font-weight:700}
-.tinfo{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--surface-2);font-size:14.5px;line-height:1.45;border-left:4px solid var(--tc,var(--line))}
+.tinfo{margin-top:10px;padding:12px 14px;border-radius:14px;background:var(--surface-2);font-size:14.5px;line-height:1.45}
 .tinfo b{font-variant-numeric:tabular-nums}.tinfo small{display:block;margin-top:4px;font-size:12.5px;color:var(--ink-2)}
-.tcmp{display:grid;grid-template-columns:auto minmax(0,1fr) 46px;gap:5px 8px;align-items:center;margin-top:10px;font-size:12px;color:var(--ink-2);font-variant-numeric:tabular-nums}
-.tcmp i{display:block;height:8px;border-radius:4px;background:var(--tc);min-width:3px}.tcmp .tr{background:var(--surface-3);border-radius:4px;overflow:hidden}.tcmp b{text-align:right;color:var(--ink)}
-.tkey{font-size:11.5px;color:var(--ink-3);margin-top:8px;text-align:center;white-space:nowrap}
-.tiers>div:first-child{margin-inline:auto}
 .rng{position:relative;height:8px;border-radius:999px;margin:8px 0 6px;background:linear-gradient(90deg,var(--ask),var(--surface-3) 50%,var(--bid))}
 .rng i{position:absolute;top:-4px;width:4px;height:16px;margin-left:-2px;border-radius:2px;background:var(--ink)}
 .tv-when{margin-left:auto;font-size:12px;color:var(--ink-2);background:var(--surface-3);border-radius:999px;padding:1px 9px;white-space:nowrap}
@@ -922,7 +919,7 @@ html{overscroll-behavior-y:contain}
       <footer class="site-foot" id="sitefoot">
         <p><b>DOG Monitor</b> is an unofficial information project. It is not affiliated with the DOG•GO•TO•THE•MOON team, any exchange or C2 Blockchain.</p>
         <p>For information only, not investment advice. Crypto prices are highly volatile.</p>
-        <p>Data: <a href="https://www.dogdata.xyz" target="_blank" rel="noopener">DOG DATA</a>, public APIs of Kraken, Gate, MEXC, BingX, DigiFinex, CoinW and Bitget, C2 Blockchain press releases. Chart: <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener">TradingView Lightweight Charts™</a>. No cookies, no analytics.</p>
+        <p>Data: <a href="https://www.dogdata.xyz" target="_blank" rel="noopener">DOG DATA</a>, public APIs of Kraken, Gate, MEXC, BingX, DigiFinex and CoinW, C2 Blockchain press releases. Chart: <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener">TradingView Lightweight Charts™</a>. No cookies, no analytics.</p>
       </footer>
     </div>
   </div>
@@ -994,7 +991,7 @@ html{overscroll-behavior-y:contain}
       set('#archive-back', 'textContent', 'К текущим данным');
       set('#p-overview .skel', 'ariaLabel', 'Загружаю данные…');
       set('#story-hint-t', 'textContent', 'Смахните вверх, чтобы закрыть');
-      set('#sitefoot', 'innerHTML', '<p><b>DOG Монитор</b> — неофициальный информационный проект. Не связан с командой DOG•GO•TO•THE•MOON, биржами и C2 Blockchain.</p><p>Информация носит справочный характер и не является инвестиционной рекомендацией. Цены криптовалют сильно колеблются.</p><p>Данные: <a href="https://www.dogdata.xyz" target="_blank" rel="noopener">DOG DATA</a>, публичные API бирж Kraken, Gate, MEXC, BingX, DigiFinex, CoinW и Bitget, пресс-релизы C2 Blockchain. График — <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener">TradingView Lightweight Charts™</a>. Сайт не использует cookies и аналитику.</p>');
+      set('#sitefoot', 'innerHTML', '<p><b>DOG Монитор</b> — неофициальный информационный проект. Не связан с командой DOG•GO•TO•THE•MOON, биржами и C2 Blockchain.</p><p>Информация носит справочный характер и не является инвестиционной рекомендацией. Цены криптовалют сильно колеблются.</p><p>Данные: <a href="https://www.dogdata.xyz" target="_blank" rel="noopener">DOG DATA</a>, публичные API бирж Kraken, Gate, MEXC, BingX, DigiFinex и CoinW, пресс-релизы C2 Blockchain. График — <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener">TradingView Lightweight Charts™</a>. Сайт не использует cookies и аналитику.</p>');
       document.querySelectorAll('[aria-label="Sections"]').forEach(e => e.setAttribute('aria-label', 'Разделы'));
       set('#sheet [data-close].iconbtn', 'ariaLabel', 'Закрыть');
       set('#story', 'ariaLabel', 'Истории дня');
@@ -3353,7 +3350,7 @@ html{overscroll-behavior-y:contain}
 
   // ---------- каждая биржа ----------
   function depthRow(label, d, maxv) {
-    if (!d || (d.b == null && d.a == null)) return `<div class="band">${label}</div><div class="bar na">${T('глубже биржа не отдаёт', 'no deeper data from the exchange')}</div>`;
+    if (!d || (d.b == null && d.a == null)) return '';
     const b = d.b || 0, a = d.a || 0, tot = Math.max(maxv, 1e-9);
     return `<div class="band">${label}</div><div class="bar" title="${T('покупки', 'bids')} ${n(b, 1)}${MLN}, ${T('продажи', 'asks')} ${n(a, 1)}${MLN}">
       <div class="b" style="width:${(b / tot * 100).toFixed(1)}%">${d.b == null ? '—' : n(b, 1)}</div>
@@ -3380,6 +3377,7 @@ html{overscroll-behavior-y:contain}
       const b = (s.books || {})[k];
       if (!b) {
         const cl = (s.closed || {})[k];
+        if (cl) continue;                      // биржа сняла DOG с торгов — карточку не показываем
         html += `<div class="group book"><div class="book-top"><h3><span class="exlogo">${esc(nm[0])}</span>${esc(nm)}</h3>${cl ? `<span class="tag warn">${T('торги сняты?', 'delisted?')}</span>` : ''}</div><p class="note">${cl ? T('Биржа больше не отдаёт стакан DOG/USDT — похоже, торги DOG здесь закрыты (биржа объявляла делистинг). В общие суммы не входит; монеты на её кошельке видны в разделе «Кошельки».', 'The exchange no longer returns a DOG/USDT order book — DOG trading here appears to have ended (a delisting was announced). Excluded from totals; coins in its wallet are shown under Wallets.') : T('нет данных в этом обновлении', 'no data in this update')}</p></div>`;
         continue;
       }
@@ -3396,8 +3394,8 @@ html{overscroll-behavior-y:contain}
         <div class="bbo"><span>${T('лучшая покупка', 'best bid')} <b>${fp(b.bid)}</b></span><span>${T('лучшая продажа', 'best ask')} <b>${fp(b.ask)}</b></span>${spread != null ? `<span class="faint">${T('спред', 'spread')} ${n(spread, 2)}%</span>` : ''}</div>
         ${b.off ? `<div class="warnline">${T('Цена этой биржи отличается от остальных больше чем на 3% — в общие суммы она не входит.', 'This exchange’s price differs from the others by more than 3% — it’s excluded from the totals.')}</div>` : ''}
         <div class="depth">${depthRow('±2%', b.d2, maxv)}${depthRow('±5%', b.d5, maxv)}${depthRow('±10%', b.d10, maxv)}${depthRow('±25%', b.d25, maxv)}</div>
-        <div class="walls"><div><h4 class="b">${T('Ближайшие крупные покупки', 'Nearest large buy orders')}</h4>${wallList(near(b.bids, 'b'), 'b', wd, b.cmp, k, true, mid)}</div><div><h4 class="a">${T('Ближайшие крупные продажи', 'Nearest large sell orders')}</h4>${wallList(near(b.asks, 'a'), 'a', wd, b.cmp, k, true, mid)}</div></div>
-        <details class="bdet" data-k="${k}"><summary>${T('Все крупные заявки', 'All large orders')}${nAll ? ' (' + nAll + ')' : ''} ${T('и подробности', 'and details')}</summary>
+        ${[b.d2, b.d5, b.d10, b.d25].some(d => !d || (d.b == null && d.a == null)) ? `<p class="note" style="font-size:12px;margin-top:-6px">${T('Глубже биржа заявки не показывает.', 'The exchange doesn’t share deeper levels.')}</p>` : ''}
+        <details class="bdet" data-k="${k}"><summary>${T('Крупные заявки', 'Large orders')}${nAll ? ' (' + nAll + ')' : ''} ${T('и подробности', 'and details')}</summary>
           <div class="bdet-in">
             <div class="walls"><div><h4 class="b">${T('Покупки', 'Buy orders')}</h4>${wallList(b.bids, 'b', wd, b.cmp, k, false, mid)}</div><div><h4 class="a">${T('Продажи', 'Sell orders')}</h4>${wallList(b.asks, 'a', wd, b.cmp, k, false, mid)}</div></div>
             ${gone.length ? `<div class="note">${T('Сняты', 'Pulled')}: ${gone.map(w => `${n(w.q0, 1)}${MLN} ${w.s === 'b' ? T('на покупку', 'buy') : T('на продажу', 'sell')} ${T('по', 'at')} ${fp(w.p)}`).join('; ')}</div>` : ''}
@@ -3415,12 +3413,12 @@ html{overscroll-behavior-y:contain}
     const tot = venues.reduce((a, v) => a + (v.v || 0), 0);
     const inBook = new Set(EX.filter(([k]) => (s.books || {})[k]).map(([, nm]) => nm));
     return `<div class="sec-head"><h2>${T('Где торгуют DOG', 'Where DOG trades')}</h2><p>${T('оборот за сутки по данным DOG DATA', '24h volume per DOG DATA')}: ${usd(tot)}${(s.price || {}).cov != null ? T(', стаканы выше — ', ', order books above cover ') + n(s.price.cov) + T('% оборота', '% of volume') : ''}</p></div>
-      <div class="group scroll" style="padding:4px 6px"><table><thead><tr><th>${T('Площадка', 'Venue')}</th><th>${T('Пара', 'Pair')}</th><th class="r">${T('Цена, $', 'Price, $')}</th><th class="r">${T('Оборот', 'Volume')}</th><th class="r">${T('Доля', 'Share')}</th></tr></thead><tbody>
+      <div class="group" style="padding:4px 6px"><table class="ven"><thead><tr><th>${T('Площадка', 'Venue')}</th><th class="r">${T('Цена, $', 'Price, $')}</th><th class="r">${T('Оборот', 'Volume')}</th></tr></thead><tbody>
       ${venues.slice().sort((x, y) => y.v - x.v).map(v => {
         const q = String(v.pair || '').split('/')[1] || '', fiat = /^(EUR|BRL|GBP|TRY|JPY|KRW)$/i.test(q), mid = (s.price || {}).mid;
         const odd = !fiat && mid && v.p && Math.abs(v.p / mid - 1) > 0.2;
         const pc = fiat ? `${fp(v.p)} <span class="faint">${esc(q.toUpperCase())}</span>` : odd ? `<span class="faint" title="${esc(T('Сильно отличается от цены на биржах — по данным DOG DATA; возможно, устаревшая цена пула', 'Far from the exchange price — as reported by DOG DATA; possibly a stale pool price'))}">${fp(v.p)}?</span>` : fp(v.p);
-        return `<tr><td class="nw">${esc(v.n)}${inBook.has(v.n) ? ` <span class="tag">${T('стакан', 'book')}</span>` : ''}</td><td class="faint nw">${esc(v.pair)}</td><td class="r nw">${pc}</td><td class="r nw">${usd(v.v)}</td><td class="r faint">${tot ? n(v.v / tot * 100, 1) + '%' : '—'}</td></tr>`;
+        return `<tr><td>${esc(v.n)}<small>${esc(v.pair)}</small></td><td class="r nw">${pc}</td><td class="r nw">${usd(v.v)}<small>${tot ? n(v.v / tot * 100, 1) + '%' : '—'}</small></td></tr>`;
       }).join('')}
       </tbody></table></div>`;
   }
@@ -4124,8 +4122,7 @@ html{overscroll-behavior-y:contain}
     const lst = a => a.slice(0, 3).map(x => esc(ownName(x.n, x.k)) + ' ' + NO + x.r + ' ' + sg(x.d, 1) + MLN).join(' · ');
     if (up.length) items.push(ev('up', 'b', T(`${up.length} ${plural(up.length, 'кошелёк', 'кошелька', 'кошельков')} ${plural(up.length, 'добавил', 'добавили', 'добавили')} <b>+${mdog(sum(up))} DOG</b>`, `${up.length} ${up.length === 1 ? 'wallet' : 'wallets'} added <b>+${mdog(sum(up))} DOG</b>`), lst(up)));
     if (dn.length) items.push(ev('down', 'a', T(`${dn.length} ${plural(dn.length, 'кошелёк', 'кошелька', 'кошельков')} ${plural(dn.length, 'отправил', 'отправили', 'отправили')} <b>${mdog(Math.abs(sum(dn)))} DOG</b>`, `${dn.length} ${dn.length === 1 ? 'wallet' : 'wallets'} sent out <b>${mdog(Math.abs(sum(dn)))} DOG</b>`), lst(dn)));
-    if (nw.length) items.push(ev('plus', 'o', T(`${nw.length} ${plural(nw.length, 'новый кошелёк', 'новых кошелька', 'новых кошельков')} в топ-100`, `${nw.length} new ${nw.length === 1 ? 'wallet' : 'wallets'} in the top 100`)));
-    if (out.length) items.push(ev('minus', '', T(`${out.length} ${plural(out.length, 'кошелёк вышел', 'кошелька вышли', 'кошельков вышли')} из топ-100`, `${out.length} ${out.length === 1 ? 'wallet' : 'wallets'} left the top 100`)));
+    if (nw.length) items.push(ev('plus', 'o', T(`${nw.length} ${plural(nw.length, 'новый кошелёк', 'новых кошелька', 'новых кошельков')} в топ-100`, `${nw.length} new ${nw.length === 1 ? 'wallet' : 'wallets'} in the top 100`), nw.slice(0, 3).map(x => NO + x.r + ' · ' + mdog(x.b) + ' DOG').join(', ')));
     if (!up.length && !dn.length && !stl) items.push(ev('check', '', T('Крупные холдеры монеты не двигали', 'Large holders didn’t move their coins'), T('ни один кошелёк вне бирж не изменился на 5 млн DOG и больше', 'no non-exchange wallet changed by 5M DOG or more')));
     return `<div class="sec"><div class="sec-head"><h2>${T('Что изменилось', 'What changed')}</h2><p>${pl ? T('с ', 'since ') + esc(pl) : ''}</p></div><div class="group"><div class="events">${items.join('')}</div></div></div>`;
   }
@@ -4150,18 +4147,15 @@ html{overscroll-behavior-y:contain}
       ${(() => { const hc = holdersCost(); if (!hc) return ''; const v = vsAvg(hc.buy); return `<div class="own-cost"><span class="t">${T('Крупные холдеры покупали и пополняли кошельки в среднем по', 'Large holders bought and topped up at an average of')} <b>${fpd(hc.buy)}</b>${v ? ` — ${T('сейчас', 'now')} <b class="${v.cls}">${v.txt}</b>` : ''}.</span><small>${T(`Ещё ${n(hc.free * 100, 0)}% их монет — с аирдропа, бесплатно, в среднюю цену не входят. ${hc.k} ${plural(hc.k, 'кошелёк', 'кошелька', 'кошельков')} топ-100 без бирж.`, `Another ${n(hc.free * 100, 0)}% of their coins came free from the airdrop and are left out. ${hc.k} top-100 wallets excluding exchanges.`)}</small></div>`; })()}</div></div>`;
   }
 
-  // кошельки по размеру и сколько у них монет: двойное кольцо (снаружи — доля монет, внутри — доля кошельков), нажатие — подробности
-  function ring2(outer, inner, sel) {
-    const arc = (parts, r, w, hit) => {
-      const c = 2 * Math.PI * r, gap = 1.2; let off = 0;
-      return parts.map(([v, col], i) => {
-        const full = Math.max(0, Math.min(100, v || 0)) / 100 * c, len = Math.max(v > 0 ? 1 : 0, full - gap);
-        const on = sel === i, sw = on ? w + 3 : w;
-        const o = len > 0 ? `<circle data-tier="${i}"${on ? ' class="on"' : ''} r="${r}" cx="60" cy="60" fill="none" stroke="${col}" stroke-width="${sw}" stroke-dasharray="${len.toFixed(2)} ${(c - len).toFixed(2)}" stroke-dashoffset="${(-off - gap / 2).toFixed(2)}"/>${hit && full < 12 ? `<circle data-tier="${i}" r="${r}" cx="60" cy="60" fill="none" stroke="transparent" stroke-width="${w + 8}" stroke-dasharray="12 ${(c - 12).toFixed(2)}" stroke-dashoffset="${(-off - full / 2 + 6).toFixed(2)}"/>` : ''}` : '';
-        off += full; return o;
-      }).join('');
-    };
-    return `<svg viewBox="0 0 120 120" aria-hidden="true"><g transform="rotate(-90 60 60)">${arc(outer, 50, 13, true)}${inner ? arc(inner, 36, 6, false) : ''}</g></svg>`;
+  // у кого сколько DOG: два кольца рядом — доля кошельков и доля монет одной и той же группы; нажатие выбирает группу
+  function ring1(parts, sel) {
+    const r = 46, w = 13, c = 2 * Math.PI * r, gap = 2.2; let off = 0;
+    const segs = parts.map(([v, col], i) => {
+      const full = Math.max(0, Math.min(100, v || 0)) / 100 * c, len = Math.max(v > 0 ? 1.4 : 0, full - gap), on = sel === i;
+      const o = len > 0 ? `<circle data-tier="${i}" r="${r}" cx="60" cy="60" fill="none" stroke="${col}" stroke-width="${on ? w + 5 : w}" stroke-dasharray="${len.toFixed(2)} ${(c - len).toFixed(2)}" stroke-dashoffset="${(-off - gap / 2).toFixed(2)}"/>${full < 14 ? `<circle data-tier="${i}" r="${r}" cx="60" cy="60" fill="none" stroke="transparent" stroke-width="${w + 10}" stroke-dasharray="14 ${(c - 14).toFixed(2)}" stroke-dashoffset="${(-off - full / 2 + 7).toFixed(2)}"/>` : ''}` : '';
+      off += full; return o;
+    }).join('');
+    return `<svg viewBox="0 0 120 120" aria-hidden="true"><g transform="rotate(-90 60 60)"><circle r="${r}" cx="60" cy="60" fill="none" stroke="var(--surface-3)" stroke-width="${w}"/>${segs}</g></svg>`;
   }
   function tiersData(s) {
     const t = (s.health || {}).tiers, H = s.holders;
@@ -4170,19 +4164,19 @@ html{overscroll-behavior-y:contain}
     if (t && t.n && H) {
       const tot = Math.max(H, g('1000000')), all = 100000, sums = !!t.dog;   // млн DOG
       size = { sums, asof: t.asof, tot, rows: [
-        [T('от 10 млн DOG', '10M+ DOG'), g('10000000'), sums ? d('10000000') : null, 'var(--k1)'],
-        [T('5–10 млн', '5–10M'), g('5000000') - g('10000000'), sums ? d('5000000') - d('10000000') : null, 'var(--k5)'],
-        [T('1–5 млн', '1–5M'), g('1000000') - g('5000000'), sums ? d('1000000') - d('5000000') : null, 'var(--accent)'],
-        [T('меньше 1 млн', 'under 1M'), tot - g('1000000'), sums ? Math.max(0, all - d('1000000')) : null, 'var(--k-pr)']
+        [T('от 10 млн DOG', '10M+ DOG'), g('10000000'), sums ? d('10000000') : null, 'var(--k4)'],
+        [T('5–10 млн', '5–10M'), g('5000000') - g('10000000'), sums ? d('5000000') - d('10000000') : null, 'var(--k1)'],
+        [T('1–5 млн', '1–5M'), g('1000000') - g('5000000'), sums ? d('1000000') - d('5000000') : null, 'var(--k5)'],
+        [T('меньше 1 млн', 'under 1M'), tot - g('1000000'), sums ? Math.max(0, all - d('1000000')) : null, 'var(--k7)']
       ].map(([name, cnt, dog, col]) => ({ name, cnt, dog, col, wp: cnt / tot * 100, sp: dog == null ? null : dog / all * 100 })) };
     }
     const c = s.conc || {}, p10 = s.top10pct || c.top10, p100 = s.top100pct || c.top100, p1k = c.top1000;
     if (H > 1000 && p10 > 0 && p100 > p10 && p1k > p100 && p1k < 100) {
       top = { tot: H, rows: [
-        [T('Топ-10', 'Top 10'), 10, p10, 'var(--k1)', null],
-        [T('Места 11–100', 'Ranks 11–100'), 90, p100 - p10, 'var(--k5)', [100, p100]],
-        [T('Места 101–1000', 'Ranks 101–1,000'), 900, p1k - p100, 'var(--accent)', [1000, p1k]],
-        [T('Все остальные', 'Everyone else'), H - 1000, 100 - p1k, 'var(--k-pr)', null]
+        [T('Топ-10', 'Top 10'), 10, p10, 'var(--k4)', null],
+        [T('Места 11–100', 'Ranks 11–100'), 90, p100 - p10, 'var(--k1)', [100, p100]],
+        [T('Места 101–1000', 'Ranks 101–1,000'), 900, p1k - p100, 'var(--k5)', [1000, p1k]],
+        [T('Все остальные', 'Everyone else'), H - 1000, 100 - p1k, 'var(--k7)', null]
       ].map(([name, cnt, sp, col, cum]) => ({ name, cnt, sp, dog: sp * 1000, col, cum, wp: cnt / H * 100 })) };
     }
     return { size, top };
@@ -4192,27 +4186,25 @@ html{overscroll-behavior-y:contain}
     let mode = S.tierMode || 'size'; if (!D[mode]) mode = D.size ? 'size' : 'top';
     const M = D[mode], R = M.rows, coins = mode === 'top' || M.sums;
     const sel = S.tierSel == null ? 0 : Math.min(S.tierSel, R.length - 1), x = R[sel];
-    const pc = v => v == null ? '—' : n(v, v < 9.95 ? 1 : 0) + '%', W = k => `${n(k)} ${P(k, 'кошелёк', 'кошелька', 'кошельков', 'wallet', 'wallets')}`;
+    const pc = v => v == null ? '—' : n(v, v < 0.095 ? 2 : v < 9.95 ? 1 : 0) + '%', W = k => `${n(k)} ${P(k, 'кошелёк', 'кошелька', 'кошельков', 'wallet', 'wallets')}`;
     const mid = (s.price || {}).mid;
-    const ring = coins ? ring2(R.map(r => [r.sp, r.col]), mode === 'size' ? R.map(r => [r.wp, r.col]) : null, sel) : ring2(R.map(r => [r.wp, r.col]), null, sel);
-    const center = coins ? `<b>${pc(x.sp)}</b><span>${T('всех DOG', 'of all DOG')}</span>` : `<b>${pc(x.wp)}</b><span>${T('всех кошельков', 'of all wallets')}</span>`;
+    const one = (parts, v, cap) => `<div><div class="tring">${ring1(parts, sel)}<div class="c"><b>${pc(v)}</b></div></div><div class="trc">${cap}</div></div>`;
+    const rings = one(R.map(r => [r.wp, r.col]), x.wp, T('кошельков', 'of wallets')) + (coins ? one(R.map(r => [r.sp, r.col]), x.sp, T('монет', 'of coins')) : '');
     let info;
     if (coins) {
       const avg = x.cnt > 0 ? x.dog / x.cnt : null;
       const who = mode === 'top' ? (sel === 0 ? T('10 самых крупных кошельков', 'The 10 largest wallets') : sel === 3 ? T(`Остальные ${W(x.cnt)}`, `The other ${W(x.cnt)}`) : T(`Кошельки на местах ${sel === 1 ? '11–100' : '101–1000'}`, `Wallets ranked ${sel === 1 ? '11–100' : '101–1,000'}`))
         : T(`${W(x.cnt)} ${sel === 3 ? 'с балансом меньше 1 млн DOG' : sel === 0 ? 'с балансом от 10 млн DOG' : 'с балансом ' + x.name + ' DOG'}`, `${W(x.cnt)} holding ${sel === 3 ? 'under 1M DOG' : sel === 0 ? '10M DOG or more' : x.name + ' DOG'}`);
       info = `${who} ${T(mode === 'top' ? 'держат' : plural(x.cnt, 'держит', 'держат', 'держат'), mode === 'size' && x.cnt === 1 ? 'holds' : 'hold')} <b>${mdog(x.dog)} DOG</b> — <b>${pc(x.sp)}</b> ${T('всех монет', 'of all coins')}${mid ? ` (≈ ${usd(x.dog * 1e6 * mid)})` : ''}.`
-        + `<small>${T(`Это ${pc(x.wp)} всех кошельков`, `That is ${pc(x.wp)} of all wallets`)}${avg ? T(`; в среднем по ${mdog(avg, avg < 10 ? 2 : 1)} DOG на кошелёк`, `; ${mdog(avg, avg < 10 ? 2 : 1)} DOG per wallet on average`) : ''}.${x.cum ? ' ' + T(`Вместе с более крупными это топ-${n(x.cum[0])}: у него ${pc(x.cum[1])} всех монет.`, `Together with the larger ones, the top ${n(x.cum[0])} hold ${pc(x.cum[1])} of all coins.`) : ''}</small>`
-        + `<div class="tcmp"><span>${T('кошельки', 'wallets')}</span><span class="tr"><i style="width:${Math.max(0.5, x.wp).toFixed(1)}%"></i></span><b>${pc(x.wp)}</b><span>${T('монеты', 'coins')}</span><span class="tr"><i style="width:${Math.max(0.5, x.sp).toFixed(1)}%"></i></span><b>${pc(x.sp)}</b></div>`;
+        + `<small>${avg ? T(`В среднем ${mdog(avg, avg < 10 ? 2 : 1)} DOG на кошелёк.`, `${mdog(avg, avg < 10 ? 2 : 1)} DOG per wallet on average.`) : ''}${x.cum ? ' ' + T(`Весь топ-${n(x.cum[0])} — ${pc(x.cum[1])} всех монет.`, `The whole top ${n(x.cum[0])} holds ${pc(x.cum[1])} of all coins.`) : ''}</small>`;
     } else {
       info = `${W(x.cnt)} ${T(sel === 3 ? 'с балансом меньше 1 млн DOG' : sel === 0 ? 'с балансом от 10 млн DOG' : 'с балансом ' + x.name + ' DOG', sel === 3 ? 'hold under 1M DOG' : sel === 0 ? 'hold 10M DOG or more' : 'hold ' + x.name + ' DOG')} — <b>${pc(x.wp)}</b> ${T('всех кошельков', 'of all wallets')}.<small>${T('Сколько монет у каждой группы — появится со следующей сводкой.', 'How many coins each group holds will appear with the next report.')}</small>`;
     }
     const asof = mode === 'size' ? T('По списку холдеров DOG DATA на ', 'From DOG DATA’s holder list as of ') + esc(dtl(M.asof)) + '. ' : '';
     return `<div class="sec" id="tiers-sec"><div class="sec-head c"><h2>${T('У кого сколько DOG', 'Who holds how much')}</h2>${D.size && D.top ? `<span class="seg" role="group" aria-label="${T('Как делить кошельки', 'How to group wallets')}">${segB('tmode', 'size', T('По размеру', 'By size'), mode === 'size')}${segB('tmode', 'top', T('Самые крупные', 'Largest'), mode === 'top')}</span>` : ''}</div>
-      <div class="group"><p class="note">${coins ? T('Нажмите на группу — и увидите, сколько у неё кошельков и монет.', 'Tap a group to see how many wallets and coins it has.') : T('Нажмите на группу, чтобы увидеть подробности.', 'Tap a group for details.')}</p>
-      <div class="tiers"><div><div class="tring has-sel">${ring}<div class="c">${center}</div></div>${coins && mode === 'size' ? `<div class="tkey">${T('снаружи — монеты · внутри — кошельки', 'outer ring — coins · inner — wallets')}</div>` : ''}</div>
-      <ul class="tlist"><li class="hd"><span></span><span>${T('кошельков', 'wallets')}</span><span>${coins ? T('монет', 'coins') : T('доля', 'share')}</span></li>${R.map((r, i) => `<li><button type="button" data-tier="${i}" aria-pressed="${String(i === sel)}"><span class="key" style="background:${r.col}"></span><span>${esc(r.name)}</span><span class="w">${n(r.cnt)}</span><span class="s">${pc(coins ? r.sp : r.wp)}</span></button></li>`).join('')}</ul></div>
-      <div class="tinfo" style="--tc:${x.col}" aria-live="polite">${info}</div>
+      <div class="group"><div class="trings"${coins ? '' : ' style="grid-template-columns:minmax(0,180px);justify-content:center"'}>${rings}</div>
+      <ul class="tlist"><li class="hd"><span></span><span>${T('кошельков', 'wallets')}</span><span>${coins ? T('монет', 'coins') : T('доля', 'share')}</span></li>${R.map((r, i) => `<li><button type="button" data-tier="${i}" aria-pressed="${String(i === sel)}"><span class="key" style="background:${r.col}"></span><span>${esc(r.name)}</span><span class="w">${n(r.cnt)}</span><span class="s">${pc(coins ? r.sp : r.wp)}</span></button></li>`).join('')}</ul>
+      <div class="tinfo" aria-live="polite">${info}</div>
       <p class="note" style="margin-top:10px">${asof}${T(`Всего кошельков: ${n(M.tot)}. Среди крупных — биржи: на их кошельках лежат монеты многих людей.`, `${n(M.tot)} wallets in total. The large ones include exchanges, whose wallets hold coins of many people.`)}</p></div></div>`;
   }
   function renderWallets() {
@@ -4244,7 +4236,7 @@ html{overscroll-behavior-y:contain}
       const nt = noteTr(x.nt, x.nt_en);
       return `<button type="button" class="row wrow" data-wal="${esc(x.a)}">${avatar(x.n, x.k)}<span class="t"><b>${esc(['private', 'unknown'].includes(x.k) || !KIND_NAME[x.k] ? T('Холдер', 'Holder') : ownName(x.n, x.k))} <span class="faint" style="font-weight:500">${NO}${x.r}</span>${x.new ? ` <span class="tag hot">${T('новый', 'new')}</span>` : ''}</b><span class="sub">${nt ? esc(nt) : `<span class="addr">${esc(short(x.a))}</span>`}</span>${costLine(x.a, x.k)}</span>${sparkW(x.a, x.k)}<span class="v"><b>${mdog(x.b)}</b><span class="faint">${esc(usdM(x.b, mid))}</span>${hasD ? `<span class="dchip ${dcls(x.d, x.k)}">${sg(x.d, 1)}${MLN}</span>` : ''}</span></button>`;
     };
-    html += `<div class="sec"><div class="sec-head">${hInfo('h2', T('Топ-100 кошельков', 'Top 100 wallets'), 'wallets')}<p>${T(`держат ${n(s.top100pct, 2)}% всех DOG, холдеров всего ${n(s.holders)}`, `hold ${n(s.top100pct, 2)}% of all DOG; ${n(s.holders)} holders in total`)}${days > 1 ? T(` · линия — баланс за ${days} ${plural(days, 'день', 'дня', 'дней')}`, ` · the line shows the balance over ${days} days`) : ''}${S.cb ? T(' · ср. цена покупок — без аирдропа', ' · avg buy excludes the airdrop') : ''}${topStale(s) ? ` · <span class="tag warn">${T('балансы на ', 'balances as of ')}${esc(dtl(topStale(s)))}</span>` : ((s.srcTs || {}).top100 ? T(` · балансы на ${esc(dtl(s.srcTs.top100))}${s.top100Src === 'ordinals' ? ' — из блокчейна' : ''}`, ` · balances as of ${esc(dtl(s.srcTs.top100))}${s.top100Src === 'ordinals' ? ', straight from the blockchain' : ''}`) : '')}</p></div>
+    html += `<div class="sec"><div class="sec-head">${hInfo('h2', T('Топ-100 кошельков', 'Top 100 wallets'), 'wallets')}<p>${T(`держат ${n(s.top100pct, 1)}% всех DOG`, `hold ${n(s.top100pct, 1)}% of all DOG`)}${topStale(s) ? ` · <span class="tag warn">${T('балансы на ', 'balances as of ')}${esc(dtl(topStale(s)))}</span>` : ((s.srcTs || {}).top100 ? T(` · балансы на ${esc(dtl(s.srcTs.top100))}${s.top100Src === 'ordinals' ? ' — из блокчейна' : ''}`, ` · balances as of ${esc(dtl(s.srcTs.top100))}${s.top100Src === 'ordinals' ? ', straight from the blockchain' : ''}`) : '')}</p></div>
       <div class="chips" role="group" aria-label="${T('Фильтр', 'Filter')}">${fbtn('all', T('Все', 'All'), 100)}${fbtn('moved', T('Изменились', 'Changed'), nMoved)}${fbtn('svc', T('Биржи и сервисы', 'Exchanges & services'), nSvc)}${fbtn('private', T('Холдеры', 'Holders'), 100 - nSvc)}</div>
       <label class="search">${ico('search')}<input id="wsearch" type="search" placeholder="${T('Адрес, место или метка', 'Address, rank or label')}" value="${esc(S.q)}" aria-label="${T('Поиск по адресу, месту или метке', 'Search by address, rank or label')}"></label>
       <div class="group flush rows" id="wlist">${rows.length ? rows.map(wrow).join('') : `<p class="note" style="padding:12px 16px">${T('Ничего не найдено.', 'Nothing found.')}</p>`}</div>
