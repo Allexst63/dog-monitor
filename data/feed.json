@@ -1,9 +1,9 @@
 {
- "updated": "2026-11-13T06:42:35Z",
+ "updated": "2026-11-13T12:47:43Z",
  "items": [
   {
    "title": "Удержит ли Dog поддержку на уровне $0,00065 на фоне продолжения снижения цены?",
-   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af6b15dda1746bc9472da63d26b57da&url=https%3a%2f%2ftradersunion.com%2fru%2fnews%2fcryptocurrency-news%2fshow%2f4219771-dog-drops-9-06percent-today-to%2f&c=559473548680187945&mkt=en-us",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af706f136a54be7a306f8d4d3d03303&url=https%3a%2f%2ftradersunion.com%2fru%2fnews%2fcryptocurrency-news%2fshow%2f4219771-dog-drops-9-06percent-today-to%2f&c=559473548680187945&mkt=en-us",
    "src": "tradersunion",
    "srcUrl": null,
    "q": "\"DOG (Bitcoin)\"",
@@ -12,7 +12,7 @@
   },
   {
    "title": "Will Dog break above $0.000834 resistance amid ongoing bullish momentum?",
-   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af6b15dda1746bc9472da63d26b57da&url=https%3a%2f%2ftradersunion.com%2fnews%2fcryptocurrency-news%2fshow%2f4202624-dog-bitcoin-jumps-7-52percent-today%2f&c=13404781543527730121&mkt=en-us",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af706f136a54be7a306f8d4d3d03303&url=https%3a%2f%2ftradersunion.com%2fnews%2fcryptocurrency-news%2fshow%2f4202624-dog-bitcoin-jumps-7-52percent-today%2f&c=13404781543527730121&mkt=en-us",
    "src": "tradersunion",
    "srcUrl": null,
    "q": "\"DOG (Bitcoin)\"",
@@ -21,7 +21,7 @@
   },
   {
    "title": "Swyftx review",
-   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af6b15e8c0c48dea78612e35d7fe676&url=https%3a%2f%2fwww.finder.com.au%2fcryptocurrency%2fexchanges%2fswyftx-exchange-review&c=9931200241021424462&mkt=en-us",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af706f2a6e84ffe95e9fefe06febbb5&url=https%3a%2f%2fwww.finder.com.au%2fcryptocurrency%2fexchanges%2fswyftx-exchange-review&c=9931200241021424462&mkt=en-us",
    "src": "Finder",
    "srcUrl": null,
    "q": "Bitcoin runes DOG exchange listing",
@@ -30,7 +30,7 @@
   },
   {
    "title": "10 New Coinbase Listings to Watch in 2026",
-   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af6b15e8c0c48dea78612e35d7fe676&url=https%3a%2f%2f99bitcoins.com%2fcryptocurrency%2fnew-coinbase-listings%2f&c=12719441724415490587&mkt=en-us",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af706f2a6e84ffe95e9fefe06febbb5&url=https%3a%2f%2f99bitcoins.com%2fcryptocurrency%2fnew-coinbase-listings%2f&c=12719441724415490587&mkt=en-us",
    "src": "99Bitcoins",
    "srcUrl": null,
    "q": "Bitcoin runes DOG exchange listing",
@@ -39,7 +39,7 @@
   },
   {
    "title": "Dog (Bitcoin)-Kurs aktuell",
-   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af6b15d5d4f4eca9313819fb9e96a98&url=https%3a%2f%2fwww.btc-echo.de%2fkurs%2fdog-go-to-the-moon-rune%2f&c=7317942782322456228&mkt=en-us",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af706f152c94f2d835c3dc39c59c87e&url=https%3a%2f%2fwww.btc-echo.de%2fkurs%2fdog-go-to-the-moon-rune%2f&c=7317942782322456228&mkt=en-us",
    "src": "BTC-ECHO",
    "srcUrl": null,
    "q": "\"DOG•GO•TO•THE•MOON\"",
@@ -49,17 +49,17 @@
  ],
  "errors": [],
  "stat": [
-  "google \"DOG•GO•TO•THE•MOON\": 14",
-  "google \"DOG (Bitcoin)\": 18",
+  "google \"DOG•GO•TO•THE•MOON\": 12",
+  "google \"DOG (Bitcoin)\": 16",
   "google \"C2 Blockchain\" DOG: 6",
   "google Leonidas DOG bitcoin runes: 9",
   "google \"$DOG\" bitcoin rune: 10",
   "google Bitcoin runes DOG exchange listing: 10",
-  "bing \"DOG•GO•TO•THE•MOON\": 9",
+  "bing \"DOG•GO•TO•THE•MOON\": 8",
   "bing \"DOG (Bitcoin)\": 11",
-  "bing \"C2 Blockchain\" DOG: 7",
+  "bing \"C2 Blockchain\" DOG: 8",
   "bing Leonidas DOG bitcoin runes: 10",
-  "bing \"$DOG\" bitcoin rune: 11",
+  "bing \"$DOG\" bitcoin rune: 12",
   "bing Bitcoin runes DOG exchange listing: 12",
   "X: нет ключа X_BEARER_TOKEN"
  ]
