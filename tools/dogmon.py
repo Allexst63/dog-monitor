@@ -652,6 +652,9 @@ def compute(kind):
             n_xv = int(fnum(kv(ob, 'xverse')) or 0)
             chk(True, f'топ-100: свежие балансы из блокчейна (ordinals.com) — {len(okb)} адресов, {hm(ob_t)}'
                 + (f'; {n_xv} из них — по данным Xverse' if n_xv else ''))
+            n_held = int(fnum(kv(ob, 'held')) or 0)
+            if n_held:
+                warns.append(f'кошельков: {n_held} — источники балансов расходятся, оставлен последний подтверждённый баланс')
             xm = re.match(r'(\d+)/(\d+)', kv(ob, 'xcheck') or '')
             if xm and int(xm.group(2)):
                 okx = int(xm.group(1)) == int(xm.group(2))

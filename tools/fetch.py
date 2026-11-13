@@ -375,6 +375,8 @@ ORD_GAP = 0.4           # секунд между запросами к ordinals
 ORD_BUDGET = 150        # секунд на опрос ordinals.com (сначала самые крупные); кто не успел — спрашиваем у Xverse
 XV_GAP = 0.5
 XV_BUDGET = 120
+SUS_REL, SUS_ABS = 0.2, 50e6   # запасной источник против последнего известного баланса: с такого расхождения перепроверяем
+SUS_TRIES, SUS_BUDGET = 40, 90  # попыток на адрес и секунд на всю перепроверку у ordinals.com
 REUSE_MIN = 20          # повторный запуск в той же сводке: балансы моложе стольких минут заново не спрашиваем
 
 
@@ -533,7 +535,7 @@ def f_ordbal():
                         float(p[1])
                     except ValueError:
                         continue
-                    res[p[0]], src[p[0]] = p[1], (p[3] if len(p) > 3 and p[3] in ('ord', 'xv') else 'ord')
+                    res[p[0]], src[p[0]] = p[1], (p[3] if len(p) > 3 and p[3] in ('ord', 'xv', 'keep') else 'ord')
     reused = len(res)
     todo = [a for a in cand if a not in res]
     # сначала те, кто важнее для топ-100 (по последнему известному балансу), — если время выйдет, не ответят только мелкие
@@ -560,6 +562,24 @@ def f_ordbal():
             res[a], src[a] = xverse_balance(a, xp, xdl), 'xv'
         except Exception as e:
             err[a] = f'{miss[a]}; {str(e)[:100]}'
+    # Запасной источник расходится с последним известным балансом на 20% и больше (и на 50+ млн DOG)? Xverse у кошельков
+    # с десятками тысяч UTXO (горячие кошельки бирж) видит только часть монет: 13.11.2026 он показывал у Gate 0,99 млрд
+    # вместо 3,25 млрд, и сайт сообщал «с биржи ушло 2,3 млрд». Такой баланс не публикуем, пока его не подтвердит
+    # ordinals.com: спрашиваем его ещё раз, настойчиво; не ответил — оставляем последний известный баланс (метка keep).
+    held = []
+    sus = [a for a in res if src[a] == 'xv' and cand[a]['b']
+           and abs(float(res[a]) - cand[a]['b']) > max(SUS_ABS, cand[a]['b'] * SUS_REL)]
+    if sus and not stat.get('blocked'):
+        sp, sdl = Pace(ORD_GAP), time.time() + SUS_BUDGET
+        for a in sorted(sus, key=lambda a: -cand[a]['b']):
+            try:
+                res[a], src[a] = ord_balance(a, sp, sdl, stat, tries=SUS_TRIES), 'ord'
+            except Exception:
+                pass
+    for a in sus:
+        if src[a] == 'xv':
+            held.append(f'{a};{res[a]};{cand[a]["b"]:.5f}')
+            res[a], src[a] = format(cand[a]['b'], '.5f'), 'keep'
     # сверка со вторым источником: 6 адресов с разных мест списка, расхождение до 0,5% (или 1 млн DOG) — норма
     ranked = sorted((a for a in res if src[a] == 'ord' and float(res[a]) > 0), key=lambda a: -float(res[a]))
     xc_ok, xc_bad, xc_err = 0, [], 0
@@ -576,7 +596,8 @@ def f_ordbal():
     n_xv = sum(1 for v in src.values() if v == 'xv')
     L = [f'ts={ts}; asked={len(cand)}; ok={len(res)}; failed={len(err)}; xverse={n_xv}; '
          f'xcheck={xc_ok}/{xc_ok + len(xc_bad)}; xcheck_err={xc_err}; reused={reused}; requests={stat.get("req", 0)}; '
-         f'no_json={stat.get("n406", 0)}; limited={stat.get("limit", 0)}; secs_ord={t_ord:.0f}; secs={time.time() - t0:.0f}']
+         f'no_json={stat.get("n406", 0)}; limited={stat.get("limit", 0)}; held={len(held)}; secs_ord={t_ord:.0f}; secs={time.time() - t0:.0f}']
+    L += ['HOLD;' + h for h in held]
     if xc_bad:
         L.append('XBAD;' + ' | '.join(xc_bad))
     L += [f'{a};{b};{",".join(sorted(cand[a]["why"]))};{src[a]}' for a, b in sorted(res.items(), key=lambda kv: -float(kv[1]))]
