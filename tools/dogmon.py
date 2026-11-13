@@ -461,14 +461,22 @@ def build_health(mid):
     tr = raw('dd_tiers')                # число кошельков от 10, 5 и 1 млн DOG (необязательный источник)
     if tr:
         rows = re.findall(r'^tier;(\d+);(\d+)(?:;(\d+))?', tr, re.M)
-        tn = {k: int(v) for k, v, _ in rows}
+        BASE = ('10000000', '5000000', '1000000')
+        tn_all = {k: int(v) for k, v, _ in rows}
+        tn = {k: tn_all[k] for k in BASE if k in tn_all}
         if len(tn) == 3 and tn['10000000'] <= tn['5000000'] <= tn['1000000']:
             h['tiers'] = {'n': tn, 'asof': iso(parse_time(kv(tr, 'last_updated')))}
             # сколько монет у этих кошельков в сумме, млн DOG (необязательно: только если прошли весь список и суммы правдоподобны)
-            td = {k: float(q) for k, _, q in rows if q}
+            td_all = {k: float(q) for k, _, q in rows if q}
+            td = {k: td_all[k] for k in BASE if k in td_all}
             if len(td) == 3 and 0 < td['10000000'] <= td['5000000'] <= td['1000000'] <= SUPPLY \
                     and td['10000000'] >= tn['10000000'] * 10e6 and td['1000000'] >= tn['1000000'] * 1e6:
                 h['tiers']['dog'] = {k: round(q / 1e6, 1) for k, q in td.items()}
+                # ступень «от 30 млн» (необязательная): только если сходится с соседней
+                n30, d30 = tn_all.get('30000000'), td_all.get('30000000')
+                if n30 and d30 and n30 <= tn['10000000'] and n30 * 30e6 <= d30 <= td['10000000']:
+                    h['tiers']['n']['30000000'] = n30
+                    h['tiers']['dog']['30000000'] = round(d30 / 1e6, 1)
                 t1000 = fnum(kv(tr, 'top1000'))
                 if t1000:
                     h['tiers']['top1000'] = round(t1000 / SUPPLY * 100, 2)

@@ -44,7 +44,7 @@
   --accent:#F7931A; --accent-ink:#A4500A; --accent-soft:#FCEBD6; --on-accent:#1E1404;
   --bid:#1baf7a; --ask:#e34948; --bid-soft:rgba(27,175,122,.15); --ask-soft:rgba(227,73,72,.13);
   --up:#0B7D56; --down:#C0353B; --warn:#9C5F00; --warn-soft:#FFF1D6; --ok-soft:#E1F4EB;
-  --k1:#2a78d6; --k2:#eb6834; --k3:#1baf7a; --k4:#eda100; --k5:#e87ba4; --k7:#6250d6; --k6:#008300; --k-pr:#8A91A5; --k-un:#5C647B;
+  --k1:#2a78d6; --k2:#eb6834; --k3:#1baf7a; --k4:#eda100; --k5:#e87ba4; --k8:#c79a00; --k7:#6250d6; --k6:#008300; --k-pr:#8A91A5; --k-un:#5C647B;
   --o1:#86b6ef; --o2:#3987e5; --o3:#1c5cab; --o4:#0d366b;
   --space-0:#0A0F25; --space-1:#131B41; --space-2:#26306E; --card-ink:#F3F4FA; --card-ink-2:rgba(243,244,250,.68); --card-line:rgba(255,255,255,.10);
   --chart-line:#FFB35E;
@@ -61,7 +61,7 @@
     --accent:#F7931A; --accent-ink:#FFB45E; --accent-soft:#33220E; --on-accent:#1E1404;
     --bid:#199e70; --ask:#e66767; --bid-soft:rgba(25,158,112,.2); --ask-soft:rgba(230,103,103,.17);
     --up:#3DD39C; --down:#FF7C80; --warn:#F0B456; --warn-soft:#2B2112; --ok-soft:#10261D;
-    --k1:#3987e5; --k2:#d95926; --k3:#199e70; --k4:#c98500; --k5:#d55181; --k7:#9085e9; --k6:#008300; --k-pr:#7F879E; --k-un:#A1A8BC;
+    --k1:#3987e5; --k2:#d95926; --k3:#199e70; --k4:#c98500; --k5:#d55181; --k8:#FFD54A; --k7:#9085e9; --k6:#008300; --k-pr:#7F879E; --k-un:#A1A8BC;
     --o1:#184f95; --o2:#2a78d6; --o3:#6da7ec; --o4:#b7d3f6;
     --space-0:#0A0F25; --space-1:#121A3E; --space-2:#222C66; --card-line:rgba(255,255,255,.09);
     --shadow-hero:0 18px 44px -20px rgba(0,0,0,.8); --shadow-pop:0 24px 60px -16px rgba(0,0,0,.75);
@@ -74,7 +74,7 @@
   --accent:#F7931A; --accent-ink:#FFB45E; --accent-soft:#33220E; --on-accent:#1E1404;
   --bid:#199e70; --ask:#e66767; --bid-soft:rgba(25,158,112,.2); --ask-soft:rgba(230,103,103,.17);
   --up:#3DD39C; --down:#FF7C80; --warn:#F0B456; --warn-soft:#2B2112; --ok-soft:#10261D;
-  --k1:#3987e5; --k2:#d95926; --k3:#199e70; --k4:#c98500; --k5:#d55181; --k7:#9085e9; --k6:#008300; --k-pr:#7F879E; --k-un:#A1A8BC;
+  --k1:#3987e5; --k2:#d95926; --k3:#199e70; --k4:#c98500; --k5:#d55181; --k8:#FFD54A; --k7:#9085e9; --k6:#008300; --k-pr:#7F879E; --k-un:#A1A8BC;
   --o1:#184f95; --o2:#2a78d6; --o3:#6da7ec; --o4:#b7d3f6;
   --space-0:#0A0F25; --space-1:#121A3E; --space-2:#222C66; --card-line:rgba(255,255,255,.09);
   --shadow-hero:0 18px 44px -20px rgba(0,0,0,.8); --shadow-pop:0 24px 60px -16px rgba(0,0,0,.75);
@@ -4162,12 +4162,17 @@ html{overscroll-behavior-y:contain}
     let size = null, top = null;
     if (t && t.n && H) {
       const tot = Math.max(H, g('1000000')), all = 100000, sums = !!t.dog;   // млн DOG
+      const big = g('30000000') > 0 && (!sums || d('30000000') > 0);     // ступень «от 30 млн» есть в сводках с 13.11.2026
+      // [название, кошельков, млн DOG, цвет, «с балансом …», 'holding …']
       size = { sums, asof: t.asof, tot, rows: [
-        [T('от 10 млн DOG', '10M+ DOG'), g('10000000'), sums ? d('10000000') : null, 'var(--accent)'],
-        [T('5–10 млн', '5–10M'), g('5000000') - g('10000000'), sums ? d('5000000') - d('10000000') : null, 'var(--k1)'],
-        [T('1–5 млн', '1–5M'), g('1000000') - g('5000000'), sums ? d('1000000') - d('5000000') : null, 'var(--k5)'],
-        [T('меньше 1 млн', 'under 1M'), tot - g('1000000'), sums ? Math.max(0, all - d('1000000')) : null, 'var(--k-pr)']
-      ].map(([name, cnt, dog, col]) => ({ name, cnt, dog, col, wp: cnt / tot * 100, sp: dog == null ? null : dog / all * 100 })) };
+        ...(big ? [
+          [T('от 30 млн DOG', '30M+ DOG'), g('30000000'), sums ? d('30000000') : null, 'var(--k8)', 'от 30 млн DOG', '30M DOG or more'],
+          [T('10–30 млн', '10–30M'), g('10000000') - g('30000000'), sums ? d('10000000') - d('30000000') : null, 'var(--accent)', '10–30 млн DOG', '10–30M DOG']
+        ] : [[T('от 10 млн DOG', '10M+ DOG'), g('10000000'), sums ? d('10000000') : null, 'var(--accent)', 'от 10 млн DOG', '10M DOG or more']]),
+        [T('5–10 млн', '5–10M'), g('5000000') - g('10000000'), sums ? d('5000000') - d('10000000') : null, 'var(--k1)', '5–10 млн DOG', '5–10M DOG'],
+        [T('1–5 млн', '1–5M'), g('1000000') - g('5000000'), sums ? d('1000000') - d('5000000') : null, 'var(--k5)', '1–5 млн DOG', '1–5M DOG'],
+        [T('меньше 1 млн', 'under 1M'), tot - g('1000000'), sums ? Math.max(0, all - d('1000000')) : null, 'var(--k-pr)', 'меньше 1 млн DOG', 'under 1M DOG']
+      ].map(([name, cnt, dog, col, ru, en]) => ({ name, cnt, dog, col, ru, en, wp: cnt / tot * 100, sp: dog == null ? null : dog / all * 100 })) };
     }
     const c = s.conc || {}, p10 = s.top10pct || c.top10, p100 = s.top100pct || c.top100, p1k = c.top1000;
     if (H > 1000 && p10 > 0 && p100 > p10 && p1k > p100 && p1k < 100) {
@@ -4193,11 +4198,11 @@ html{overscroll-behavior-y:contain}
     if (coins) {
       const avg = x.cnt > 0 ? x.dog / x.cnt : null;
       const who = mode === 'top' ? (sel === 0 ? T('10 самых крупных кошельков', 'The 10 largest wallets') : sel === 3 ? T(`Остальные ${W(x.cnt)}`, `The other ${W(x.cnt)}`) : T(`Кошельки на местах ${sel === 1 ? '11–100' : '101–1000'}`, `Wallets ranked ${sel === 1 ? '11–100' : '101–1,000'}`))
-        : T(`${W(x.cnt)} ${sel === 3 ? 'с балансом меньше 1 млн DOG' : sel === 0 ? 'с балансом от 10 млн DOG' : 'с балансом ' + x.name + ' DOG'}`, `${W(x.cnt)} holding ${sel === 3 ? 'under 1M DOG' : sel === 0 ? '10M DOG or more' : x.name + ' DOG'}`);
+        : T(`${W(x.cnt)} с балансом ${x.ru}`, `${W(x.cnt)} holding ${x.en}`);
       info = `${who} ${T(mode === 'top' ? 'держат' : plural(x.cnt, 'держит', 'держат', 'держат'), mode === 'size' && x.cnt === 1 ? 'holds' : 'hold')} <b>${mdog(x.dog)} DOG</b> — <b>${pc(x.sp)}</b> ${T('всех монет', 'of all coins')}${mid ? ` (≈ ${usd(x.dog * 1e6 * mid)})` : ''}.`
         + `<small>${avg ? T(`В среднем ${mdog(avg, avg < 10 ? 2 : 1)} DOG на кошелёк.`, `${mdog(avg, avg < 10 ? 2 : 1)} DOG per wallet on average.`) : ''}${x.cum ? ' ' + T(`Весь топ-${n(x.cum[0])} — ${pc(x.cum[1])} всех монет.`, `The whole top ${n(x.cum[0])} holds ${pc(x.cum[1])} of all coins.`) : ''}</small>`;
     } else {
-      info = `${W(x.cnt)} ${T(sel === 3 ? 'с балансом меньше 1 млн DOG' : sel === 0 ? 'с балансом от 10 млн DOG' : 'с балансом ' + x.name + ' DOG', sel === 3 ? 'hold under 1M DOG' : sel === 0 ? 'hold 10M DOG or more' : 'hold ' + x.name + ' DOG')} — <b>${pc(x.wp)}</b> ${T('всех кошельков', 'of all wallets')}.<small>${T('Сколько монет у каждой группы — появится со следующей сводкой.', 'How many coins each group holds will appear with the next report.')}</small>`;
+      info = `${W(x.cnt)} ${T('с балансом ' + x.ru, 'hold ' + x.en)} — <b>${pc(x.wp)}</b> ${T('всех кошельков', 'of all wallets')}.<small>${T('Сколько монет у каждой группы — появится со следующей сводкой.', 'How many coins each group holds will appear with the next report.')}</small>`;
     }
     const asof = mode === 'size' ? T('По списку холдеров DOG DATA на ', 'From DOG DATA’s holder list as of ') + esc(dtl(M.asof)) + '. ' : '';
     return `<div class="sec" id="tiers-sec"><div class="sec-head c"><h2>${T('У кого сколько DOG', 'Who holds how much')}</h2>${D.size && D.top ? `<span class="seg" role="group" aria-label="${T('Как делить кошельки', 'How to group wallets')}">${segB('tmode', 'size', T('По размеру', 'By size'), mode === 'size')}${segB('tmode', 'top', T('Самые крупные', 'Largest'), mode === 'top')}</span>` : ''}</div>

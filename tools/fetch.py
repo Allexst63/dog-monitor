@@ -283,8 +283,11 @@ def f_airdrop():
     return d, '\n'.join(L)
 
 
+TIERS = (30e6, 10e6, 5e6, 1e6)   # пороги баланса, DOG: сколько кошельков не ниже каждого и сколько у них монет
+
+
 def f_tiers():
-    """сколько кошельков держит от 10 млн, 5 млн и 1 млн DOG и сколько у них монет в сумме: список холдеров DOG DATA
+    """сколько кошельков держит от 30 млн, 10 млн, 5 млн и 1 млн DOG и сколько у них монет в сумме: список холдеров DOG DATA
     отсортирован по балансу, поэтому место последнего кошелька с балансом не ниже порога и есть их число — ищем его
     делением пополам по страницам; затем проходим все страницы до порога 1 млн и складываем балансы (до 3 минут;
     не успели или не сошлось — остаются только числа кошельков)"""
@@ -312,7 +315,7 @@ def f_tiers():
     bal = lambda x: float(x.get('total_dog') or 0)
     L = [f"last_updated={s(d0.get('last_updated'))}; total={s(g(d0, 'pagination', 'total'))}"]
     cnt, last = {}, 1
-    for thr in (10e6, 5e6, 1e6):
+    for thr in TIERS:
         lo, hi = 1, pages                      # первая страница, где последний кошелёк уже ниже порога
         while lo < hi:
             mid = (lo + hi) // 2
@@ -342,7 +345,7 @@ def f_tiers():
             sums = tot
     except Exception as e:
         L[0] += f'; sums=нет ({e})'
-    for thr in (10e6, 5e6, 1e6):
+    for thr in TIERS:
         L.append(f'tier;{int(thr)};{cnt[thr]}' + (f';{sums[thr]:.0f}' if sums else ''))
     if sums and seen >= 1000:
         L.append(f'top1000={top1000:.0f}')
