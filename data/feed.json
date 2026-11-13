@@ -1,9 +1,9 @@
 {
- "updated": "2026-11-13T15:52:05Z",
+ "updated": "2026-11-13T18:39:23Z",
  "items": [
   {
    "title": "Удержит ли Dog поддержку на уровне $0,00065 на фоне продолжения снижения цены?",
-   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af73227868d40fc820fb54fa782f1c2&url=https%3a%2f%2ftradersunion.com%2fru%2fnews%2fcryptocurrency-news%2fshow%2f4219771-dog-drops-9-06percent-today-to%2f&c=559473548680187945&mkt=en-us",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af7595d56d343a692c9ddc8e9b5f307&url=https%3a%2f%2ftradersunion.com%2fru%2fnews%2fcryptocurrency-news%2fshow%2f4219771-dog-drops-9-06percent-today-to%2f&c=559473548680187945&mkt=en-us",
    "src": "tradersunion",
    "srcUrl": null,
    "q": "\"DOG (Bitcoin)\"",
@@ -12,7 +12,7 @@
   },
   {
    "title": "Will Dog break above $0.000834 resistance amid ongoing bullish momentum?",
-   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af73227868d40fc820fb54fa782f1c2&url=https%3a%2f%2ftradersunion.com%2fnews%2fcryptocurrency-news%2fshow%2f4202624-dog-bitcoin-jumps-7-52percent-today%2f&c=13404781543527730121&mkt=en-us",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af7595d56d343a692c9ddc8e9b5f307&url=https%3a%2f%2ftradersunion.com%2fnews%2fcryptocurrency-news%2fshow%2f4202624-dog-bitcoin-jumps-7-52percent-today%2f&c=13404781543527730121&mkt=en-us",
    "src": "tradersunion",
    "srcUrl": null,
    "q": "\"DOG (Bitcoin)\"",
@@ -21,7 +21,7 @@
   },
   {
    "title": "$5 Dollar Minimum Deposit Casino",
-   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af73228b9594ace971daddc4576a091&url=https%3a%2f%2finsider-gaming.com%2fcasinos%2f5-dollars%2f&c=8229593388208702579&mkt=en-us",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af7595d62d042a6819cee7953260bc4&url=https%3a%2f%2finsider-gaming.com%2fcasinos%2f5-dollars%2f&c=8229593388208702579&mkt=en-us",
    "src": "Insider Gaming",
    "srcUrl": null,
    "q": "\"$DOG\" bitcoin rune",
@@ -29,8 +29,17 @@
    "ts": "2026-11-09T16:00Z"
   },
   {
+   "title": "Swyftx review",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af7595e2d974cba99dd4c930a632be6&url=https%3a%2f%2fwww.finder.com.au%2fcryptocurrency%2fexchanges%2fswyftx-exchange-review&c=9931200241021424462&mkt=en-us",
+   "src": "Finder",
+   "srcUrl": null,
+   "q": "Bitcoin runes DOG exchange listing",
+   "d": "2026-11-09",
+   "ts": "2026-11-09T09:11Z"
+  },
+  {
    "title": "10 New Coinbase Listings to Watch in 2026",
-   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af7322887d6411db2b1bff41290e40b&url=https%3a%2f%2f99bitcoins.com%2fcryptocurrency%2fnew-coinbase-listings%2f&c=12719441724415490587&mkt=en-us",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af7595e2d974cba99dd4c930a632be6&url=https%3a%2f%2f99bitcoins.com%2fcryptocurrency%2fnew-coinbase-listings%2f&c=12719441724415490587&mkt=en-us",
    "src": "99Bitcoins",
    "srcUrl": null,
    "q": "Bitcoin runes DOG exchange listing",
@@ -39,7 +48,7 @@
   },
   {
    "title": "Dog (Bitcoin)-Kurs aktuell",
-   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af7322778254af1a7626b90db46241c&url=https%3a%2f%2fwww.btc-echo.de%2fkurs%2fdog-go-to-the-moon-rune%2f&c=7317942782322456228&mkt=en-us",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6af7595dd4e44b47bfb62fe9612f6f1e&url=https%3a%2f%2fwww.btc-echo.de%2fkurs%2fdog-go-to-the-moon-rune%2f&c=7317942782322456228&mkt=en-us",
    "src": "BTC-ECHO",
    "srcUrl": null,
    "q": "\"DOG•GO•TO•THE•MOON\"",
@@ -50,13 +59,13 @@
  "errors": [],
  "stat": [
   "google \"DOG•GO•TO•THE•MOON\": 12",
-  "google \"DOG (Bitcoin)\": 17",
+  "google \"DOG (Bitcoin)\": 16",
   "google \"C2 Blockchain\" DOG: 6",
   "google Leonidas DOG bitcoin runes: 10",
   "google \"$DOG\" bitcoin rune: 10",
   "google Bitcoin runes DOG exchange listing: 10",
   "bing \"DOG•GO•TO•THE•MOON\": 7",
-  "bing \"DOG (Bitcoin)\": 12",
+  "bing \"DOG (Bitcoin)\": 11",
   "bing \"C2 Blockchain\" DOG: 8",
   "bing Leonidas DOG bitcoin runes: 10",
   "bing \"$DOG\" bitcoin rune: 12",
