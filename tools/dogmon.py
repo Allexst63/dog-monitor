@@ -480,6 +480,14 @@ def build_health(mid):
                 t1000 = fnum(kv(tr, 'top1000'))
                 if t1000:
                     h['tiers']['top1000'] = round(t1000 / SUPPLY * 100, 2)
+    # Суммы монет по ступеням и ступень «от 30 млн» получаются не в каждом запуске (проход по списку холдеров может не
+    # успеть). Чтобы блок «У кого сколько DOG» не терял ступени, берём последний полный расчёт из прошлой сводки
+    # (со своей датой asof — она показана на сайте).
+    full = lambda x: bool(x and x.get('n') and x.get('dog') and x['n'].get('30000000') and x['dog'].get('30000000'))
+    if not full(h.get('tiers')):
+        pt = ((load_doc(PREV, 'live', 'current') or {}).get('health') or {}).get('tiers')
+        if full(pt):
+            h['tiers'] = pt
     ch = raw('dd_chains')
     if ch:
         t = parse_time(kv(ch, 'last_updated'))
