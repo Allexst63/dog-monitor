@@ -1,0 +1,13 @@
+name: probe
+on:
+  push:
+    branches: [probe3]
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm i --no-audit --no-fund playwright-core@1.48.2 >/dev/null 2>&1 && node tools/probe.js
