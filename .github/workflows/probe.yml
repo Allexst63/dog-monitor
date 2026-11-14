@@ -1,7 +1,7 @@
 name: probe
 on:
   push:
-    branches: [probe]
+    branches: [probe2]
 permissions:
   contents: read
 jobs:
