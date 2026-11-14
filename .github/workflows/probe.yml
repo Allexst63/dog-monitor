@@ -1,0 +1,16 @@
+name: probe
+on:
+  push:
+    branches: [probe]
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm i --no-audit --no-fund ws >/dev/null 2>&1 && node tools/probe.js
