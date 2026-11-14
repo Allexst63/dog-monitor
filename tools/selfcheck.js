@@ -65,6 +65,8 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
     add(gotChart, 'Главная: график цены нарисован', 'Home: price chart is drawn');
     add(await page.evaluate(() => document.querySelectorAll('#p-overview .tile').length >= 2 && !!document.querySelector('#p-overview .sum')), 'Главная: плитки и «что нового» на месте', 'Home: tiles and “what’s new” are in place');
     await page.waitForTimeout(4000);                       // даём странице закончить своё онлайн-обновление
+    const fng = await page.evaluate(() => [...document.querySelectorAll('#fng-box .fng-g')].map(g => (g.querySelector('.gn') || {}).textContent || ''));
+    add(fng.length === 2 && fng.some(t => /^\d+$/.test(t)), `Главная: «Страх и жадность» показан (рынок ${fng[0] || '—'}, DOG ${fng[1] || '—'})`, `Home: Fear & Greed is shown (market ${fng[0] || '—'}, DOG ${fng[1] || '—'})`);
     const st = await page.evaluate(() => ({ c: document.querySelector('#status').className, t: document.querySelector('#status-t').textContent }));
     add(/\d\d:\d\d/.test(st.t), `Статус в шапке показывает время данных («${st.t.trim().slice(0, 40)}»)`, `Header status shows the data time (“${st.t.trim().slice(0, 40)}”)`);
     add(await noOverflow(), 'Главная: ничего не вылезает за экран телефона', 'Home: nothing overflows the phone screen');
@@ -74,6 +76,9 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
     await tab('books');
     const rows = await page.evaluate(() => document.querySelectorAll('#p-books .ob-r, #p-books [data-lv], #p-books tr').length);
     add(rows >= 10 && await noOverflow(), `Стакан: уровни цен показаны (${rows})`, `Order book: price levels are shown (${rows})`);
+    // сводный стакан: все покупки ниже цены, все продажи выше (без «пересечений» между биржами)
+    const ob = await page.evaluate(() => { const num = e => parseFloat(e.textContent.replace(',', '.')); const b = [...document.querySelectorAll('#obcard .ob-r.b .p, #obcard .ob2 .h.b .p')].map(num), a = [...document.querySelectorAll('#obcard .ob-r.a .p, #obcard .ob2 .h.a .p')].map(num), m = document.querySelector('#obmidp'); return { b: b.length ? Math.max(...b) : null, a: a.length ? Math.min(...a) : null, m: m ? num(m) : null }; });
+    add(ob.b != null && ob.a != null && ob.m != null && ob.b <= ob.m * 1.0000001 && ob.a >= ob.m * 0.9999999 && ob.b < ob.a * 1.0000001, 'Стакан: покупки ниже цены, продажи выше', 'Order book: bids below the price, asks above', JSON.stringify(ob));
     await shot('2-books');
 
     // 3. графики

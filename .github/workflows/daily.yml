@@ -46,6 +46,12 @@ jobs:
         timeout-minutes: 12
         run: python3 tools/costbasis.py .
 
+      - name: Страх и жадность (весь рынок — alternative.me, DOG — свой расчёт)
+        if: ${{ github.event.inputs.mode != 'feed' }}
+        continue-on-error: true      # при ошибке на сайте остаётся прошлый расчёт
+        timeout-minutes: 3
+        run: python3 tools/mood.py .
+
       - name: Кандидаты в новости (Google News)
         if: ${{ github.event.inputs.mode != 'wallets' }}
         continue-on-error: true

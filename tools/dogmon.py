@@ -528,6 +528,33 @@ def ladder(bids, asks, mid):
             'a': [{'p': k, 'q': round(v / 1e6, 3)} for k, v in sorted(ab.items())]}
 
 
+def mirror_score(cand, src, mid, band=0.12):
+    """Насколько стакан cand повторяет стакан src: сколько его ступеней (по 0.00001, от 0,3 млн DOG, в пределах 12% от цены)
+    совпадают по объёму со ступенями src в пределах 15%. Возвращает (совпало, всего, совпало стенок от 5 млн)."""
+    m = t = w = 0
+    for side in ('b', 'a'):
+        y = {round(e['p'], 5): e['q'] for e in src['ladder'][side]}
+        for e in cand['ladder'][side]:
+            if e['q'] < 0.3 or abs(e['p'] / mid - 1) > band:
+                continue
+            t += 1
+            c = y.get(round(e['p'], 5), 0)
+            if abs(e['q'] - c) <= 0.15 * max(e['q'], c):
+                m += 1
+                w += 1 if e['q'] >= 5 else 0
+    return m, t, w
+
+
+def is_mirror(m, t, w, was=False):
+    """Зеркало: совпадает половина ступеней (или треть, если среди них есть крупная заявка от 5 млн).
+    Если биржа уже считалась зеркалом, для снятия пометки сходство должно упасть заметно ниже."""
+    if not t:
+        return False
+    if was:
+        return m / t >= 0.2
+    return (m >= 5 and m / t >= 0.5) or (w >= 1 and m >= 3 and m / t >= 0.3)
+
+
 def walls(levels, mid, side, n=12):
     w = [x for x in levels if x[1] >= WALL_MIN and mid * 0.5 <= x[0] <= mid * 2]
     w = sorted(w, key=lambda x: -x[1])[:n]
@@ -823,11 +850,27 @@ def compute(kind):
     if 'gate' in books and gate_tk:
         books['gate'].update({'last': gate_tk.get('last'), 'chg24': gate_tk.get('change_percentage'),
                               'vol24usd': gate_tk.get('quote_volume'), 'low24': gate_tk.get('low_24h'), 'high24': gate_tk.get('high_24h')})
+    # Биржа-«зеркало»: её стакан повторяет стакан крупной биржи (так работают маркет-мейкеры малых площадок) —
+    # это одни и те же деньги, поэтому в общие суммы и в список изменений она не входит. Проверяем при каждой сводке.
+    for ex in ('digifinex', 'coinw', 'bitget'):
+        if ex not in books or books[ex].get('off') or not mid:
+            continue
+        for src in ('gate', 'kraken', 'mexc', 'bingx'):
+            if src not in books or books[src].get('off'):
+                continue
+            m, t, w = mirror_score(books[ex], books[src], mid)
+            if is_mirror(m, t, w, was=(pw.get(ex) or {}).get('mir') == src):
+                books[ex]['mir'] = src
+                books[ex]['mirN'] = [m, t]
+                break
+    mirrors = {ex for ex, bk in books.items() if bk.get('mir')}
+    walls_delta = [w for w in walls_delta if w['x'] not in mirrors]
+    chk(True, 'зеркальные стаканы: ' + (', '.join(f"{EXN[e]} повторяет {EXN[books[e]['mir']]} ({books[e]['mirN'][0]} из {books[e]['mirN'][1]} ступеней) — в суммы не входит" for e in sorted(mirrors)) if mirrors else 'не найдены'))
     walls_delta.sort(key=lambda w: -(max(w['q0'] or 0, w['q1'] or 0) if w['k'] in ('новая', 'снята', 'переставлена') else abs(w['q1'] - w['q0'])))
     totals = {}
     for key in ('d5', 'd10', 'd25'):
-        b = [bk[key]['b'] for bk in books.values() if not bk.get('off') and bk[key]['b'] is not None]
-        a = [bk[key]['a'] for bk in books.values() if not bk.get('off') and bk[key]['a'] is not None]
+        b = [bk[key]['b'] for bk in books.values() if not bk.get('off') and not bk.get('mir') and bk[key]['b'] is not None]
+        a = [bk[key]['a'] for bk in books.values() if not bk.get('off') and not bk.get('mir') and bk[key]['a'] is not None]
         totals[key] = {'b': r2(sum(b)), 'a': r2(sum(a)), 'n': len(b)}
 
     # --- BTC ---
@@ -990,7 +1033,7 @@ def compute(kind):
     def biggest(side, lim):
         best = None
         for ex, b in books.items():
-            if b.get('off'):
+            if b.get('off') or b.get('mir'):
                 continue
             for w in b['bids' if side == 'b' else 'asks']:
                 if mid and abs(w['p'] / mid - 1) <= lim and (best is None or w['q'] > best['q']):
@@ -1070,7 +1113,7 @@ def report(s):
                                                 (' (переставлена)' if ch['k'] == 'переставлена' else f" ({sgn(ch['q1'] - ch['q0'], 1)})"))
         bv = '—' if d['b'] is None else f"{d['b']:.1f}"
         av = '—' if d['a'] is None else f"{d['a']:.1f}"
-        L.append(f"| {name} ({band}){' ⚠️' if b.get('off') else ''} | {bv} | {av} | {bigs} |")
+        L.append(f"| {name} ({band}){' ⚠️' if b.get('off') else ' (зеркало)' if b.get('mir') else ''} | {bv} | {av} | {bigs} |")
     tt = (s.get('totals') or {}).get('d10') or {}
     if tt:
         L.append(f"| **Все биржи (±10%)** | **{tt.get('b') or 0:.1f}** | **{tt.get('a') or 0:.1f}** | |")
