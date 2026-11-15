@@ -89,6 +89,16 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
       await page.evaluate(() => { const c = document.querySelector('#sheet [data-close]'); if (c) c.click(); });
       await page.waitForTimeout(450);
     }
+    // индекс DOG везде одно и то же число: шкала на «Главном», «Сейчас» в разборе и сегодняшняя точка графика
+    {
+      const g = await page.evaluate(() => { const x = document.querySelectorAll('#fng-box .fng-g .gn'); return x[2] ? x[2].textContent.trim() : ''; });
+      await page.evaluate(() => { const b = document.querySelector('[data-info="fng_d"]'); if (b) b.click(); });
+      await page.waitForTimeout(800);
+      const k = await page.evaluate(() => ({ now: ((document.querySelector('#sheet-body .kv dd b') || {}).textContent || '').trim(), pt: ((document.querySelector('#sheet-body .fic-read .v b') || {}).textContent || '').trim(), d: ((document.querySelector('#sheet-body .fic-read .d') || {}).textContent || '').trim() }));
+      add(!!g && g === k.now && g === k.pt, `Индекс DOG одинаковый на шкале, в разборе и на графике (${g || '—'} / ${k.now || '—'} / ${k.pt || '—'})`, `DOG index is the same on the gauge, in the breakdown and on the chart (${g || '—'} / ${k.now || '—'} / ${k.pt || '—'})`, k.d);
+      await page.evaluate(() => { const c = document.querySelector('#sheet [data-close]'); if (c) c.click(); });
+      await page.waitForTimeout(450);
+    }
     // крупные заявки из «Что нового» — их потом ищем в сводном стакане
     const evs = await page.evaluate(() => [...document.querySelectorAll('#sum-box .ev')].map(e => e.textContent.replace(/\s+/g, ' ').trim()));
 

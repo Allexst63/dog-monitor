@@ -58,8 +58,10 @@ def day(ts):
 
 # ---------- цена DOG по дням ----------
 def fetch_prices(old):
-    """{дата: [open, high, low, close]} — Kraken DOG/USD (последние ~720 дней), раньше — Gate DOG/USDT."""
-    px, src = {}, {}
+    """{дата: [open, high, low, close]} — Kraken DOG/USD (последние ~720 дней), раньше — Gate DOG/USDT.
+    Максимум и минимум дня с Kraken — медиана Kraken, Gate и MEXC: у Kraken мало заявок, и одна случайная сделка
+    даёт «шпильку» (25.08.2026: Kraken 0.00196, Gate 0.001458, MEXC 0.00125). Открытие и закрытие — Kraken."""
+    px, src, hl = {}, {}, {}
     today = NOW.strftime('%Y-%m-%d')
     try:
         d = get('https://api.gateio.ws/api/v4/spot/candlesticks?currency_pair=DOG_USDT&interval=1d&limit=1000')
@@ -69,9 +71,18 @@ def fetch_prices(old):
             if c > 0 and t <= today:      # у Gate бывает «завтрашняя» пустая свеча — её не берём
                 px[t] = [o, h, lo, c]
                 src[t] = 'g'
+                hl.setdefault(t, []).append((h, lo))
         print(f'PRICES gate: {len(px)} дней')
     except Exception as e:
         print('PRICES gate ERR', e)
+    try:
+        d = get('https://api.mexc.com/api/v3/klines?symbol=DOGUSDT&interval=1d&limit=1000')
+        for r in d if isinstance(d, list) else []:
+            t = dt.datetime.fromtimestamp(int(r[0]) // 1000, dt.timezone.utc).strftime('%Y-%m-%d')
+            if float(r[4]) > 0 and t <= today:
+                hl.setdefault(t, []).append((float(r[2]), float(r[3])))
+    except Exception as e:
+        print('PRICES mexc ERR', e)
     try:
         d = get('https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440')
         res = d.get('result') or {}
@@ -81,7 +92,13 @@ def fetch_prices(old):
             t = dt.datetime.fromtimestamp(int(r[0]), dt.timezone.utc).strftime('%Y-%m-%d')
             o, h, lo, c = (float(r[i]) for i in (1, 2, 3, 4))
             if c > 0 and t <= today:
-                px[t] = [o, h, lo, c]
+                hs = [h] + [x[0] for x in hl.get(t, [])]
+                ls = [lo] + [x[1] for x in hl.get(t, [])]
+                if len(hs) >= 3:
+                    h, lo = sorted(hs)[len(hs) // 2], sorted(ls)[len(ls) // 2]
+                elif len(hs) == 2:
+                    h, lo = min(hs), max(ls)
+                px[t] = [o, max(h, o, c), min(lo, o, c), c]
                 src[t] = 'k'
                 n += 1
         print(f'PRICES kraken: {n} дней')
@@ -216,7 +233,7 @@ def main():
     dates = sorted(px)
     k_from = min((t for t, s in src.items() if s == 'k'), default=None)
     jdump({'updated': NOW.strftime('%Y-%m-%dT%H:%M:%SZ'), 'first': dates[0], 'kraken_from': k_from,
-           'src': 'Kraken DOG/USD' + (f' с {k_from}' if k_from else '') + ', раньше — Gate DOG/USDT; цена закрытия дня (UTC)',
+           'src': 'Kraken DOG/USD' + (f' с {k_from}' if k_from else '') + ', раньше — Gate DOG/USDT; цена закрытия дня (UTC); максимум и минимум дня с Kraken — медиана Kraken, Gate и MEXC',
            'd': {t: [round(v, 9) for v in px[t]] for t in dates}, 's': {t: src.get(t, '?') for t in dates}},
           os.path.join(data, 'prices.json'))
 

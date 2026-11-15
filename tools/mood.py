@@ -9,21 +9,24 @@
   CoinMarketCap  — CMC Crypto Fear and Greed Index, обновляется в течение дня (его открытый ответ
                    data-api без CORS, поэтому берём его здесь, а не в браузере).
 
-DOG — свой индекс (версия 3 с 15.11.2026). Он про DOG, но DOG — мем-монета на биткоине и ходит вместе с рынком,
-поэтому 40% — рынок и биткоин, 60% — сам DOG. Каждая часть — число от 0 (страх) до 100 (жадность):
-  mkt   25%  настроение всего крипторынка: среднее индексов alternative.me и CoinMarketCap;
+DOG — свой индекс (версия 4 с 15.11.2026). Он про DOG, но DOG — мем-монета на биткоине и ходит вместе с рынком,
+поэтому 45% — рынок и биткоин, 55% — сам DOG. Каждая часть — число от 0 (страх) до 100 (жадность):
+  mkt   30%  настроение всего крипторынка: среднее индексов alternative.me и CoinMarketCap;
   btc   15%  тренд биткоина: цена BTC против средних за 30 и 90 дней и просадка от максимума за 90 дней;
-  mom   20%  импульс DOG: цена против своих средних за 30 и 90 дней;
-  vol   15%  падения и просадка DOG: насколько резкие падения за 30 дней против обычных (считаем только дни
+  mom   25%  импульс DOG: цена против своих средних за 30 и 90 дней;
+  vol   20%  падения и просадка DOG: насколько резкие падения за 30 дней против обычных (считаем только дни
              снижения — рост на 30% за день это не страх) и как далеко цена от максимума за 90 дней;
-  rel   10%  DOG против других: курс DOG/BTC за 30 дней и место среди 100 крупнейших мем-монет (CoinGecko);
-  hold  15%  холдеры DOG: доля монет в прибыли, запас DOG на биржах и число кошельков за месяц.
+  rel   10%  DOG против биткоина: курс DOG/BTC за 30 дней.
+Все части считаются по дневным ценам закрытия, поэтому каждый день истории посчитан одинаково и его можно
+проверить. Сегодняшний день — по текущей (ещё не закрытой) дневной свече и текущим индексам рынка; когда день
+закрывается (00:00 UTC), следующий запуск пересчитывает его по цене закрытия — и дальше он не меняется.
+Холдеры и место среди мем-монет в индекс не входят (их истории за прошлые годы нет) — они в разборе «для справки».
 Если части нет (источник не ответил), её вес делится между остальными.
 Стакана в индексе больше нет (в версии 1 был с весом 10%): доля заявок на покупку рядом с ценой растёт ПОСЛЕ
 падений — цена опускается к крупным заявкам на покупку, и они попадают в окно ±10% (за месяц сводок корреляция
 с изменением цены за 3 дня −0,59), а на будущее движение цены она не указывает (корреляция около нуля).
-Проверка на истории с сентября 2024: корреляция с индексами рынка 0,75 (alternative.me) и 0,84 (CoinMarketCap),
-у версии 1 было 0,47 и 0,59; у вершины цены в декабре 2024 (капитализация около $1 млрд) — 85–88, крайняя жадность;
+Проверка на истории с сентября 2024: корреляция с индексами рынка 0,74 (alternative.me) и 0,83 (CoinMarketCap),
+у версии 1 было 0,47 и 0,59; у рекорда цены 11.12.2024 (капитализация ≈ $1 млрд) — 83–87, крайняя жадность;
 у дна в марте 2025 — 13, крайний страх. Историю до запуска версии считаем по частям, для которых есть прошлые данные
 (mkt, btc, mom, vol и DOG/BTC). Это описание настроения, а не совет и не прогноз.
 """
@@ -40,8 +43,8 @@ from fetch import get  # noqa: E402
 NOW = dt.datetime.now(dt.timezone.utc)
 TODAY = NOW.strftime('%Y-%m-%d')
 CG_ID = 'dog-go-to-the-moon-rune'
-WEIGHTS = (('mkt', 25), ('btc', 15), ('mom', 20), ('vol', 15), ('rel', 10), ('hold', 15))
-VER = 3
+WEIGHTS = (('mkt', 30), ('btc', 15), ('mom', 25), ('vol', 20), ('rel', 10))
+VER = 4
 KEEP = 1100            # дней истории в файле: у DOG — вся история индекса (с 23.08.2024)
 FETCH_DAYS = 1100
 TURN = 40              # разворот индекса DOG — смена направления не меньше чем на 40 пунктов
@@ -318,67 +321,48 @@ def main():
 
     parts['mom'], parts['vol'] = dp[last]['p']['mom'], dp[last]['p']['vol']
 
-    # DOG против других: к биткоину и место среди мем-монет
+    # DOG против биткоина
+    parts['rel'] = dp[last]['p']['rb']
+
+    # для справки (в индекс не входит — истории нет): место среди мем-монет, холдеры
+    ctx = {}
     ranks = dict(old.get('ranks') or {})
     if cg.get('rank') and str(cg.get('ts', ''))[:10] == TODAY:
         ranks[TODAY] = cg['rank']
     ranks = {d: ranks[d] for d in sorted(ranks)[-KEEP:]}
-    fresh_cg = bool(cg.get('ts')) and (NOW - dt.datetime.strptime(cg['ts'], '%Y-%m-%dT%H:%M:%SZ').replace(tzinfo=dt.timezone.utc)) < dt.timedelta(days=3)
-    sec = None
-    if fresh_cg and (cg.get('beat7') is not None or cg.get('beat30') is not None):
-        perf = 100 * mean([cg.get('beat7'), cg.get('beat30')])
-        back = (NOW - dt.timedelta(days=30)).strftime('%Y-%m-%d')
-        past = [d for d in ranks if d <= back]
-        ref = ranks[past[-1]] if past else (ranks[min(ranks)] if len(ranks) > 1 else None)
-        if ref and cg.get('rank'):
-            facts['rankWas'] = ref
-            sec = 0.7 * perf + 0.3 * clamp(50 + (ref - cg['rank']) * 2)
-        else:
-            sec = perf
-    parts['rel'] = mean([dp[last]['p']['rb'], sec])
-
-    # холдеры: доля монет в прибыли, запас на биржах и число кошельков за месяц
-    hp = []
+    back = (NOW - dt.timedelta(days=30)).strftime('%Y-%m-%d')
+    past = [d for d in ranks if d <= back]
+    if past and cg.get('rank'):
+        ctx['rankWas'] = ranks[past[-1]]
     profit = (live.get('health') or {}).get('profit')
     if profit is not None:
-        facts['profit'] = profit
-        hp.append((0.6, clamp(profit)))
+        ctx['profit'] = profit
     firstb = next((h for h in hist if h.get('exBal')), None)
     exb = (live.get('exch') or {}).get('bal')
     if firstb and exb:
-        chg = (exb / firstb['exBal'] - 1) * 100
-        facts['exch30'] = chg
-        hp.append((0.25, th(-chg, 12)))        # монеты уходят с бирж — их меньше хотят продать
+        ctx['exch30'] = (exb / firstb['exBal'] - 1) * 100
+        ctx['exchSince'] = str(firstb.get('ts', ''))[:10]
     first = next((h for h in hist if h.get('holders')), None)
     if first and live.get('holders'):
         span = max(1.0, (NOW - dt.datetime.strptime(first['ts'], '%Y-%m-%dT%H:%M:%SZ').replace(tzinfo=dt.timezone.utc)).total_seconds() / 86400)
         if span >= 7:
-            chg = (live['holders'] / first['holders'] - 1) * 100 * min(1.0, 30 / span)
-            facts['holders30'] = chg
-            hp.append((0.15, clamp(50 + chg * 50)))
-    parts['hold'] = sum(w * v for w, v in hp) / sum(w for w, _ in hp) if hp else None
+            ctx['holders30'] = (live['holders'] / first['holders'] - 1) * 100 * min(1.0, 30 / span)
 
     value = combine(parts)
     if value is None:
         print('MOOD: не хватает данных')
         return 0
 
-    # история: дни после запуска версии 2 — сохранённые полные значения, раньше — по частям с прошлыми данными
-    od = old.get('dog') or {}
-    same = od.get('ver') == VER
-    saved = {d: v for d, v in od.get('hist') or []} if same else {}
-    since = od.get('since') if same and od.get('since') else last
+    # история: каждый день — по тем же частям; сегодня — текущие значения индексов рынка, раньше — дневные
     series = {}
     for d in sorted(dp)[-KEEP:]:
-        if d in saved and d != last and d >= since:
-            series[d] = saved[d]
-            continue
         p = {'mkt': mean([alt_h.get(d), cmc_h.get(d)]), 'btc': bp[d][0] if d in bp else None,
-             'mom': dp[d]['p']['mom'], 'vol': dp[d]['p']['vol'], 'rel': dp[d]['p']['rb'], 'hold': None}
+             'mom': dp[d]['p']['mom'], 'vol': dp[d]['p']['vol'], 'rel': dp[d]['p']['rb']}
         v = combine(p)
         if v is not None:
             series[d] = round(v)
     series[last] = round(value)
+    since = min(series) if series else last
 
     out = {
         'updated': NOW.strftime('%Y-%m-%dT%H:%M:%SZ'),
@@ -387,6 +371,7 @@ def main():
         'dog': {'v': round(value), 'day': last, 'since': since, 'ver': VER,
                 'parts': [{'k': k, 'w': w, 'v': None if parts.get(k) is None else round(parts[k])} for k, w in WEIGHTS],
                 'facts': {k: (round(v, 4) if isinstance(v, float) else v) for k, v in facts.items() if v is not None},
+                'ctx': {k: (round(v, 4) if isinstance(v, float) else v) for k, v in ctx.items() if v is not None},
                 'prev': {'d1': series.get(shift(last, 1)), 'd7': series.get(shift(last, 7)), 'd30': series.get(shift(last, 30))},
                 'hist': [[d, series[d]] for d in sorted(series)],
                 'turns': [t + [px[t[0]][3]] for t in turns(series) if t[0] in px]},
