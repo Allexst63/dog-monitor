@@ -2447,7 +2447,7 @@ html{overscroll-behavior-y:contain}
   function ficRead(id, i) {
     const F = FIC[id]; if (!F) return '';
     const [d, v] = F.rows[i];
-    return `<span class="d">${esc(fngDmy(d))}</span><span class="v">${T('индекс', 'index')} <b style="color:${fngCol(v, F.sc)}">${v}</b> · ${esc(fngName(v, F.sc).toLowerCase())}</span><span class="p">${esc(F.pxName)} ${F.fmtP(F.pxd[d])}</span>`;
+    return `<span class="d">${esc(fngDmy(d))}</span><span class="v"><b style="color:${fngCol(v, F.sc)}">${v}</b> · ${esc(fngName(v, F.sc).toLowerCase())}</span><span class="p">${esc(F.pxName)} ${F.fmtP(F.pxd[d])}</span>`;
   }
   function ficSet(el, i) {
     const F = FIC[el.dataset.fic]; if (!F) return;
