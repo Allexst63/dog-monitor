@@ -86,6 +86,13 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
         ok = !!after && after !== r.read;
       }
       add(ok, `«Страх и жадность», ${nm}: график индекса с ценой показан и отвечает на нажатие`, `Fear & Greed, ${nm}: the index chart with prices is shown and responds to taps`, r ? `высота ${Math.round(r.h)} px; ${after.slice(0, 70)}` : 'графика нет');
+      // точки разворотов: есть на графике, нажатие на точку показывает её день, цену и метку «пик» или «дно»
+      if (ok) {
+        const dt = await page.evaluate(() => { const d = [...document.querySelectorAll('#sheet-body .fic-t')]; const x = d[d.length - 1]; if (!x) return { n: 0 }; const r = x.getBoundingClientRect(); return { n: d.length, x: r.left + r.width / 2 + 4, y: r.top + r.height / 2 - 4, rows: document.querySelectorAll('#sheet-body [data-fturn]').length }; });
+        let tk = '';
+        if (dt.n) { await page.touchscreen.tap(dt.x, dt.y); await page.waitForTimeout(300); tk = await page.evaluate(() => ((document.querySelector('#sheet-body .fic-read .tk') || {}).textContent || '') + ' · ' + ((document.querySelector('#sheet-body .fic-read .p') || {}).textContent || '')); }
+        add(dt.n >= 3 && dt.rows >= 3 && /пик|дно|peak|low/.test(tk), `«Страх и жадность», ${nm}: точки разворотов нажимаются (${dt.n} точек)`, `Fear & Greed, ${nm}: turning-point dots respond to taps (${dt.n} dots)`, tk.slice(0, 80));
+      }
       await page.evaluate(() => { const c = document.querySelector('#sheet [data-close]'); if (c) c.click(); });
       await page.waitForTimeout(450);
     }
@@ -159,6 +166,20 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
       add(after !== before && await page.evaluate(() => !!document.querySelector('#crleg [data-crlast]')), 'Графики: нажатие на день показывает значения всех линий в этот день', 'Charts: tapping a day shows every line’s value on that day', after.slice(0, 120));
       await shot('5-charts-btc');
     } else add(false, 'Графики: нажатие на день показывает значения всех линий в этот день', 'Charts: tapping a day shows every line’s value on that day');
+    // DOG и мем-монеты: все линии нарисованы, нажатие на линию выбирает монету, в списке у каждой монеты есть связь с DOG
+    {
+      await page.evaluate(() => { const e = document.querySelector('#mmplot'); if (e) e.scrollIntoView({ block: 'center' }); });
+      const ok = await wait(() => document.querySelectorAll('#mmplot path').length >= 8 && document.querySelectorAll('#mmlist [data-mm]').length >= 8, 15000);
+      let det = '';
+      if (ok) {
+        const m = await page.evaluate(() => { const b = document.querySelector('#mmplot').getBoundingClientRect(); return { b: { x: b.left, y: b.top, w: b.width, h: b.height }, sel: (document.querySelector('#mmlist [aria-pressed="true"]') || {}).dataset?.mm, n: document.querySelectorAll('#mmlist [data-mm]').length, corr: [...document.querySelectorAll('#mmlist .c')].filter(c => /\d/.test(c.textContent)).length }; });
+        await page.touchscreen.tap(m.b.x + m.b.w * 0.5, m.b.y + m.b.h * 0.5); await page.waitForTimeout(300);
+        const r = await page.evaluate(() => ({ read: (document.querySelector('#mmread') || {}).textContent || '', h: document.querySelector('#mmplot').getBoundingClientRect().height }));
+        det = `${m.n} монет, связь у ${m.corr}; высота ${Math.round(r.h)} px; ${r.read.replace(/\s+/g, ' ').slice(0, 90)}`;
+        add(m.corr >= m.n - 2 && r.h >= 150 && /DOG [+−]?\d/.test(r.read), 'Графики: «DOG и мем-монеты» нарисован и отвечает на нажатие', 'Charts: “DOG and meme coins” is drawn and responds to taps', det);
+      } else add(false, 'Графики: «DOG и мем-монеты» нарисован и отвечает на нажатие', 'Charts: “DOG and meme coins” is drawn and responds to taps', 'линий или списка нет');
+      await shot('5-charts-memes');
+    }
     add(await page.evaluate(() => !document.querySelector('#p-charts .tv-wait')), 'Графики: ничего не «зависло» на загрузке', 'Charts: nothing is stuck loading');
     add(await noOverflow(), 'Графики: ничего не вылезает за экран телефона', 'Charts: nothing overflows the phone screen');
 
@@ -167,6 +188,17 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
     const w = await page.evaluate(() => ({ rows: document.querySelectorAll('#wlist .wrow').length, hk: (document.querySelector('#p-wallets .hk') || {}).textContent || '', own: !!document.querySelector('#p-wallets .own-bar'), warn: !!document.querySelector('#p-wallets .tag.warn') }));
     add(w.rows >= 25 && w.own, `Кошельки: топ-100 и «кто владеет DOG» показаны (${w.rows} строк)`, `Wallets: top 100 and “who owns DOG” are shown (${w.rows} rows)`);
     add(/\d[\d.,]*%/.test(w.hk), 'Кошельки: «как держат DOG» — доля в прибыли, в убытке и без движения больше года', 'Wallets: “how DOG is held” — share in profit, at a loss and unmoved for over a year');
+    // кошельки от 10 млн: блок есть, число кошельков совпадает со ступенью «от 10 млн» в «У кого сколько DOG» (±3: списки сняты в разное время)
+    {
+      const wh = await page.evaluate(() => {
+        const num = t => +String(t || '').replace(/[^\d]/g, '');
+        const big = num((document.querySelector('#whale-sec .wh-top b') || {}).textContent);
+        const tiers = [...document.querySelectorAll('#tiers-sec .tlist button')].map(b => ({ name: (b.children[1] || {}).textContent || '', w: num((b.querySelector('.w') || {}).textContent) }));
+        const k5 = tiers.findIndex(t => /5–10|5-10/.test(t.name)), t10 = k5 > 0 ? tiers.slice(0, k5).reduce((a, t) => a + t.w, 0) : 0;   // ступени выше «5–10 млн»
+        return { big, t10, txt: ((document.querySelector('#whale-sec .wh-top') || {}).textContent || '').replace(/\s+/g, ' ').slice(0, 100) };
+      });
+      add(wh.big > 100 && (!wh.t10 || Math.abs(wh.big - wh.t10) <= 3), `Кошельки: «Кошельки от 10 млн DOG» — ${wh.big || '—'} (в «У кого сколько DOG» — ${wh.t10 || '—'})`, `Wallets: “Wallets with 10M+ DOG” — ${wh.big || '—'} (“Who holds how much” — ${wh.t10 || '—'})`, wh.txt);
+    }
     add(await noOverflow(), 'Кошельки: ничего не вылезает за экран телефона', 'Wallets: nothing overflows the phone screen');
     await shot('6-wallets');
     await page.evaluate(() => { const e = document.querySelector('#p-wallets .hk'); if (e) e.scrollIntoView({ block: 'start' }); window.scrollBy(0, -90); });

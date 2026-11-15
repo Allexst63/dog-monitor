@@ -9,10 +9,10 @@ Copyright © TradingView, Inc. Лицензия Apache License 2.0 (https://www.
 Оба шрифта распространяются по лицензии SIL Open Font License 1.1 (тексты лицензий — `fonts/OFL-Jost.txt`, `fonts/OFL-GolosText.txt`). На сайте лежат их сокращённые до латиницы и кириллицы версии в формате WOFF.
 
 **Данные**
-- DOG DATA (https://www.dogdata.xyz) — число холдеров, концентрация, метки кошельков, площадки, возраст монет, средняя цена покупки, аирдроп, DOG в других сетях; переводы от 5 млн DOG — только чтобы найти новых кандидатов в топ-100.
-- ordinals.com (официальный обозреватель ord) — балансы DOG кошельков топ-100 из индекса рун, 4 раза в день; Xverse (API кошелька) — второй источник тех же балансов и выборочная сверка.
-- Публичные API бирж: Kraken, Gate, MEXC, BingX, DigiFinex, CoinW, Bitget — стаканы заявок и сделки (MEXC и BingX — по WebSocket); Kraken — свечи для графиков; Coinbase — цена BTC и дневные свечи BTC для сравнения с DOG (`data/btc.json`).
+- DOG DATA (https://www.dogdata.xyz) — число холдеров, концентрация, метки кошельков, площадки, возраст монет, средняя цена покупки, аирдроп, DOG в других сетях; весь список кошельков от 10 млн DOG и профили их адресов (тип кошелька); переводы от 5 млн DOG — только чтобы найти новых кандидатов в топ-100.
+- ordinals.com (официальный обозреватель ord) — балансы DOG кошельков топ-100 из индекса рун, 4 раза в день, и выборочная сверка балансов кошельков от 10 млн; Xverse (API кошелька) — второй источник тех же балансов и выборочная сверка.
+- Публичные API бирж: Kraken, Gate, MEXC, BingX, DigiFinex, CoinW, Bitget — стаканы заявок и сделки (MEXC и BingX — по WebSocket); Kraken — свечи для графиков; Coinbase — цена BTC и дневные свечи BTC для сравнения с DOG (`data/btc.json`); Gate, MEXC и Kraken — дневные свечи мем-монет для сравнения с DOG (`data/memes.json`).
 - C2 Blockchain — пресс-релизы о запасах DOG (ссылки на каждый релиз — в карточке компании).
-- Индексы страха и жадности всего крипторынка: alternative.me (Crypto Fear & Greed Index, https://alternative.me/crypto/fear-and-greed-index/) и CoinMarketCap (CMC Crypto Fear and Greed Index, https://coinmarketcap.com/charts/fear-and-greed-index/) — показаны как есть, со ссылкой на источник; CoinGecko — место DOG среди мем-монет для индекса DOG.
+- Индексы страха и жадности всего крипторынка: alternative.me (Crypto Fear & Greed Index, https://alternative.me/crypto/fear-and-greed-index/) и CoinMarketCap (CMC Crypto Fear and Greed Index, https://coinmarketcap.com/charts/fear-and-greed-index/) — показаны как есть, со ссылкой на источник; CoinGecko — место DOG среди мем-монет для индекса DOG, капитализация мем-монет и сверка их цен.
 
 Сайт неофициальный и не связан с командой DOG•GO•TO•THE•MOON, перечисленными биржами, DOG DATA и C2 Blockchain. Информация носит справочный характер и не является инвестиционной рекомендацией.

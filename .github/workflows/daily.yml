@@ -56,6 +56,18 @@ jobs:
         timeout-minutes: 3
         run: python3 tools/mood.py .
 
+      - name: DOG и мем-монеты (дневные цены Gate, MEXC и Kraken со сверкой между биржами, капитализация — CoinGecko)
+        if: ${{ github.event.inputs.mode != 'feed' }}
+        continue-on-error: true      # при ошибке на сайте остаётся прошлый ряд
+        timeout-minutes: 4
+        run: python3 tools/memes.py .
+
+      - name: Кошельки от 10 млн DOG (весь список DOG DATA, кто пришёл и ушёл, сверка балансов с блокчейном)
+        if: ${{ github.event.inputs.mode != 'feed' && github.event.inputs.mode != 'wallets' }}
+        continue-on-error: true      # при ошибке на сайте остаётся прошлый расчёт
+        timeout-minutes: 8
+        run: python3 tools/whales.py .
+
       - name: Кандидаты в новости (Google News)
         if: ${{ github.event.inputs.mode != 'wallets' }}
         continue-on-error: true
