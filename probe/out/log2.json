@@ -1,0 +1,17 @@
+[
+ [
+  "https://api.gateio.ws/api/v4/spot/candlesticks?currency_pair=DOG_USDT&interval=1d&from=1713916800&to=1794751229",
+  200,
+  99379
+ ],
+ [
+  "https://api.mexc.com/api/v3/klines?symbol=DOGUSDT&interval=1d&limit=1000",
+  200,
+  53290
+ ],
+ [
+  "https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440&since=1700000000",
+  200,
+  45803
+ ]
+]
