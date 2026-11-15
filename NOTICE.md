@@ -13,5 +13,6 @@ Copyright © TradingView, Inc. Лицензия Apache License 2.0 (https://www.
 - ordinals.com (официальный обозреватель ord) — балансы DOG кошельков топ-100 из индекса рун, 4 раза в день; Xverse (API кошелька) — второй источник тех же балансов и выборочная сверка.
 - Публичные API бирж: Kraken, Gate, MEXC, BingX, DigiFinex, CoinW, Bitget — стаканы заявок и сделки (MEXC и BingX — по WebSocket); Kraken — свечи для графиков; Coinbase — цена BTC и дневные свечи BTC для сравнения с DOG (`data/btc.json`).
 - C2 Blockchain — пресс-релизы о запасах DOG (ссылки на каждый релиз — в карточке компании).
+- Индексы страха и жадности всего крипторынка: alternative.me (Crypto Fear & Greed Index, https://alternative.me/crypto/fear-and-greed-index/) и CoinMarketCap (CMC Crypto Fear and Greed Index, https://coinmarketcap.com/charts/fear-and-greed-index/) — показаны как есть, со ссылкой на источник; CoinGecko — место DOG среди мем-монет для индекса DOG.
 
 Сайт неофициальный и не связан с командой DOG•GO•TO•THE•MOON, перечисленными биржами, DOG DATA и C2 Blockchain. Информация носит справочный характер и не является инвестиционной рекомендацией.

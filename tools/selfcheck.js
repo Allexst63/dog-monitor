@@ -66,7 +66,7 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
     add(await page.evaluate(() => document.querySelectorAll('#p-overview .tile').length >= 2 && !!document.querySelector('#p-overview .sum')), 'Главная: плитки и «что нового» на месте', 'Home: tiles and “what’s new” are in place');
     await page.waitForTimeout(4000);                       // даём странице закончить своё онлайн-обновление
     const fng = await page.evaluate(() => [...document.querySelectorAll('#fng-box .fng-g')].map(g => (g.querySelector('.gn') || {}).textContent || ''));
-    add(fng.length === 2 && fng.some(t => /^\d+$/.test(t)), `Главная: «Страх и жадность» показан (рынок ${fng[0] || '—'}, DOG ${fng[1] || '—'})`, `Home: Fear & Greed is shown (market ${fng[0] || '—'}, DOG ${fng[1] || '—'})`);
+    add(fng.length === 3 && fng.filter(t => /^\d+$/.test(t)).length >= 2, `Главная: «Страх и жадность» показан (alternative.me ${fng[0] || '—'}, CoinMarketCap ${fng[1] || '—'}, DOG ${fng[2] || '—'})`, `Home: Fear & Greed is shown (alternative.me ${fng[0] || '—'}, CoinMarketCap ${fng[1] || '—'}, DOG ${fng[2] || '—'})`);
     const st = await page.evaluate(() => ({ c: document.querySelector('#status').className, t: document.querySelector('#status-t').textContent }));
     add(/\d\d:\d\d/.test(st.t), `Статус в шапке показывает время данных («${st.t.trim().slice(0, 40)}»)`, `Header status shows the data time (“${st.t.trim().slice(0, 40)}”)`);
     add(await noOverflow(), 'Главная: ничего не вылезает за экран телефона', 'Home: nothing overflows the phone screen');

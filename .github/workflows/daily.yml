@@ -28,8 +28,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
+      # ref: main — свежий main на момент старта: если запуск ждал в очереди, пока закончится предыдущий,
+      # он начнёт с уже выложенной им сводки (без ref берётся коммит на момент постановки в очередь — отсюда
+      # был конфликт и ошибка запуска №53 14.11)
       - uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 1
 
       - name: Сбор данных и расчёт сводки
@@ -46,7 +50,7 @@ jobs:
         timeout-minutes: 12
         run: python3 tools/costbasis.py .
 
-      - name: Страх и жадность (весь рынок — alternative.me, DOG — свой расчёт)
+      - name: Страх и жадность (весь рынок — alternative.me и CoinMarketCap, DOG — свой расчёт)
         if: ${{ github.event.inputs.mode != 'feed' }}
         continue-on-error: true      # при ошибке на сайте остаётся прошлый расчёт
         timeout-minutes: 3
@@ -79,9 +83,15 @@ jobs:
           if git diff --cached --quiet; then echo "нет изменений"; exit 0; fi
           ID=$(python3 -c "import json;print(json.load(open('data/version.json'))['id'])")
           git commit -m "Сводка $ID (авто, ${{ github.event.inputs.mode || 'full' }})"
-          for i in 1 2 3; do
+          for i in 1 2 3 4 5; do
             git push origin HEAD:main && exit 0
-            git pull --rebase origin main
+            git fetch --depth=20 origin main
+            if ! git rebase origin/main; then
+              # пока шёл запуск, в main уже легли другие данные: в спорных файлах data/ оставляем данные
+              # этого запуска (они свежее), всё остальное берём из main
+              for f in $(git diff --name-only --diff-filter=U); do git checkout --theirs -- "$f" && git add -- "$f"; done
+              GIT_EDITOR=true git rebase --continue || { git rebase --abort; exit 1; }
+            fi
           done
           exit 1
 

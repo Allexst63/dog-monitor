@@ -43,11 +43,13 @@
   --ink:#121829; --ink-2:#4A5269; --ink-3:#737B92; --line:#DCE0EA; --line-2:#ECEEF4;
   --accent:#F7931A; --accent-ink:#A4500A; --accent-soft:#FCEBD6; --on-accent:#1E1404;
   --bid:#1baf7a; --ask:#e34948; --bid-soft:rgba(27,175,122,.15); --ask-soft:rgba(227,73,72,.13);
+  --bid-strong:rgba(27,175,122,.32); --ask-strong:rgba(227,73,72,.28); --bid-faint:rgba(27,175,122,.045); --ask-faint:rgba(227,73,72,.04);
   --up:#0B7D56; --down:#C0353B; --warn:#9C5F00; --warn-soft:#FFF1D6; --ok-soft:#E1F4EB;
   --k1:#2a78d6; --k2:#eb6834; --k3:#1baf7a; --k4:#eda100; --k5:#e87ba4; --k8:#c79a00; --k7:#6250d6; --k6:#008300; --k-pr:#8A91A5; --k-un:#5C647B;
   --o1:#86b6ef; --o2:#3987e5; --o3:#1c5cab; --o4:#0d366b;
   --space-0:#0A0F25; --space-1:#131B41; --space-2:#26306E; --card-ink:#F3F4FA; --card-ink-2:rgba(243,244,250,.68); --card-line:rgba(255,255,255,.10);
   --chart-line:#FFB35E;
+  --fz1:#B9473F; --fz2:#C47B3E; --fz3:#B09748; --fz4:#6F9A52; --fz5:#2D805D; --fz-dim:.27;
   --shadow-hero:0 18px 40px -22px rgba(10,15,37,.55);
   --shadow-pop:0 24px 60px -20px rgba(18,24,41,.35);
   --display:"Jost","Golos Text",system-ui,sans-serif;
@@ -60,10 +62,12 @@
     --ink:#E9ECF5; --ink-2:#A6ADC2; --ink-3:#747C95; --line:#232B42; --line-2:#182033;
     --accent:#F7931A; --accent-ink:#FFB45E; --accent-soft:#33220E; --on-accent:#1E1404;
     --bid:#199e70; --ask:#e66767; --bid-soft:rgba(25,158,112,.2); --ask-soft:rgba(230,103,103,.17);
+    --bid-strong:rgba(25,158,112,.4); --ask-strong:rgba(230,103,103,.34); --bid-faint:rgba(25,158,112,.06); --ask-faint:rgba(230,103,103,.05);
     --up:#3DD39C; --down:#FF7C80; --warn:#F0B456; --warn-soft:#2B2112; --ok-soft:#10261D;
     --k1:#3987e5; --k2:#d95926; --k3:#199e70; --k4:#c98500; --k5:#d55181; --k8:#FFD54A; --k7:#9085e9; --k6:#008300; --k-pr:#7F879E; --k-un:#A1A8BC;
     --o1:#184f95; --o2:#2a78d6; --o3:#6da7ec; --o4:#b7d3f6;
     --space-0:#0A0F25; --space-1:#121A3E; --space-2:#222C66; --card-line:rgba(255,255,255,.09);
+    --fz1:#DD6A61; --fz2:#DB9A5E; --fz3:#CCB46A; --fz4:#93B972; --fz5:#4FAE86; --fz-dim:.34;
     --shadow-hero:0 18px 44px -20px rgba(0,0,0,.8); --shadow-pop:0 24px 60px -16px rgba(0,0,0,.75);
     color-scheme:dark;
   }
@@ -73,10 +77,12 @@
   --ink:#E9ECF5; --ink-2:#A6ADC2; --ink-3:#747C95; --line:#232B42; --line-2:#182033;
   --accent:#F7931A; --accent-ink:#FFB45E; --accent-soft:#33220E; --on-accent:#1E1404;
   --bid:#199e70; --ask:#e66767; --bid-soft:rgba(25,158,112,.2); --ask-soft:rgba(230,103,103,.17);
+  --bid-strong:rgba(25,158,112,.4); --ask-strong:rgba(230,103,103,.34); --bid-faint:rgba(25,158,112,.06); --ask-faint:rgba(230,103,103,.05);
   --up:#3DD39C; --down:#FF7C80; --warn:#F0B456; --warn-soft:#2B2112; --ok-soft:#10261D;
   --k1:#3987e5; --k2:#d95926; --k3:#199e70; --k4:#c98500; --k5:#d55181; --k8:#FFD54A; --k7:#9085e9; --k6:#008300; --k-pr:#7F879E; --k-un:#A1A8BC;
   --o1:#184f95; --o2:#2a78d6; --o3:#6da7ec; --o4:#b7d3f6;
   --space-0:#0A0F25; --space-1:#121A3E; --space-2:#222C66; --card-line:rgba(255,255,255,.09);
+  --fz1:#DD6A61; --fz2:#DB9A5E; --fz3:#CCB46A; --fz4:#93B972; --fz5:#4FAE86; --fz-dim:.34;
   --shadow-hero:0 18px 44px -20px rgba(0,0,0,.8); --shadow-pop:0 24px 60px -16px rgba(0,0,0,.75);
   color-scheme:dark;
 }
@@ -333,12 +339,15 @@ tbody.click tr:hover td{background:var(--surface-2)}
 .ob-hd,.ob-r{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) minmax(0,1fr);gap:6px;align-items:center}
 .ob-hd{padding:0 8px 4px;font-size:11.5px;color:var(--ink-3)}
 .ob-hd .r{text-align:right}
-.ob-r{width:100%;border:0;margin:0;padding:4.5px 8px;font:inherit;font-size:13px;line-height:1.25;color:var(--ink);text-align:left;cursor:pointer;border-radius:4px;background:linear-gradient(to left,var(--sh) var(--w,0%),transparent var(--w,0%))}
-.ob-r.a{--sh:var(--ask-soft)} .ob-r.b{--sh:var(--bid-soft)}
+.ob-r{width:100%;border:0;margin:0;padding:4.5px 8px;font:inherit;font-size:13px;line-height:1.25;color:var(--ink);text-align:left;cursor:pointer;border-radius:4px;background:linear-gradient(to left,var(--bar,var(--sh)) var(--w,0%),transparent var(--w,0%)),linear-gradient(to left,var(--shf) var(--c,0%),transparent var(--c,0%))}
+.ob-r.a{--sh:var(--ask-soft);--shf:var(--ask-faint)} .ob-r.b{--sh:var(--bid-soft);--shf:var(--bid-faint)}
+.ob-r.a.big{--bar:var(--ask-strong)} .ob-r.b.big{--bar:var(--bid-strong)}
 .ob-r .p{font-weight:600;white-space:nowrap} .ob-r.a .p{color:var(--down)} .ob-r.b .p{color:var(--up)}
 .ob-r .q,.ob-r .c{text-align:right;white-space:nowrap}
 .ob-r .c{color:var(--ink-3)}
-.ob-r.wall .q{font-weight:700}
+.ob-r .q,.ob2 .h .q{color:var(--ink-2)}
+.ob-r.big .q,.ob2 .h.big .q{font-weight:650;color:var(--ink)}
+.ob-r.sm .q,.ob2 .h.sm .q{color:var(--ink-3)}
 .ob-r.part .q::before,.ob-r.part .c::before,.ob2 .h.part .q::before{content:"≥";margin-right:1px;color:var(--ink-3);font-weight:400}
 .ob-r:hover,.ob2 .h:hover{box-shadow:inset 0 0 0 1px var(--line)}
 .ob-r:focus-visible,.ob2 .h:focus-visible{outline-offset:-2px}
@@ -352,10 +361,10 @@ tbody.click tr:hover td{background:var(--surface-2)}
 .ob2-hd{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:0 8px 4px;font-size:11.5px;color:var(--ink-3)}
 .ob2-hd .r{text-align:right}
 .ob2 .h{display:flex;align-items:center;justify-content:space-between;gap:6px;border:0;margin:0;padding:4.5px 8px;font:inherit;font-size:13px;line-height:1.25;color:var(--ink);cursor:pointer;min-width:0;white-space:nowrap}
-.ob2 button.h.b{background:linear-gradient(to left,var(--bid-soft) var(--w,0%),transparent var(--w,0%));border-radius:4px 0 0 4px}
-.ob2 button.h.a{background:linear-gradient(to right,var(--ask-soft) var(--w,0%),transparent var(--w,0%));border-radius:0 4px 4px 0}
+.ob2 button.h.b{background:linear-gradient(to left,var(--bar,var(--bid-soft)) var(--w,0%),transparent var(--w,0%)),linear-gradient(to left,var(--bid-faint) var(--c,0%),transparent var(--c,0%));border-radius:4px 0 0 4px}
+.ob2 button.h.a{background:linear-gradient(to right,var(--bar,var(--ask-soft)) var(--w,0%),transparent var(--w,0%)),linear-gradient(to right,var(--ask-faint) var(--c,0%),transparent var(--c,0%));border-radius:0 4px 4px 0}
+.ob2 .h.b.big{--bar:var(--bid-strong)} .ob2 .h.a.big{--bar:var(--ask-strong)}
 .ob2 .h .p{font-weight:600} .ob2 .h.b .p{color:var(--up)} .ob2 .h.a .p{color:var(--down)}
-.ob2 .h.wall .q{font-weight:700}
 .obt td,.obt th{padding:5px 7px;font-size:12.5px}
 .obt tbody tr{cursor:pointer}
 .obst{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-2);padding:2px 4px 0}
@@ -654,20 +663,28 @@ table.vol .vb{width:34%;padding:0 4px 0 10px}table.vol .vb i{display:block;heigh
 
 /* стаканы бирж: «бабочка» */
 .sec-head.c{align-items:center}
-.fng-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:10px}
-.fng-g{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0;border:0;border-radius:16px;background:var(--surface-2);color:var(--ink);padding:12px 8px 12px;cursor:pointer;font:inherit;text-align:center}
-.fng-g .gauge{width:100%;max-width:168px;height:auto;display:block}
-.fng-g .gn{font-family:var(--display);font-weight:600;font-size:30px;fill:var(--ink)}
-.fng-g .gk{font-size:13.5px;font-weight:600;line-height:1.25;margin-top:-2px}
-.fng-g .gt{font-size:13px;color:var(--ink-2);line-height:1.3;margin-top:6px}
-.fng-g .gp{font-size:12px;color:var(--ink-3);line-height:1.35}
-.fng-g.na .gk{color:var(--ink-3);font-weight:500}
+/* страх и жадность: три небольшие шкалы в одной карточке под плитками */
+.fng{padding:14px 12px 10px}
+.fng .sec-head{padding:0 4px}
+.fng .sec-head h3{font-size:15px}
+.fng .sec-head p{font-size:12px;color:var(--ink-3)}
+.fng-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:6px}
+.fng-g{position:relative;display:flex;flex-direction:column;align-items:center;min-width:0;border:0;border-radius:14px;background:transparent;color:var(--ink);padding:6px 4px 4px;cursor:pointer;font:inherit;text-align:center}
+.fng-g+.fng-g::before{content:"";position:absolute;left:0;top:16%;bottom:16%;width:1px;background:var(--line-2)}
+.fng-g:hover{background:var(--surface-2)}
+.fng-g .gauge{width:100%;max-width:94px;height:auto;display:block}
+.gauge .dim{opacity:var(--fz-dim,.3)}
+.fng-g .gn{font-family:var(--display);font-weight:500;font-size:21px;fill:var(--ink);font-variant-numeric:tabular-nums}
+.fng-g .gk{font-size:11.5px;font-weight:500;line-height:1.2;margin-top:3px;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.fng-g .gt{font-size:12px;color:var(--ink-2);line-height:1.25;margin-top:6px;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.fng-g .gs{font-size:11px;color:var(--ink-3);line-height:1.3;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.fng-g.na .gk{color:var(--ink-3)}
 .fng-sp{width:100%;height:64px;display:block;margin:6px 0 2px}
 .fng-ax{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-3)}
 .fng-parts{display:flex;flex-direction:column;gap:14px;margin:6px 0 4px}
 .fng-p{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px 12px;font-size:14px}
 .fng-p .w{color:var(--ink-3);font-weight:400;font-size:12.5px}
-.fng-p .track{grid-column:1 / -1;position:relative;height:8px;border-radius:4px;background:linear-gradient(to right,#EA3943 0 25%,#EA8C00 25% 45%,#E6C52A 45% 55%,#93C900 55% 75%,#16B777 75% 100%);opacity:.9}
+.fng-p .track{grid-column:1 / -1;position:relative;height:6px;border-radius:3px;background:linear-gradient(to right,var(--fz1) 0 26%,var(--fz2) 26% 47%,var(--fz3) 47% 55%,var(--fz4) 55% 76%,var(--fz5) 76% 100%);opacity:.85}
 .fng-p .track i{position:absolute;top:-3px;width:6px;height:14px;margin-left:-3px;border-radius:3px;background:var(--ink);box-shadow:0 0 0 2px var(--surface)}
 .fng-p small{grid-column:1 / -1;font-size:12.5px;color:var(--ink-2);line-height:1.4}
 .bf-legend,.bf-row{display:grid;grid-template-columns:96px minmax(0,1fr) minmax(0,1fr);align-items:center}
@@ -936,7 +953,7 @@ html{overscroll-behavior-y:contain}
       <footer class="site-foot" id="sitefoot">
         <p><b>DOG Monitor</b> is an unofficial information project. It is not affiliated with the DOG•GO•TO•THE•MOON team, any exchange or C2 Blockchain.</p>
         <p>For information only, not investment advice. Crypto prices are highly volatile.</p>
-        <p>Data: <a href="https://www.dogdata.xyz" target="_blank" rel="noopener">DOG DATA</a>, public APIs of Kraken, Gate, MEXC, BingX, DigiFinex and CoinW, C2 Blockchain press releases. Chart: <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener">TradingView Lightweight Charts™</a>. No cookies, no analytics.</p>
+        <p>Data: <a href="https://www.dogdata.xyz" target="_blank" rel="noopener">DOG DATA</a>, public APIs of Kraken, Gate, MEXC, BingX, DigiFinex and CoinW, C2 Blockchain press releases, fear &amp; greed indices by alternative.me and CoinMarketCap. Chart: <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener">TradingView Lightweight Charts™</a>. No cookies, no analytics.</p>
       </footer>
     </div>
   </div>
@@ -1008,7 +1025,7 @@ html{overscroll-behavior-y:contain}
       set('#archive-back', 'textContent', 'К текущим данным');
       set('#p-overview .skel', 'ariaLabel', 'Загружаю данные…');
       set('#story-hint-t', 'textContent', 'Смахните вверх, чтобы закрыть');
-      set('#sitefoot', 'innerHTML', '<p><b>DOG Монитор</b> — неофициальный информационный проект. Не связан с командой DOG•GO•TO•THE•MOON, биржами и C2 Blockchain.</p><p>Информация носит справочный характер и не является инвестиционной рекомендацией. Цены криптовалют сильно колеблются.</p><p>Данные: <a href="https://www.dogdata.xyz" target="_blank" rel="noopener">DOG DATA</a>, публичные API бирж Kraken, Gate, MEXC, BingX, DigiFinex и CoinW, пресс-релизы C2 Blockchain. График — <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener">TradingView Lightweight Charts™</a>. Сайт не использует cookies и аналитику.</p>');
+      set('#sitefoot', 'innerHTML', '<p><b>DOG Монитор</b> — неофициальный информационный проект. Не связан с командой DOG•GO•TO•THE•MOON, биржами и C2 Blockchain.</p><p>Информация носит справочный характер и не является инвестиционной рекомендацией. Цены криптовалют сильно колеблются.</p><p>Данные: <a href="https://www.dogdata.xyz" target="_blank" rel="noopener">DOG DATA</a>, публичные API бирж Kraken, Gate, MEXC, BingX, DigiFinex и CoinW, пресс-релизы C2 Blockchain, индексы страха и жадности alternative.me и CoinMarketCap. График — <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener">TradingView Lightweight Charts™</a>. Сайт не использует cookies и аналитику.</p>');
       document.querySelectorAll('[aria-label="Sections"]').forEach(e => e.setAttribute('aria-label', 'Разделы'));
       set('#sheet [data-close].iconbtn', 'ariaLabel', 'Закрыть');
       set('#story', 'ariaLabel', 'Истории дня');
@@ -2261,35 +2278,47 @@ html{overscroll-behavior-y:contain}
     }).join('');
     return `<svg class="donut" viewBox="0 0 44 44" aria-hidden="true"><g transform="rotate(-90 22 22)"><circle r="${r}" cx="22" cy="22" fill="none" stroke="var(--surface-3)" stroke-width="6"/>${segs}</g></svg>`;
   }
-  // ---------- страх и жадность: весь рынок (alternative.me) и DOG (свой расчёт, tools/mood.py → data/fng.json) ----------
-  const FNG_Z = [[25, '#EA3943', 'Крайний страх', 'Extreme fear'], [45, '#EA8C00', 'Страх', 'Fear'], [56, '#E6C52A', 'Нейтрально', 'Neutral'], [76, '#93C900', 'Жадность', 'Greed'], [101, '#16B777', 'Крайняя жадность', 'Extreme greed']];
-  const fngZone = v => FNG_Z.find(z => v < z[0]) || FNG_Z[4];
-  const fngName = (v, cls) => { const z = cls ? FNG_Z.find(x => x[3].toLowerCase() === String(cls).toLowerCase()) : null; const u = z || fngZone(v); return T(u[2], u[3]); };
-  // полукруглая шкала: пять цветных зон и метка на значении
-  function gaugeSvg(v) {
-    const cx = 60, cy = 58, r = 46, P = (val, rr) => { const a = Math.PI * (1 - val / 100); return [(cx + (rr || r) * Math.cos(a)).toFixed(2), (cy - (rr || r) * Math.sin(a)).toFixed(2)]; };
+  // ---------- страх и жадность: весь рынок (alternative.me и CoinMarketCap) и DOG (свой расчёт, tools/mood.py → data/fng.json) ----------
+  // границы зон (верхняя не включается) — как у самих источников: alternative.me (её же берём для DOG) и CoinMarketCap
+  const FNG_A = [26, 47, 55, 76, 101], FNG_C = [20, 40, 60, 80, 101];
+  const FNG_NM = [['Крайний страх', 'Extreme fear'], ['Страх', 'Fear'], ['Нейтрально', 'Neutral'], ['Жадность', 'Greed'], ['Крайняя жадность', 'Extreme greed']];
+  const fngZi = (v, sc) => { const i = (sc || FNG_A).findIndex(e => v < e); return i < 0 ? 4 : i; };
+  const fngCol = (v, sc) => `var(--fz${fngZi(v, sc) + 1})`;
+  const fngName = (v, sc) => { const u = FNG_NM[fngZi(v, sc)]; return T(u[0], u[1]); };
+  const fngDay = ds => dml(String(ds) + 'T12:00:00Z');
+  // небольшая полукруглая шкала: пять зон тонкой линией, зона значения ярче, точка на значении, число внутри
+  function gaugeSvg(v, sc) {
+    const Z = sc || FNG_A, cx = 50, cy = 49, r = 40;
+    const P = val => { const a = Math.PI * (1 - Math.max(0, Math.min(100, val)) / 100); return [(cx + r * Math.cos(a)).toFixed(2), (cy - r * Math.sin(a)).toFixed(2)]; };
+    const zi = v == null ? -1 : fngZi(v, Z);
     let from = 0, arcs = '';
-    for (const z of FNG_Z) {
-      const to = Math.min(100, z[0] - (z[0] > 100 ? 1 : 0)), a = P(from + (from ? 1.2 : 0)), b = P(to - (to < 100 ? 1.2 : 0));
-      arcs += `<path d="M${a[0]},${a[1]}A${r},${r} 0 0 1 ${b[0]},${b[1]}" fill="none" stroke="${z[1]}" stroke-width="8" stroke-linecap="round"${v == null ? ' opacity=".35"' : ''}/>`;
+    Z.forEach((e, i) => {
+      const to = Math.min(100, e), a = P(from + (i ? 1.5 : 0)), b = P(to - (i < 4 ? 1.5 : 0));
+      arcs += `<path d="M${a[0]},${a[1]}A${r},${r} 0 0 1 ${b[0]},${b[1]}" fill="none" stroke="var(--fz${i + 1})" stroke-width="${i === zi ? 4.4 : 3.2}" stroke-linecap="round"${i === zi ? '' : ' class="dim"'}/>`;
       from = to;
-    }
-    const k = v == null ? null : P(Math.max(0, Math.min(100, v)));
-    return `<svg class="gauge" viewBox="0 0 120 68" aria-hidden="true">${arcs}${k ? `<circle cx="${k[0]}" cy="${k[1]}" r="6.5" fill="var(--surface-2)" stroke="var(--ink)" stroke-width="3"/>` : ''}<text class="gn" x="60" y="58" text-anchor="middle">${v == null ? '—' : Math.round(v)}</text></svg>`;
+    });
+    const k = v == null ? null : P(v);
+    return `<svg class="gauge" viewBox="0 0 100 56" aria-hidden="true">${arcs}${k ? `<circle cx="${k[0]}" cy="${k[1]}" r="4.2" fill="var(--surface)" stroke="var(--fz${zi + 1})" stroke-width="2.4"/>` : ''}<text class="gn" x="50" y="49" text-anchor="middle">${v == null ? '—' : Math.round(v)}</text></svg>`;
   }
   // рынок: файл сайта или свежий ответ alternative.me — что новее
   function fngMarket() {
     const a = (S.fng || {}).market, b = S.fngM;
     return b && b.v != null && (!a || a.v == null || (b.ts || 0) >= (a.ts || 0)) ? b : (a && a.v != null ? a : null);
   }
-  const fngPrev = p => { if (!p) return ''; const x = [[p.d1, T('вчера', 'yesterday')], [p.d7, T('неделю назад', 'a week ago')]].filter(e => e[0] != null); return x.map(e => `${e[1]} ${e[0]}`).join(' · '); };
+  // CoinMarketCap: браузеру он не отвечает (нет CORS), поэтому — только из файла сайта, 4 раза в день
+  const fngCmc = () => { const c = (S.fng || {}).cmc; return c && c.v != null ? c : null; };
   function fngHtml() {
-    const m = fngMarket(), d = (S.fng || {}).dog;
-    if (!m && !(d && d.v != null)) return '';
-    const g = (key, v, title, cls, prev) => `<button type="button" class="fng-g${v == null ? ' na' : ''}" data-info="${key}" aria-label="${esc(title)}: ${v == null ? T('нет данных', 'no data') : Math.round(v) + ' — ' + fngName(v, cls)}">${gaugeSvg(v)}<span class="gk"${v == null ? '' : ` style="color:${fngZone(v)[1]}"`}>${v == null ? T('нет данных', 'no data') : esc(fngName(v, cls))}</span><span class="gt">${esc(title)}</span><span class="gp">${esc(fngPrev(prev)) || '&nbsp;'}</span></button>`;
+    const m = fngMarket(), c = fngCmc(), d = (S.fng || {}).dog;
+    if (!m && !c && !(d && d.v != null)) return '';
+    const g = (key, v, sc, title, src, prev) => {
+      const na = v == null, nm = na ? T('нет данных', 'no data') : fngName(v, sc);
+      const y = !na && prev && prev.d1 != null ? T(`; вчера ${prev.d1}`, `; yesterday ${prev.d1}`) : '';
+      return `<button type="button" class="fng-g${na ? ' na' : ''}" data-info="${key}" aria-label="${esc(title)}, ${esc(src)}: ${na ? esc(nm) : Math.round(v) + ' — ' + esc(nm) + esc(y)}">${gaugeSvg(v, sc)}<span class="gk"${na ? '' : ` style="color:${fngCol(v, sc)}"`}>${esc(nm)}</span><span class="gt">${esc(title)}</span><span class="gs">${esc(src)}</span></button>`;
+    };
+    const mk = T('Крипторынок', 'Crypto market');
     return `<section class="group fng" aria-label="${T('Страх и жадность', 'Fear and greed')}">
-        <div class="sec-head c"><h3>${T('Страх и жадность', 'Fear &amp; Greed')}</h3><p>${T('0 — страх, 100 — жадность', '0 — fear, 100 — greed')}</p></div>
-        <div class="fng-2">${g('fng_m', m ? m.v : null, T('Весь крипторынок', 'Whole crypto market'), m && m.cls, m && m.prev)}${g('fng_d', d && d.v != null ? d.v : null, T('Только DOG', 'DOG only'), null, d && d.prev)}</div>
+        <div class="sec-head c"><h3>${T('Страх и жадность', 'Fear &amp; Greed')}</h3><p>${T('0 — страх · 100 — жадность', '0 fear · 100 greed')}</p></div>
+        <div class="fng-3">${g('fng_m', m ? m.v : null, FNG_A, mk, 'alternative.me', m && m.prev)}${g('fng_c', c ? c.v : null, FNG_C, mk, 'CoinMarketCap', c && c.prev)}${g('fng_d', d && d.v != null ? d.v : null, FNG_A, 'DOG', T('наш расчёт', 'our index'), d && d.prev)}</div>
       </section>`;
   }
   function paintFng() { const b = $('#fng-box'); if (b && !S.archived) b.innerHTML = fngHtml(); }
@@ -2306,49 +2335,66 @@ html{overscroll-behavior-y:contain}
       paintFng();
     } catch (e) { }
   }
-  function fngSpark(hist, days) {
+  function fngSpark(hist, days, sc) {
     const h = (hist || []).slice(-days);
     if (h.length < 5) return '';
     const W = 300, H = 64, X = i => i / (h.length - 1) * W, Y = v => 4 + (1 - v / 100) * (H - 8);
     const d = h.map((x, i) => `${i ? 'L' : 'M'}${X(i).toFixed(1)},${Y(x[1]).toFixed(1)}`).join('');
-    const dl = ds => { const t = toDate(ds + 'T00:00:00Z'); return t ? new Intl.DateTimeFormat(RU ? 'ru-RU' : 'en-US', { day: 'numeric', month: 'short', timeZone: 'UTC' }).format(t) : ds; };
-    return `<svg class="fng-sp" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${[25, 45, 56, 76].map(v => `<line x1="0" x2="${W}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="var(--line)" stroke-dasharray="2 4" vector-effect="non-scaling-stroke"/>`).join('')}<path d="${d}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg><div class="fng-ax"><span>${esc(dl(h[0][0]))}</span><span>${T(`${h.length} дней`, `${h.length} days`)}</span><span>${esc(dl(h[h.length - 1][0]))}</span></div>`;
+    return `<svg class="fng-sp" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${(sc || FNG_A).slice(0, 4).map(v => `<line x1="0" x2="${W}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="var(--line)" stroke-dasharray="2 4" vector-effect="non-scaling-stroke"/>`).join('')}<path d="${d}" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg><div class="fng-ax"><span>${esc(fngDay(h[0][0]))}</span><span>${T(`${h.length} дней`, `${h.length} days`)}</span><span>${esc(fngDay(h[h.length - 1][0]))}</span></div>`;
   }
-  const fngKv = (v, cls, p) => `<dl class="kv"><dt>${T('Сейчас', 'Now')}</dt><dd><b style="color:${fngZone(v)[1]}">${Math.round(v)}</b> — ${esc(fngName(v, cls))}</dd>${[[p && p.d1, T('Вчера', 'Yesterday')], [p && p.d7, T('Неделю назад', 'A week ago')], [p && p.d30, T('Месяц назад', 'A month ago')]].filter(e => e[0] != null).map(e => `<dt>${e[1]}</dt><dd>${e[0]} — ${esc(fngName(e[0]))}</dd>`).join('')}</dl>`;
-  const FNG_SCALE = () => `<p class="note">${T('Шкала: 0–24 — крайний страх, 25–44 — страх, 45–55 — нейтрально, 56–75 — жадность, 76–100 — крайняя жадность.', 'Scale: 0–24 extreme fear, 25–44 fear, 45–55 neutral, 56–75 greed, 76–100 extreme greed.')}</p>`;
+  const fngKv = (v, sc, p) => `<dl class="kv"><dt>${T('Сейчас', 'Now')}</dt><dd><b style="color:${fngCol(v, sc)}">${Math.round(v)}</b> — ${esc(fngName(v, sc))}</dd>${[[p && p.d1, T('Вчера', 'Yesterday')], [p && p.d7, T('Неделю назад', 'A week ago')], [p && p.d30, T('Месяц назад', 'A month ago')]].filter(e => e[0] != null).map(e => `<dt>${e[1]}</dt><dd>${e[0]} — ${esc(fngName(e[0], sc))}</dd>`).join('')}</dl>`;
+  function FNG_SCALE(sc) {
+    const Z = sc || FNG_A, rr = Z.map((e, i) => `${i ? Z[i - 1] : 0}–${i === 4 ? 100 : e - 1}`), c = Z === FNG_C;
+    return `<p class="note">${T(`Шкала${c ? ' CoinMarketCap' : ' (как у alternative.me)'}: ${rr[0]} — крайний страх, ${rr[1]} — страх, ${rr[2]} — нейтрально, ${rr[3]} — жадность, ${rr[4]} — крайняя жадность.`, `Scale${c ? ' (CoinMarketCap)' : ' (as alternative.me)'}: ${rr[0]} extreme fear, ${rr[1]} fear, ${rr[2]} neutral, ${rr[3]} greed, ${rr[4]} extreme greed.`)}</p>`;
+  }
   function fngMarketSheet() {
     const m = fngMarket(); if (!m) return null;
-    const hist = (m.hist && m.hist.length > 5 ? m.hist : ((S.fng || {}).market || {}).hist) || [];
-    return [T('Страх и жадность: весь крипторынок', 'Fear & Greed: the whole crypto market'), `<p>${T('Это Crypto Fear &amp; Greed Index сайта alternative.me — самый известный индекс настроения крипторынка. Одно число от 0 до 100: чем меньше, тем сильнее люди боятся и продают; чем больше — тем охотнее покупают.', 'This is the Crypto Fear &amp; Greed Index by alternative.me — the best-known gauge of crypto market mood. One number from 0 to 100: the lower it is, the more people are afraid and selling; the higher, the more eagerly they buy.')}</p>
-      ${fngKv(m.v, m.cls, m.prev)}
-      ${fngSpark(hist, 90)}
+    // история: из файла сайта (400 дней) и свежий ответ alternative.me (31 день) — вместе, свежий поверх
+    const hist = [...new Map([...(((S.fng || {}).market || {}).hist || []), ...(m.hist || [])]).entries()].sort((x, y) => x[0] < y[0] ? -1 : 1);
+    return [T('Страх и жадность: alternative.me', 'Fear & Greed: alternative.me'), `<p>${T('Crypto Fear &amp; Greed Index сайта alternative.me — самый известный индекс настроения всего крипторынка. Одно число от 0 до 100: чем меньше, тем сильнее люди боятся и продают; чем больше — тем охотнее покупают.', 'The Crypto Fear &amp; Greed Index by alternative.me — the best-known gauge of crypto market mood. One number from 0 to 100: the lower it is, the more people are afraid and selling; the higher, the more eagerly they buy.')}</p>
+      ${fngKv(m.v, FNG_A, m.prev)}
+      ${fngSpark(hist, 90, FNG_A)}
       <h3>${T('Из чего он складывается', 'What goes into it')}</h3>
       <ul class="plain"><li>${T('<b>25%</b> — насколько сильно скачет цена биткоина и глубоки ли просадки;', '<b>25%</b> — how wildly bitcoin’s price swings and how deep its drops are;')}</li><li>${T('<b>25%</b> — объёмы и напор покупок на рынке;', '<b>25%</b> — market volume and buying momentum;')}</li><li>${T('<b>15%</b> — активность в соцсетях;', '<b>15%</b> — social media activity;')}</li><li>${T('<b>15%</b> — опросы (сейчас приостановлены);', '<b>15%</b> — surveys (currently paused);')}</li><li>${T('<b>10%</b> — доля биткоина на рынке;', '<b>10%</b> — bitcoin’s share of the market;')}</li><li>${T('<b>10%</b> — поисковые запросы в Google.', '<b>10%</b> — Google search trends.')}</li></ul>
-      ${FNG_SCALE()}
+      ${FNG_SCALE(FNG_A)}
       <p class="note">${T('Источник обновляет индекс раз в сутки, около 00:00 UTC; сайт забирает его сам. Индекс считается по биткоину и рынку в целом, а не по DOG. Это описание настроения, а не совет.', 'The source updates the index once a day, around 00:00 UTC; the site picks it up automatically. It’s computed for bitcoin and the market as a whole, not for DOG. It describes mood — it isn’t advice.')} <a href="https://alternative.me/crypto/fear-and-greed-index/" target="_blank" rel="noopener">alternative.me</a></p>`];
+  }
+  function fngCmcSheet() {
+    const c = fngCmc(); if (!c) return null;
+    return [T('Страх и жадность: CoinMarketCap', 'Fear & Greed: CoinMarketCap'), `<p>${T('Индекс страха и жадности CoinMarketCap — второй известный индекс настроения всего крипторынка. Тоже от 0 до 100, но считается по другим данным, поэтому с индексом alternative.me он обычно близок, но не совпадает.', 'CoinMarketCap’s Fear and Greed Index — the other well-known gauge of crypto market mood. Also 0 to 100, but built from different data, so it’s usually close to the alternative.me index without matching it.')}</p>
+      ${fngKv(c.v, FNG_C, c.prev)}
+      ${fngSpark(c.hist, 90, FNG_C)}
+      <h3>${T('Из чего он складывается', 'What goes into it')}</h3>
+      <ul class="plain"><li>${T('импульс цен 10 крупнейших монет (без стейблкоинов);', 'price momentum of the 10 largest coins (stablecoins excluded);')}</li><li>${T('ожидаемые колебания биткоина и эфира по опционам (индексы волатильности Volmex);', 'expected swings of bitcoin and ether priced into options (Volmex volatility indices);')}</li><li>${T('опционы: сколько ставят на падение против ставок на рост (put/call) по биткоину и эфиру;', 'options: bets on a fall versus bets on a rise (put/call ratio) for bitcoin and ether;')}</li><li>${T('состав рынка: запас стейблкоинов против капитализации биткоина;', 'market composition: the stablecoin supply relative to bitcoin’s market cap;')}</li><li>${T('данные самого CoinMarketCap: поиски и интерес пользователей.', 'CoinMarketCap’s own data: searches and user engagement.')}</li></ul>
+      ${c.yhi && c.ylo ? `<p class="note">${T(`За год: максимум ${c.yhi[0]} (${esc(fngDay(c.yhi[1]))}), минимум ${c.ylo[0]} (${esc(fngDay(c.ylo[1]))}).`, `Past year: high ${c.yhi[0]} (${esc(fngDay(c.yhi[1]))}), low ${c.ylo[0]} (${esc(fngDay(c.ylo[1]))}).`)}</p>` : ''}
+      ${FNG_SCALE(FNG_C)}
+      <p class="note">${T(`Источник обновляет индекс в течение дня; сайт забирает его 4 раза в день вместе со сводкой${c.ts ? ' (значение на ' + esc(dtl(c.ts)) + ')' : ''}. Индекс считается по рынку в целом, а не по DOG. Это описание настроения, а не совет.`, `The source updates the index during the day; the site picks it up 4 times a day with each report${c.ts ? ' (value as of ' + esc(dtl(c.ts)) + ')' : ''}. It’s computed for the market as a whole, not for DOG. It describes mood — it isn’t advice.`)} <a href="https://coinmarketcap.com/charts/fear-and-greed-index/" target="_blank" rel="noopener">CoinMarketCap</a></p>`];
   }
   function fngDogSheet() {
     const d = (S.fng || {}).dog; if (!d || d.v == null) return null;
     const f = d.facts || {}, cg = (S.fng || {}).cg || {};
     const pc = (x, dg) => sg(x * 100, dg == null ? 0 : dg) + '%', ab = (x, dg) => n(Math.abs(x) * 100, dg == null ? 0 : dg) + '%';
-    const NAME = { vol: T('Колебания и просадка', 'Volatility and drawdown'), mom: T('Импульс цены', 'Price momentum'), btc: T('Сила против биткоина', 'Strength vs. bitcoin'), sec: T('Место среди мем-монет', 'Standing among meme coins'), book: T('Стакан', 'Order book'), hold: T('Холдеры', 'Holders') };
+    const hl = x => x >= 0 ? T('выше', 'above') : T('ниже', 'below');
+    const NAME = { mkt: T('Настроение крипторынка', 'Crypto market mood'), btc: T('Тренд биткоина', 'Bitcoin trend'), mom: T('Импульс цены DOG', 'DOG price momentum'), vol: T('Колебания и просадка DOG', 'DOG volatility and drawdown'), rel: T('DOG против биткоина и мем-монет', 'DOG vs. bitcoin and meme coins'), hold: T('Холдеры DOG', 'DOG holders'), sec: T('Место среди мем-монет', 'Standing among meme coins'), book: T('Стакан', 'Order book') };
     const FACT = {
+      mkt: () => [f.alt != null || f.cmc != null ? T(`Среднее двух индексов рынка: alternative.me — ${f.alt != null ? f.alt : '—'}, CoinMarketCap — ${f.cmc != null ? f.cmc : '—'}`, `Average of the two market indices: alternative.me ${f.alt != null ? f.alt : '—'}, CoinMarketCap ${f.cmc != null ? f.cmc : '—'}`) : ''],
+      btc: () => [f.bM30 != null ? T(`Биткоин на ${ab(f.bM30)} ${hl(f.bM30)} своей средней за 30 дней`, `Bitcoin is ${ab(f.bM30)} ${hl(f.bM30)} its 30-day average`) : '', f.bM90 != null ? T(`на ${ab(f.bM90)} ${hl(f.bM90)} средней за 90 дней`, `${ab(f.bM90)} ${hl(f.bM90)} its 90-day average`) : '', f.bDd90 != null ? T(`на ${ab(f.bDd90)} ниже максимума за 90 дней`, `${ab(f.bDd90)} below its 90-day high`) : ''],
+      mom: () => [f.m30 != null ? T(`Цена DOG на ${ab(f.m30)} ${hl(f.m30)} своей средней за 30 дней`, `DOG’s price is ${ab(f.m30)} ${hl(f.m30)} its 30-day average`) : '', f.m90 != null ? T(`и на ${ab(f.m90)} ${hl(f.m90)} средней за 90 дней`, `and ${ab(f.m90)} ${hl(f.m90)} its 90-day average`) : ''],
       vol: () => [f.volRatio != null ? T(`Цена за 30 дней скачет ${f.volRatio >= 1.1 ? 'сильнее' : f.volRatio <= 0.9 ? 'слабее' : 'примерно так же, как'} обычного (×${n(f.volRatio, 2)})`, `Over 30 days the price swings ${f.volRatio >= 1.1 ? 'more than' : f.volRatio <= 0.9 ? 'less than' : 'about as much as'} usual (×${n(f.volRatio, 2)})`) : '', f.dd90 != null ? T(`сейчас она на ${ab(f.dd90)} ниже максимума за 90 дней`, `it’s now ${ab(f.dd90)} below its 90-day high`) : ''],
-      mom: () => [f.m30 != null ? T(`Цена на ${ab(f.m30)} ${f.m30 >= 0 ? 'выше' : 'ниже'} своей средней за 30 дней`, `The price is ${ab(f.m30)} ${f.m30 >= 0 ? 'above' : 'below'} its 30-day average`) : '', f.m90 != null ? T(`и на ${ab(f.m90)} ${f.m90 >= 0 ? 'выше' : 'ниже'} средней за 90 дней`, `and ${ab(f.m90)} ${f.m90 >= 0 ? 'above' : 'below'} its 90-day average`) : ''],
-      btc: () => [f.rb30 != null ? T(`За 30 дней DOG к биткоину: ${pc(f.rb30)}`, `Over 30 days DOG vs. bitcoin: ${pc(f.rb30)}`) : ''],
-      sec: () => [cg.memeRank ? T(`${cg.memeRank}-е место среди мем-монет и ${cg.rank}-е в общем рейтинге CoinGecko по капитализации${f.rankWas && f.rankWas !== cg.rank ? ` (было ${f.rankWas}-е)` : ''}`, `#${cg.memeRank} among meme coins and #${cg.rank} overall on CoinGecko by market cap${f.rankWas && f.rankWas !== cg.rank ? ` (was #${f.rankWas})` : ''}`) : '', cg.beat30 != null ? T(`за 30 дней DOG обогнал ${n(cg.beat30 * 100, 0)}% из ${cg.memeN || 100} крупнейших мем-монет (DOG ${sg(cg.chg30, 0)}%, типичная мем-монета ${sg(cg.med30, 0)}%)`, `over 30 days DOG beat ${n(cg.beat30 * 100, 0)}% of the ${cg.memeN || 100} largest meme coins (DOG ${sg(cg.chg30, 0)}%, the typical meme coin ${sg(cg.med30, 0)}%)`) : ''],
-      book: () => [f.bidShare != null ? T(`Из всех заявок в пределах 10% от цены ${n(f.bidShare * 100, 0)}% — на покупку${f.bidUsual != null ? ` (обычно для DOG — ${n(f.bidUsual * 100, 0)}%)` : ''}`, `Of all orders within 10% of the price, ${n(f.bidShare * 100, 0)}% are bids${f.bidUsual != null ? ` (DOG’s usual is ${n(f.bidUsual * 100, 0)}%)` : ''}`) : ''],
-      hold: () => [f.holders30 != null ? T(`Кошельков с DOG за 30 дней: ${sg(f.holders30, 2)}%`, `Wallets holding DOG over 30 days: ${sg(f.holders30, 2)}%`) : '', f.exch30 != null ? T(`DOG на биржах: ${sg(f.exch30, 1)}%`, `DOG on exchanges: ${sg(f.exch30, 1)}%`) : '', f.profit != null ? T(`в прибыли ${n(f.profit, 0)}% монет`, `${n(f.profit, 0)}% of coins in profit`) : '']
+      rel: () => [f.rb30 != null ? T(`За 30 дней DOG к биткоину: ${pc(f.rb30)}`, `Over 30 days DOG vs. bitcoin: ${pc(f.rb30)}`) : '', cg.beat30 != null ? T(`DOG обогнал ${n(cg.beat30 * 100, 0)}% из ${cg.memeN || 100} крупнейших мем-монет (DOG ${sg(cg.chg30, 0)}%, типичная мем-монета ${sg(cg.med30, 0)}%)`, `DOG beat ${n(cg.beat30 * 100, 0)}% of the ${cg.memeN || 100} largest meme coins (DOG ${sg(cg.chg30, 0)}%, the typical meme coin ${sg(cg.med30, 0)}%)`) : '', cg.memeRank ? T(`${cg.memeRank}-е место среди мем-монет по капитализации (CoinGecko)`, `#${cg.memeRank} among meme coins by market cap (CoinGecko)`) : ''],
+      hold: () => [f.profit != null ? T(`В прибыли ${n(f.profit, 0)}% монет`, `${n(f.profit, 0)}% of coins are in profit`) : '', f.exch30 != null ? T(`DOG на биржах за месяц: ${sg(f.exch30, 1)}%`, `DOG on exchanges over the month: ${sg(f.exch30, 1)}%`) : '', f.holders30 != null ? T(`кошельков с DOG: ${sg(f.holders30, 2)}%`, `wallets holding DOG: ${sg(f.holders30, 2)}%`) : '']
     };
-    const row = p => { const txt = (FACT[p.k] ? FACT[p.k]() : []).filter(Boolean).join('; '); return `<div class="fng-p"><span><b>${esc(NAME[p.k] || p.k)}</b> <span class="w">${p.w}%</span></span><span>${p.v == null ? `<span class="faint">${T('нет данных', 'no data')}</span>` : `<b style="color:${fngZone(p.v)[1]}">${p.v}</b>`}</span>${p.v == null ? '' : `<span class="track"><i style="left:${Math.max(1, Math.min(99, p.v))}%"></i></span>`}<small>${p.v == null ? T('Источник не ответил — вес этой части разделён между остальными.', 'The source didn’t respond — this part’s weight is shared among the others.') : esc(txt) + '.'}</small></div>`; };
-    return [T('Страх и жадность: только DOG', 'Fear & Greed: DOG only'), `<p>${T('Тот же принцип, что у индекса всего рынка, но посчитано только по данным DOG: как ведёт себя цена, как DOG выглядит рядом с биткоином и другими мем-монетами, что в стаканах и у холдеров. Расчёт — наш, сайта DOG Монитор.', 'The same idea as the market-wide index, but computed from DOG data only: how the price behaves, how DOG looks next to bitcoin and other meme coins, what the order books and holders show. The calculation is our own.')}</p>
-      ${fngKv(d.v, null, d.prev)}
-      ${fngSpark(d.hist, 90)}
+    const row = p => { const txt = (FACT[p.k] ? FACT[p.k]() : []).filter(Boolean).join('; '); return `<div class="fng-p"><span><b>${esc(NAME[p.k] || p.k)}</b> <span class="w">${p.w}%</span></span><span>${p.v == null ? `<span class="faint">${T('нет данных', 'no data')}</span>` : `<b style="color:${fngCol(p.v)}">${p.v}</b>`}</span>${p.v == null ? '' : `<span class="track"><i style="left:${Math.max(1, Math.min(99, p.v))}%"></i></span>`}<small>${p.v == null ? T('Источник не ответил — вес этой части разделён между остальными.', 'The source didn’t respond — this part’s weight is shared among the others.') : (txt ? esc(txt) + '.' : '')}</small></div>`; };
+    const parts = d.parts || [], wm = parts.filter(p => p.k === 'mkt' || p.k === 'btc').reduce((s, p) => s + p.w, 0);
+    return [T('Страх и жадность: DOG', 'Fear & Greed: DOG'), `<p>${d.ver >= 2 ? T(`Индекс про DOG — но DOG мем-монета на биткоине и обычно ходит вместе со всем рынком. Поэтому ${wm}% индекса — настроение крипторынка и тренд биткоина, ${100 - wm}% — сам DOG: цена и её колебания, сравнение с биткоином и мем-монетами, холдеры. Расчёт — наш, сайта DOG Монитор.`, `An index about DOG — but DOG is a meme coin on bitcoin and usually moves with the whole market. So ${wm}% of it is crypto market mood and bitcoin’s trend, ${100 - wm}% is DOG itself: its price and swings, how it compares with bitcoin and meme coins, and its holders. The calculation is our own.`) : T('Тот же принцип, что у индекса всего рынка, но посчитано по данным DOG. Расчёт — наш, сайта DOG Монитор.', 'The same idea as the market-wide index, but computed from DOG data. The calculation is our own.')}</p>
+      ${fngKv(d.v, FNG_A, d.prev)}
+      ${fngSpark(d.hist, 90, FNG_A)}
       <h3>${T('Из чего складывается сегодня', 'What goes into it today')}</h3>
-      <div class="fng-parts">${(d.parts || []).map(row).join('')}</div>
+      <div class="fng-parts">${parts.map(row).join('')}</div>
       <p class="note">${T('У каждой части оценка от 0 (страх) до 100 (жадность); итог — их среднее с указанными весами.', 'Each part is scored from 0 (fear) to 100 (greed); the total is their weighted average.')}</p>
-      ${FNG_SCALE()}
-      <p class="note">${T(`Пересчитывается 4 раза в день вместе со сводкой${S.fng.updated ? ' (последний раз — ' + esc(dtl(S.fng.updated)) + ')' : ''}. До ${esc(String(d.since || '').split('-').reverse().join('.'))} линия на графике посчитана только по цене: стаканов и рейтинга за прошлые дни нет. Это описание настроения, а не совет и не прогноз.`, `Recomputed 4 times a day with each report${S.fng.updated ? ' (last: ' + esc(dtl(S.fng.updated)) + ')' : ''}. Before ${esc(d.since || '')} the chart line uses price data only: there are no past order books or rankings. It describes mood — it isn’t advice or a forecast.`)}</p>`];
+      ${d.ver >= 2 ? `<p class="note">${T('Стакана в индексе нет: после падений цена подходит к крупным заявкам на покупку, и их доля рядом с ценой растёт — стакан показывал «жадность» как раз во время страха, а куда пойдёт цена, не подсказывал. Он остаётся во вкладке «Стакан».', 'The order book isn’t part of the index: after a drop the price moves closer to large buy orders, so their share near the price grows — the book read as “greed” exactly during fear and didn’t hint at where the price would go. It stays on the Order book tab.')}</p>` : ''}
+      ${FNG_SCALE(FNG_A)}
+      <p class="note">${T(`Пересчитывается 4 раза в день вместе со сводкой${S.fng.updated ? ' (последний раз — ' + esc(dtl(S.fng.updated)) + ')' : ''}. До ${esc(fngDay(d.since))} линия на графике посчитана без холдеров и мем-монет — их прошлых данных нет. Это описание настроения, а не совет и не прогноз.`, `Recomputed 4 times a day with each report${S.fng.updated ? ' (last: ' + esc(dtl(S.fng.updated)) + ')' : ''}. Before ${esc(fngDay(d.since))} the chart line leaves out holders and meme coins — there’s no past data for them. It describes mood — it isn’t advice or a forecast.`)}</p>`];
   }
   const tile = (key, label, value, sub, vis, vc) => `<button type="button" class="tile" data-info="${key}"><span class="tl">${esc(label)}</span>${vis || ''}<b class="tv ${vc || ''}">${value}</b><span class="ts">${esc(sub)}</span></button>`;
   function tilesHtml(s) {
@@ -2594,7 +2640,7 @@ html{overscroll-behavior-y:contain}
   };
   function openInfo(k) {
     if (k === 'tre') { treSheet(); return; }
-    if (k === 'fng_m' || k === 'fng_d') { const r = k === 'fng_m' ? fngMarketSheet() : fngDogSheet(); if (r) openSheet(r[0], r[1]); return; }
+    if (k === 'fng_m' || k === 'fng_c' || k === 'fng_d') { const r = k === 'fng_m' ? fngMarketSheet() : k === 'fng_c' ? fngCmcSheet() : fngDogSheet(); if (r) openSheet(r[0], r[1]); return; }
     const s = V(), f = INFO[k];
     if (!s || !f) return;
     const r = f(s);
@@ -3292,14 +3338,22 @@ html{overscroll-behavior-y:contain}
     const midRow = `<div class="ob-mid"><b class="${dir(chg)}" id="obmidp">${fp(midP)}</b><span class="pill ${dir(chg)}">${pillTxt(chg)}</span><span class="s">${spr != null ? T('спред ', 'spread ') + n(spr, 2) + '%' : ''}</span></div>`;
     const unitH = usdU ? T('Сумма, $', 'Value, $') : T('Кол-во, DOG', 'Amount, DOG');
     const tip = r => r.big >= OB_WALL ? ` title="${esc(T('Стенка', 'Wall'))}: ${esc(EXN[r.bigBy] || '')} ${qf(r.big)}"` : '';
+    // подсветка по объёму самого уровня: полоса ~ (объём / самый крупный из показанных)^0.6 — крупные уровни видны сразу,
+    // мелкие едва заметны; крупные (от 1,6 медианы показанных) — ярче и жирным шрифтом, совсем мелкие — бледным;
+    // под полосой — бледная накопленная глубина (сколько всего до этой цены)
+    const lvs = A.concat(B).map(val).filter(x => x > 0).sort((x, y) => x - y);
+    const lvMax = lvs.length ? lvs[lvs.length - 1] : 1, lvMed = lvs.length ? lvs[Math.floor(lvs.length / 2)] : 0;
+    const bigT = Math.max(lvMed * 1.6, usdU ? 1500 : 2e6), smT = lvMed * 0.25;
+    const cMax = Math.max(1e-9, B.length ? cval(B[B.length - 1]) : 0, A.length ? cval(A[A.length - 1]) : 0);
+    const lvSt = r => `--w:${(Math.pow(Math.max(0, val(r)) / lvMax, 0.6) * 100).toFixed(1)}%;--c:${(cval(r) / cMax * 100).toFixed(1)}%`;
+    const lvC = r => val(r) >= bigT ? ' big' : (val(r) < smT ? ' sm' : '');
     let body = '';
     if (S.bview === 'two') {
-      const mx = Math.max(1e-9, B.length ? cval(B[B.length - 1]) : 0, A.length ? cval(A[A.length - 1]) : 0);
       const rows = [];
       for (let i = 0; i < Math.max(A.length, B.length); i++) {
         const b = B[i], a = A[i];
-        const hb = b ? `<button type="button" class="h b${b.big >= OB_WALL ? ' wall' : ''}${b.part ? ' part' : ''}" data-ob="b:${b.u}" style="--w:${(cval(b) / mx * 100).toFixed(1)}%"${tip(b)}><span class="q">${amtF(b.q, b.v)}</span><span class="p">${fpx(b.p, step)}</span></button>` : '<span class="h"></span>';
-        const ha = a ? `<button type="button" class="h a${a.big >= OB_WALL ? ' wall' : ''}${a.part ? ' part' : ''}" data-ob="a:${a.u}" style="--w:${(cval(a) / mx * 100).toFixed(1)}%"${tip(a)}><span class="p">${fpx(a.p, step)}</span><span class="q">${amtF(a.q, a.v)}</span></button>` : '<span class="h"></span>';
+        const hb = b ? `<button type="button" class="h b${lvC(b)}${b.big >= OB_WALL ? ' wall' : ''}${b.part ? ' part' : ''}" data-ob="b:${b.u}" style="${lvSt(b)}"${tip(b)}><span class="q">${amtF(b.q, b.v)}</span><span class="p">${fpx(b.p, step)}</span></button>` : '<span class="h"></span>';
+        const ha = a ? `<button type="button" class="h a${lvC(a)}${a.big >= OB_WALL ? ' wall' : ''}${a.part ? ' part' : ''}" data-ob="a:${a.u}" style="${lvSt(a)}"${tip(a)}><span class="p">${fpx(a.p, step)}</span><span class="q">${amtF(a.q, a.v)}</span></button>` : '<span class="h"></span>';
         rows.push(hb + ha);
       }
       const u2 = usdU ? '$' : 'DOG';
@@ -3317,8 +3371,7 @@ html{overscroll-behavior-y:contain}
       const tr = (r, side) => `<tr class="${side}" data-ob="${side}:${r.u}"><td class="pcol">${fpx(r.p, step)}</td>${ks.map(k => cell(r, k, side)).join('')}<td class="r"><b>${amtF(r.q, r.v)}</b></td></tr>`;
       body = `${midRow}<div class="scroll"><table class="matrix obt"><thead><tr><th class="pcol">${T('Цена', 'Price')}</th>${ks.map(k => `<th class="r">${EXN[k]}</th>`).join('')}<th class="r">${T('Сумма', 'Total')}</th></tr></thead><tbody class="click">${A.slice().reverse().map(r => tr(r, 'a')).join('')}<tr class="midrow"><td colspan="${ks.length + 2}">${fp(midP)}</td></tr>${B.map(r => tr(r, 'b')).join('')}</tbody></table></div>`;
     } else {
-      const mx = Math.max(1e-9, ...A.map(val), ...B.map(val));
-      const row = (r, side) => `<button type="button" class="ob-r ${side}${r.big >= OB_WALL ? ' wall' : ''}${r.part ? ' part' : ''}" data-ob="${side}:${r.u}" style="--w:${(val(r) / mx * 100).toFixed(1)}%"${tip(r)}><span class="p">${fpx(r.p, step)}</span><span class="q">${amtF(r.q, r.v)}</span><span class="c">${usdU ? usdC(r.cv) : qf(r.cum)}</span></button>`;
+      const row = (r, side) => `<button type="button" class="ob-r ${side}${lvC(r)}${r.big >= OB_WALL ? ' wall' : ''}${r.part ? ' part' : ''}" data-ob="${side}:${r.u}" style="${lvSt(r)}"${tip(r)}><span class="p">${fpx(r.p, step)}</span><span class="q">${amtF(r.q, r.v)}</span><span class="c">${usdU ? usdC(r.cv) : qf(r.cum)}</span></button>`;
       let asks = '';
       const Ar = A.slice().reverse();
       Ar.forEach((r, i) => { asks += row(r, 'a'); if (r.part && Ar[i + 1] && !Ar[i + 1].part) asks += obSepHtml(ag, 'a'); });
