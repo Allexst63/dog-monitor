@@ -1,0 +1,46 @@
+name: Проверка живого сайта
+
+# Между сводками (4 раза в день) живой сайт проверяется отдельно каждые 2 часа: открывается в браузере с экраном
+# телефона и проходит те же пункты, что автопроверка перед выкладкой (цена, три индекса и одно число индекса DOG
+# везде, стакан, графики и мем-монеты, кошельки, свежесть данных). Что-то не так — задача краснеет, и GitHub
+# присылает письмо владельцу репозитория. В репозиторий ничего не пишет.
+on:
+  schedule:
+    - cron: '23 */2 * * *'      # каждые 2 часа (UTC); GitHub может запускать с задержкой
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dogmon-sitecheck
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Живой сайт в браузере (телефон)
+        run: |
+          mkdir -p "$RUNNER_TEMP/pw" && cd "$RUNNER_TEMP/pw"
+          npm init -y >/dev/null 2>&1
+          npm i --no-audit --no-fund playwright-core@1.48.2 >/dev/null 2>&1
+          cd "$GITHUB_WORKSPACE"
+          NODE_PATH="$RUNNER_TEMP/pw/node_modules" node tools/selfcheck.js . "$RUNNER_TEMP/selfcheck.json" --url https://allexst63.github.io/dog-monitor/
+
+      - name: Итог по пунктам
+        if: always()
+        run: |
+          python3 - "$RUNNER_TEMP/selfcheck.json" <<'EOF' || true
+          import json, sys
+          d = json.load(open(sys.argv[1]))
+          for i in d['items']:
+              print(('OK   ' if i['ok'] else 'FAIL ') + i['t'] + ('' if i['ok'] or not i.get('d') else ' — ' + i['d']))
+          print(f"{d['okN']} из {d['n']}")
+          EOF

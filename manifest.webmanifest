@@ -1,7 +1,7 @@
 {
   "name": "DOG Monitor",
   "short_name": "DOG Monitor",
-  "description": "DOG price and chart, order books from the exchanges, charts with RSI and MACD, the top 100 wallets, how DOG is held, C2 Blockchain holdings and news. Opens instantly, refreshes itself while open, works offline. English and Russian.",
+  "description": "Live tracker for DOG•GO•TO•THE•MOON: price and charts, order books from 7 exchanges, three Fear & Greed indices, DOG vs the top meme coins, the top 100 and every 10M+ wallet. Opens instantly, refreshes itself while open, works offline. English and Russian.",
   "lang": "en",
   "start_url": "./",
   "scope": "./",
@@ -29,7 +29,6 @@
   "id": "./",
   "orientation": "any",
   "categories": [
-    "finance",
-    "news"
+    "finance"
   ]
 }

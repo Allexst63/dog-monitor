@@ -102,9 +102,13 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
       await page.evaluate(() => { const b = document.querySelector('[data-info="fng_d"]'); if (b) b.click(); });
       await page.waitForTimeout(800);
       const k = await page.evaluate(() => ({ now: ((document.querySelector('#sheet-body .kv dd b') || {}).textContent || '').trim(), pt: ((document.querySelector('#sheet-body .fic-read .v b') || {}).textContent || '').trim(), d: ((document.querySelector('#sheet-body .fic-read .d') || {}).textContent || '').trim() }));
-      add(!!g && g === k.now && g === k.pt, `Индекс DOG одинаковый на шкале, в разборе и на графике (${g || '—'} / ${k.now || '—'} / ${k.pt || '—'})`, `DOG index is the same on the gauge, in the breakdown and on the chart (${g || '—'} / ${k.now || '—'} / ${k.pt || '—'})`, k.d);
+      // разбор открыт 8 секунд (цена онлайн может сдвинуться) — после закрытия шкала показывает то же число, что «Сейчас»
+      await page.waitForTimeout(8000);
+      const now2 = await page.evaluate(() => ((document.querySelector('#sheet-body [data-fng-now="d"] b') || {}).textContent || '').trim());
       await page.evaluate(() => { const c = document.querySelector('#sheet [data-close]'); if (c) c.click(); });
       await page.waitForTimeout(450);
+      const g2 = await page.evaluate(() => { const x = document.querySelectorAll('#fng-box .fng-g .gn'); return x[2] ? x[2].textContent.trim() : ''; });
+      add(!!g && g === k.now && g === k.pt && g2 === now2, `Индекс DOG одинаковый на шкале, в разборе и на графике (${g || '—'} / ${k.now || '—'} / ${k.pt || '—'}; после закрытия ${g2 || '—'} / ${now2 || '—'})`, `DOG index is the same on the gauge, in the breakdown and on the chart (${g || '—'} / ${k.now || '—'} / ${k.pt || '—'}; after closing ${g2 || '—'} / ${now2 || '—'})`, k.d);
     }
     // крупные заявки из «Что нового» — их потом ищем в сводном стакане
     const evs = await page.evaluate(() => [...document.querySelectorAll('#sum-box .ev')].map(e => e.textContent.replace(/\s+/g, ' ').trim()));

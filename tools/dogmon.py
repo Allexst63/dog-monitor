@@ -55,7 +55,7 @@ EXCHANGES = (('kraken', 'Kraken'), ('gate', 'Gate'), ('mexc', 'MEXC'), ('bingx',
 EXN = dict(EXCHANGES)
 BOOK_FILES = {'kraken': ('kraken_bids', 'kraken_asks'), 'gate': ('gate_book',), 'mexc': ('mexc_book',),
               'bingx': ('bingx_book',), 'coinw': ('coinw_book',), 'digifinex': ('digifinex_book',), 'bitget': ('bitget_book',)}
-REQ_ROWS = {'kraken_bids': 200, 'kraken_asks': 120, 'gate_book': 100, 'mexc_book': 150, 'bingx_book': 150,
+REQ_ROWS = {'kraken_bids': 200, 'kraken_asks': 120, 'gate_book': 1000, 'mexc_book': 150, 'bingx_book': 150,
             'coinw_book': 20, 'digifinex_book': 150, 'bitget_book': 150}
 TS_KEY = {'kraken_bids': 'maxts', 'kraken_asks': 'maxts', 'gate_book': 'current', 'mexc_book': 'ts', 'bingx_book': 'ts',
           'digifinex_book': 'date', 'bitget_book': 'ts', 'coinw_book': None}

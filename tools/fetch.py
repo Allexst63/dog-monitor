@@ -199,8 +199,10 @@ def kraken_book(side, count):
 
 
 def f_gate_book():
-    d = get(['https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0.00001&limit=100',
-             'https://api.gate.io/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0.00001&limit=100'])
+    # весь стакан точными ценами: Gate отдаёт до 1000 уровней (у DOG их ~300 с каждой стороны), поэтому крупные
+    # заявки видны с точной ценой (раньше — ступенями по 0.00001, и сумма ступени выглядела как одна заявка)
+    d = get(['https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0&limit=1000',
+             'https://api.gate.io/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0&limit=1000'])
     return d, book_text(f"current={s(d.get('current'))}; update={s(d.get('update'))}", lvl(d.get('bids')), lvl(d.get('asks')))
 
 
