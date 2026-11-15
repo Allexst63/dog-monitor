@@ -648,8 +648,8 @@ table.whc td.up{color:var(--up)} table.whc td.down{color:var(--down)} table.whc 
 .sheet-body{overflow-y:auto;padding:4px 20px 22px;display:flex;flex-direction:column;gap:14px}
 /* в листе ничего не сжимается: лист прокручивается (иначе Safari сплющивает графики до нулевой высоты) */
 .sheet-body>*{flex-shrink:0}
-.kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 16px;font-size:14.5px}
-.kv dt{color:var(--ink-2)} .kv dd{margin:0;text-align:right;font-weight:500;overflow-wrap:anywhere}
+.kv{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 16px;font-size:14.5px}
+.kv dt{color:var(--ink-2)} .kv dd{margin:0;text-align:right;font-weight:500;overflow-wrap:break-word}
 .addrbox{display:flex;align-items:flex-start;gap:10px;background:var(--surface-2);border-radius:14px;padding:10px 12px}
 .addrbox code{flex:1;min-width:0;overflow-wrap:anywhere;font-family:var(--mono);font-size:13px;line-height:1.45}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:14px;padding:11px 16px;font-weight:600;font-size:14.5px;cursor:pointer;background:var(--surface-3);color:var(--ink);text-decoration:none}
