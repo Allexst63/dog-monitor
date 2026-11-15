@@ -1,0 +1,44 @@
+[
+ [
+  "https://api.alternative.me/fng/?limit=0&format=json",
+  200,
+  302385,
+  "*"
+ ],
+ [
+  "https://api.coinmarketcap.com/data-api/v3/fear-greed/chart?start=1367193600&end=1794738869",
+  200,
+  131218,
+  null
+ ],
+ [
+  "https://api.coinmarketcap.com/data-api/v3/fear-greed/latest",
+  404,
+  "<!DOCTYPE html>\n<html>\n<head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"format-detection\" content=\"telephone=no,email=no,address=no\">\n    <title>coinmarketcap.com</title>\n    <link rel=\"Shortcut Icon\" href=\"favicon.ico\">\n</head>\n<style>\n    body{margin: 0}\n    .img{width: 611px;margin: 68px auto ",
+  null
+ ],
+ [
+  "https://api.coinmarketcap.com/data-api/v3/fear-greed/chart?start=1794479669&end=1794738869",
+  200,
+  1130,
+  null
+ ],
+ [
+  "https://api.coinmarketcap.com/data-api/v3/global-metrics/quotes/latest",
+  200,
+  2740,
+  null
+ ],
+ [
+  "https://api.coingecko.com/api/v3/coins/dog-go-to-the-moon-rune/market_chart?vs_currency=usd&days=365&interval=daily",
+  200,
+  38937,
+  "*"
+ ],
+ [
+  "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=365&interval=daily",
+  200,
+  37750,
+  "*"
+ ]
+]
