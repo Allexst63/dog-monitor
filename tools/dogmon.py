@@ -1046,7 +1046,10 @@ def compute(kind):
             'fIn': flows.get('toExch'), 'fOut': flows.get('fromExch'), 'fCnt': flows.get('count'),
             'bw': biggest('b', 0.25), 'aw': biggest('a', 0.25), 'prevId': prev_id,
             'rp': (health or {}).get('rp'), 'mvrv': (health or {}).get('mvrvNow'),
-            'profit': (health or {}).get('profit'), 'lth': (health or {}).get('lth')}
+            'profit': (health or {}).get('profit'), 'lth': (health or {}).get('lth'),
+            # доля всех DOG в пачках от 10 млн (DOG DATA, UTXO) и монеты кошельков от 10 млн — для линии «крупные копят»
+            'big10': next((r[2] for r in (health or {}).get('sizes') or [] if str(r[0]).strip().startswith('>')), None),
+            'w10': (((health or {}).get('tiers') or {}).get('dog') or {}).get('10000000')}
     hist_path = os.path.join(OUT, 'hist.json')
     json.dump(hist, open(hist_path, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
     writes = []

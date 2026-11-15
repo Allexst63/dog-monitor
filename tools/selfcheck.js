@@ -71,9 +71,47 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
     add(/\d\d:\d\d/.test(st.t), `Статус в шапке показывает время данных («${st.t.trim().slice(0, 40)}»)`, `Header status shows the data time (“${st.t.trim().slice(0, 40)}”)`);
     add(await noOverflow(), 'Главная: ничего не вылезает за экран телефона', 'Home: nothing overflows the phone screen');
     await shot('1-home');
+    // «Страх и жадность»: в каждом разборе — график индекса с ценой (DOG или биткоин), не сплющен и отвечает на нажатие
+    for (const [key, nm] of [['fng_m', 'alternative.me'], ['fng_c', 'CoinMarketCap'], ['fng_d', 'DOG']]) {
+      await page.evaluate(k => { const b = document.querySelector(`[data-info="${k}"]`); if (b) b.click(); }, key);
+      await page.waitForTimeout(800);
+      const r = await page.evaluate(() => { const pl = document.querySelector('#sheet-body .fic-plot'); if (!pl) return null; pl.scrollIntoView({ block: 'center' }); const b = pl.getBoundingClientRect(); return { h: b.height, w: b.width, ps: [...pl.querySelectorAll('path')].map(p => (p.getAttribute('d') || '').length), read: (document.querySelector('#sheet-body .fic-read') || {}).textContent || '' }; });
+      let ok = !!r && r.h >= 120 && r.w >= 200 && r.ps.length >= 3 && Math.min(...r.ps) > 100, after = '';
+      if (ok) {
+        await page.waitForTimeout(300);
+        const b2 = await page.evaluate(() => { const b = document.querySelector('#sheet-body .fic-plot').getBoundingClientRect(); return { x: b.left, y: b.top, w: b.width, h: b.height }; });
+        await page.touchscreen.tap(b2.x + b2.w * 0.35, b2.y + b2.h / 2);
+        await page.waitForTimeout(300);
+        after = await page.evaluate(() => (document.querySelector('#sheet-body .fic-read') || {}).textContent || '');
+        ok = !!after && after !== r.read;
+      }
+      add(ok, `«Страх и жадность», ${nm}: график индекса с ценой показан и отвечает на нажатие`, `Fear & Greed, ${nm}: the index chart with prices is shown and responds to taps`, r ? `высота ${Math.round(r.h)} px; ${after.slice(0, 70)}` : 'графика нет');
+      await page.evaluate(() => { const c = document.querySelector('#sheet [data-close]'); if (c) c.click(); });
+      await page.waitForTimeout(450);
+    }
+    // крупные заявки из «Что нового» — их потом ищем в сводном стакане
+    const evs = await page.evaluate(() => [...document.querySelectorAll('#sum-box .ev')].map(e => e.textContent.replace(/\s+/g, ' ').trim()));
 
     // 2. стакан
     await tab('books');
+    // «Что нового» и стакан говорят одно и то же: новая крупная заявка видна в сводном стакане (вид «две колонки», шаг 0.00001)
+    {
+      const want = evs.map(t => { const m = t.match(/(\w+): new (buy|sell) order for ([\d.,]+)([KMB]?) DOG at \$?([\d.]+)/); return m ? { t, ex: m[1], side: m[2] === 'buy' ? 'b' : 'a', q: parseFloat(m[3].replace(/,/g, '')) * ({ K: 1e3, M: 1e6, B: 1e9 }[m[4]] || 1), p: parseFloat(m[5]) } : null; }).filter(Boolean);
+      if (want.length) {
+        await page.evaluate(() => { const v = document.querySelector('[data-obview="two"]'); if (v) v.click(); });
+        await page.waitForTimeout(500);
+        await page.evaluate(() => { const st = document.querySelector('[data-obstep="0.00001"]'); if (st) st.click(); const a = document.querySelector('[data-obex="all"]'); if (a) a.click(); });
+        await page.waitForTimeout(500);
+        await page.evaluate(() => { const m = document.querySelector('[data-obmore="1"]'); if (m) m.click(); });
+        await page.waitForTimeout(700);
+        const rowsB = await page.evaluate(() => { const num = t => { const m = String(t).replace('≥', '').replace(/,/g, '').match(/([\d.]+)\s*([KMB]?)/); return m ? parseFloat(m[1]) * ({ K: 1e3, M: 1e6, B: 1e9 }[m[2]] || 1) : 0; }; const g = side => [...document.querySelectorAll(`#obcard .ob2 .h.${side}`)].map(h => ({ p: parseFloat((h.querySelector('.p') || {}).textContent || 'NaN'), q: num((h.querySelector('.q') || {}).textContent || '') })).filter(r => r.p > 0); return { b: g('b'), a: g('a') }; });
+        const res = want.map(w => { const rows = rowsB[w.side]; if (!rows.length) return { w, st: 'skip' }; const bp = w.side === 'b' ? Math.floor(w.p / 1e-5 + 1e-6) * 1e-5 : Math.ceil(w.p / 1e-5 - 1e-6) * 1e-5; const lo = Math.min(...rows.map(r => r.p)), hi = Math.max(...rows.map(r => r.p)); if (bp < lo - 1e-9 || bp > hi + 1e-9) return { w, st: 'skip' }; const r = rows.find(x => Math.abs(x.p - bp) < 1e-9); return { w, st: r && r.q >= w.q * 0.9 ? 'ok' : 'miss', got: r ? r.q : 0 }; });
+        const chk = res.filter(x => x.st !== 'skip'), okN = chk.filter(x => x.st === 'ok').length;
+        add(!chk.length || okN > 0, `Стакан: крупные заявки из «Что нового» видны в сводном стакане (${okN} из ${chk.length})`, `Order book: large orders from “What’s new” are visible in the combined book (${okN} of ${chk.length})`, chk.filter(x => x.st === 'miss').map(x => `${x.w.ex} ${x.w.p}: ${Math.round(x.w.q / 1e5) / 10}M, в стакане ${Math.round(x.got / 1e5) / 10}M`).join('; '));
+        await page.evaluate(() => { const v = document.querySelector('[data-obview="col"]'); if (v) v.click(); const m = document.querySelector('[data-obmore="0"]'); if (m) m.click(); });
+        await page.waitForTimeout(400);
+      }
+    }
     const rows = await page.evaluate(() => document.querySelectorAll('#p-books .ob-r, #p-books [data-lv], #p-books tr').length);
     add(rows >= 10 && await noOverflow(), `Стакан: уровни цен показаны (${rows})`, `Order book: price levels are shown (${rows})`);
     // сводный стакан: все покупки ниже цены, все продажи выше (без «пересечений» между биржами)

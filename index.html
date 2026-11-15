@@ -370,6 +370,7 @@ tbody.click tr:hover td{background:var(--surface-2)}
 .ob2 .h.b.big{--bar:var(--bid-strong)} .ob2 .h.a.big{--bar:var(--ask-strong)}
 .ob2 .h .p{font-weight:600} .ob2 .h.b .p{color:var(--up)} .ob2 .h.a .p{color:var(--down)}
 .obt td,.obt th{padding:5px 7px;font-size:12.5px}
+.obt td.rep{font-style:italic;color:var(--ink-2)}
 .obt tbody tr{cursor:pointer}
 .obst{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-2);padding:2px 4px 0}
 .obst .dot{width:8px;height:8px;border-radius:50%;background:var(--ink-3);flex:none}
@@ -441,6 +442,14 @@ table.pf .r{text-align:right;font-weight:600}
 table.vol td{padding:9px 0;vertical-align:middle}table.vol tr:first-child td{border-top:0}table.vol .r{padding-left:10px;white-space:nowrap}table.vol .faint{font-weight:500;width:38px}
 table.vol .vb{width:34%;padding:0 4px 0 10px}table.vol .vb i{display:block;height:8px;border-radius:4px;background:var(--k1);min-width:3px}
 .trings{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:330px;margin:10px auto 0}
+.shl{font-size:14.5px;line-height:1.5;margin-bottom:12px}
+.shb{display:grid;grid-template-columns:88px minmax(0,1fr) 48px;align-items:center;gap:10px;margin:6px 0;font-size:13px}
+.shb .l{color:var(--ink-2)} .shb .v{text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+.shb .b{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--surface-3);gap:1.5px}
+.shb .b i{display:block;height:100%}
+.shl2 li:not(.hd){display:grid;grid-template-columns:10px minmax(0,1fr) 52px 52px 56px;gap:8px;align-items:center;padding:7px 10px;font-variant-numeric:tabular-nums}
+.shl2 .hd{grid-template-columns:minmax(0,1fr) 52px 52px 56px!important;padding:0 10px 2px 28px!important}
+.shl2 .dl{text-align:right;font-variant-numeric:tabular-nums} .shl2 .dl.up{color:var(--up)} .shl2 .dl.down{color:var(--down)}
 .tring{position:relative;aspect-ratio:1;width:100%}
 .tring svg{width:100%;height:100%;display:block;overflow:visible}
 .tring circle[data-tier]{cursor:pointer;pointer-events:stroke;transition:stroke-width .18s}
@@ -581,6 +590,8 @@ table.vol .vb{width:34%;padding:0 4px 0 10px}table.vol .vb i{display:block;heigh
 .sheet-head{display:flex;align-items:center;gap:10px;padding:10px 12px 6px 20px}
 .sheet-head h2{flex:1;font-size:20px;min-width:0}
 .sheet-body{overflow-y:auto;padding:4px 20px 22px;display:flex;flex-direction:column;gap:14px}
+/* в листе ничего не сжимается: лист прокручивается (иначе Safari сплющивает графики до нулевой высоты) */
+.sheet-body>*{flex-shrink:0}
 .kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 16px;font-size:14.5px}
 .kv dt{color:var(--ink-2)} .kv dd{margin:0;text-align:right;font-weight:500;overflow-wrap:anywhere}
 .addrbox{display:flex;align-items:flex-start;gap:10px;background:var(--surface-2);border-radius:14px;padding:10px 12px}
@@ -684,6 +695,20 @@ table.vol .vb{width:34%;padding:0 4px 0 10px}table.vol .vb i{display:block;heigh
 .fng-g.na .gk{color:var(--ink-3)}
 .fng-sp{width:100%;height:64px;display:block;margin:6px 0 2px}
 .fng-lc{width:100%;height:auto;display:block;margin:4px 0 2px}
+/* график индекса с ценой: высота задана явно, точки и перекрестие — отдельными элементами */
+.fic{display:flex;flex-direction:column;gap:6px}
+.fic-read{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px;font-size:13.5px;min-height:20px}
+.fic-read .d{color:var(--ink-2)} .fic-read .v b{font-weight:650;font-variant-numeric:tabular-nums} .fic-read .p{margin-left:auto;font-weight:500;font-variant-numeric:tabular-nums}
+.fic-plot{position:relative;height:150px;touch-action:pan-y;cursor:crosshair;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.fic-plot svg{position:absolute;left:0;top:0;width:100%;height:100%;display:block}
+.fic-t{position:absolute;width:7px;height:7px;margin:-3.5px 0 0 -3.5px;border-radius:50%;box-shadow:0 0 0 1.5px var(--surface);pointer-events:none}
+.fic-x{position:absolute;top:0;bottom:0;width:1px;margin-left:-.5px;background:var(--ink-2);opacity:0;pointer-events:none}
+.fic-x.on{opacity:.55}
+.fic-m{position:absolute;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;border:2px solid var(--surface);pointer-events:none;box-sizing:border-box}
+.fic-mp{background:var(--ink-2)}
+.fic-leg{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;font-size:12px;color:var(--ink-3)}
+.fic-leg i{display:inline-block;width:14px;height:3px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.fic-leg .li{background:var(--accent)} .fic-leg .lp{background:var(--ink-3)} .fic-leg .h{margin-left:auto}
 .fng-turns{display:flex;flex-direction:column;border-top:1px solid var(--line-2)}
 .fng-turns .tr{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:4px 14px;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--line-2);font-size:13.5px}
 .fng-turns .d{color:var(--ink-2)} .fng-turns .k{color:var(--ink-2)} .fng-turns .k b{font-weight:600;font-variant-numeric:tabular-nums} .fng-turns .p{font-variant-numeric:tabular-nums;color:var(--ink);min-width:7.5ch;text-align:right}
@@ -2363,7 +2388,8 @@ html{overscroll-behavior-y:contain}
     const hist = [...new Map([...(((S.fng || {}).market || {}).hist || []), ...(m.hist || [])]).entries()].sort((x, y) => x[0] < y[0] ? -1 : 1);
     return [T('Страх и жадность: alternative.me', 'Fear & Greed: alternative.me'), `<p>${T('Crypto Fear &amp; Greed Index сайта alternative.me — самый известный индекс настроения всего крипторынка. Одно число от 0 до 100: чем меньше, тем сильнее люди боятся и продают; чем больше — тем охотнее покупают.', 'The Crypto Fear &amp; Greed Index by alternative.me — the best-known gauge of crypto market mood. One number from 0 to 100: the lower it is, the more people are afraid and selling; the higher, the more eagerly they buy.')}</p>
       ${fngKv(m.v, FNG_A, m.prev)}
-      ${fngSpark(hist, 90, FNG_A)}
+      <h3>${T('Индекс и биткоин', 'The index and bitcoin')}</h3>
+      ${fngChart('m', hist, pxMap((S.btcd || {}).d), 'BTC', FNG_A, null, btcFmt) || fngSpark(hist, 90, FNG_A)}
       <h3>${T('Из чего он складывается', 'What goes into it')}</h3>
       <ul class="plain"><li>${T('<b>25%</b> — насколько сильно скачет цена биткоина и глубоки ли просадки;', '<b>25%</b> — how wildly bitcoin’s price swings and how deep its drops are;')}</li><li>${T('<b>25%</b> — объёмы и напор покупок на рынке;', '<b>25%</b> — market volume and buying momentum;')}</li><li>${T('<b>15%</b> — активность в соцсетях;', '<b>15%</b> — social media activity;')}</li><li>${T('<b>15%</b> — опросы (сейчас приостановлены);', '<b>15%</b> — surveys (currently paused);')}</li><li>${T('<b>10%</b> — доля биткоина на рынке;', '<b>10%</b> — bitcoin’s share of the market;')}</li><li>${T('<b>10%</b> — поисковые запросы в Google.', '<b>10%</b> — Google search trends.')}</li></ul>
       ${FNG_SCALE(FNG_A)}
@@ -2373,7 +2399,8 @@ html{overscroll-behavior-y:contain}
     const c = fngCmc(); if (!c) return null;
     return [T('Страх и жадность: CoinMarketCap', 'Fear & Greed: CoinMarketCap'), `<p>${T('Индекс страха и жадности CoinMarketCap — второй известный индекс настроения всего крипторынка. Тоже от 0 до 100, но считается по другим данным, поэтому с индексом alternative.me он обычно близок, но не совпадает.', 'CoinMarketCap’s Fear and Greed Index — the other well-known gauge of crypto market mood. Also 0 to 100, but built from different data, so it’s usually close to the alternative.me index without matching it.')}</p>
       ${fngKv(c.v, FNG_C, c.prev)}
-      ${fngSpark(c.hist, 90, FNG_C)}
+      <h3>${T('Индекс и биткоин', 'The index and bitcoin')}</h3>
+      ${fngChart('c', c.hist, pxMap((S.btcd || {}).d), 'BTC', FNG_C, null, btcFmt) || fngSpark(c.hist, 90, FNG_C)}
       <h3>${T('Из чего он складывается', 'What goes into it')}</h3>
       <ul class="plain"><li>${T('импульс цен 10 крупнейших монет (без стейблкоинов);', 'price momentum of the 10 largest coins (stablecoins excluded);')}</li><li>${T('ожидаемые колебания биткоина и эфира по опционам (индексы волатильности Volmex);', 'expected swings of bitcoin and ether priced into options (Volmex volatility indices);')}</li><li>${T('опционы: сколько ставят на падение против ставок на рост (put/call) по биткоину и эфиру;', 'options: bets on a fall versus bets on a rise (put/call ratio) for bitcoin and ether;')}</li><li>${T('состав рынка: запас стейблкоинов против капитализации биткоина;', 'market composition: the stablecoin supply relative to bitcoin’s market cap;')}</li><li>${T('данные самого CoinMarketCap: поиски и интерес пользователей.', 'CoinMarketCap’s own data: searches and user engagement.')}</li></ul>
       ${c.yhi && c.ylo ? `<p class="note">${T(`За год: максимум ${c.yhi[0]} (${esc(fngDay(c.yhi[1]))}), минимум ${c.ylo[0]} (${esc(fngDay(c.ylo[1]))}).`, `Past year: high ${c.yhi[0]} (${esc(fngDay(c.yhi[1]))}), low ${c.ylo[0]} (${esc(fngDay(c.ylo[1]))}).`)}</p>` : ''}
@@ -2393,6 +2420,53 @@ html{overscroll-behavior-y:contain}
     const mid = h[Math.floor(h.length / 2)][0];
     return `<svg class="fng-lc" viewBox="0 0 ${W} ${H}" aria-hidden="true"><rect x="0" y="${Y(100).toFixed(1)}" width="${W}" height="${(Y(76) - Y(100)).toFixed(1)}" fill="var(--fz5)" opacity=".1"/><rect x="0" y="${Y(25.5).toFixed(1)}" width="${W}" height="${(Y(0) - Y(25.5)).toFixed(1)}" fill="var(--fz1)" opacity=".1"/><line x1="0" x2="${W}" y1="${Y(50).toFixed(1)}" y2="${Y(50).toFixed(1)}" stroke="var(--line)" stroke-dasharray="2 4"/><path d="${line}" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linejoin="round"/>${dots}</svg><div class="fng-ax"><span>${esc(fngDmy(h[0][0]))}</span><span>${esc(fngDmy(mid))}</span><span>${esc(fngDmy(h[h.length - 1][0]))}</span></div>`;
   }
+  // ---------- график индекса вместе с ценой (DOG или биткоин): нажатие или ведение пальцем — дата, индекс и цена ----------
+  const FIC = {};
+  let ficDrag = null;
+  const btcFmt = p => dol(n(p, 0)), dogFmt = p => fpd(p);
+  const pxMap = d => { const o = {}; for (const [k, v] of Object.entries(d || {})) { const c = Array.isArray(v) ? v[3] : v; if (c > 0) o[k] = c; } return o; };
+  function fngChart(id, idx, pxd, pxName, sc, turns, fmtP) {
+    const rows = (idx || []).filter(x => x && pxd[x[0]] > 0 && x[1] != null);
+    if (rows.length < 30) return '';
+    const n1 = rows.length - 1, W = 1000, H = 150, pad = 7, Z = sc || FNG_A;
+    const lp = rows.map(x => Math.log(pxd[x[0]])), lmin = Math.min(...lp), lmax = Math.max(...lp), lr = (lmax - lmin) || 1;
+    const X = i => i / n1 * W, YI = v => pad + (1 - v / 100) * (H - 2 * pad), YP = l => pad + (1 - (l - lmin) / lr) * (H - 2 * pad);
+    const li = rows.map((x, i) => `${i ? 'L' : 'M'}${X(i).toFixed(1)},${YI(x[1]).toFixed(1)}`).join('');
+    const lpp = lp.map((l, i) => `${i ? 'L' : 'M'}${X(i).toFixed(1)},${YP(l).toFixed(1)}`).join('');
+    FIC[id] = { rows, lp, lmin, lr, n1, H, pad, pxd, pxName, sc: Z, fmtP };
+    const at = new Map(rows.map((x, i) => [x[0], i])), pc = (v, t) => (v / t * 100).toFixed(2) + '%';
+    const dots = (turns || []).filter(t => at.has(t[0])).map(t => `<i class="fic-t" style="left:${pc(X(at.get(t[0])), W)};top:${pc(YI(t[1]), H)};background:${fngCol(t[1], Z)}"></i>`).join('');
+    const last = rows[n1], mid = rows[Math.floor(n1 / 2)][0];
+    return `<div class="fic" data-fic="${id}">
+        <div class="fic-read" aria-live="polite">${ficRead(id, n1)}</div>
+        <div class="fic-plot" role="img" aria-label="${T(`Индекс и цена ${pxName}, ${rows.length} дней`, `Index and ${pxName} price, ${rows.length} days`)}"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="${YI(100).toFixed(1)}" width="${W}" height="${(YI(Z[3]) - YI(100)).toFixed(1)}" fill="var(--fz5)" opacity=".1"/><rect x="0" y="${YI(Z[0] - 0.5).toFixed(1)}" width="${W}" height="${(YI(0) - YI(Z[0] - 0.5)).toFixed(1)}" fill="var(--fz1)" opacity=".1"/><path d="${lpp}L${W},${H}L0,${H}Z" fill="var(--ink-3)" opacity=".1"/><path d="${lpp}" fill="none" stroke="var(--ink-3)" stroke-width="1.2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/><path d="${li}" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>${dots}<i class="fic-x"></i><i class="fic-m fic-mp" style="left:100%;top:${pc(YP(lp[n1]), H)}"></i><i class="fic-m fic-mi" style="left:100%;top:${pc(YI(last[1]), H)};background:${fngCol(last[1], Z)}"></i></div>
+        <div class="fng-ax"><span>${esc(fngDmy(rows[0][0]))}</span><span>${esc(fngDmy(mid))}</span><span>${esc(fngDmy(last[0]))}</span></div>
+        <div class="fic-leg"><span><i class="li"></i>${T('индекс', 'index')}</span><span><i class="lp"></i>${T(`цена ${pxName}`, `${pxName} price`)}</span><span class="h">${T('нажмите на график', 'tap the chart')}</span></div>
+      </div>`;
+  }
+  function ficRead(id, i) {
+    const F = FIC[id]; if (!F) return '';
+    const [d, v] = F.rows[i];
+    return `<span class="d">${esc(fngDmy(d))}</span><span class="v">${T('индекс', 'index')} <b style="color:${fngCol(v, F.sc)}">${v}</b> · ${esc(fngName(v, F.sc).toLowerCase())}</span><span class="p">${esc(F.pxName)} ${F.fmtP(F.pxd[d])}</span>`;
+  }
+  function ficSet(el, i) {
+    const F = FIC[el.dataset.fic]; if (!F) return;
+    i = Math.max(0, Math.min(F.n1, i));
+    const x = (i / F.n1 * 100).toFixed(2) + '%', v = F.rows[i][1];
+    const yi = ((F.pad + (1 - v / 100) * (F.H - 2 * F.pad)) / F.H * 100).toFixed(2) + '%', yp = ((F.pad + (1 - (F.lp[i] - F.lmin) / F.lr) * (F.H - 2 * F.pad)) / F.H * 100).toFixed(2) + '%';
+    el.querySelector('.fic-read').innerHTML = ficRead(el.dataset.fic, i);
+    const xl = el.querySelector('.fic-x'), mi = el.querySelector('.fic-mi'), mp = el.querySelector('.fic-mp');
+    xl.style.left = x; xl.classList.add('on');
+    mi.style.left = x; mi.style.top = yi; mi.style.background = fngCol(v, F.sc);
+    mp.style.left = x; mp.style.top = yp;
+  }
+  const ficAt = (pl, e) => { const F = FIC[pl.parentNode.dataset.fic], r = pl.getBoundingClientRect(); return F && r.width ? Math.round(Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * F.n1) : 0; };
+  document.addEventListener('pointerdown', e => { const pl = e.target.closest && e.target.closest('.fic-plot'); if (!pl) return; ficDrag = pl; ficSet(pl.parentNode, ficAt(pl, e)); });
+  document.addEventListener('pointermove', e => {
+    if (ficDrag) { ficSet(ficDrag.parentNode, ficAt(ficDrag, e)); return; }
+    const pl = e.pointerType === 'mouse' && e.target.closest && e.target.closest('.fic-plot'); if (pl) ficSet(pl.parentNode, ficAt(pl, e));
+  });
+  ['pointerup', 'pointercancel'].forEach(t => document.addEventListener(t, () => { ficDrag = null; }));
   function fngDogSheet() {
     const d = (S.fng || {}).dog; if (!d || d.v == null) return null;
     const f = d.facts || {}, cg = (S.fng || {}).cg || {};
@@ -2415,7 +2489,7 @@ html{overscroll-behavior-y:contain}
     const athTxt = ath ? `<p class="note">${T(`На вершине цены — ${esc(fngDmy(ath[0]))}, DOG ${fp(ath[1])}, капитализация ≈ ${usd(ath[1] * 1e11)} — индекс был <b style="color:${fngCol(hm.get(ath[0]))}">${hm.get(ath[0])}</b>: ${esc(fngName(hm.get(ath[0])).toLowerCase())}.`, `At the price peak — ${esc(fngDmy(ath[0]))}, DOG ${fp(ath[1])}, market cap ≈ ${usd(ath[1] * 1e11)} — the index stood at <b style="color:${fngCol(hm.get(ath[0]))}">${hm.get(ath[0])}</b>: ${esc(fngName(hm.get(ath[0])).toLowerCase())}.`)}</p>` : '';
     const tl6 = (d.turns || []).slice(-6).reverse();
     const turnsTxt = tl6.length ? `<div class="fng-turns">${tl6.map(t => `<div class="tr"><span class="d">${esc(fngDmy(t[0]))}</span><span class="k">${t[2] === 'p' ? T('пик жадности', 'greed peak') : T('дно страха', 'fear low')} <b style="color:${fngCol(t[1])}">${t[1]}</b></span><span class="p">${t[3] != null ? fp(t[3]) : ''}</span></div>`).join('')}</div>` : '';
-    const long = d.ver >= 3 ? fngLongChart(d.hist, d.turns) : fngSpark(d.hist, 90, FNG_A);
+    const long = fngChart('d', d.hist, pxMap(pxd), 'DOG', FNG_A, d.turns, dogFmt) || (d.ver >= 3 ? fngLongChart(d.hist, d.turns) : fngSpark(d.hist, 90, FNG_A));
     return [T('Страх и жадность: DOG', 'Fear & Greed: DOG'), `<p>${T('Индекс отвечает на вопрос, какое сейчас настроение вокруг DOG. Цена растёт, все спешат купить и не думают о падениях — это жадность. Цена падает, в новостях плохое, все продают — это страх.', 'The index answers one question: what’s the mood around DOG right now. When the price rises and everyone rushes to buy without a thought of a fall, that’s greed. When the price falls, the news is bad and everyone sells, that’s fear.')}</p>
       <p>${T(`DOG — мем-монета на биткоине и ходит вместе со всем рынком, поэтому ${wm}% индекса — настроение крипторынка и тренд биткоина, ${100 - wm}% — сам DOG: цена и её падения, сравнение с биткоином и мем-монетами, холдеры. Расчёт — наш, сайта DOG Монитор.`, `DOG is a meme coin on bitcoin and moves with the whole market, so ${wm}% of the index is crypto market mood and bitcoin’s trend, and ${100 - wm}% is DOG itself: its price and its drops, how it compares with bitcoin and meme coins, and its holders. The calculation is our own.`)}</p>
       ${fngKv(d.v, FNG_A, d.prev)}
@@ -3097,7 +3171,7 @@ html{overscroll-behavior-y:contain}
         const raw = obFresh(OB.ex.gate) ? OB.ex.gate : null, agg = obFresh(OB.gateAgg) ? OB.gateAgg : null;
         if (agg && (step >= 1e-5 * 0.999 || !raw)) return raw ? Object.assign({}, agg, { bid: raw.bid, ask: raw.ask, near: raw }) : agg;
         if (raw) return agg ? obHybrid(raw, agg) : raw;
-      } else if (obFresh(OB.ex[k])) return OB.ex[k];
+      } else if (obFresh(OB.ex[k])) return k === 'mexc' || k === 'bingx' || k === 'coinw' ? obDeep(k, OB.ex[k], s) : OB.ex[k];
     }
     const b = (s.books || {})[k];
     if (!b || !b.ladder || b.bid == null || b.ask == null) return null;
@@ -3108,6 +3182,51 @@ html{overscroll-behavior-y:contain}
       bid: b.bid, ask: b.ask, walls: { b: b.bids || [], a: b.asks || [] },
       cov: { b: Math.max(ed.b || 0, mid * (1 - UP.LAD)), a: Math.min(ed.a != null ? ed.a : Infinity, mid * (1 + UP.LAD)) }
     };
+  }
+  // MEXC и BingX онлайн отдают только ближние уровни (20 и 100 с каждой стороны). Глубже — уровни из последней сводки
+  // (ступени по 0.00001 и точные крупные заявки): стенки, о которых пишет «Что нового», видны и в стакане.
+  // Ступень на границе онлайн-данных — только то, чего нет в онлайн-уровнях.
+  function obDeep(k, x, s) {
+    const b = (s.books || {})[k];
+    if (!b || !b.ladder || b.mir || b.off || !x || !x.live || !x.cov) return x;
+    const rt = b.ats ? b.ats * 1000 : ((toDate(s.upd ? s.upd.baseTs : s.ts) || new Date()).getTime()), key = x.ft + ':' + rt + ':' + (s.id || '');
+    OB.deep = OB.deep || {};
+    if (OB.deep[k] && OB.deep[k].key === key) return OB.deep[k].v;
+    const mid = obMidOf(x) || b.mid, ed = b.edge || {}, G = 1e-5, eps = 1e-12;
+    if (!mid) return x;
+    const rb = Math.max(ed.b || 0, mid * (1 - UP.LAD)), ra = Math.min(ed.a != null ? ed.a : Infinity, mid * (1 + UP.LAD));
+    const cb = x.cov.b, ca = x.cov.a, moreB = cb > 0 && rb < cb - eps, moreA = ca !== Infinity && ra > ca + eps;
+    let v = x;
+    if (moreB || moreA) {
+      const bids = x.bids.slice(), asks = x.asks.slice();
+      const liveIn = (lv, lo, hi, isB) => lv.reduce((t, [p, q]) => t + ((isB ? p >= lo - eps && p < hi - eps : p > lo + eps && p <= hi + eps) ? q : 0), 0);
+      if (moreB) for (const e of b.ladder.b || []) {
+        const lo = e.p, hi = e.p + G, Q = e.q * 1e6;
+        if (!(Q > 0) || lo < rb - eps || lo >= cb - eps) continue;
+        if (hi <= cb + eps) bids.push([lo, Q, null, true, 1]);
+        else { const r = Q - liveIn(x.bids, lo, hi, true); if (r > Q * 0.001) bids.push([lo, r, null, true, 1]); }
+      }
+      if (moreA) for (const e of b.ladder.a || []) {
+        const lo = e.p - G, hi = e.p, Q = e.q * 1e6;
+        if (!(Q > 0) || hi > ra + eps || hi <= ca + eps) continue;
+        if (lo >= ca - eps) asks.push([hi, Q, null, true, 1]);
+        else { const r = Q - liveIn(x.asks, lo, hi, false); if (r > Q * 0.001) asks.push([hi, r, null, true, 1]); }
+      }
+      bids.sort((p, q) => q[0] - p[0]); asks.sort((p, q) => p[0] - q[0]);
+      const walls = { b: moreB ? (b.bids || []).filter(w => w.p < cb - eps) : [], a: moreA ? (b.asks || []).filter(w => w.p > ca + eps) : [] };
+      v = Object.assign({}, x, { bids, asks, walls, cov: { b: moreB ? rb : cb, a: moreA ? ra : ca }, deep: { t: rt, b: moreB ? cb : null, a: moreA ? ca : null } });
+    }
+    OB.deep[k] = { key, v };
+    return v;
+  }
+  // биржа без онлайн-данных в сводном онлайн-стакане: только заявки дальше OB_OLD_NEAR от цены, без лучших цен
+  const OB_OLD_NEAR = 0.03;
+  function obOldDeep(src, s) {
+    const m = obMidOf(src) || (s.price || {}).mid; if (!m) return src;
+    const lo = m * (1 - OB_OLD_NEAR), hi = m * (1 + OB_OLD_NEAR);
+    return Object.assign({}, src, { bid: null, ask: null, near: null,
+      bids: src.bids.filter(x => x[0] < lo).map(x => [x[0], x[1], x[2], true, 1]), asks: src.asks.filter(x => x[0] > hi).map(x => [x[0], x[1], x[2], true, 1]),
+      walls: { b: ((src.walls || {}).b || []).filter(w => w.p < lo), a: ((src.walls || {}).a || []).filter(w => w.p > hi) }, deep: { t: src.ft, only: true } });
   }
   // Gate: 100 ближних уровней точно, а дальше — ступени по 0.00001 (только то, чего нет в точных уровнях)
   function obHybrid(raw, agg) {
@@ -3138,12 +3257,19 @@ html{overscroll-behavior-y:contain}
     bx = bx || S.bx;
     const live = !S.archived && Object.keys(OB.ex).some(k => obFresh(OB.ex[k]));
     const cands = bx === 'all' ? EX.map(([k]) => k).filter(k => k !== 'bitget') : [bx];
-    const keys = [], out = [], mids = {}, fts = {};
+    const keys = [], out = [], mids = {}, fts = {}, deepOnly = new Set();
+    keys.deepOnly = deepOnly;
     for (const k of cands) {
       const src = obSrc(k, s, step);
       if (!src) { if (bx !== 'all' || (s.books || {})[k]) out.push({ k, why: 'none' }); continue; }
       if (bx === 'all') { const of = obMirOf(k, s); if (of) { out.push({ k, why: 'mirror', of }); continue; } }
-      if (bx === 'all' && live && !src.live) { out.push({ k, why: 'old', t: src.ft }); continue; }
+      // биржа без онлайн-данных: в сводный онлайн-стакан — только её заявки дальше 3% от цены из сводки (ближние
+      // за часы могли смениться и дать ложные «пересечения»), чтобы крупные заявки из «Что нового» были видны
+      if (bx === 'all' && live && !src.live) {
+        if (src.gran && !(src.gran > step * 1.0001) && (src.bids.length || src.asks.length)) { keys.push(k); deepOnly.add(k); out.push({ k, why: 'olddeep', t: src.ft }); }
+        else out.push({ k, why: 'old', t: src.ft });
+        continue;
+      }
       if (src.gran > step * 1.0001) { out.push({ k, why: 'coarse' }); continue; }
       keys.push(k); fts[k] = src.ft;
       const m = obMidOf(src); if (m) mids[k] = m;
@@ -3151,8 +3277,8 @@ html{overscroll-behavior-y:contain}
     // биржа, чьи данные отстали от остальных больше чем на 75 секунд (не ответила на несколько запросов подряд), —
     // в сводный стакан не входит: устаревшие заявки рядом со свежими дают ложные «пересечения»
     if (bx === 'all' && live && keys.length > 1) {
-      const newest = Math.max(...keys.map(k => fts[k]));
-      for (const k of keys.slice()) if (newest - fts[k] > OB_LAG) { keys.splice(keys.indexOf(k), 1); delete mids[k]; out.push({ k, why: 'lag', t: fts[k] }); }
+      const newest = Math.max(...keys.filter(k => fts[k] != null).map(k => fts[k]));
+      for (const k of keys.slice()) if (fts[k] != null && newest - fts[k] > OB_LAG) { keys.splice(keys.indexOf(k), 1); delete mids[k]; out.push({ k, why: 'lag', t: fts[k] }); }
     }
     const core = Object.keys(mids).filter(k => k === 'kraken' || k === 'gate');
     let mid = median((core.length ? core : Object.keys(mids)).map(k => mids[k])) || (s.price || {}).mid || null;
@@ -3165,15 +3291,16 @@ html{overscroll-behavior-y:contain}
   function obAgg(keys, s, step) {
     const su = Math.max(1, Math.round(step * PU)), rows = { b: new Map(), a: new Map() };
     const cov = { b: 0, a: Infinity }, covBy = { b: null, a: null }, srcs = {};
-    const put = (side, p, q, k, exact) => {
+    const put = (side, p, q, k, exact, rep) => {
       const u = toU(p), key = side === 'b' ? Math.floor(u / su) * su : Math.ceil(u / su) * su;
       let r = rows[side].get(key);
       if (!r) { r = { u: key, p: key / PU, q: 0, v: 0, by: {}, big: 0, bigBy: null, bigP: null }; rows[side].set(key, r); }
       r.q += q; r.v += q * p; r.by[k] = (r.by[k] || 0) + q;
+      if (rep) (r.rep || (r.rep = {}))[k] = true;
       if (exact && q > r.big) { r.big = q; r.bigBy = k; r.bigP = p; }
       return r;
     };
-    for (const k of keys) { const src = obSrc(k, s, step); if (src && !(src.gran > step * 1.0001)) srcs[k] = src; }
+    for (const k of keys) { let src = obSrc(k, s, step); if (src && keys.deepOnly && keys.deepOnly.has(k)) src = obOldDeep(src, s); if (src && !(src.gran > step * 1.0001)) srcs[k] = src; }
     // Сводный стакан нескольких бирж: цены на биржах чуть расходятся, и чья-то покупка может стоять выше чужой продажи.
     // Общая цена (ref) — середина по Kraken и Gate; заявки «не со своей стороны» от неё (покупки выше, продажи ниже)
     // в сводный стакан не входят — они видны в стакане своей биржи. Так покупки всегда ниже цены, продажи — выше.
@@ -3186,8 +3313,8 @@ html{overscroll-behavior-y:contain}
     }
     const eps = 1e-12;
     for (const [k, src] of Object.entries(srcs)) {
-      for (const x of src.bids) { if (ref && x[0] > ref + eps) { cut.b += x[1]; cut.bv += x[1] * x[0]; continue; } put('b', x[0], x[1], k, !src.gran && !x[3]); }
-      for (const x of src.asks) { if (ref && x[0] < ref - eps) { cut.a += x[1]; cut.av += x[1] * x[0]; continue; } put('a', x[0], x[1], k, !src.gran && !x[3]); }
+      for (const x of src.bids) { if (ref && x[0] > ref + eps) { cut.b += x[1]; cut.bv += x[1] * x[0]; continue; } put('b', x[0], x[1], k, !src.gran && !x[3], x[4]); }
+      for (const x of src.asks) { if (ref && x[0] < ref - eps) { cut.a += x[1]; cut.av += x[1] * x[0]; continue; } put('a', x[0], x[1], k, !src.gran && !x[3], x[4]); }
       // лучшие цены — по точным уровням (у Gate ступенями — по его точным ближним уровням)
       const ex = src.near || src;
       const bb = ex.gran ? src.bid : (ex.bids.find(x => !ref || x[0] <= ref + eps) || [])[0], ba = ex.gran ? src.ask : (ex.asks.find(x => !ref || x[0] >= ref - eps) || [])[0];
@@ -3306,7 +3433,7 @@ html{overscroll-behavior-y:contain}
   };
   function obChipsHtml(s) {
     const set = obSet(s, 1e-5, 'all');
-    const old = new Set(set.out.filter(o => o.why === 'old').map(o => o.k));
+    const old = new Set(set.out.filter(o => o.why === 'old' || o.why === 'olddeep').map(o => o.k));
     const mir = new Set(set.out.filter(o => o.why === 'mirror').map(o => o.k));
     const has = k => (s.books || {})[k] || (!S.archived && obFresh(OB.ex[k]));
     const ks = EX.map(([k]) => k).filter(k => k !== 'bitget' && has(k));
@@ -3318,6 +3445,8 @@ html{overscroll-behavior-y:contain}
     const g = w => set.out.filter(o => o.why === w).map(o => EXN[o.k] || o.k);
     if (S.bx === 'all') {
       if (set.keys.length) parts.push(T('Вместе: ', 'Combined: ') + set.keys.map(k => EXN[k]).join(', ') + '.');
+      const od = set.out.filter(o => o.why === 'olddeep');
+      if (od.length) parts.push(T(`${od.map(o => EXN[o.k]).join(', ')} — онлайн сейчас не подключена: здесь только заявки дальше ${n(OB_OLD_NEAR * 100)}% от цены из сводки (${tl(od[0].t)}); весь стакан — кнопкой сверху.`, `${od.map(o => EXN[o.k]).join(', ')}: no live feed right now — only orders more than ${n(OB_OLD_NEAR * 100)}% from the price, from the report (${tl(od[0].t)}); tap above for its whole book.`));
       const old = set.out.filter(o => o.why === 'old');
       if (old.length) parts.push(T(`${old.map(o => EXN[o.k]).join(', ')} — только данные сводки (${tl(old[0].t)}), смотрите отдельно: кнопки сверху.`, `${old.map(o => EXN[o.k]).join(', ')}: report data only (${tl(old[0].t)}) — tap them above to see separately.`));
       const mr = set.out.filter(o => o.why === 'mirror');
@@ -3327,6 +3456,8 @@ html{overscroll-behavior-y:contain}
       if (ct && ct.b + ct.a >= 5e5) parts.push(T(`Цены бирж немного расходятся: ${[ct.b >= 1 ? qf(ct.b) + ' DOG покупок выше общей цены' : '', ct.a >= 1 ? qf(ct.a) + ' DOG продаж ниже неё' : ''].filter(Boolean).join(' и ')} здесь не показаны — они видны в стакане своей биржи.`, `Exchange prices differ slightly: ${[ct.b >= 1 ? qf(ct.b) + ' DOG of bids above the common price' : '', ct.a >= 1 ? qf(ct.a) + ' DOG of asks below it' : ''].filter(Boolean).join(' and ')} aren’t shown here — see each exchange’s own book.`));
       if (g('off').length) parts.push(T(`${g('off').join(', ')} — цена отличается от остальных больше чем на 3%, не входит.`, `${g('off').join(', ')}: price differs from the others by more than 3%, not included.`));
       if (g('coarse').length) parts.push(T(`${g('coarse').join(', ')} — нет мелкого шага, не входит.`, `${g('coarse').join(', ')}: no fine steps, not included.`));
+      const dk = set.keys.filter(k => { const x = c.ag.srcs[k]; return x && x.deep && !x.deep.only; });
+      if (dk.length) parts.push(T(`${dk.map(k => EXN[k]).join(', ')}: онлайн — ближние уровни, глубже — заявки из последней сводки (${tl(c.ag.srcs[dk[0]].deep.t)}).`, `${dk.map(k => EXN[k]).join(', ')}: near levels live, deeper ones from the latest report (${tl(c.ag.srcs[dk[0]].deep.t)}).`));
       const mn = [...new Set((c.ag.minor || []).filter(m => m.live).map(m => m.k))];
       if (mn.length) parts.push(T(`${mn.map(k => EXN[k]).join(', ')} ${mn.length > 1 ? 'показывают' : 'показывает'} только ближние к цене заявки.`, `${mn.map(k => EXN[k]).join(', ')} ${mn.length > 1 ? 'show' : 'shows'} only orders close to the price.`));
     } else if (set.keys.length) {
@@ -3339,7 +3470,7 @@ html{overscroll-behavior-y:contain}
       }
       const mof = obMirOf(S.bx, s);
       if (mof) parts.push(T(`Стакан ${EXN[S.bx]} повторяет стакан ${EXN[mof]}: те же заявки, показанные второй раз. В сводный стакан и общие суммы он не входит.`, `${EXN[S.bx]}’s book mirrors ${EXN[mof]}’s: the same orders shown a second time. It’s left out of the combined book and the totals.`));
-      if (x && x.ws && !S.archived && (S.bx === 'mexc' || S.bx === 'bingx')) parts.push(T(`${EXN[S.bx]} онлайн отдаёт ${WSK[S.bx].lim} ближних уровней с каждой стороны.`, `${EXN[S.bx]} streams the nearest ${WSK[S.bx].lim} levels on each side.`));
+      if (x && x.ws && !S.archived && (S.bx === 'mexc' || S.bx === 'bingx')) parts.push(T(`${EXN[S.bx]} онлайн отдаёт ${WSK[S.bx].lim} ближних уровней с каждой стороны${x.deep ? `; глубже — заявки из последней сводки (${tl(x.deep.t)})` : ''}.`, `${EXN[S.bx]} streams the nearest ${WSK[S.bx].lim} levels on each side${x.deep ? `; deeper ones come from the latest report (${tl(x.deep.t)})` : ''}.`));
       if (S.bx === 'gate' && c.step < 1e-5) parts.push(T(`Gate отдаёт 100 ближних уровней точно, глубже — ступенями по ${fpx(1e-5, 1e-5)}.`, 'Gate shares the nearest 100 levels exactly, deeper ones in 0.00001 steps.'));
     }
     return parts.length ? `<p class="note obnote">${esc(parts.join(' '))}</p>` : '';
@@ -3400,8 +3531,8 @@ html{overscroll-behavior-y:contain}
         const q = r.by[k] || 0, src = ag.srcs[k], beyond = src && (side === 'b' ? r.p < src.cov.b * (1 - 1e-9) : r.p > src.cov.a * (1 + 1e-9));
         if (beyond) return `<td class="r nc" title="${esc(T('глубже биржа не показывает', 'exchange doesn’t show deeper levels'))}">·</td>`;
         if (q < 1) return '<td class="r faint"></td>';
-        const a = Math.round(Math.min(0.8, 0.1 + q / mxc * 0.85) * 100);
-        return `<td class="r" style="background:color-mix(in srgb,var(--${side === 'b' ? 'bid' : 'ask'}) ${a}%,transparent)">${S.bunit === 'usd' ? usdC(q * r.p) : qf(q)}</td>`;
+        const a = Math.round(Math.min(0.8, 0.1 + q / mxc * 0.85) * 100), rp = r.rep && r.rep[k] && src && src.deep;
+        return `<td class="r${rp ? ' rep' : ''}" style="background:color-mix(in srgb,var(--${side === 'b' ? 'bid' : 'ask'}) ${a}%,transparent)"${rp ? ` title="${esc(T('из сводки ', 'from the report at ') + tl(src.deep.t))}"` : ''}>${S.bunit === 'usd' ? usdC(q * r.p) : qf(q)}</td>`;
       };
       const tr = (r, side) => `<tr class="${side}" data-ob="${side}:${r.u}"><td class="pcol">${fpx(r.p, step)}</td>${ks.map(k => cell(r, k, side)).join('')}<td class="r"><b>${amtF(r.q, r.v)}</b></td></tr>`;
       body = `${midRow}<div class="scroll"><table class="matrix obt"><thead><tr><th class="pcol">${T('Цена', 'Price')}</th>${ks.map(k => `<th class="r">${EXN[k]}</th>`).join('')}<th class="r">${T('Сумма', 'Total')}</th></tr></thead><tbody class="click">${A.slice().reverse().map(r => tr(r, 'a')).join('')}<tr class="midrow"><td colspan="${ks.length + 2}">${fp(midP)}</td></tr>${B.map(r => tr(r, 'b')).join('')}</tbody></table></div>`;
@@ -3423,7 +3554,7 @@ html{overscroll-behavior-y:contain}
     const srcs = set.keys.map(k => obSrc(k, s, c.step)).filter(Boolean), lv = srcs.filter(x => x.live);
     if (!lv.length) {
       const t = srcs.length ? Math.max(...srcs.map(x => x.ft)) : null;
-      return `<div class="obst old"><span class="dot"></span><span>${T('Утренняя сводка', 'Morning report')}${t ? ' · ' + esc(tl(t)) : ''}</span></div>`;
+      return `<div class="obst old"><span class="dot"></span><span>${T('Сводка', 'Report')}${t ? ' · ' + esc(tl(t)) : ''}</span></div>`;
     }
     const t = Math.max(...lv.map(x => x.ft));
     return `<div class="obst ${S.bpause ? 'pause' : 'on'}"><span class="dot"></span><span id="obage" data-t="${t}">${S.bpause ? T('Пауза · данные на ', 'Paused · data as of ') + esc(tl(t)) : T('Онлайн · ', 'Live · ') + agoS(Math.max(0, Math.round((Date.now() - t) / 1000)))}</span><button type="button" class="obpause" data-obpause aria-pressed="${String(S.bpause)}">${S.bpause ? T('Продолжить', 'Resume') : T('Пауза', 'Pause')}</button></div>`;
@@ -4565,12 +4696,34 @@ html{overscroll-behavior-y:contain}
       <div class="tinfo" style="--tc:${x.col}" aria-live="polite">${info}</div>
       <p class="note" style="margin-top:10px">${asof}${T(`Всего кошельков: ${n(M.tot)}. Среди крупных — биржи: на их кошельках лежат монеты многих людей.`, `${n(M.tot)} wallets in total. The large ones include exchanges, whose wallets hold coins of many people.`)}</p></div></div>`;
   }
+  // монеты собираются у крупных: распределение DOG по размеру «пачек» (UTXO) у DOG DATA — 13.04.2025 и сейчас.
+  // Апрель 2025 — значения со страницы DOG DATA на ту дату; дальше та же разбивка копится в ежедневных сводках.
+  const SIZE_REF = { d: '2025-04-13', r: { '> 10M DOG': [793, 23.75], '1M - 10M DOG': [12350, 29.82], '100K - 1M DOG': [88750, 43.07], '10K - 100K DOG': [77920, 3.2], '1K - 10K DOG': [33590, 0.139], '< 1K DOG': [34640, 0.006] } };
+  function shiftHtml(s) {
+    const sz = (s.health || {}).sizes; if (!sz || !sz.length) return '';
+    const cur = {}; for (const [l, c, p] of sz) cur[String(l).trim()] = [c, p];
+    if (!cur['> 10M DOG'] || !cur['1M - 10M DOG']) return '';
+    const G = [[T('от 10 млн', '10M+'), ['> 10M DOG'], 'var(--accent)'], [T('1–10 млн', '1–10M'), ['1M - 10M DOG'], 'var(--k1)'], [T('0,1–1 млн', '0.1–1M'), ['100K - 1M DOG'], 'var(--k5)'], [T('до 100 тыс.', 'under 100K'), ['10K - 100K DOG', '1K - 10K DOG', '< 1K DOG'], 'var(--k-pr)']];
+    const sum = (o, ks, j) => ks.reduce((t, k) => t + ((o[k] || [])[j] || 0), 0);
+    const was = G.map(g => sum(SIZE_REF.r, g[1], 1)), now = G.map(g => sum(cur, g[1], 1));
+    const pc = v => n(v, v < 9.95 ? 1 : 1) + '%', d0 = now[0] - was[0], mid = (s.price || {}).mid;
+    const bar = (vals, lbl) => `<div class="shb"><span class="l">${esc(lbl)}</span><span class="b">${vals.map((v, i) => `<i style="width:${Math.max(0, v).toFixed(2)}%;background:${G[i][2]}" title="${esc(G[i][0])}: ${pc(v)}"></i>`).join('')}</span><span class="v">${pc(vals[0])}</span></div>`;
+    const rows = G.map((g, i) => { const dv = now[i] - was[i]; return `<li><span class="key" style="background:${g[2]}"></span><span>${esc(g[0])}</span><span class="w">${pc(was[i])}</span><span class="s">${pc(now[i])}</span><span class="dl ${dv >= 0.05 ? 'up' : dv <= -0.05 ? 'down' : ''}">${sg(dv, 1)}</span></li>`; }).join('');
+    const cw = SIZE_REF.r['> 10M DOG'][0], cn = (cur['> 10M DOG'] || [])[0];
+    return `<div class="sec" id="shift-sec"><div class="sec-head c"><h2>${T('Монеты собираются у крупных', 'Coins are gathering in big hands')}</h2></div>
+      <div class="group">
+        <p class="shl">${T(`Доля DOG в пачках от 10 млн: <b>${pc(was[0])} → ${pc(now[0])}</b> всех монет — ${d0 >= 0 ? '+' : '−'}${n(Math.abs(d0), 1)} п.п., это ≈ ${n(Math.abs(d0), 1)} млрд DOG${mid ? ` (≈ ${usd(Math.abs(d0) * 1e9 * mid)})` : ''} с апреля 2025.`, `Share of DOG in holdings of 10M+: <b>${pc(was[0])} → ${pc(now[0])}</b> of all coins — ${d0 >= 0 ? '+' : '−'}${n(Math.abs(d0), 1)} pp, about ${n(Math.abs(d0), 1)}B DOG${mid ? ` (≈ ${usd(Math.abs(d0) * 1e9 * mid)})` : ''} since April 2025.`)}</p>
+        ${bar(was, T('13 апр 2025', 'Apr 13, 2025'))}${bar(now, T('сейчас', 'now'))}
+        <ul class="tlist shl2"><li class="hd"><span></span><span>${T('апр 2025', 'Apr 2025')}</span><span>${T('сейчас', 'now')}</span><span>${T('изменение', 'change')}</span></li>${rows}</ul>
+        <p class="note" style="margin-top:10px">${T(`Пачек от 10 млн стало меньше (${n(cw)} → ${n(cn)}), а монет в них — больше: DOG собирается в крупных руках. DOG DATA считает «пачки» монет (UTXO) — у одного кошелька их может быть несколько. Апрель 2025 — страница DOG DATA на 13.04.2025, сейчас — сводка ${esc(dtl((s.health || {}).asof || s.ts))}.`, `There are fewer 10M+ holdings (${n(cw)} → ${n(cn)}) but more coins in them: DOG is gathering in big hands. DOG DATA counts coin “bundles” (UTXOs) — one wallet can have several. April 2025 is DOG DATA’s page as of Apr 13, 2025; now — the report of ${esc(dtl((s.health || {}).asof || s.ts))}.`)}</p>
+      </div></div>`;
+  }
   function renderWallets() {
     const s = V(), el = $('#p-wallets');
     if (!s || !s.top100) { el.innerHTML = s || S.ready ? `<div class="empty">${T('Нет данных топ-100.', 'No top-100 data.')}</div>` : skelHtml(); return; }
     const ex = s.exch || {}, pl = prevLabel(s), mid = (s.price || {}).mid;
     const maxB = Math.max(1e-9, ...(ex.by || []).map(g => g.bal));
-    let html = walletsSummaryHtml(s) + ownersHtml(s) + tiersHtml(s) + (s.health && s.health.rp ? healthHtml(s) : '');
+    let html = walletsSummaryHtml(s) + ownersHtml(s) + tiersHtml(s) + shiftHtml(s) + (s.health && s.health.rp ? healthHtml(s) : '');
     html += `<div class="sec"><div class="sec-head">${hInfo('h2', T('DOG на биржах', 'DOG on exchanges'), 'exch')}<p>${mdog(ex.bal)} DOG, ${n(ex.pct, 1)}% ${T('всех монет', 'of all coins')}${ex.d != null && Math.abs(ex.d) >= 0.05 ? `, ${T('за период', 'change')} ${sg(ex.d, 1)}${MLN}` : ''}</p></div>
       <div class="group"><div class="hbars">${hbarsHtml(ex.by, maxB)}</div></div>
       <p class="note">${T('Изменения — в миллионах DOG', 'Changes are in millions of DOG')}${pl ? T(' с ', ' since ') + esc(pl) : ''}.</p></div>`;
