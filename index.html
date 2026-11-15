@@ -2485,7 +2485,7 @@ html{overscroll-behavior-y:contain}
     if (!ch) return fngSpark(hist, 90, sc);
     const bc = pxMap((S.btcd || {}).d);
     return ch + fngTurnsList(id, tr, bc, 'BTC', sc, btcFmt)
-      + `<p class="note">${T(`Точки — развороты индекса: пик жадности или дно страха, после которых он ушёл не меньше чем на ${FNG_TURN} пунктов. Это история, а не прогноз.`, `Dots mark the index’s turns: a greed peak or a fear low followed by a move of at least ${FNG_TURN} points. This is history, not a forecast.`)}</p>`;
+      + `<p class="note">${T(`Точки — развороты индекса: пик или дно, после которых он ушёл не меньше чем на ${FNG_TURN} пунктов. Это история, а не прогноз.`, `Dots mark the index’s turns: a peak or a low followed by a move of at least ${FNG_TURN} points. This is history, not a forecast.`)}</p>`;
   }
   function fngMarketSheet() {
     const m = fngMarket(); if (!m) return null;
@@ -2532,7 +2532,7 @@ html{overscroll-behavior-y:contain}
   // цены биткоина по дням; сегодняшняя — текущая (онлайн-обновление страницы), если она есть
   const btcNowMap = () => { const o = pxMap((S.btcd || {}).d); if (S.cur && S.cur.upd && S.cur.btc > 0) o[new Date().toISOString().slice(0, 10)] = S.cur.btc; return o; };
   const pxMap = d => { const o = {}; for (const [k, v] of Object.entries(d || {})) { const c = Array.isArray(v) ? v[3] : v; if (c > 0) o[k] = c; } return o; };
-  // развороты индекса (зигзаг) — тот же алгоритм, что turns() в tools/mood.py: вершина жадности или дно страха,
+  // развороты индекса (зигзаг) — тот же алгоритм, что turns() в tools/mood.py: пик или дно,
   // после которых индекс ушёл не меньше чем на th пунктов
   const FNG_TURN = 40;
   function fngTurns(h, th) {
@@ -2552,7 +2552,7 @@ html{overscroll-behavior-y:contain}
     const F = FIC[id], on = F ? new Set(F.rows.map(r => r[0])) : null;
     const tl = (turns || []).filter(t => !on || on.has(t[0])).slice(-6).reverse();
     if (!tl.length) return '';
-    return `<div class="fng-turns" data-fturns="${id}"><div class="tr hd"><span>${T('разворот индекса', 'index turn')}</span><span>${T('индекс', 'index')}</span><span>${esc(pxName)}${T(', закрытие дня', ', day close')}</span></div>${tl.map(t => { const px = pxd[t[0]] || t[3]; return `<button type="button" class="tr" data-fturn="${esc(t[0])}" aria-pressed="false"><span class="d">${esc(fngDmy(t[0]))}</span><span class="k">${t[2] === 'p' ? T('пик жадности', 'greed peak') : T('дно страха', 'fear low')} <b style="color:${fngCol(t[1], sc)}">${t[1]}</b></span><span class="p">${px ? fmtP(px) : ''}</span></button>`; }).join('')}</div>`;
+    return `<div class="fng-turns" data-fturns="${id}"><div class="tr hd"><span>${T('разворот индекса', 'index turn')}</span><span>${T('индекс', 'index')}</span><span>${esc(pxName)}${T(', закрытие дня', ', day close')}</span></div>${tl.map(t => { const px = pxd[t[0]] || t[3]; return `<button type="button" class="tr" data-fturn="${esc(t[0])}" aria-pressed="false"><span class="d">${esc(fngDmy(t[0]))}</span><span class="k">${t[2] === 'p' ? T('пик', 'peak') : T('дно', 'low')} <b style="color:${fngCol(t[1], sc)}">${t[1]}</b></span><span class="p">${px ? fmtP(px) : ''}</span></button>`; }).join('')}</div>`;
   }
   function fngChart(id, idx, pxd, pxName, sc, turns, fmtP, ohlc) {
     const rows = (idx || []).filter(x => x && pxd[x[0]] > 0 && x[1] != null);
@@ -2578,7 +2578,7 @@ html{overscroll-behavior-y:contain}
     const F = FIC[id]; if (!F) return '';
     const [d, v] = F.rows[i], today = i === F.n1 && d === new Date().toISOString().slice(0, 10), o = F.ohlc && F.ohlc[d];
     const rg = !today && o && o[1] > 0 && o[2] > 0 ? `<span class="rg">${T('за день', 'day range')} ${EN ? '$' : ''}${fp(o[2])}–${fp(o[1])}${EN ? '' : ' $'}</span>` : '';
-    const tk = F.turnAt && F.turnAt.get(i), tks = tk ? `<span class="tk" style="color:${fngCol(v, F.sc)}">${tk === 'p' ? T('↓ пик жадности', '↓ greed peak') : T('↑ дно страха', '↑ fear low')}</span>` : '';
+    const tk = F.turnAt && F.turnAt.get(i), tks = tk ? `<span class="tk" style="color:${fngCol(v, F.sc)}">${tk === 'p' ? T('↓ пик индекса', '↓ index peak') : T('↑ дно индекса', '↑ index low')}</span>` : '';
     return `<span class="r1"><span class="d">${today ? T('сегодня', 'today') : esc(fngDmy(d))}</span><span class="v"><b style="color:${fngCol(v, F.sc)}">${v}</b> · ${esc(fngName(v, F.sc).toLowerCase())}</span><span class="p">${esc(F.pxName)} ${F.fmtP(F.pxd[d])}${today ? T(' сейчас', ' now') : ''}</span></span><span class="r2">${tks}${rg}</span>`;
   }
   function ficSet(el, i) {
@@ -2659,7 +2659,7 @@ html{overscroll-behavior-y:contain}
       ${long}
       ${athTxt}
       ${turnsTxt}
-      ${turnsTxt ? `<p class="note">${T(`Точки — развороты индекса: пик жадности или дно страха, после которых он ушёл не меньше чем на ${FNG_TURN} пунктов. Самые высокие значения были у вершин цены, самые низкие — у дна: индекс показывает, когда рынок вокруг DOG на эмоциях. Это история, а не прогноз.`, `Dots mark the index’s turns: a greed peak or a fear low followed by a move of at least ${FNG_TURN} points. The highest readings came at price peaks and the lowest at the bottoms: the index shows when the market around DOG is running on emotion. This is history, not a forecast.`)}</p>` : ''}
+      ${turnsTxt ? `<p class="note">${T(`Точки — развороты индекса: пик или дно, после которых он ушёл не меньше чем на ${FNG_TURN} пунктов. Самые высокие значения были у вершин цены, самые низкие — у дна: индекс показывает, когда рынок вокруг DOG на эмоциях. Это история, а не прогноз.`, `Dots mark the index’s turns: a peak or a low followed by a move of at least ${FNG_TURN} points. The highest readings came at price peaks and the lowest at the bottoms: the index shows when the market around DOG is running on emotion. This is history, not a forecast.`)}</p>` : ''}
       <h3>${T('Из чего складывается сейчас', 'What goes into it now')}</h3>
       <div class="fng-parts">${parts.map(row).join('')}</div>
       <p class="note">${T('У каждой части оценка от 0 (страх) до 100 (жадность); итог — их среднее с указанными весами. Все части считаются по дневным ценам закрытия — любой день истории можно пересчитать и проверить.', 'Each part is scored from 0 (fear) to 100 (greed); the total is their weighted average. Every part uses daily closing prices — any day of the history can be recomputed and checked.')}</p>
