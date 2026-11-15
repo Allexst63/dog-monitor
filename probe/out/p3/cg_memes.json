@@ -1,0 +1,322 @@
+[
+ {
+  "id": "dogecoin",
+  "symbol": "doge",
+  "name": "Dogecoin",
+  "market_cap_rank": 13,
+  "current_price": 0.058426,
+  "market_cap": 9158695139
+ },
+ {
+  "id": "shiba-inu",
+  "symbol": "shib",
+  "name": "Shiba Inu",
+  "market_cap_rank": 38,
+  "current_price": 3.9e-06,
+  "market_cap": 2299906959
+ },
+ {
+  "id": "memecore",
+  "symbol": "m",
+  "name": "MemeCore",
+  "market_cap_rank": 44,
+  "current_price": 0.821656,
+  "market_cap": 1888218723
+ },
+ {
+  "id": "pepe",
+  "symbol": "pepe",
+  "name": "Pepe",
+  "market_cap_rank": 47,
+  "current_price": 3.95e-06,
+  "market_cap": 1660903996
+ },
+ {
+  "id": "pump-fun",
+  "symbol": "pump",
+  "name": "Pump.fun",
+  "market_cap_rank": 58,
+  "current_price": 0.00286923,
+  "market_cap": 1315284624
+ },
+ {
+  "id": "bianrensheng",
+  "symbol": "\u5e01\u5b89\u4eba\u751f",
+  "name": "\u5e01\u5b89\u4eba\u751f (BinanceLife)",
+  "market_cap_rank": 105,
+  "current_price": 0.471446,
+  "market_cap": 471445957
+ },
+ {
+  "id": "pudgy-penguins",
+  "symbol": "pengu",
+  "name": "Pudgy Penguins",
+  "market_cap_rank": 123,
+  "current_price": 0.00486521,
+  "market_cap": 305829297
+ },
+ {
+  "id": "spx6900",
+  "symbol": "spx",
+  "name": "SPX6900",
+  "market_cap_rank": 132,
+  "current_price": 0.299505,
+  "market_cap": 278835118
+ },
+ {
+  "id": "official-trump",
+  "symbol": "trump",
+  "name": "Official Trump",
+  "market_cap_rank": 134,
+  "current_price": 0.945262,
+  "market_cap": 266439172
+ },
+ {
+  "id": "ape-and-pepe",
+  "symbol": "apepe",
+  "name": "Ape and Pepe",
+  "market_cap_rank": 139,
+  "current_price": 1.2e-06,
+  "market_cap": 252340532
+ },
+ {
+  "id": "bonk",
+  "symbol": "bonk",
+  "name": "Bonk",
+  "market_cap_rank": 148,
+  "current_price": 2.38e-06,
+  "market_cap": 209414980
+ },
+ {
+  "id": "floki",
+  "symbol": "floki",
+  "name": "FLOKI",
+  "market_cap_rank": 166,
+  "current_price": 1.854e-05,
+  "market_cap": 178748112
+ },
+ {
+  "id": "binance-peg-dogecoin",
+  "symbol": "doge",
+  "name": "Binance-Peg Dogecoin",
+  "market_cap_rank": null,
+  "current_price": 0.058441,
+  "market_cap": 149842549
+ },
+ {
+  "id": "dogwifcoin",
+  "symbol": "wif",
+  "name": "dogwifhat",
+  "market_cap_rank": 202,
+  "current_price": 0.133009,
+  "market_cap": 132866448
+ },
+ {
+  "id": "coco-2",
+  "symbol": "coco",
+  "name": "coco",
+  "market_cap_rank": 206,
+  "current_price": 0.131821,
+  "market_cap": 131821002
+ },
+ {
+  "id": "useless-3",
+  "symbol": "useless",
+  "name": "Useless Coin",
+  "market_cap_rank": 248,
+  "current_price": 0.099463,
+  "market_cap": 99457382
+ },
+ {
+  "id": "non-playable-coin",
+  "symbol": "npc",
+  "name": "Non-Playable Coin",
+  "market_cap_rank": 252,
+  "current_price": 0.01228192,
+  "market_cap": 98871044
+ },
+ {
+  "id": "fartcoin",
+  "symbol": "fartcoin",
+  "name": "Fartcoin",
+  "market_cap_rank": 260,
+  "current_price": 0.093059,
+  "market_cap": 93051480
+ },
+ {
+  "id": "build-on",
+  "symbol": "b",
+  "name": "BUILDon",
+  "market_cap_rank": 261,
+  "current_price": 0.092229,
+  "market_cap": 92228727
+ },
+ {
+  "id": "baby-claw",
+  "symbol": "babyclaw",
+  "name": "Baby Claw",
+  "market_cap_rank": 264,
+  "current_price": 0.091376,
+  "market_cap": 91376294
+ },
+ {
+  "id": "yzy",
+  "symbol": "yzy",
+  "name": "YZY",
+  "market_cap_rank": 273,
+  "current_price": 0.288115,
+  "market_cap": 86135942
+ },
+ {
+  "id": "doge-pepe",
+  "symbol": "dope",
+  "name": "Doge Pepe",
+  "market_cap_rank": 280,
+  "current_price": 0.081648,
+  "market_cap": 81647757
+ },
+ {
+  "id": "dog-go-to-the-moon-rune",
+  "symbol": "dog",
+  "name": "Dog (Bitcoin)",
+  "market_cap_rank": 311,
+  "current_price": 0.00072892,
+  "market_cap": 72891510
+ },
+ {
+  "id": "apes-2-2",
+  "symbol": "apes",
+  "name": "APES",
+  "market_cap_rank": 316,
+  "current_price": 0.080131,
+  "market_cap": 72117621
+ },
+ {
+  "id": "cheems-token",
+  "symbol": "cheems",
+  "name": "Cheems Token",
+  "market_cap_rank": 345,
+  "current_price": 3.1112e-07,
+  "market_cap": 63366643
+ },
+ {
+  "id": "ordinals",
+  "symbol": "ordi",
+  "name": "ORDI",
+  "market_cap_rank": 373,
+  "current_price": 2.72,
+  "market_cap": 57207613
+ },
+ {
+  "id": "moolah",
+  "symbol": "moolah",
+  "name": "Moolah",
+  "market_cap_rank": 381,
+  "current_price": 0.055318,
+  "market_cap": 55317535
+ },
+ {
+  "id": "purr-2",
+  "symbol": "purr",
+  "name": "Purr",
+  "market_cap_rank": 393,
+  "current_price": 0.086558,
+  "market_cap": 51470260
+ },
+ {
+  "id": "meme-horse",
+  "symbol": "mhorse",
+  "name": "MEME HORSE",
+  "market_cap_rank": 407,
+  "current_price": 0.04939915,
+  "market_cap": 49399153
+ },
+ {
+  "id": "niu-lai",
+  "symbol": "\u725b\u6765",
+  "name": "\u725b\u6765 (Niu Lai)",
+  "market_cap_rank": 419,
+  "current_price": 0.04827004,
+  "market_cap": 48270043
+ },
+ {
+  "id": "gekko",
+  "symbol": "gekko",
+  "name": "GEKKO",
+  "market_cap_rank": 427,
+  "current_price": 7.91493e-07,
+  "market_cap": 47489601
+ },
+ {
+  "id": "baby-doge-coin",
+  "symbol": "babydoge",
+  "name": "Baby Doge Coin",
+  "market_cap_rank": 430,
+  "current_price": 2.55851e-10,
+  "market_cap": 47108920
+ },
+ {
+  "id": "melania-meme",
+  "symbol": "melania",
+  "name": "Melania Meme",
+  "market_cap_rank": 436,
+  "current_price": 0.04625607,
+  "market_cap": 46255852
+ },
+ {
+  "id": "banana-for-scale-2",
+  "symbol": "bananas31",
+  "name": "Banana For Scale",
+  "market_cap_rank": 439,
+  "current_price": 0.00456734,
+  "market_cap": 45673358
+ },
+ {
+  "id": "turbo",
+  "symbol": "turbo",
+  "name": "Turbo",
+  "market_cap_rank": 465,
+  "current_price": 0.00059128,
+  "market_cap": 40798480
+ },
+ {
+  "id": "cash-cat",
+  "symbol": "cashcat",
+  "name": "Cash Cat",
+  "market_cap_rank": 486,
+  "current_price": 0.03926281,
+  "market_cap": 38777012
+ },
+ {
+  "id": "comedian",
+  "symbol": "ban",
+  "name": "Comedian",
+  "market_cap_rank": 495,
+  "current_price": 0.0376074,
+  "market_cap": 37605965
+ },
+ {
+  "id": "gohome",
+  "symbol": "gohome",
+  "name": "GOHOME",
+  "market_cap_rank": 507,
+  "current_price": 70.07,
+  "market_cap": 36760263
+ },
+ {
+  "id": "binance-peg-shib",
+  "symbol": "shib",
+  "name": "Binance-Peg SHIB",
+  "market_cap_rank": null,
+  "current_price": 3.89e-06,
+  "market_cap": 35877073
+ },
+ {
+  "id": "basedhype",
+  "symbol": "basedhype",
+  "name": "BasedHype",
+  "market_cap_rank": 534,
+  "current_price": 0.0034132,
+  "market_cap": 34132034
+ }
+]

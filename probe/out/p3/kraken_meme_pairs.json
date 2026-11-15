@@ -1,0 +1,116 @@
+{
+ "BONKUSD": {
+  "alt": "BONKUSD",
+  "ws": "BONK/USD",
+  "base": "BONK",
+  "quote": "ZUSD"
+ },
+ "FARTCOINUSD": {
+  "alt": "FARTCOINUSD",
+  "ws": "FARTCOIN/USD",
+  "base": "FARTCOIN",
+  "quote": "ZUSD"
+ },
+ "FLOKIUSD": {
+  "alt": "FLOKIUSD",
+  "ws": "FLOKI/USD",
+  "base": "FLOKI",
+  "quote": "ZUSD"
+ },
+ "GIGAUSD": {
+  "alt": "GIGAUSD",
+  "ws": "GIGA/USD",
+  "base": "GIGA",
+  "quote": "ZUSD"
+ },
+ "MEWUSD": {
+  "alt": "MEWUSD",
+  "ws": "MEW/USD",
+  "base": "MEW",
+  "quote": "ZUSD"
+ },
+ "MOGUSD": {
+  "alt": "MOGUSD",
+  "ws": "MOG/USD",
+  "base": "MOG",
+  "quote": "ZUSD"
+ },
+ "MOODENGUSD": {
+  "alt": "MOODENGUSD",
+  "ws": "MOODENG/USD",
+  "base": "MOODENG",
+  "quote": "ZUSD"
+ },
+ "NEIROUSD": {
+  "alt": "NEIROUSD",
+  "ws": "NEIRO/USD",
+  "base": "NEIRO",
+  "quote": "ZUSD"
+ },
+ "PENGUUSD": {
+  "alt": "PENGUUSD",
+  "ws": "PENGU/USD",
+  "base": "PENGU",
+  "quote": "ZUSD"
+ },
+ "PEPECOINUSD": {
+  "alt": "PEPECOINUSD",
+  "ws": "PEPECOIN/USD",
+  "base": "PEPECOIN",
+  "quote": "ZUSD"
+ },
+ "PEPEUSD": {
+  "alt": "PEPEUSD",
+  "ws": "PEPE/USD",
+  "base": "PEPE",
+  "quote": "ZUSD"
+ },
+ "PNUTUSD": {
+  "alt": "PNUTUSD",
+  "ws": "PNUT/USD",
+  "base": "PNUT",
+  "quote": "ZUSD"
+ },
+ "POPCATUSD": {
+  "alt": "POPCATUSD",
+  "ws": "POPCAT/USD",
+  "base": "POPCAT",
+  "quote": "ZUSD"
+ },
+ "SHIBUSD": {
+  "alt": "SHIBUSD",
+  "ws": "SHIB/USD",
+  "base": "SHIB",
+  "quote": "ZUSD"
+ },
+ "SPXUSD": {
+  "alt": "SPXUSD",
+  "ws": "SPX/USD",
+  "base": "SPX",
+  "quote": "ZUSD"
+ },
+ "TRUMPUSD": {
+  "alt": "TRUMPUSD",
+  "ws": "TRUMP/USD",
+  "base": "TRUMP",
+  "quote": "ZUSD"
+ },
+ "TURBOUSD": {
+  "alt": "TURBOUSD",
+  "ws": "TURBO/USD",
+  "base": "TURBO",
+  "quote": "ZUSD"
+ },
+ "WIFUSD": {
+  "alt": "WIFUSD",
+  "ws": "WIF/USD",
+  "base": "WIF",
+  "quote": "ZUSD"
+ },
+ "XDGUSD": {
+  "alt": "XDGUSD",
+  "ws": "XDG/USD",
+  "base": "XXDG",
+  "quote": "ZUSD"
+ }
+}
