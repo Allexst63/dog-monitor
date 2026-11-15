@@ -1,0 +1,412 @@
+[
+ {
+  "name": "gate i0 L100",
+  "url": "https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0&limit=100",
+  "status": 200,
+  "cors": {
+   "Access-Control-Allow-Origin": "*",
+   "Access-Control-Allow-Methods": "GET,POST,OPTIONS,DELETE,PUT",
+   "Access-Control-Allow-Headers": "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type",
+   "Access-Control-Max-Age": "1728000"
+  },
+  "nb": 100,
+  "na": 100,
+  "b0": [
+   0.0007173
+  ],
+  "bmin": 0.000671,
+  "bigb": [
+   [
+    6457115.0,
+    0.000715
+   ],
+   [
+    1516009.0,
+    0.0006857
+   ],
+   [
+    1076549.0,
+    0.00069
+   ],
+   [
+    1025292.0,
+    0.000688
+   ],
+   [
+    1000000.0,
+    0.000687
+   ]
+  ]
+ },
+ {
+  "name": "gate i0 L200",
+  "url": "https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0&limit=200",
+  "status": 200,
+  "cors": {
+   "Access-Control-Allow-Origin": "*",
+   "Access-Control-Allow-Methods": "GET,POST,OPTIONS,DELETE,PUT",
+   "Access-Control-Allow-Headers": "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type",
+   "Access-Control-Max-Age": "1728000"
+  },
+  "nb": 200,
+  "na": 200,
+  "b0": [
+   0.0007173
+  ],
+  "bmin": 0.0005313,
+  "bigb": [
+   [
+    162156849.0,
+    0.0006
+   ],
+   [
+    130793837.0,
+    0.00065
+   ],
+   [
+    18033442.0,
+    0.00061
+   ],
+   [
+    8194209.0,
+    0.0006529
+   ],
+   [
+    6457115.0,
+    0.000715
+   ]
+  ]
+ },
+ {
+  "name": "gate i0 L500",
+  "url": "https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0&limit=500",
+  "status": 200,
+  "cors": {
+   "Access-Control-Allow-Origin": "*",
+   "Access-Control-Allow-Methods": "GET,POST,OPTIONS,DELETE,PUT",
+   "Access-Control-Allow-Headers": "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type",
+   "Access-Control-Max-Age": "1728000"
+  },
+  "nb": 277,
+  "na": 500,
+  "b0": [
+   0.0007173
+  ],
+  "bmin": 1e-07,
+  "bigb": [
+   [
+    162156849.0,
+    0.0006
+   ],
+   [
+    130793837.0,
+    0.00065
+   ],
+   [
+    30000000.0,
+    1e-07
+   ],
+   [
+    20000000.0,
+    5e-06
+   ],
+   [
+    18768614.4,
+    1e-06
+   ]
+  ]
+ },
+ {
+  "name": "gate i0 L1000",
+  "url": "https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0&limit=1000",
+  "status": 200,
+  "cors": {
+   "Access-Control-Allow-Origin": "*",
+   "Access-Control-Allow-Methods": "GET,POST,OPTIONS,DELETE,PUT",
+   "Access-Control-Allow-Headers": "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type",
+   "Access-Control-Max-Age": "1728000"
+  },
+  "nb": 278,
+  "na": 1000,
+  "b0": [
+   0.0007175
+  ],
+  "bmin": 1e-07,
+  "bigb": [
+   [
+    162156849.0,
+    0.0006
+   ],
+   [
+    130793837.0,
+    0.00065
+   ],
+   [
+    30000000.0,
+    1e-07
+   ],
+   [
+    20000000.0,
+    5e-06
+   ],
+   [
+    18768614.4,
+    1e-06
+   ]
+  ]
+ },
+ {
+  "name": "gate agg1e-5 L100",
+  "url": "https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0.00001&limit=100",
+  "status": 200,
+  "cors": {
+   "Access-Control-Allow-Origin": "*",
+   "Access-Control-Allow-Methods": "GET,POST,OPTIONS,DELETE,PUT",
+   "Access-Control-Allow-Headers": "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type",
+   "Access-Control-Max-Age": "1728000"
+  },
+  "nb": 56,
+  "na": 100,
+  "b0": [
+   0.00071
+  ],
+  "bmin": 0.0,
+  "bigb": [
+   [
+    167296570.0,
+    0.0006
+   ],
+   [
+    141524875.0,
+    0.00065
+   ],
+   [
+    97303393.4,
+    0.0
+   ],
+   [
+    21592500.0,
+    0.00061
+   ],
+   [
+    15803879.9,
+    1e-05
+   ]
+  ]
+ },
+ {
+  "name": "gate agg1e-6 L100",
+  "url": "https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0.000001&limit=100",
+  "status": 200,
+  "cors": {
+   "Access-Control-Allow-Origin": "*",
+   "Access-Control-Allow-Methods": "GET,POST,OPTIONS,DELETE,PUT",
+   "Access-Control-Allow-Headers": "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type",
+   "Access-Control-Max-Age": "1728000"
+  },
+  "nb": 100,
+  "na": 100,
+  "b0": [
+   0.000717
+  ],
+  "bmin": 0.000577,
+  "bigb": [
+   [
+    167156849.0,
+    0.0006
+   ],
+   [
+    130857020.0,
+    0.00065
+   ],
+   [
+    18033442.0,
+    0.00061
+   ],
+   [
+    8194209.0,
+    0.000652
+   ],
+   [
+    6751736.0,
+    0.000715
+   ]
+  ]
+ },
+ {
+  "name": "mexc L150",
+  "url": "https://api.mexc.com/api/v3/depth?symbol=DOGUSDT&limit=150",
+  "status": 200,
+  "cors": {
+   "Access-Control-Expose-Headers": "x-cache"
+  },
+  "nb": 95,
+  "na": 150,
+  "b0": [
+   0.0007183
+  ],
+  "bmin": 1e-07,
+  "bigb": [
+   [
+    42000000.0,
+    1e-07
+   ],
+   [
+    8106057.43,
+    0.00059
+   ],
+   [
+    7200000.0,
+    0.0005
+   ],
+   [
+    5363600.09,
+    0.00065
+   ],
+   [
+    5000000.0,
+    1e-06
+   ]
+  ]
+ },
+ {
+  "name": "mexc L1000",
+  "url": "https://api.mexc.com/api/v3/depth?symbol=DOGUSDT&limit=1000",
+  "status": 200,
+  "cors": {
+   "Access-Control-Expose-Headers": "x-cache"
+  },
+  "nb": 95,
+  "na": 585,
+  "b0": [
+   0.0007183
+  ],
+  "bmin": 1e-07,
+  "bigb": [
+   [
+    42000000.0,
+    1e-07
+   ],
+   [
+    8106057.43,
+    0.00059
+   ],
+   [
+    7200000.0,
+    0.0005
+   ],
+   [
+    5363600.09,
+    0.00065
+   ],
+   [
+    5000000.0,
+    1e-06
+   ]
+  ]
+ },
+ {
+  "name": "mexc L5000",
+  "url": "https://api.mexc.com/api/v3/depth?symbol=DOGUSDT&limit=5000",
+  "status": 200,
+  "cors": {
+   "Access-Control-Expose-Headers": "x-cache"
+  },
+  "nb": 95,
+  "na": 585,
+  "b0": [
+   0.0007183
+  ],
+  "bmin": 1e-07,
+  "bigb": [
+   [
+    42000000.0,
+    1e-07
+   ],
+   [
+    8106057.43,
+    0.00059
+   ],
+   [
+    7200000.0,
+    0.0005
+   ],
+   [
+    5363600.09,
+    0.00065
+   ],
+   [
+    5000000.0,
+    1e-06
+   ]
+  ]
+ },
+ {
+  "name": "bingx L150",
+  "url": "https://open-api.bingx.com/openApi/spot/v1/market/depth?symbol=DOG-USDT&limit=150",
+  "status": 403,
+  "cors": {},
+  "err": "string indices must be integers, not 'str'",
+  "raw": ""
+ },
+ {
+  "name": "bingx L1000",
+  "url": "https://open-api.bingx.com/openApi/spot/v1/market/depth?symbol=DOG-USDT&limit=1000",
+  "status": 403,
+  "cors": {},
+  "err": "string indices must be integers, not 'str'",
+  "raw": ""
+ },
+ {
+  "name": "kraken 500",
+  "url": "https://api.kraken.com/0/public/Depth?pair=DOGUSD&count=500",
+  "status": 200,
+  "cors": {
+   "access-control-allow-origin": "https://allexst63.github.io"
+  },
+  "nb": 90,
+  "na": 500,
+  "b0": [
+   0.000713
+  ],
+  "bmin": 1e-06,
+  "bigb": [
+   [
+    77500000.0,
+    2e-06
+   ],
+   [
+    19116400.0,
+    0.0002
+   ],
+   [
+    17019903.47,
+    0.000606
+   ],
+   [
+    14500000.0,
+    1e-06
+   ],
+   [
+    14145750.537,
+    0.000662
+   ]
+  ]
+ },
+ {
+  "name": "bitget L150",
+  "url": "https://api.bitget.com/api/v2/spot/market/orderbook?symbol=DOGUSDT&type=step0&limit=150",
+  "status": 400,
+  "cors": {},
+  "err": "string indices must be integers, not 'str'",
+  "raw": "{\"code\":\"40034\",\"msg\":\"Parameter DOGUSDT does not exist\",\"requestTime\":1794773667199,\"data\":null}"
+ },
+ {
+  "name": "bitget L500",
+  "url": "https://api.bitget.com/api/v2/spot/market/orderbook?symbol=DOGUSDT&type=step0&limit=500",
+  "status": 400,
+  "cors": {},
+  "err": "string indices must be integers, not 'str'",
+  "raw": "{\"code\":\"40034\",\"msg\":\"Parameter DOGUSDT does not exist\",\"requestTime\":1794773667767,\"data\":null}"
+ }
+]
