@@ -49,7 +49,7 @@
   --o1:#86b6ef; --o2:#3987e5; --o3:#1c5cab; --o4:#0d366b;
   --space-0:#0A0F25; --space-1:#131B41; --space-2:#26306E; --card-ink:#F3F4FA; --card-ink-2:rgba(243,244,250,.68); --card-line:rgba(255,255,255,.10);
   --chart-line:#FFB35E;
-  --fz1:#B9473F; --fz2:#C47B3E; --fz3:#B09748; --fz4:#6F9A52; --fz5:#2D805D; --fz-dim:.27;
+  --fz1:#EA3943; --fz2:#EA8C00; --fz3:#E6C52A; --fz4:#93C900; --fz5:#16B777;
   --shadow-hero:0 18px 40px -22px rgba(10,15,37,.55);
   --shadow-pop:0 24px 60px -20px rgba(18,24,41,.35);
   --display:"Jost","Golos Text",system-ui,sans-serif;
@@ -67,7 +67,6 @@
     --k1:#3987e5; --k2:#d95926; --k3:#199e70; --k4:#c98500; --k5:#d55181; --k8:#FFD54A; --k7:#9085e9; --k6:#008300; --k-pr:#7F879E; --k-un:#A1A8BC;
     --o1:#184f95; --o2:#2a78d6; --o3:#6da7ec; --o4:#b7d3f6;
     --space-0:#0A0F25; --space-1:#121A3E; --space-2:#222C66; --card-line:rgba(255,255,255,.09);
-    --fz1:#DD6A61; --fz2:#DB9A5E; --fz3:#CCB46A; --fz4:#93B972; --fz5:#4FAE86; --fz-dim:.34;
     --shadow-hero:0 18px 44px -20px rgba(0,0,0,.8); --shadow-pop:0 24px 60px -16px rgba(0,0,0,.75);
     color-scheme:dark;
   }
@@ -82,7 +81,6 @@
   --k1:#3987e5; --k2:#d95926; --k3:#199e70; --k4:#c98500; --k5:#d55181; --k8:#FFD54A; --k7:#9085e9; --k6:#008300; --k-pr:#7F879E; --k-un:#A1A8BC;
   --o1:#184f95; --o2:#2a78d6; --o3:#6da7ec; --o4:#b7d3f6;
   --space-0:#0A0F25; --space-1:#121A3E; --space-2:#222C66; --card-line:rgba(255,255,255,.09);
-  --fz1:#DD6A61; --fz2:#DB9A5E; --fz3:#CCB46A; --fz4:#93B972; --fz5:#4FAE86; --fz-dim:.34;
   --shadow-hero:0 18px 44px -20px rgba(0,0,0,.8); --shadow-pop:0 24px 60px -16px rgba(0,0,0,.75);
   color-scheme:dark;
 }
@@ -108,7 +106,7 @@ p{margin:0}
 .rail{display:none}
 .main{padding-inline:16px;padding-block:0 calc(96px + env(safe-area-inset-bottom,0px))}
 .content{max-width:1120px;margin:0 auto}
-.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;margin-inline:-16px;padding:10px 16px;display:flex;align-items:center;gap:8px;background:color-mix(in srgb,var(--bg) 84%,transparent);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px)}
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;margin-inline:-16px;padding:10px 16px;display:flex;align-items:center;gap:6px;background:color-mix(in srgb,var(--bg) 84%,transparent);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px)}
 .brand{display:flex;align-items:center;gap:9px;min-width:0;flex:1}
 .mark{width:32px;height:32px;flex:none;display:block}
 .brand b{font-family:var(--display);font-weight:600;font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -118,6 +116,12 @@ p{margin:0}
 .status.ok .dot{background:var(--bid)} .status.warn .dot{background:var(--warn)}
 .status .long{display:none}
 .iconbtn{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:transparent;border:0;color:var(--ink-2);cursor:pointer;flex:none}
+.topbar .iconbtn{width:34px;height:34px}
+.topbar .brand{min-width:max-content}
+#status-t{overflow:hidden;text-overflow:ellipsis}
+@media (max-width:430px){.topbar .mark{width:28px;height:28px}.topbar .brand{gap:8px}.topbar .brand b{font-size:17px}.topbar .status{padding:6px 10px;gap:6px}.topbar .iconbtn{width:32px;height:32px}}
+.iconbtn.upd .ico{width:19px;height:19px}
+.iconbtn:disabled{cursor:default;opacity:.75}
 .iconbtn:hover{background:var(--surface-3);color:var(--ink)}
 .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));background:color-mix(in srgb,var(--surface) 92%,transparent);-webkit-backdrop-filter:saturate(1.4) blur(16px);backdrop-filter:saturate(1.4) blur(16px);border-top:1px solid var(--line)}
 .tabbar button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 2px 3px;border:0;background:transparent;color:var(--ink-3);font-size:11px;font-weight:500;cursor:pointer;position:relative;min-width:0}
@@ -663,8 +667,8 @@ table.vol .vb{width:34%;padding:0 4px 0 10px}table.vol .vb i{display:block;heigh
 
 /* стаканы бирж: «бабочка» */
 .sec-head.c{align-items:center}
-/* страх и жадность: три небольшие шкалы в одной карточке под плитками */
-.fng{padding:14px 12px 10px}
+/* страх и жадность: три небольшие шкалы в одной карточке — первое на «Главном», над графиком */
+.fng{padding:12px 12px 8px}
 .fng .sec-head{padding:0 4px}
 .fng .sec-head h3{font-size:15px}
 .fng .sec-head p{font-size:12px;color:var(--ink-3)}
@@ -673,18 +677,21 @@ table.vol .vb{width:34%;padding:0 4px 0 10px}table.vol .vb i{display:block;heigh
 .fng-g+.fng-g::before{content:"";position:absolute;left:0;top:16%;bottom:16%;width:1px;background:var(--line-2)}
 .fng-g:hover{background:var(--surface-2)}
 .fng-g .gauge{width:100%;max-width:94px;height:auto;display:block}
-.gauge .dim{opacity:var(--fz-dim,.3)}
-.fng-g .gn{font-family:var(--display);font-weight:500;font-size:21px;fill:var(--ink);font-variant-numeric:tabular-nums}
-.fng-g .gk{font-size:11.5px;font-weight:500;line-height:1.2;margin-top:3px;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
-.fng-g .gt{font-size:12px;color:var(--ink-2);line-height:1.25;margin-top:6px;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.fng-g .gn{font-family:var(--display);font-weight:600;font-size:22px;fill:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.fng-g .gk{font-size:12px;font-weight:600;line-height:1.2;margin-top:3px;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.fng-g .gt{font-size:12px;color:var(--ink-2);line-height:1.25;margin-top:4px;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .fng-g .gs{font-size:11px;color:var(--ink-3);line-height:1.3;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .fng-g.na .gk{color:var(--ink-3)}
 .fng-sp{width:100%;height:64px;display:block;margin:6px 0 2px}
+.fng-lc{width:100%;height:auto;display:block;margin:4px 0 2px}
+.fng-turns{display:flex;flex-direction:column;border-top:1px solid var(--line-2)}
+.fng-turns .tr{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:4px 14px;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--line-2);font-size:13.5px}
+.fng-turns .d{color:var(--ink-2)} .fng-turns .k{color:var(--ink-2)} .fng-turns .k b{font-weight:600;font-variant-numeric:tabular-nums} .fng-turns .p{font-variant-numeric:tabular-nums;color:var(--ink);min-width:7.5ch;text-align:right}
 .fng-ax{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-3)}
 .fng-parts{display:flex;flex-direction:column;gap:14px;margin:6px 0 4px}
 .fng-p{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px 12px;font-size:14px}
 .fng-p .w{color:var(--ink-3);font-weight:400;font-size:12.5px}
-.fng-p .track{grid-column:1 / -1;position:relative;height:6px;border-radius:3px;background:linear-gradient(to right,var(--fz1) 0 26%,var(--fz2) 26% 47%,var(--fz3) 47% 55%,var(--fz4) 55% 76%,var(--fz5) 76% 100%);opacity:.85}
+.fng-p .track{grid-column:1 / -1;position:relative;height:7px;border-radius:4px;background:linear-gradient(to right,var(--fz1) 0 26%,var(--fz2) 26% 47%,var(--fz3) 47% 55%,var(--fz4) 55% 76%,var(--fz5) 76% 100%);opacity:.9}
 .fng-p .track i{position:absolute;top:-3px;width:6px;height:14px;margin-left:-3px;border-radius:3px;background:var(--ink);box-shadow:0 0 0 2px var(--surface)}
 .fng-p small{grid-column:1 / -1;font-size:12.5px;color:var(--ink-2);line-height:1.4}
 .bf-legend,.bf-row{display:grid;grid-template-columns:96px minmax(0,1fr) minmax(0,1fr);align-items:center}
@@ -887,6 +894,7 @@ html{overscroll-behavior-y:contain}
 .sk-st{display:flex;gap:18px;overflow:hidden;padding:2px 0}
 .sk-st i{width:66px;height:66px;border-radius:50%;background:var(--surface);flex:none}
 .sk-bar{height:60px;border-radius:18px}
+.sk-fng{height:132px;border-radius:20px}
 .sk-hero{height:min(430px,64vh);border-radius:26px;background:linear-gradient(160deg,var(--space-2),var(--space-0))}
 .sk-hero::after{background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
 .sk-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -937,12 +945,13 @@ html{overscroll-behavior-y:contain}
       <div class="brand"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="#131B41"/><circle cx="16" cy="16" r="10" fill="#F7B34F"/><circle cx="20.5" cy="13" r="9" fill="#131B41"/></svg><b class="brandname">DOG Monitor</b></div>
       <h1 class="sect" id="sect">Home</h1>
       <button type="button" class="status" id="status" aria-label="Data status and update"><span class="dot"></span><span id="status-t">Connecting…</span></button>
+      <button type="button" class="iconbtn upd" id="updnow" data-updnow aria-label="Update data" title="Update"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 12a8.5 8.5 0 1 1-8.5-8.5c2.38 0 4.66.95 6.37 2.6L20.5 8M20.5 3.5V8H16"/></svg></button>
       <button type="button" class="iconbtn menu" id="menu" aria-label="More: update, language, history, guide, data checks"><svg class="ico" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01" stroke-width="3"/></svg></button>
     </header>
     <div class="content">
       <div class="archive" id="archive" hidden><span id="archive-text"></span><button type="button" id="archive-back">Back to current data</button></div>
       <main id="view">
-        <section class="panel" data-panel="overview" id="p-overview"><div class="skel" aria-busy="true" aria-label="Loading data…"><div class="sk-st"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="sk sk-bar"></div><div class="sk sk-hero"></div><div class="sk-2"><div class="sk sk-tile"></div><div class="sk sk-tile"></div></div><div class="sk sk-card"></div></div></section>
+        <section class="panel" data-panel="overview" id="p-overview"><div class="skel" aria-busy="true" aria-label="Loading data…"><div class="sk-st"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="sk sk-fng"></div><div class="sk sk-hero"></div><div class="sk-2"><div class="sk sk-tile"></div><div class="sk sk-tile"></div></div><div class="sk sk-card"></div></div></section>
         <section class="panel" data-panel="books" id="p-books" hidden></section>
         <section class="panel" data-panel="charts" id="p-charts" hidden></section>
         <section class="panel" data-panel="wallets" id="p-wallets" hidden></section>
@@ -1022,6 +1031,7 @@ html{overscroll-behavior-y:contain}
       set('#status-t', 'textContent', 'Подключаюсь…');
       set('#status', 'ariaLabel', 'Состояние данных и обновление');
       set('#menu', 'ariaLabel', 'Ещё: обновление, язык, история, справка, проверка данных');
+      set('#updnow', 'ariaLabel', 'Обновить данные'); set('#updnow', 'title', 'Обновить');
       set('#archive-back', 'textContent', 'К текущим данным');
       set('#p-overview .skel', 'ariaLabel', 'Загружаю данные…');
       set('#story-hint-t', 'textContent', 'Смахните вверх, чтобы закрыть');
@@ -2248,7 +2258,7 @@ html{overscroll-behavior-y:contain}
         </div>
         <div class="hero-foot"><span id="hsrc">${S.period === 'ВСЁ' ? 'Kraken + Gate' : 'Kraken, DOG/USD'}</span><span id="hcap">${T('капитализация ≈ ', 'market cap ≈ ')}${usd(pr.cap * 1e6)}</span></div>
       </section>`;
-    const left = (S.archived ? '' : updBarHtml(s)) + hero + `<div class="box" id="tiles-box">${tilesHtml(s)}</div><div class="box" id="fng-box">${S.archived ? '' : fngHtml()}</div><div class="box" id="sum-box">${summaryHtml(s)}</div>`;
+    const left = `<div class="box" id="fng-box">${S.archived ? '' : fngHtml()}</div>` + hero + `<div class="box" id="tiles-box">${tilesHtml(s)}</div><div class="box" id="sum-box">${summaryHtml(s)}</div>`;
     const right = `<div class="box" id="ex-box">${exchangesHtml(s)}</div><div class="box" id="tre-box">${treasuryHtml()}</div><div class="box" id="news-box">${newsPreviewHtml()}</div><div class="box" id="chk-box">${checkRowHtml(s)}</div>`;
     killChart();
     el.innerHTML = `<div class="box" id="st-box">${storiesHtml(buildStories(s))}</div>
@@ -2286,19 +2296,19 @@ html{overscroll-behavior-y:contain}
   const fngCol = (v, sc) => `var(--fz${fngZi(v, sc) + 1})`;
   const fngName = (v, sc) => { const u = FNG_NM[fngZi(v, sc)]; return T(u[0], u[1]); };
   const fngDay = ds => dml(String(ds) + 'T12:00:00Z');
-  // небольшая полукруглая шкала: пять зон тонкой линией, зона значения ярче, точка на значении, число внутри
+  // небольшая полукруглая шкала: пять ярких цветных зон, точка на значении, число внутри
   function gaugeSvg(v, sc) {
-    const Z = sc || FNG_A, cx = 50, cy = 49, r = 40;
+    const Z = sc || FNG_A, cx = 50, cy = 50, r = 40;
     const P = val => { const a = Math.PI * (1 - Math.max(0, Math.min(100, val)) / 100); return [(cx + r * Math.cos(a)).toFixed(2), (cy - r * Math.sin(a)).toFixed(2)]; };
     const zi = v == null ? -1 : fngZi(v, Z);
     let from = 0, arcs = '';
     Z.forEach((e, i) => {
-      const to = Math.min(100, e), a = P(from + (i ? 1.5 : 0)), b = P(to - (i < 4 ? 1.5 : 0));
-      arcs += `<path d="M${a[0]},${a[1]}A${r},${r} 0 0 1 ${b[0]},${b[1]}" fill="none" stroke="var(--fz${i + 1})" stroke-width="${i === zi ? 4.4 : 3.2}" stroke-linecap="round"${i === zi ? '' : ' class="dim"'}/>`;
+      const to = Math.min(100, e), a = P(from + (i ? 1.4 : 0)), b = P(to - (i < 4 ? 1.4 : 0));
+      arcs += `<path d="M${a[0]},${a[1]}A${r},${r} 0 0 1 ${b[0]},${b[1]}" fill="none" stroke="var(--fz${i + 1})" stroke-width="6" stroke-linecap="round"${v == null ? ' opacity=".35"' : ''}/>`;
       from = to;
     });
     const k = v == null ? null : P(v);
-    return `<svg class="gauge" viewBox="0 0 100 56" aria-hidden="true">${arcs}${k ? `<circle cx="${k[0]}" cy="${k[1]}" r="4.2" fill="var(--surface)" stroke="var(--fz${zi + 1})" stroke-width="2.4"/>` : ''}<text class="gn" x="50" y="49" text-anchor="middle">${v == null ? '—' : Math.round(v)}</text></svg>`;
+    return `<svg class="gauge" viewBox="0 0 100 57" aria-hidden="true">${arcs}${k ? `<circle cx="${k[0]}" cy="${k[1]}" r="5" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.6"/>` : ''}<text class="gn" x="50" y="50" text-anchor="middle">${v == null ? '—' : Math.round(v)}</text></svg>`;
   }
   // рынок: файл сайта или свежий ответ alternative.me — что новее
   function fngMarket() {
@@ -2370,31 +2380,56 @@ html{overscroll-behavior-y:contain}
       ${FNG_SCALE(FNG_C)}
       <p class="note">${T(`Источник обновляет индекс в течение дня; сайт забирает его 4 раза в день вместе со сводкой${c.ts ? ' (значение на ' + esc(dtl(c.ts)) + ')' : ''}. Индекс считается по рынку в целом, а не по DOG. Это описание настроения, а не совет.`, `The source updates the index during the day; the site picks it up 4 times a day with each report${c.ts ? ' (value as of ' + esc(dtl(c.ts)) + ')' : ''}. It’s computed for the market as a whole, not for DOG. It describes mood — it isn’t advice.`)} <a href="https://coinmarketcap.com/charts/fear-and-greed-index/" target="_blank" rel="noopener">CoinMarketCap</a></p>`];
   }
+  // дата с годом: «27 авг 2026» / «Aug 27, 2026»
+  let F_DMY; try { F_DMY = new Intl.DateTimeFormat(LOC, { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }); } catch (e) { F_DMY = null; }
+  const fngDmy = ds => { const d = toDate(String(ds) + 'T12:00:00Z'); return d && F_DMY ? F_DMY.format(d).replace(/\s*г\.?$/, '').replace(/\./g, '') : String(ds); };
+  // вся история индекса DOG: линия, бледные полосы крайнего страха и крайней жадности, точки на разворотах
+  function fngLongChart(hist, turns) {
+    const h = hist || [];
+    if (h.length < 30) return '';
+    const W = 300, H = 92, X = i => i / (h.length - 1) * W, Y = v => 3 + (1 - v / 100) * (H - 6), at = new Map(h.map((x, i) => [x[0], i]));
+    const line = h.map((x, i) => `${i ? 'L' : 'M'}${X(i).toFixed(1)},${Y(x[1]).toFixed(1)}`).join('');
+    const dots = (turns || []).filter(t => at.has(t[0])).map(t => `<circle cx="${X(at.get(t[0])).toFixed(1)}" cy="${Y(t[1]).toFixed(1)}" r="3.2" fill="${fngCol(t[1])}" stroke="var(--surface)" stroke-width="1.2"/>`).join('');
+    const mid = h[Math.floor(h.length / 2)][0];
+    return `<svg class="fng-lc" viewBox="0 0 ${W} ${H}" aria-hidden="true"><rect x="0" y="${Y(100).toFixed(1)}" width="${W}" height="${(Y(76) - Y(100)).toFixed(1)}" fill="var(--fz5)" opacity=".1"/><rect x="0" y="${Y(25.5).toFixed(1)}" width="${W}" height="${(Y(0) - Y(25.5)).toFixed(1)}" fill="var(--fz1)" opacity=".1"/><line x1="0" x2="${W}" y1="${Y(50).toFixed(1)}" y2="${Y(50).toFixed(1)}" stroke="var(--line)" stroke-dasharray="2 4"/><path d="${line}" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linejoin="round"/>${dots}</svg><div class="fng-ax"><span>${esc(fngDmy(h[0][0]))}</span><span>${esc(fngDmy(mid))}</span><span>${esc(fngDmy(h[h.length - 1][0]))}</span></div>`;
+  }
   function fngDogSheet() {
     const d = (S.fng || {}).dog; if (!d || d.v == null) return null;
     const f = d.facts || {}, cg = (S.fng || {}).cg || {};
     const pc = (x, dg) => sg(x * 100, dg == null ? 0 : dg) + '%', ab = (x, dg) => n(Math.abs(x) * 100, dg == null ? 0 : dg) + '%';
     const hl = x => x >= 0 ? T('выше', 'above') : T('ниже', 'below');
-    const NAME = { mkt: T('Настроение крипторынка', 'Crypto market mood'), btc: T('Тренд биткоина', 'Bitcoin trend'), mom: T('Импульс цены DOG', 'DOG price momentum'), vol: T('Колебания и просадка DOG', 'DOG volatility and drawdown'), rel: T('DOG против биткоина и мем-монет', 'DOG vs. bitcoin and meme coins'), hold: T('Холдеры DOG', 'DOG holders'), sec: T('Место среди мем-монет', 'Standing among meme coins'), book: T('Стакан', 'Order book') };
+    const NAME = { mkt: T('Настроение крипторынка', 'Crypto market mood'), btc: T('Тренд биткоина', 'Bitcoin trend'), mom: T('Импульс цены DOG', 'DOG price momentum'), vol: T('Падения и просадка DOG', 'DOG drops and drawdown'), rel: T('DOG против биткоина и мем-монет', 'DOG vs. bitcoin and meme coins'), hold: T('Холдеры DOG', 'DOG holders'), sec: T('Место среди мем-монет', 'Standing among meme coins'), book: T('Стакан', 'Order book') };
     const FACT = {
       mkt: () => [f.alt != null || f.cmc != null ? T(`Среднее двух индексов рынка: alternative.me — ${f.alt != null ? f.alt : '—'}, CoinMarketCap — ${f.cmc != null ? f.cmc : '—'}`, `Average of the two market indices: alternative.me ${f.alt != null ? f.alt : '—'}, CoinMarketCap ${f.cmc != null ? f.cmc : '—'}`) : ''],
       btc: () => [f.bM30 != null ? T(`Биткоин на ${ab(f.bM30)} ${hl(f.bM30)} своей средней за 30 дней`, `Bitcoin is ${ab(f.bM30)} ${hl(f.bM30)} its 30-day average`) : '', f.bM90 != null ? T(`на ${ab(f.bM90)} ${hl(f.bM90)} средней за 90 дней`, `${ab(f.bM90)} ${hl(f.bM90)} its 90-day average`) : '', f.bDd90 != null ? T(`на ${ab(f.bDd90)} ниже максимума за 90 дней`, `${ab(f.bDd90)} below its 90-day high`) : ''],
       mom: () => [f.m30 != null ? T(`Цена DOG на ${ab(f.m30)} ${hl(f.m30)} своей средней за 30 дней`, `DOG’s price is ${ab(f.m30)} ${hl(f.m30)} its 30-day average`) : '', f.m90 != null ? T(`и на ${ab(f.m90)} ${hl(f.m90)} средней за 90 дней`, `and ${ab(f.m90)} ${hl(f.m90)} its 90-day average`) : ''],
-      vol: () => [f.volRatio != null ? T(`Цена за 30 дней скачет ${f.volRatio >= 1.1 ? 'сильнее' : f.volRatio <= 0.9 ? 'слабее' : 'примерно так же, как'} обычного (×${n(f.volRatio, 2)})`, `Over 30 days the price swings ${f.volRatio >= 1.1 ? 'more than' : f.volRatio <= 0.9 ? 'less than' : 'about as much as'} usual (×${n(f.volRatio, 2)})`) : '', f.dd90 != null ? T(`сейчас она на ${ab(f.dd90)} ниже максимума за 90 дней`, `it’s now ${ab(f.dd90)} below its 90-day high`) : ''],
+      vol: () => [f.dvRatio != null ? T(`Падения за 30 дней ${f.dvRatio >= 1.1 ? 'резче' : f.dvRatio <= 0.9 ? 'мягче' : 'примерно такие же, как'} обычного (×${n(f.dvRatio, 2)}; рост не считаем)`, `Drops over 30 days are ${f.dvRatio >= 1.1 ? 'sharper than' : f.dvRatio <= 0.9 ? 'milder than' : 'about as sharp as'} usual (×${n(f.dvRatio, 2)}; rises don’t count)`) : (f.volRatio != null ? T(`Колебания за 30 дней ×${n(f.volRatio, 2)} к обычным`, `30-day swings ×${n(f.volRatio, 2)} vs. usual`) : ''), f.dd90 != null ? T(`цена на ${ab(f.dd90)} ниже максимума за 90 дней`, `the price is ${ab(f.dd90)} below its 90-day high`) : ''],
       rel: () => [f.rb30 != null ? T(`За 30 дней DOG к биткоину: ${pc(f.rb30)}`, `Over 30 days DOG vs. bitcoin: ${pc(f.rb30)}`) : '', cg.beat30 != null ? T(`DOG обогнал ${n(cg.beat30 * 100, 0)}% из ${cg.memeN || 100} крупнейших мем-монет (DOG ${sg(cg.chg30, 0)}%, типичная мем-монета ${sg(cg.med30, 0)}%)`, `DOG beat ${n(cg.beat30 * 100, 0)}% of the ${cg.memeN || 100} largest meme coins (DOG ${sg(cg.chg30, 0)}%, the typical meme coin ${sg(cg.med30, 0)}%)`) : '', cg.memeRank ? T(`${cg.memeRank}-е место среди мем-монет по капитализации (CoinGecko)`, `#${cg.memeRank} among meme coins by market cap (CoinGecko)`) : ''],
       hold: () => [f.profit != null ? T(`В прибыли ${n(f.profit, 0)}% монет`, `${n(f.profit, 0)}% of coins are in profit`) : '', f.exch30 != null ? T(`DOG на биржах за месяц: ${sg(f.exch30, 1)}%`, `DOG on exchanges over the month: ${sg(f.exch30, 1)}%`) : '', f.holders30 != null ? T(`кошельков с DOG: ${sg(f.holders30, 2)}%`, `wallets holding DOG: ${sg(f.holders30, 2)}%`) : '']
     };
     const row = p => { const txt = (FACT[p.k] ? FACT[p.k]() : []).filter(Boolean).join('; '); return `<div class="fng-p"><span><b>${esc(NAME[p.k] || p.k)}</b> <span class="w">${p.w}%</span></span><span>${p.v == null ? `<span class="faint">${T('нет данных', 'no data')}</span>` : `<b style="color:${fngCol(p.v)}">${p.v}</b>`}</span>${p.v == null ? '' : `<span class="track"><i style="left:${Math.max(1, Math.min(99, p.v))}%"></i></span>`}<small>${p.v == null ? T('Источник не ответил — вес этой части разделён между остальными.', 'The source didn’t respond — this part’s weight is shared among the others.') : (txt ? esc(txt) + '.' : '')}</small></div>`; };
-    const parts = d.parts || [], wm = parts.filter(p => p.k === 'mkt' || p.k === 'btc').reduce((s, p) => s + p.w, 0);
-    return [T('Страх и жадность: DOG', 'Fear & Greed: DOG'), `<p>${d.ver >= 2 ? T(`Индекс про DOG — но DOG мем-монета на биткоине и обычно ходит вместе со всем рынком. Поэтому ${wm}% индекса — настроение крипторынка и тренд биткоина, ${100 - wm}% — сам DOG: цена и её колебания, сравнение с биткоином и мем-монетами, холдеры. Расчёт — наш, сайта DOG Монитор.`, `An index about DOG — but DOG is a meme coin on bitcoin and usually moves with the whole market. So ${wm}% of it is crypto market mood and bitcoin’s trend, ${100 - wm}% is DOG itself: its price and swings, how it compares with bitcoin and meme coins, and its holders. The calculation is our own.`) : T('Тот же принцип, что у индекса всего рынка, но посчитано по данным DOG. Расчёт — наш, сайта DOG Монитор.', 'The same idea as the market-wide index, but computed from DOG data. The calculation is our own.')}</p>
+    const parts = d.parts || [], wm = parts.filter(p => p.k === 'mkt' || p.k === 'btc').reduce((s, p) => s + p.w, 0) || 40;
+    // история: вершина цены DOG и развороты индекса (цена — из истории цен сайта)
+    const hm = new Map(d.hist || []), pxd = (S.px || {}).d || {};
+    let ath = null; for (const [day, v] of Object.entries(pxd)) if (v && v[3] && hm.has(day) && (!ath || v[3] > ath[1])) ath = [day, v[3]];
+    const athTxt = ath ? `<p class="note">${T(`На вершине цены — ${esc(fngDmy(ath[0]))}, DOG ${fp(ath[1])}, капитализация ≈ ${usd(ath[1] * 1e11)} — индекс был <b style="color:${fngCol(hm.get(ath[0]))}">${hm.get(ath[0])}</b>: ${esc(fngName(hm.get(ath[0])).toLowerCase())}.`, `At the price peak — ${esc(fngDmy(ath[0]))}, DOG ${fp(ath[1])}, market cap ≈ ${usd(ath[1] * 1e11)} — the index stood at <b style="color:${fngCol(hm.get(ath[0]))}">${hm.get(ath[0])}</b>: ${esc(fngName(hm.get(ath[0])).toLowerCase())}.`)}</p>` : '';
+    const tl6 = (d.turns || []).slice(-6).reverse();
+    const turnsTxt = tl6.length ? `<div class="fng-turns">${tl6.map(t => `<div class="tr"><span class="d">${esc(fngDmy(t[0]))}</span><span class="k">${t[2] === 'p' ? T('пик жадности', 'greed peak') : T('дно страха', 'fear low')} <b style="color:${fngCol(t[1])}">${t[1]}</b></span><span class="p">${t[3] != null ? fp(t[3]) : ''}</span></div>`).join('')}</div>` : '';
+    const long = d.ver >= 3 ? fngLongChart(d.hist, d.turns) : fngSpark(d.hist, 90, FNG_A);
+    return [T('Страх и жадность: DOG', 'Fear & Greed: DOG'), `<p>${T('Индекс отвечает на вопрос, какое сейчас настроение вокруг DOG. Цена растёт, все спешат купить и не думают о падениях — это жадность. Цена падает, в новостях плохое, все продают — это страх.', 'The index answers one question: what’s the mood around DOG right now. When the price rises and everyone rushes to buy without a thought of a fall, that’s greed. When the price falls, the news is bad and everyone sells, that’s fear.')}</p>
+      <p>${T(`DOG — мем-монета на биткоине и ходит вместе со всем рынком, поэтому ${wm}% индекса — настроение крипторынка и тренд биткоина, ${100 - wm}% — сам DOG: цена и её падения, сравнение с биткоином и мем-монетами, холдеры. Расчёт — наш, сайта DOG Монитор.`, `DOG is a meme coin on bitcoin and moves with the whole market, so ${wm}% of the index is crypto market mood and bitcoin’s trend, and ${100 - wm}% is DOG itself: its price and its drops, how it compares with bitcoin and meme coins, and its holders. The calculation is our own.`)}</p>
       ${fngKv(d.v, FNG_A, d.prev)}
-      ${fngSpark(d.hist, 90, FNG_A)}
+      <h3>${T('Как индекс вёл себя раньше', 'How the index behaved before')}</h3>
+      ${long}
+      ${athTxt}
+      ${turnsTxt}
+      ${turnsTxt ? `<p class="note">${T('Самые высокие значения были у вершин цены, самые низкие — у дна: индекс показывает, когда рынок вокруг DOG на эмоциях. Это история, а не прогноз.', 'The highest readings came at price peaks and the lowest at the bottoms: the index shows when the market around DOG is running on emotion. This is history, not a forecast.')}</p>` : ''}
       <h3>${T('Из чего складывается сегодня', 'What goes into it today')}</h3>
       <div class="fng-parts">${parts.map(row).join('')}</div>
       <p class="note">${T('У каждой части оценка от 0 (страх) до 100 (жадность); итог — их среднее с указанными весами.', 'Each part is scored from 0 (fear) to 100 (greed); the total is their weighted average.')}</p>
       ${d.ver >= 2 ? `<p class="note">${T('Стакана в индексе нет: после падений цена подходит к крупным заявкам на покупку, и их доля рядом с ценой растёт — стакан показывал «жадность» как раз во время страха, а куда пойдёт цена, не подсказывал. Он остаётся во вкладке «Стакан».', 'The order book isn’t part of the index: after a drop the price moves closer to large buy orders, so their share near the price grows — the book read as “greed” exactly during fear and didn’t hint at where the price would go. It stays on the Order book tab.')}</p>` : ''}
       ${FNG_SCALE(FNG_A)}
-      <p class="note">${T(`Пересчитывается 4 раза в день вместе со сводкой${S.fng.updated ? ' (последний раз — ' + esc(dtl(S.fng.updated)) + ')' : ''}. До ${esc(fngDay(d.since))} линия на графике посчитана без холдеров и мем-монет — их прошлых данных нет. Это описание настроения, а не совет и не прогноз.`, `Recomputed 4 times a day with each report${S.fng.updated ? ' (last: ' + esc(dtl(S.fng.updated)) + ')' : ''}. Before ${esc(fngDay(d.since))} the chart line leaves out holders and meme coins — there’s no past data for them. It describes mood — it isn’t advice or a forecast.`)}</p>`];
+      <p class="note">${T(`Пересчитывается 4 раза в день вместе со сводкой${S.fng.updated ? ' (последний раз — ' + esc(dtl(S.fng.updated)) + ')' : ''}. До ${esc(fngDmy(d.since))} линия посчитана без холдеров и мем-монет — их прошлых данных нет. Это описание настроения, а не совет и не прогноз.`, `Recomputed 4 times a day with each report${S.fng.updated ? ' (last: ' + esc(dtl(S.fng.updated)) + ')' : ''}. Before ${esc(fngDmy(d.since))} the line leaves out holders and meme coins — there’s no past data for them. It describes mood — it isn’t advice or a forecast.`)}</p>`];
   }
   const tile = (key, label, value, sub, vis, vc) => `<button type="button" class="tile" data-info="${key}"><span class="tl">${esc(label)}</span>${vis || ''}<b class="tv ${vc || ''}">${value}</b><span class="ts">${esc(sub)}</span></button>`;
   function tilesHtml(s) {
@@ -5335,7 +5370,6 @@ html{overscroll-behavior-y:contain}
     put('st-box', storiesHtml(buildStories(s)));
     put('tiles-box', tilesHtml(s)); put('sum-box', summaryHtml(s)); put('ex-box', exchangesHtml(s)); put('chk-box', checkRowHtml(s));
     put('tre-box', treasuryHtml()); put('news-box', newsPreviewHtml());
-    const bar = $('#updbar'); if (bar) bar.outerHTML = updBarHtml(s);
     if (!livePrice()) { const cap = $('#hcap'); if (cap) cap.textContent = T('капитализация ≈ ', 'market cap ≈ ') + usd(((s.price || {}).cap || 0) * 1e6); }
     refreshChart();
     const hp = $('#hprice'), was = hp && hp.firstChild ? hp.firstChild.nodeValue : null;
@@ -5427,31 +5461,19 @@ html{overscroll-behavior-y:contain}
     openSheet(T('Обновление и проверка', 'Update and data checks'), updSheetHtml());
     if (start && !UP.run) runUpdate();
   }
-  // перерисовка того, что зависит от хода обновления: лист, полоска на главной, статус, кнопка в меню слева
+  // перерисовка того, что зависит от хода обновления: лист, статус, кнопка «Обновить» в шапке и в меню слева
   function paintUpd() {
     const body = $('#sheet-body');
     if (body && !$('#sheet').hidden && body.querySelector('[data-updsheet]')) { const y = body.scrollTop; body.innerHTML = updSheetHtml(); body.scrollTop = y; }
-    const bar = $('#updbar');
-    if (bar && V() && !S.archived) bar.outerHTML = updBarHtml(V());
     const loud = !!UP.run && !UP.silent;
-    $$('[data-upd]').forEach(b => { if (!b.closest('[data-updsheet]') && !b.closest('#updbar')) { b.disabled = loud; const i = b.querySelector('.ico'); if (i) i.classList.toggle('spin', !!UP.run); } });
-  }
-  function updBarHtml(s) {
-    const u = s && s.upd, run = !!UP.run && !UP.silent, sync = !!UP.run && UP.silent;
-    const ok = u ? u.okN === u.n : false;
-    const wt = x => sameDay(toDate(x), new Date()) ? tl(x) : when(x);
-    const title = run ? T('Обновляю данные…', 'Updating data…') : (u ? `${T('Онлайн-данные на', 'Live data as of')} ${esc(wt(u.ts))}` : `${esc(KIND_TITLE[s.kind] || T('Сводка', 'Report'))} · ${esc(wt(s.ts))}`);
-    const sub = run ? T('стаканы, холдеры и цена — прямо с бирж и DOG DATA', 'order books, holders and price — straight from exchanges and DOG DATA')
-      : (u ? T(`проверок пройдено: ${u.okN} из ${u.n}`, `${u.okN} of ${u.n} checks passed`) : (UP.err ? (UP.err === 'check' ? T('свежие данные не прошли проверку', 'fresh data failed the check') : (navigator.onLine === false ? T('нет сети — показана последняя сводка', 'offline — showing the last report') : T('свежие данные не загрузились', 'fresh data didn’t load'))) : T('данные обновляются сами', 'data refreshes by itself')));
-    return `<div class="updbar ${run ? 'run' : (u ? (ok ? 'ok' : 'warn') : (UP.err ? 'warn' : ''))}${sync ? ' sync' : ''}" id="updbar">
-        <button type="button" class="ub-info" data-updopen><span class="ub-dot" aria-hidden="true"></span><span class="ub-t"><b>${title}</b><span>${sub}</span></span></button>
-        <button type="button" class="btn sm ub-btn" data-upd ${run ? 'disabled' : ''}>${ico('refresh', run ? 'spin' : '')}<span>${run ? T('Обновляю', 'Updating') : T('Обновить', 'Update')}</span></button>
-      </div>`;
+    $$('[data-upd],[data-updnow]').forEach(b => { if (!b.closest('[data-updsheet]')) { b.disabled = loud; const i = b.querySelector('.ico'); if (i) i.classList.toggle('spin', !!UP.run); } });
   }
   document.addEventListener('click', e => {
     const u = e.target.closest('[data-upd]');
     if (u) { if (u.disabled) return; if (S.archived) { S.view = null; S.archived = false; renderAll(); } openUpd(true); return; }
-    if (e.target.closest('[data-updopen]')) openUpd(false);
+    if (e.target.closest('[data-updopen]')) { openUpd(false); return; }
+    // маленькая кнопка «Обновить» в шапке: обновляет на месте, без листа (ход — в статусе рядом и вращающейся стрелке)
+    if (e.target.closest('[data-updnow]')) { if (S.archived) { S.view = null; S.archived = false; renderAll(); } runUpdate(); }
   });
   // пока страница открыта и на виду — тихо обновляемся раз в 2 минуты; вернулись на вкладку — тоже
   const AUTO_MS = 2 * 60e3;

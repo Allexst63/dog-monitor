@@ -9,20 +9,22 @@
   CoinMarketCap  — CMC Crypto Fear and Greed Index, обновляется в течение дня (его открытый ответ
                    data-api без CORS, поэтому берём его здесь, а не в браузере).
 
-DOG — свой индекс, версия 2 (с 15.11.2026). Он про DOG, но DOG — мем-монета на биткоине и ходит вместе с рынком,
+DOG — свой индекс (версия 3 с 15.11.2026). Он про DOG, но DOG — мем-монета на биткоине и ходит вместе с рынком,
 поэтому 40% — рынок и биткоин, 60% — сам DOG. Каждая часть — число от 0 (страх) до 100 (жадность):
   mkt   25%  настроение всего крипторынка: среднее индексов alternative.me и CoinMarketCap;
   btc   15%  тренд биткоина: цена BTC против средних за 30 и 90 дней и просадка от максимума за 90 дней;
   mom   20%  импульс DOG: цена против своих средних за 30 и 90 дней;
-  vol   15%  колебания и просадка DOG: колебания за 30 дней против обычных и падение от максимума за 90 дней;
+  vol   15%  падения и просадка DOG: насколько резкие падения за 30 дней против обычных (считаем только дни
+             снижения — рост на 30% за день это не страх) и как далеко цена от максимума за 90 дней;
   rel   10%  DOG против других: курс DOG/BTC за 30 дней и место среди 100 крупнейших мем-монет (CoinGecko);
   hold  15%  холдеры DOG: доля монет в прибыли, запас DOG на биржах и число кошельков за месяц.
 Если части нет (источник не ответил), её вес делится между остальными.
 Стакана в индексе больше нет (в версии 1 был с весом 10%): доля заявок на покупку рядом с ценой растёт ПОСЛЕ
 падений — цена опускается к крупным заявкам на покупку, и они попадают в окно ±10% (за месяц сводок корреляция
 с изменением цены за 3 дня −0,59), а на будущее движение цены она не указывает (корреляция около нуля).
-Проверка на истории с сентября 2024: корреляция с индексами рынка 0,79 (alternative.me) и 0,86 (CoinMarketCap),
-у версии 1 было 0,47 и 0,59. Историю до запуска версии считаем по частям, для которых есть прошлые данные
+Проверка на истории с сентября 2024: корреляция с индексами рынка 0,75 (alternative.me) и 0,84 (CoinMarketCap),
+у версии 1 было 0,47 и 0,59; у вершины цены в декабре 2024 (капитализация около $1 млрд) — 85–88, крайняя жадность;
+у дна в марте 2025 — 13, крайний страх. Историю до запуска версии считаем по частям, для которых есть прошлые данные
 (mkt, btc, mom, vol и DOG/BTC). Это описание настроения, а не совет и не прогноз.
 """
 import datetime as dt
@@ -39,9 +41,10 @@ NOW = dt.datetime.now(dt.timezone.utc)
 TODAY = NOW.strftime('%Y-%m-%d')
 CG_ID = 'dog-go-to-the-moon-rune'
 WEIGHTS = (('mkt', 25), ('btc', 15), ('mom', 20), ('vol', 15), ('rel', 10), ('hold', 15))
-VER = 2
-KEEP = 400
-FETCH_DAYS = 500
+VER = 3
+KEEP = 1100            # дней истории в файле: у DOG — вся история индекса (с 23.08.2024)
+FETCH_DAYS = 1100
+TURN = 40              # разворот индекса DOG — смена направления не меньше чем на 40 пунктов
 
 
 def jload(p, default=None):
@@ -206,23 +209,24 @@ def dog_parts(px, btc):
     c = [px[d][3] for d in days]
     n = len(c)
     ret = [None] + [math.log(c[i] / c[i - 1]) for i in range(1, n)]
-    vol = [None] * n
+    # «падения»: разброс только дней снижения за 30 дней (полудисперсия) — резкий рост мем-монеты не считаем страхом
+    dvol = [None] * n
     for i in range(30, n):
-        vol[i] = stdev(ret[i - 29:i + 1]) * math.sqrt(365)
+        r = ret[i - 29:i + 1]
+        dvol[i] = math.sqrt(sum(min(0.0, x) ** 2 for x in r) / len(r)) * math.sqrt(365)
     out = {}
     for i in range(120, n):
-        base = [v for v in vol[i - 90:i] if v is not None]
-        ratio = vol[i] / (sum(base) / len(base))
+        base = [v for v in dvol[i - 90:i] if v]
+        ratio = dvol[i] / (sum(base) / len(base)) if base and sum(base) > 0 else 1.0
         dd = 1 - c[i] / max(c[i - 89:i + 1])
         m30 = c[i] / (sum(c[i - 29:i + 1]) / 30) - 1
         m90 = c[i] / (sum(c[i - 89:i + 1]) / 90) - 1
         p = {
-            # спокойный рынок — это ещё не жадность: за тишину не больше 60 из 100
-            'vol': 0.5 * min(60.0, clamp(50 - (ratio - 1) * 100)) + 0.5 * clamp(100 - dd / 0.5 * 100),
+            'vol': 0.5 * clamp(50 - (ratio - 1) * 100) + 0.5 * clamp(100 - dd / 0.5 * 100),
             'mom': 0.5 * th(m30, 0.15) + 0.5 * th(m90, 0.30),
             'rb': None,
         }
-        f = {'vol30': vol[i], 'volRatio': ratio, 'dd90': dd, 'm30': m30, 'm90': m90}
+        f = {'dvol30': dvol[i], 'dvRatio': ratio, 'dd90': dd, 'm30': m30, 'm90': m90}
         if btc.get(days[i]) and btc.get(days[i - 30]):
             rb = (c[i] / btc[days[i]]) / (c[i - 30] / btc[days[i - 30]]) - 1
             p['rb'] = th(rb, 0.25)
@@ -242,6 +246,29 @@ def btc_parts(btc):
         dd = 1 - c[i] / max(c[i - 89:i + 1])
         out[days[i]] = (0.35 * th(m30, 0.10) + 0.35 * th(m90, 0.20) + 0.30 * clamp(100 - dd / 0.30 * 100),
                         {'bPx': c[i], 'bM30': m30, 'bM90': m90, 'bDd90': dd})
+    return out
+
+
+def turns(series, th=TURN):
+    """развороты индекса (зигзаг): вершина жадности или дно страха, после которых индекс ушёл не меньше чем на th"""
+    days = sorted(series)
+    out = []
+    if len(days) < 2:
+        return out
+    hi = lo = days[0]
+    mode = None
+    for d in days[1:]:
+        v = series[d]
+        if v >= series[hi]:
+            hi = d
+        if v <= series[lo]:
+            lo = d
+        if mode in (None, 'up') and series[hi] - v >= th and (mode == 'up' or hi > lo):
+            out.append([hi, series[hi], 'p'])
+            mode, lo = 'down', d
+        elif mode in (None, 'down') and v - series[lo] >= th and (mode == 'down' or lo > hi):
+            out.append([lo, series[lo], 't'])
+            mode, hi = 'up', d
     return out
 
 
@@ -315,20 +342,20 @@ def main():
     profit = (live.get('health') or {}).get('profit')
     if profit is not None:
         facts['profit'] = profit
-        hp.append((0.5, clamp(profit)))
+        hp.append((0.6, clamp(profit)))
     firstb = next((h for h in hist if h.get('exBal')), None)
     exb = (live.get('exch') or {}).get('bal')
     if firstb and exb:
         chg = (exb / firstb['exBal'] - 1) * 100
         facts['exch30'] = chg
-        hp.append((0.3, th(-chg, 8)))          # монеты уходят с бирж — их меньше хотят продать
+        hp.append((0.25, th(-chg, 12)))        # монеты уходят с бирж — их меньше хотят продать
     first = next((h for h in hist if h.get('holders')), None)
     if first and live.get('holders'):
         span = max(1.0, (NOW - dt.datetime.strptime(first['ts'], '%Y-%m-%dT%H:%M:%SZ').replace(tzinfo=dt.timezone.utc)).total_seconds() / 86400)
         if span >= 7:
             chg = (live['holders'] / first['holders'] - 1) * 100 * min(1.0, 30 / span)
             facts['holders30'] = chg
-            hp.append((0.2, clamp(50 + chg * 50)))
+            hp.append((0.15, clamp(50 + chg * 50)))
     parts['hold'] = sum(w * v for w, v in hp) / sum(w for w, _ in hp) if hp else None
 
     value = combine(parts)
@@ -361,7 +388,8 @@ def main():
                 'parts': [{'k': k, 'w': w, 'v': None if parts.get(k) is None else round(parts[k])} for k, w in WEIGHTS],
                 'facts': {k: (round(v, 4) if isinstance(v, float) else v) for k, v in facts.items() if v is not None},
                 'prev': {'d1': series.get(shift(last, 1)), 'd7': series.get(shift(last, 7)), 'd30': series.get(shift(last, 30))},
-                'hist': [[d, series[d]] for d in sorted(series)]},
+                'hist': [[d, series[d]] for d in sorted(series)],
+                'turns': [t + [px[t[0]][3]] for t in turns(series) if t[0] in px]},
         'cg': cg, 'ranks': ranks,
     }
     jdump(out, path)
