@@ -1,0 +1,18 @@
+rc=0
+MEMES CoinGecko: 12 из 12
+MEMES DOG: Kraken, 400 дней с 2025-10-12; сверка Gate 0.4% (90 дн.), MEXC 0.51% (90 дн.); CoinGecko 0.78%
+MEMES DOGE: Gate, 400 дней с 2025-10-12; сверка MEXC 0.01% (90 дн.), Kraken 0.07% (90 дн.); CoinGecko 0.03%
+MEMES SHIB: Gate, 400 дней с 2025-10-12; сверка MEXC 0.04% (90 дн.), Kraken 0.06% (90 дн.); CoinGecko 0.10%
+MEMES PEPE: Gate, 400 дней с 2025-10-12; сверка MEXC 0.05% (90 дн.), Kraken 0.09% (90 дн.); CoinGecko 0.03%
+MEMES PENGU: Gate, 400 дней с 2025-10-12; сверка MEXC 0.05% (90 дн.), Kraken 0.09% (90 дн.); CoinGecko 0.04%
+MEMES SPX: Gate, 400 дней с 2025-10-12; сверка MEXC 0.07% (90 дн.), Kraken 0.12% (90 дн.); CoinGecko 0.07%
+MEMES TRUMP: Gate, 400 дней с 2025-10-12; сверка MEXC 0.03% (90 дн.), Kraken 0.09% (90 дн.); CoinGecko 0.18%
+MEMES BONK: Gate, 400 дней с 2025-10-12; сверка MEXC 0.08% (90 дн.), Kraken 0.07% (90 дн.); CoinGecko 0.38%
+MEMES FLOKI: Gate, 400 дней с 2025-10-12; сверка MEXC 0.08% (90 дн.), Kraken 0.15% (90 дн.); CoinGecko 0.43%
+MEMES WIF: Gate, 400 дней с 2025-10-12; сверка MEXC 0.05% (90 дн.), Kraken 0.09% (90 дн.); CoinGecko 0.14%
+MEMES FARTCOIN: Gate, 400 дней с 2025-10-12; сверка MEXC 0.07% (90 дн.), Kraken 0.1% (90 дн.); CoinGecko 0.00%
+MEMES BRETT MEXC ERR https://api.mexc.com/api/v3/klines?symbol=BRETTUSDT&interval=1d&limit=1000: HTTP Error 400: Bad Request
+MEMES BRETT: Gate, 400 дней с 2025-10-12; сверка нет второй биржи; CoinGecko 0.16%
+MEMES: 12 монет, 400 дней
+
+--- stderr ---
