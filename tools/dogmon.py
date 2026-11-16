@@ -55,7 +55,7 @@ try:
     from siteurl import site_url  # noqa: E402
 except Exception:  # dogmon.py скопирован без siteurl.py
     def site_url(site_dir=None):
-        return (_os.environ.get('SITE_URL') or 'https://allexst63.github.io/dog-monitor/').rstrip('/') + '/'
+        return (_os.environ.get('SITE_URL') or 'https://dog-monitor.github.io/').rstrip('/') + '/'
 SITE_URL = site_url()
 EXCHANGES = (('kraken', 'Kraken'), ('gate', 'Gate'), ('mexc', 'MEXC'), ('bingx', 'BingX'),
              ('coinw', 'CoinW'), ('digifinex', 'DigiFinex'), ('bitget', 'Bitget'))

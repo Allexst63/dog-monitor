@@ -15,7 +15,7 @@ import os
 import re
 import sys
 
-DEFAULT = 'https://allexst63.github.io/dog-monitor/'
+DEFAULT = 'https://dog-monitor.github.io/'   # с 16.11.2026 (до переноса — https://allexst63.github.io/dog-monitor/)
 HERE = os.path.dirname(os.path.abspath(__file__))
 PAGES = ('index.html', 'classic/index.html')   # страницы, в <head> которых стоит полный адрес сайта
 

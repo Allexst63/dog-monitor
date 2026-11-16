@@ -1,6 +1,6 @@
 # DOG Monitor · DOG Монитор
 
-**https://allexst63.github.io/dog-monitor/** — an unofficial tracker for **DOG•GO•TO•THE•MOON** (Bitcoin rune 840000:3):
+**https://dog-monitor.github.io/** — an unofficial tracker for **DOG•GO•TO•THE•MOON** (Bitcoin rune 840000:3):
 live price and full-history chart, an exchange-style order book across 7 exchanges (real prices, 0.0000001–0.0001 grouping,
 live updates, trades, depth, a plain “who’s stronger near the price” readout), TradingView-style charts (candles from 15 minutes to 1 week with RSI and MACD
 panes, DOG vs bitcoin since launch), the top 100 wallets with daily balances and average cost, how DOG is held,
@@ -25,12 +25,13 @@ the price chart and checks itself. The site opens instantly from the last saved 
   `git checkout design-classic -- index.html sw.js manifest.webmanifest og.jpg` и коммит (данные в `data/` не трогаются).
 
 ## Адрес dog-monitor.github.io
-Адрес сайта считается по имени репозитория (`tools/siteurl.py`, шаг «Адрес сайта» в workflows): репозиторий
-`dog-monitor/dog-monitor.github.io` (организация `dog-monitor`) публикуется на **https://dog-monitor.github.io/**. После переноса
-репозитория ссылки превью (в `index.html` и `classic/index.html`), проверка живого сайта, сигналы в Telegram и утреннее
-сообщение переключаются на новый адрес сами; старый адрес …/dog-monitor/ GitHub не перенаправляет. Секреты Actions
-(ключ Telegram-бота) переезжают вместе с репозиторием. Не создавать новый репозиторий `dog-monitor` в личном аккаунте:
-это отключает перенаправление старых ссылок GitHub на перенесённый репозиторий.
+16.11.2026 репозиторий перенесён из `Allexst63/dog-monitor` в организацию `dog-monitor` под именем `dog-monitor.github.io`
+и публикуется на **https://dog-monitor.github.io/**. Адрес сайта считается по имени репозитория (`tools/siteurl.py`, шаг
+«Адрес сайта» в workflows): ссылки превью (в `index.html` и `classic/index.html`), проверка живого сайта, сигналы в Telegram
+и утреннее сообщение переключаются сами. Старый адрес allexst63.github.io/dog-monitor/ GitHub не перенаправляет. Секреты
+Actions (ключ Telegram-бота) переехали вместе с репозиторием. Плановые задачи Claude обращаются к репозиторию по старому
+имени `Allexst63/dog-monitor` — GitHub его перенаправляет, а доступ задач настроен на него. Поэтому в личном аккаунте
+нельзя создавать новый репозиторий `dog-monitor`: это отключит перенаправление.
 
 ## Как устроено
 - `index.html` — весь сайт (одна страница, без сборки).
