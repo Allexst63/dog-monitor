@@ -59,6 +59,11 @@ def prepare(site):
     for d in (RAW, PREV, OUT, os.path.join(CFG, 'config')):
         os.makedirs(d, exist_ok=True)
     shutil.copy(os.path.join(HERE, 'dogmon.py'), os.path.join(BASE, 'dogmon.py'))
+    shutil.copy(os.path.join(HERE, 'siteurl.py'), os.path.join(BASE, 'siteurl.py'))
+    if not os.environ.get('SITE_URL'):
+        sys.path.insert(0, HERE)
+        from siteurl import site_url
+        os.environ['SITE_URL'] = site_url(site)
     shutil.copy(os.path.join(HERE, 'labels.json'), os.path.join(CFG, 'config', 'labels.json'))
     data = os.path.join(site, 'data')
     # сводки за последние ~3 дня: плановая сводка сравнивается со сводкой суточной давности (dogmon.load_prev)

@@ -51,7 +51,11 @@ ALERT_HOLDER = 20.0       # крупный холдер из топ-100 (не б
 ALERT_PRICE = 7.0         # цена за сутки изменилась на 7% и больше
 import os as _os, sys as _sys
 _sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
-from siteurl import site_url  # noqa: E402
+try:
+    from siteurl import site_url  # noqa: E402
+except Exception:  # dogmon.py скопирован без siteurl.py
+    def site_url(site_dir=None):
+        return (_os.environ.get('SITE_URL') or 'https://allexst63.github.io/dog-monitor/').rstrip('/') + '/'
 SITE_URL = site_url()
 EXCHANGES = (('kraken', 'Kraken'), ('gate', 'Gate'), ('mexc', 'MEXC'), ('bingx', 'BingX'),
              ('coinw', 'CoinW'), ('digifinex', 'DigiFinex'), ('bitget', 'Bitget'))
