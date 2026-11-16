@@ -1,9 +1,18 @@
 {
- "updated": "2026-11-16T16:13:23Z",
+ "updated": "2026-11-16T17:43:51Z",
  "items": [
   {
+   "title": "DOG climbs almost 12% as short-term momentum fuels high volatility",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6afb40da5ef7485f9ce076bdb62521ef&url=https%3a%2f%2ftradersunion.com%2fnews%2fcryptocurrency-news%2fshow%2f4256776-dog-surges-11-84percent-today-to%2f&c=15042329907802744933&mkt=en-us",
+   "src": "tradersunion",
+   "srcUrl": null,
+   "q": "\"DOG (Bitcoin)\"",
+   "d": "2026-11-15",
+   "ts": "2026-11-15T07:36Z"
+  },
+  {
    "title": "Dog (Bitcoin) Price (DOG)",
-   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6afb2ba5718a4cf19317f3c976814987&url=https%3a%2f%2fwww.binance.com%2fen%2fprice%2fdog-go-to-the-moon-rune&c=6031676019336856292&mkt=en-us",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6afb40d976fb4ee4ac72e4343ffdfe66&url=https%3a%2f%2fwww.binance.com%2fen%2fprice%2fdog-go-to-the-moon-rune&c=6031676019336856292&mkt=en-us",
    "src": "Binance",
    "srcUrl": null,
    "q": "\"DOG•GO•TO•THE•MOON\"",
@@ -12,7 +21,7 @@
   },
   {
    "title": "Will Dog break above $0.000834 resistance amid ongoing bullish momentum?",
-   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6afb2ba50f784a5b9583150ad377c4e7&url=https%3a%2f%2ftradersunion.com%2fnews%2fcryptocurrency-news%2fshow%2f4202624-dog-bitcoin-jumps-7-52percent-today%2f&c=13404781543527730121&mkt=en-us",
+   "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6afb40da5ef7485f9ce076bdb62521ef&url=https%3a%2f%2ftradersunion.com%2fnews%2fcryptocurrency-news%2fshow%2f4202624-dog-bitcoin-jumps-7-52percent-today%2f&c=13404781543527730121&mkt=en-us",
    "src": "tradersunion",
    "srcUrl": null,
    "q": "\"DOG (Bitcoin)\"",
@@ -24,7 +33,7 @@
  "stat": [
   "google \"DOG•GO•TO•THE•MOON\": 14",
   "google \"DOG (Bitcoin)\": 17",
-  "google \"C2 Blockchain\" DOG: 5",
+  "google \"C2 Blockchain\" DOG: 4",
   "google Leonidas DOG bitcoin runes: 10",
   "google \"$DOG\" bitcoin rune: 10",
   "google Bitcoin runes DOG exchange listing: 9",
