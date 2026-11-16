@@ -65,9 +65,10 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
     add(gotChart, 'Главная: график цены нарисован', 'Home: price chart is drawn');
     add(await page.evaluate(() => document.querySelectorAll('#p-overview .tile').length >= 2 && !!document.querySelector('#p-overview .sum')), 'Главная: плитки и «что нового» на месте', 'Home: tiles and “what’s new” are in place');
     await page.waitForTimeout(4000);                       // даём странице закончить своё онлайн-обновление
-    const fng = await page.evaluate(() => [...document.querySelectorAll('#fng-box .fng-g')].map(g => (g.querySelector('.gn') || {}).textContent || ''));
+    const fng = await page.evaluate(() => [...document.querySelectorAll('#fng-box .fng-g')].map(g => (g.querySelector('.gnum') || {}).textContent || ''));
+    const fngOrd = await page.evaluate(() => [...document.querySelectorAll('#fng-box .fng-g')].map(g => g.dataset.info).join(','));
     const fngTop = await page.evaluate(() => { const f = document.querySelector('#fng-box .fng'), h = document.querySelector('#p-overview .hero'); return !!f && !!h && f.getBoundingClientRect().top < h.getBoundingClientRect().top; });
-    add(fng.length === 3 && fng.filter(t => /^\d+$/.test(t)).length >= 2 && fngTop, `Главная: «Страх и жадность» сверху, число в дуге (DOG ${fng[0] || '—'}, alternative.me ${fng[1] || '—'}, CoinMarketCap ${fng[2] || '—'})`, `Home: Fear & Greed on top, the number inside the gauge (DOG ${fng[0] || '—'}, alternative.me ${fng[1] || '—'}, CoinMarketCap ${fng[2] || '—'})`);
+    add(fng.length === 3 && fng.filter(t => /^\d+$/.test(t)).length >= 2 && fngTop && fngOrd === 'fng_m,fng_c,fng_d', `Главная: «Страх и жадность» сверху, число в дуге (alternative.me ${fng[0] || '—'}, CoinMarketCap ${fng[1] || '—'}, DOG ${fng[2] || '—'})`, `Home: Fear & Greed on top, the number inside the gauge (alternative.me ${fng[0] || '—'}, CoinMarketCap ${fng[1] || '—'}, DOG ${fng[2] || '—'})`);
     // график на «Главном»: свечи по интервалам (15м · 1ч · 4ч · 1д · 1н) и переключатель «свечи / линия»; 1 млн DOG и капитализация
     {
       const h = await page.evaluate(() => ({ tf: document.querySelectorAll('#p-overview [data-htf]').length, md: document.querySelectorAll('#p-overview [data-hmode]').length, m1: (document.querySelector('#h1m') || {}).textContent || '', cap: (document.querySelector('#hcap2') || {}).textContent || '', rays: getComputedStyle(document.querySelector('#p-overview .hero'), '::before').display }));
@@ -76,6 +77,22 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
       await page.evaluate(() => { const b = document.querySelector('#p-overview [data-hmode="candles"]'); if (b) b.click(); });
       const cand = await wait(() => document.querySelector('#p-overview [data-hmode="candles"][aria-pressed="true"]') && !!document.querySelector('#pchart canvas'), 8000);
       add(h.tf === 5 && h.md === 2 && line && cand && /\d/.test(h.m1) && /\d/.test(h.cap) && h.rays === 'none', `Главная: интервалы свечей (${h.tf}), «свечи / линия» переключаются, 1 млн DOG ${h.m1.trim()}, капитализация ${h.cap.trim()}`, `Home: candle intervals (${h.tf}), candles/line toggle works, 1M DOG ${h.m1.trim()}, market cap ${h.cap.trim()}`, JSON.stringify({ line, cand, rays: h.rays }));
+    }
+    {
+      await page.evaluate(() => { const e = document.querySelector('#pchart'); if (e) e.scrollIntoView({ block: 'center' }); });
+      await page.waitForTimeout(400);
+      const b = await page.locator('#pchart').boundingBox();
+      let r = null;
+      if (b) {
+        await page.touchscreen.tap(b.x + b.width * 0.35, b.y + b.height * 0.45);
+        await page.waitForTimeout(500);
+        r = await page.evaluate(() => ({ lab: document.querySelector('#hlabel').textContent, now: !document.querySelector('#hnow').hidden, leg: (document.querySelector('#hleg') || {}).textContent || '' }));
+        await page.evaluate(() => { const n = document.querySelector('#hnow'); if (n) n.click(); });
+        await page.waitForTimeout(300);
+        r.back = await page.evaluate(() => document.querySelector('#hlabel').textContent + '|' + document.querySelector('#hnow').hidden);
+      }
+      await page.evaluate(() => window.scrollTo(0, 0));
+      add(!!r && /^(с|since) /.test(r.lab) && r.now && /(Макс|H) \d/.test(r.leg) && /^(за сутки|24h)\|true$/.test(r.back), 'Главная: нажатие на свечу закрепляет её цену, «Сейчас» возвращает текущую', 'Home: tapping a candle pins its price, “Now” returns to the current one', r ? `${r.lab}; ${r.leg.slice(0, 60)}` : 'графика нет');
     }
     const st = await page.evaluate(() => ({ c: document.querySelector('#status').className, t: document.querySelector('#status-t').textContent }));
     add(/\d\d:\d\d/.test(st.t), `Статус в шапке показывает время данных («${st.t.trim().slice(0, 40)}»)`, `Header status shows the data time (“${st.t.trim().slice(0, 40)}”)`);
@@ -108,7 +125,7 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
     }
     // индекс DOG везде одно и то же число: шкала на «Главном», «Сейчас» в разборе и сегодняшняя точка графика
     {
-      const g = await page.evaluate(() => { const x = document.querySelectorAll('#fng-box .fng-g .gn'); return x[0] ? x[0].textContent.trim() : ''; });
+      const g = await page.evaluate(() => { const x = document.querySelector('#fng-box [data-info="fng_d"] .gnum'); return x ? x.textContent.trim() : ''; });
       await page.evaluate(() => { const b = document.querySelector('[data-info="fng_d"]'); if (b) b.click(); });
       await page.waitForTimeout(800);
       const k = await page.evaluate(() => ({ now: ((document.querySelector('#sheet-body .kv dd b') || {}).textContent || '').trim(), pt: ((document.querySelector('#sheet-body .fic-read .v b') || {}).textContent || '').trim(), d: ((document.querySelector('#sheet-body .fic-read .d') || {}).textContent || '').trim() }));
@@ -117,7 +134,7 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
       const now2 = await page.evaluate(() => ((document.querySelector('#sheet-body [data-fng-now="d"] b') || {}).textContent || '').trim());
       await page.evaluate(() => { const c = document.querySelector('#sheet [data-close]'); if (c) c.click(); });
       await page.waitForTimeout(450);
-      const g2 = await page.evaluate(() => { const x = document.querySelectorAll('#fng-box .fng-g .gn'); return x[0] ? x[0].textContent.trim() : ''; });
+      const g2 = await page.evaluate(() => { const x = document.querySelector('#fng-box [data-info="fng_d"] .gnum'); return x ? x.textContent.trim() : ''; });
       add(!!g && g === k.now && g === k.pt && g2 === now2, `Индекс DOG одинаковый на шкале, в разборе и на графике (${g || '—'} / ${k.now || '—'} / ${k.pt || '—'}; после закрытия ${g2 || '—'} / ${now2 || '—'})`, `DOG index is the same on the gauge, in the breakdown and on the chart (${g || '—'} / ${k.now || '—'} / ${k.pt || '—'}; after closing ${g2 || '—'} / ${now2 || '—'})`, k.d);
     }
     // крупные заявки из «Что нового» — их потом ищем в сводном стакане
@@ -203,9 +220,21 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
     }
     {
       const f = await page.evaluate(() => ({ rows: document.querySelectorAll('#fngc-sec .fngr').length, paths: [...document.querySelectorAll('#f3plot path')].filter(p => (p.getAttribute('d') || '').length > 100).length }));
-      let read = '';
-      if (f.paths >= 2) { await page.evaluate(() => { const e = document.querySelector('#f3plot'); if (e) e.scrollIntoView({ block: 'center' }); }); await page.waitForTimeout(300); const b = await page.locator('#f3plot').boundingBox(); if (b) { await page.touchscreen.tap(b.x + b.width * 0.3, b.y + b.height / 2); await page.waitForTimeout(300); read = await page.evaluate(() => (document.querySelector('#f3read') || {}).textContent || ''); } }
-      add(f.rows === 3 && f.paths >= 2 && /DOG\s*\d/.test(read) && !/Сегодня|Today/.test(read), `Графики: «Страх и жадность» — три строки и общий график, нажатие показывает день`, `Charts: Fear & Greed — three rows and a shared chart; a tap shows that day`, `${f.rows} строки, ${f.paths} линии; ${read.replace(/\s+/g, ' ').slice(0, 60)}`);
+      let read = '', sh = null;
+      if (f.paths >= 2) {
+        await page.evaluate(() => { const e = document.querySelector('#f3plot'); if (e) e.scrollIntoView({ block: 'center' }); }); await page.waitForTimeout(300);
+        const b = await page.locator('#f3plot').boundingBox();
+        if (b) {
+          await page.touchscreen.tap(b.x + b.width * 0.3, b.y + b.height / 2); await page.waitForTimeout(900);
+          sh = await page.evaluate(() => { const pl = document.querySelector('#sheet-body .f3s-plot'); if (!pl) return null; const r = pl.getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, h: r.height, paths: [...pl.querySelectorAll('path')].filter(p => (p.getAttribute('d') || '').length > 100).length, read: (document.querySelector('#sheet-body .f3s-read') || {}).textContent || '' }; });
+          if (sh) {
+            await page.touchscreen.tap(sh.x + sh.w * 0.6, sh.y + sh.h / 2); await page.waitForTimeout(300);
+            read = await page.evaluate(() => (document.querySelector('#sheet-body .f3s-read') || {}).textContent || '');
+          }
+          await page.evaluate(() => { const c = document.querySelector('#sheet [data-close]'); if (c) c.click(); }); await page.waitForTimeout(450);
+        }
+      }
+      add(f.rows === 3 && f.paths >= 2 && !!sh && sh.h >= 180 && sh.paths >= 3 && /DOG\s*\d/.test(read) && !/^(Сегодня|Today)/.test(read.trim()), `Графики: «Страх и жадность» — три строки и общий график; нажатие открывает историю трёх индексов, там нажатие показывает день`, `Charts: Fear & Greed — three rows and a shared chart; a tap opens the history of all three, where a tap shows that day`, `${f.rows} строки, ${f.paths} линии; ${sh ? `лист ${Math.round(sh.h)} px, ${sh.paths} линии; ` : 'листа нет; '}${read.replace(/\s+/g, ' ').slice(0, 60)}`);
     }
     add(await page.evaluate(() => !document.querySelector('#p-charts .tv-wait')), 'Графики: ничего не «зависло» на загрузке', 'Charts: nothing is stuck loading');
     add(await noOverflow(), 'Графики: ничего не вылезает за экран телефона', 'Charts: nothing overflows the phone screen');
@@ -249,6 +278,20 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
 
     // 5. новости, история
     add(await page.evaluate(() => !document.querySelector('#tabbar [data-tab="news"]')), 'Вкладки «Новости» нет (убрана)', 'No “News” tab (removed)');
+    {
+      const tb = await page.evaluate(() => { const bs = [...document.querySelectorAll('#tabbar button[data-tab]')]; const cur = (document.querySelector('#tabbar [aria-selected="true"]') || {}).dataset; return { cur: cur && cur.tab, b: bs.map(b => { const r = b.getBoundingClientRect(); return [b.dataset.tab, r.left + r.width / 2, r.top + r.height / 2]; }) }; });
+      let after = '';
+      if (tb.b.length >= 4) {
+        const from = tb.b.find(x => x[0] === tb.cur) || tb.b[0], to = tb.b.find(x => x[0] !== tb.cur && x !== from && Math.abs(x[1] - from[1]) > 120) || tb.b[tb.b.length - 1];
+        await page.evaluate(([x, y]) => { const t = document.elementFromPoint(x, y); t.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerId: 31, pointerType: 'touch', isPrimary: true, clientX: x, clientY: y })); }, [from[1], from[2]]);
+        for (let k = 1; k <= 8; k++) await page.evaluate(([x, y]) => document.querySelector('#tabbar').dispatchEvent(new PointerEvent('pointermove', { bubbles: true, pointerId: 31, pointerType: 'touch', isPrimary: true, clientX: x, clientY: y })), [from[1] + (to[1] - from[1]) * k / 8, from[2]]);
+        await page.evaluate(([x, y]) => document.querySelector('#tabbar').dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: 31, pointerType: 'touch', isPrimary: true, clientX: x, clientY: y })), [to[1], to[2]]);
+        await page.waitForTimeout(700);
+        after = await page.evaluate(() => (document.querySelector('#tabbar [aria-selected="true"]') || {}).dataset.tab || '');
+        add(after === to[0] && !!(await page.evaluate(() => document.querySelector('#tabbar .tb-ind'))), 'Нижнее меню: зажать и провести пальцем — открывается раздел под пальцем', 'Bottom menu: press and slide — the section under the finger opens', `${tb.cur} → ${after}`);
+        await tab(tb.cur || 'overview');
+      }
+    }
     await page.evaluate(() => { const b = document.querySelector('[data-tab="history"]'); if (b) b.click(); });
     await page.waitForTimeout(600);
     add(await page.evaluate(() => document.querySelectorAll('#p-history tbody tr').length >= 3), 'История: список обновлений показан', 'History: the list of updates is shown');

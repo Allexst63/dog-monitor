@@ -4,9 +4,9 @@
 // data/*.json: сначала сеть, при сбое — последняя сохранённая копия (страница и сама хранит последние данные).
 // Другие страницы сайта (например, /classic/ — прежний вид) — из сети, их не подменяем главной страницей.
 // Запросы к биржам и DOG DATA (другие сайты) не трогаем.
-const CACHE = 'dogmon-v4';
+const CACHE = 'dogmon-v5';
 const SHELL = new URL('./', self.location).href;
-const CORE = ['manifest.webmanifest', 'favicon.svg', 'icons/moon.svg', 'fonts/inter-400.woff', 'fonts/inter-500.woff', 'fonts/inter-600.woff', 'fonts/inter-700.woff', 'fonts/inter-display-600.woff', 'fonts/inter-display-700.woff', 'fonts/inter-mark.woff', 'icons/icon-192.png', 'icons/apple-touch-icon.png', 'vendor/lightweight-charts-5.0.8.js'];
+const CORE = ['manifest.webmanifest', 'favicon.svg', 'icons/moon.svg', 'icons/c2-mask.png', 'fonts/inter-400.woff', 'fonts/inter-500.woff', 'fonts/inter-600.woff', 'fonts/inter-700.woff', 'fonts/inter-display-600.woff', 'fonts/inter-display-700.woff', 'fonts/inter-mark.woff', 'icons/icon-192.png', 'icons/apple-touch-icon.png', 'vendor/lightweight-charts-5.0.8.js'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => Promise.all(
