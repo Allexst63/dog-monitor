@@ -98,7 +98,7 @@ jobs:
           python3 tools/siteurl.py .
           git config user.name "DOG Monitor bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data index.html
+          git add data index.html classic/index.html
           if git diff --cached --quiet; then echo "нет изменений"; exit 0; fi
           ID=$(python3 -c "import json;print(json.load(open('data/version.json'))['id'])")
           git commit -m "Сводка $ID (авто, ${{ github.event.inputs.mode || 'full' }})"
@@ -108,14 +108,16 @@ jobs:
             if ! git rebase origin/main; then
               # пока шёл запуск, в main уже легли другие данные: в спорных файлах data/ оставляем данные
               # этого запуска (они свежее), всё остальное берём из main
-              # (index.html этот запуск меняет только ссылками превью — там берём версию из main и пересчитываем адрес)
+              # (страницы этот запуск меняет только ссылками превью — там берём версию из main и пересчитываем адрес)
+              pages=
               for f in $(git diff --name-only --diff-filter=U); do
                 case "$f" in
                   data/*) git checkout --theirs -- "$f" ;;
-                  *) git checkout --ours -- "$f"; [ "$f" = "index.html" ] && python3 tools/siteurl.py . ;;
+                  *) git checkout --ours -- "$f"; pages=1 ;;
                 esac
                 git add -- "$f"
               done
+              if [ -n "$pages" ]; then python3 tools/siteurl.py . && git add -- data/site.json index.html classic/index.html; fi
               GIT_EDITOR=true git rebase --continue || { git rebase --abort; exit 1; }
             fi
           done

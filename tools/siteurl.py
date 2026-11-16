@@ -8,7 +8,8 @@
     python3 tools/siteurl.py <папка сайта>
 
 Запускается в GitHub Actions перед выкладкой: считает адрес по имени репозитория (GITHUB_REPOSITORY) и, если он
-поменялся, записывает его в data/site.json и в ссылки превью в index.html (og:url, og:image, hreflang)."""
+поменялся, записывает его в data/site.json и в ссылки превью (og:url, og:image, hreflang) в index.html и в
+classic/index.html (прежний вид сайта)."""
 import json
 import os
 import re
@@ -16,6 +17,7 @@ import sys
 
 DEFAULT = 'https://allexst63.github.io/dog-monitor/'
 HERE = os.path.dirname(os.path.abspath(__file__))
+PAGES = ('index.html', 'classic/index.html')   # страницы, в <head> которых стоит полный адрес сайта
 
 
 def from_repo(repo):
@@ -55,16 +57,21 @@ def main(site):
             json.dump({'url': url}, f, ensure_ascii=False)
         changed.append('data/site.json')
     # ссылки превью в <head>: заменяем только адреса github.io, остальное не трогаем
-    ip = os.path.join(site, 'index.html')
-    with open(ip, encoding='utf-8') as f:
-        html = f.read()
-    head_end = html.find('</head>')
-    head, rest = html[:head_end], html[head_end:]
-    new_head = re.sub(r'https://[A-Za-z0-9-]+\.github\.io/(?:[A-Za-z0-9._-]+/)?(?=[?"o])', url, head)
-    if new_head != head:
-        with open(ip, 'w', encoding='utf-8') as f:
-            f.write(new_head + rest)
-        changed.append('index.html')
+    for page in PAGES:
+        ip = os.path.join(site, page)
+        if not os.path.exists(ip):
+            continue
+        with open(ip, encoding='utf-8') as f:
+            html = f.read()
+        head_end = html.find('</head>')
+        if head_end < 0:
+            continue
+        head, rest = html[:head_end], html[head_end:]
+        new_head = re.sub(r'https://[A-Za-z0-9-]+\.github\.io/(?:[A-Za-z0-9._-]+/)?(?=[?"o])', url, head)
+        if new_head != head:
+            with open(ip, 'w', encoding='utf-8') as f:
+                f.write(new_head + rest)
+            changed.append(page)
     print(f'SITE_URL {url}' + (f' — обновлено: {", ".join(changed)}' if changed else ' — без изменений'))
 
 

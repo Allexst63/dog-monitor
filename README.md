@@ -27,8 +27,10 @@ the price chart and checks itself. The site opens instantly from the last saved 
 ## Адрес dog-monitor.github.io
 Адрес сайта считается по имени репозитория (`tools/siteurl.py`, шаг «Адрес сайта» в workflows): репозиторий
 `dog-monitor/dog-monitor.github.io` (организация `dog-monitor`) публикуется на **https://dog-monitor.github.io/**. После переноса
-репозитория ссылки превью, проверка живого сайта, сигналы в Telegram и утреннее сообщение переключаются на новый адрес сами;
-старый адрес …/dog-monitor/ GitHub не перенаправляет.
+репозитория ссылки превью (в `index.html` и `classic/index.html`), проверка живого сайта, сигналы в Telegram и утреннее
+сообщение переключаются на новый адрес сами; старый адрес …/dog-monitor/ GitHub не перенаправляет. Секреты Actions
+(ключ Telegram-бота) переезжают вместе с репозиторием. Не создавать новый репозиторий `dog-monitor` в личном аккаунте:
+это отключает перенаправление старых ссылок GitHub на перенесённый репозиторий.
 
 ## Как устроено
 - `index.html` — весь сайт (одна страница, без сборки).
