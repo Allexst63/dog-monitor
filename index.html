@@ -72,8 +72,9 @@
   --space-0:#F7F2EA; --space-1:#FFFFFF; --space-2:#FFFFFF;
   --chart-line:var(--dog);
   --fz1:#D9393E; --fz2:#E07A20; --fz3:#D6AC24; --fz4:#84B52F; --fz5:#1FA466;
-  --hero-panel:#F3ECDF; --hero-edge:rgba(120,92,52,.11); --hero-line:rgba(120,92,52,.14);
-  --c2-bg:#FFFFFF; --c2-ink:#47707A; --c2-edge:rgba(23,25,31,.10);
+  --hero-panel:#F8F4EC; --hero-edge:rgba(120,92,52,.085); --hero-line:rgba(120,92,52,.11);
+  --c2-bg:#FFFFFF; --c2-ink:#47707A; --c2-edge:rgba(23,25,31,.10); --c2-img:url(icons/c2-lion-light.png);
+  --f3c:#6F5BD0;
   --shadow-card:0 1px 0 rgba(23,25,31,.03),0 10px 30px -22px rgba(23,25,31,.35);
   --shadow-hero:0 18px 40px -26px rgba(23,25,31,.45);
   --shadow-pop:0 28px 70px -24px rgba(23,25,31,.45);
@@ -100,8 +101,9 @@
     --hero-a:#1B2234; --hero-b:#121723; --ray:transparent;
     --space-0:#141821; --space-1:#1A1F2A; --space-2:#1F2531;
     --fz1:#E54348; --fz2:#EA832A; --fz3:#E6BC33; --fz4:#93C63A; --fz5:#2BB677;
-    --hero-panel:rgba(6,9,15,.34); --hero-edge:rgba(255,255,255,.05); --hero-line:rgba(255,255,255,.075);
-    --c2-bg:#16212B; --c2-ink:#93BCC6; --c2-edge:rgba(147,188,198,.2);
+    --hero-panel:rgba(6,9,15,.28); --hero-edge:rgba(255,255,255,.05); --hero-line:rgba(255,255,255,.07);
+    --c2-bg:#16212B; --c2-ink:#93BCC6; --c2-edge:rgba(147,188,198,.2); --c2-img:url(icons/c2-lion-dark.png);
+    --f3c:#A291F2;
     --shadow-card:0 1px 0 rgba(255,255,255,.02) inset,0 12px 32px -24px rgba(0,0,0,.9);
     --shadow-hero:0 22px 50px -28px rgba(0,0,0,.95);
     --shadow-pop:0 30px 80px -20px rgba(0,0,0,.85);
@@ -124,8 +126,9 @@
   --hero-a:#1B2234; --hero-b:#121723; --ray:transparent;
   --space-0:#141821; --space-1:#1A1F2A; --space-2:#1F2531;
   --fz1:#E54348; --fz2:#EA832A; --fz3:#E6BC33; --fz4:#93C63A; --fz5:#2BB677;
-  --hero-panel:rgba(6,9,15,.34); --hero-edge:rgba(255,255,255,.05); --hero-line:rgba(255,255,255,.075);
-  --c2-bg:#16212B; --c2-ink:#93BCC6; --c2-edge:rgba(147,188,198,.2);
+  --hero-panel:rgba(6,9,15,.28); --hero-edge:rgba(255,255,255,.05); --hero-line:rgba(255,255,255,.07);
+  --c2-bg:#16212B; --c2-ink:#93BCC6; --c2-edge:rgba(147,188,198,.2); --c2-img:url(icons/c2-lion-dark.png);
+  --f3c:#A291F2;
   --shadow-card:0 1px 0 rgba(255,255,255,.02) inset,0 12px 32px -24px rgba(0,0,0,.9);
   --shadow-hero:0 22px 50px -28px rgba(0,0,0,.95);
   --shadow-pop:0 30px 80px -20px rgba(0,0,0,.85);
@@ -1520,9 +1523,6 @@ button.fng-head:hover .ico,button.ch-hbtn:hover .ico{transform:translateX(2px);c
 .hleg b{color:var(--ink);font-weight:600}
 .hleg .up{color:var(--up);font-weight:600} .hleg .down{color:var(--down);font-weight:600}
 .hleg[hidden]{display:none}
-/* значок C2 Blockchain: присланная картинка как маска — белый значок в светлой теме, тёмный в тёмной */
-.tre-logo.c2{background:var(--c2-bg);border:1px solid var(--c2-edge)}
-.tre-logo.c2 i{display:block;width:74%;height:74%;background:var(--c2-ink);-webkit-mask:url(icons/c2-mask.png) center/contain no-repeat;mask:url(icons/c2-mask.png) center/contain no-repeat}
 .tre-logo.c2.lg{width:58px;height:58px;border-radius:16px;flex:none}
 .tre-hd{display:flex;align-items:center;gap:14px;margin-bottom:4px}
 .tre-hd p{margin:0}
@@ -1538,6 +1538,98 @@ button.fng-head:hover .ico,button.ch-hbtn:hover .ico{transform:translateX(2px);c
 .tabbar button.hot{color:var(--dog-ink)}
 @media (max-width:899px) and (orientation:landscape) and (max-height:500px){.tb-ind{top:3px;bottom:3px}}
 @media (prefers-reduced-motion:reduce){.tb-ind{transition:none}}
+
+/* ===== v8 ===== */
+/* «Страх и жадность» на «Главном»: компактнее. Телефон — три шкалы в ряд, заголовок одной строкой */
+.fng .fng-head,.h-fng .fng .fng-head,button.ch-hbtn{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"t p i"}
+.fng .fng-head p,.h-fng .fng .fng-head p,.ch-hbtn .note{text-align:right;font-size:11px}
+.fng,.h-fng .fng{padding:9px 6px 6px}
+.fng .fng-head,.h-fng .fng .fng-head{padding:0 8px 4px 10px;margin:0}
+.fng-g{padding:4px 2px 2px}
+.fng-g .gauge,.h-fng .fng-g .gauge{max-width:80px}
+.fng-g .gnum,.h-fng .fng-g .gnum{font-size:20px}
+.fng-g .gk{font-size:11.5px;line-height:1.2;margin-top:2px}
+.fng-g .gt{font-size:11.5px;line-height:1.2}
+.fng-g .gs{font-size:10.5px;line-height:1.25}
+/* iPad и компьютер: шкала слева, подписи справа — карточка вдвое ниже, график помещается на первом экране */
+@media (min-width:700px){
+  .fng .fng-head p,.h-fng .fng .fng-head p,.ch-hbtn .note{font-size:12px}
+  .h-fng .fng{padding:12px 14px 10px}
+  .h-fng .fng .fng-head{padding:0 2px 6px}
+  .h-fng .fng-3{grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
+  .h-fng .fng-g{display:grid;grid-template-columns:76px minmax(0,1fr);grid-auto-rows:auto;column-gap:12px;row-gap:0;align-items:center;align-content:center;text-align:left;padding:4px 14px}
+  .h-fng .fng-g .gauge{grid-column:1;grid-row:1 / span 4;width:76px;max-width:76px;align-self:center}
+  .h-fng .fng-g .gnum{font-size:20px}
+  .h-fng .fng-g .gk,.h-fng .fng-g .gt,.h-fng .fng-g .gs,.h-fng .fng-g .gy{grid-column:2;margin:0;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .h-fng .fng-g .gk{font-size:13px;line-height:1.3}
+  .h-fng .fng-g .gt{font-size:13px;line-height:1.3}
+  .h-fng .fng-g .gs{display:block;font-size:12px;line-height:1.3}
+  .h-fng .fng-g .gy{display:block;font-size:11.5px;line-height:1.3;color:var(--ink-3)}
+}
+/* цена: компактная подложка — строка «цена · изменение», ниже одной строкой 1 млн DOG и капитализация */
+.hero{padding:12px 12px 10px}
+.hero-head{padding:8px 12px 9px;border-radius:16px}
+.hero .hero-pair{display:flex;align-items:center;gap:6px;min-height:22px;font-size:12px}
+.hero-pair .live{margin-left:2px}
+.hero.scrub .hero-pair .live{display:none}
+.hero-pair .hnow{margin-left:auto}
+.hero-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:2px}
+.hero .hero-price{font-size:34px;line-height:1.08;margin:0;letter-spacing:-.03em}
+.hero-row .hero-chg{display:flex;flex-direction:column;align-items:flex-end;gap:3px;margin:0;flex:none;max-width:48%;text-align:right;font-size:12px;line-height:1.25}
+.hero-head .hstats{display:flex;gap:0;margin-top:7px;padding-top:7px;border-top:1px solid var(--hero-line)}
+.hero-head .hstats > div,.hero-head .hstats > div + div{display:flex;flex-direction:row;align-items:baseline;gap:6px;flex:1 1 auto;min-width:0;padding:0;border:0}
+.hero-head .hstats > div + div{border-left:1px solid var(--hero-line);padding-left:12px;margin-left:12px;justify-content:flex-end}
+.hero-head .hstats span{font-size:11.5px}
+.hero-head .hstats b{font-size:15px}
+.hero-ctl{margin-top:9px}
+@media (max-width:699px){.hero-ctl .periods button{padding:5px 0}}
+.hero .pchart.lw{height:238px;margin-top:4px}
+.hero-foot{margin-top:2px}
+/* выбранный момент: спокойнее — тонкая тёплая рамка, цифры чуть теплее обычного */
+.hero.scrub .hero-head{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--dog) 22%,var(--hero-edge))}
+.hero.scrub .hero-price,.hero.scrub .hstats b{color:color-mix(in srgb,var(--dog-ink) 42%,var(--ink))}
+@media (min-width:700px){
+  .hero{padding:14px 16px 12px}
+  .hero-head{padding:12px 18px;flex-direction:row;align-items:center!important;justify-content:space-between;gap:16px}
+  .hero-row{justify-content:flex-start;gap:14px}
+  .hero-row .hero-chg{flex-direction:row;align-items:center;gap:8px;max-width:none;font-size:12.5px}
+  .hero .hero-price{font-size:44px}
+  .hero-head .hstats{display:flex;align-self:stretch;align-items:center;gap:22px;margin:0;padding:0;border-top:0}
+  .hero-head .hstats > div,.hero-head .hstats > div + div{flex-direction:column;align-items:flex-end;gap:1px;flex:none;padding:4px 0 4px 22px;margin:0;border-left:1px solid var(--hero-line)}
+  .hero-head .hstats b{font-size:18px}
+  .hero .pchart.lw{height:280px}
+}
+@media (min-width:1100px){
+  .hero .hero-price{font-size:48px}
+  .hero .pchart.lw{height:312px}
+}
+/* подпись свечи — над свечами (там оставлена свободная полоса), график не закрывает */
+.hleg{background:color-mix(in srgb,var(--hero-a) 82%,transparent);padding:2px 6px 3px;left:0;border-radius:8px}
+/* значок C2 Blockchain: картинка по центру — светлая или тёмная по теме; в листе — по центру над текстом */
+.tre-logo.c2{background:var(--c2-bg) var(--c2-img) center / 76% no-repeat;border:1px solid var(--c2-edge)}
+.tre-hd{flex-direction:column;align-items:center;text-align:center;gap:12px;margin:2px 0 10px}
+.tre-logo.c2.lg{width:72px;height:72px;border-radius:20px;background-size:74%}
+.tre-hd p{max-width:34em}
+/* «Кошельки»: плавающий блок — без своей рамки снаружи */
+.colf{min-width:0}
+/* история трёх индексов: тонкие линии, выбранный индекс — ярко, остальные бледно; точки минимума и максимума */
+.f3s-l{transition:opacity .2s ease,stroke-width .2s ease}
+.f3s-g.fx .f3s-l{opacity:.14}
+.f3s-g.fx-m .f3s-l[data-k="m"],.f3s-g.fx-c .f3s-l[data-k="c"],.f3s-g.fx-d .f3s-l[data-k="d"]{opacity:1;stroke-width:2.2px}
+.f3s-p{position:absolute;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;box-shadow:0 0 0 1.5px var(--surface);cursor:pointer;z-index:1;transition:transform .15s ease,opacity .2s ease}
+.f3s-p::before{content:'';position:absolute;left:-10px;top:-10px;right:-10px;bottom:-10px;border-radius:50%}
+.f3s-p.on{transform:scale(1.5);box-shadow:0 0 0 1.5px var(--surface),0 0 0 3px var(--ink);z-index:3}
+.f3s-g.fx .f3s-p,.f3s-g.fx .f3s-m{opacity:.2}
+.f3s-g.fx-m .f3s-p[data-k="m"],.f3s-g.fx-c .f3s-p[data-k="c"],.f3s-g.fx-d .f3s-p[data-k="d"],.f3s-g.fx-m .f3s-m[data-k="m"],.f3s-g.fx-c .f3s-m[data-k="c"],.f3s-g.fx-d .f3s-m[data-k="d"]{opacity:1}
+button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transition:border-color .2s,box-shadow .2s,opacity .2s}
+.f3s-c.on{border-color:var(--sc);box-shadow:inset 0 0 0 1px var(--sc)}
+.f3s-c.dim{opacity:.55}
+.f3s-v{display:inline-flex;flex-direction:column;align-items:flex-end;border:0;background:transparent;color:inherit;font:inherit;padding:3px 6px;margin:-3px -6px;border-radius:9px;cursor:pointer;text-align:right}
+.f3s-v:hover{background:var(--surface-2)}
+.f3s-v[aria-pressed="true"]{background:var(--surface-3)}
+.f3s-v b{font-weight:600;text-decoration:underline dotted color-mix(in srgb,var(--ink-3) 70%,transparent);text-underline-offset:3px}
+.f3s-v span{display:block;font-size:11px;color:var(--ink-3);white-space:nowrap}
+.f3s-tn{margin-top:6px}
 </style>
 </head>
 <body>
@@ -2430,7 +2522,7 @@ button.fng-head:hover .ico,button.ch-hbtn:hover .ico{transform:translateX(2px);c
       autoSize: true,
       layout: { background: { type: 'solid', color: 'rgba(0,0,0,0)' }, textColor: C.ink3, fontSize: 11, fontFamily: '"Inter", system-ui, sans-serif', attributionLogo: true },
       grid: { vertLines: { visible: false }, horzLines: { color: hexA(C.line, 0.5) } },
-      rightPriceScale: { borderVisible: false, entireTextOnly: true, scaleMargins: { top: 0.12, bottom: candles ? 0.2 : 0.08 } },
+      rightPriceScale: { borderVisible: false, entireTextOnly: true, scaleMargins: { top: candles ? (wide ? 0.14 : 0.21) : 0.1, bottom: candles ? 0.2 : 0.08 } },
       timeScale: { borderVisible: false, timeVisible: intra, secondsVisible: false, fixLeftEdge: true, fixRightEdge: true, rightOffset: 0, lockVisibleTimeRangeOnResize: true, tickMarkFormatter: tickFmt },
       crosshair: { mode: 0, vertLine: xh, horzLine: xh },
       handleScroll: { mouseWheel: false, pressedMouseMove: true, horzTouchDrag: true, vertTouchDrag: false },
@@ -3009,9 +3101,8 @@ button.fng-head:hover .ico,button.ch-hbtn:hover .ico{transform:translateX(2px);c
     const hero = `<section class="hero" aria-label="${T('Цена DOG', 'DOG price')}">
         <div class="hero-head">
           <div class="hero-main">
-            <div class="hero-pair">${T('DOG · цена в долларах', 'DOG · price in US dollars')}<span class="live" id="hlive" hidden><i></i>${T('онлайн', 'live')}</span></div>
-            <div class="hero-price tnum${EN ? ' en' : ''}" id="hprice">${fp(p0)}${RU ? '<small>$</small>' : ''}</div>
-            <div class="hero-chg"><span class="pill ${dir(c0)}" id="hpill">${pillTxt(c0)}</span><span id="hlabel">${T('за сутки', '24h')}</span><button type="button" class="hnow" id="hnow" hidden>${ico('refresh')}${T('Сейчас', 'Now')}</button></div>
+            <div class="hero-pair"><span>${T('DOG · цена в долларах', 'DOG · price in US dollars')}</span><span class="live" id="hlive" hidden><i></i>${T('онлайн', 'live')}</span><button type="button" class="hnow" id="hnow" hidden>${ico('refresh')}${T('Сейчас', 'Now')}</button></div>
+            <div class="hero-row"><div class="hero-price tnum${EN ? ' en' : ''}" id="hprice">${fp(p0)}${RU ? '<small>$</small>' : ''}</div><div class="hero-chg"><span class="pill ${dir(c0)}" id="hpill">${pillTxt(c0)}</span><span id="hlabel">${T('за сутки', '24h')}</span></div></div>
           </div>
           ${heroStats(p0)}
         </div>
@@ -3163,7 +3254,7 @@ button.fng-head:hover .ico,button.ch-hbtn:hover .ico{transform:translateX(2px);c
     };
     const mk = T('Крипторынок', 'Crypto market');
     return `<section class="fng" aria-label="${T('Страх и жадность', 'Fear and greed')}">
-        <button type="button" class="fng-head" data-info="fng_all" aria-label="${T('Страх и жадность: история всех трёх индексов', 'Fear and greed: history of all three indices')}"><h3>${T('Страх и жадность', 'Fear &amp; Greed')}</h3><p>${T('0 — страх · 100 — жадность', '0 fear · 100 greed')}</p>${ico('chev')}</button>
+        <button type="button" class="fng-head" data-info="fng_all" aria-label="${T('Страх и жадность: история всех трёх индексов', 'Fear and greed: history of all three indices')}"><h3>${T('Страх и жадность', 'Fear &amp; Greed')}</h3><p>${T('0 страх · 100 жадность', '0 fear · 100 greed')}</p>${ico('chev')}</button>
         <div class="fng-3">${g('fng_m', m ? m.v : null, FNG_A, mk, 'alternative.me', m && m.prev)}${g('fng_c', c ? c.v : null, FNG_C, mk, 'CoinMarketCap', c && c.prev)}${g('fng_d', d && d.v != null ? d.v : null, FNG_A, 'DOG', T('наш индекс', 'our index'), d && d.prev)}</div>
       </section>`;
   }
@@ -3505,7 +3596,7 @@ button.fng-head:hover .ico,button.ch-hbtn:hover .ico{transform:translateX(2px);c
     const age = mon == null ? '' : mon < 1 ? T('отчёт этого месяца', 'report this month') : T(`отчёт ${mon} мес. назад`, `report ${mon} mo ago`);
     const ini = (it.name || '?').replace(/[^A-Za-z0-9А-Яа-я]/g, '').slice(0, 2), c2 = /^C2\b/i.test(it.name || '');
     return `<section class="group" aria-label="${T('Компании, которые копят DOG', 'Companies accumulating DOG')}">
-        <button type="button" class="tre-row" data-info="tre" aria-label="${esc(it.name)}: ${T('все отчёты о покупках DOG', 'all DOG purchase reports')}"><span class="tre-logo${c2 ? ' c2' : ''}" aria-hidden="true">${c2 ? '<i></i>' : esc(ini)}</span><span class="t"><b>${esc(it.name)}</b><span>${T('копит DOG', 'holds DOG')}${age ? ' · ' + esc(age) : ''}</span></span><span class="v"><b>${mdog(last[1] / 1e6)}</b><span>${mid ? '≈ ' + usd(last[1] * mid) : 'DOG'}</span></span></button>
+        <button type="button" class="tre-row" data-info="tre" aria-label="${esc(it.name)}: ${T('все отчёты о покупках DOG', 'all DOG purchase reports')}"><span class="tre-logo${c2 ? ' c2' : ''}" aria-hidden="true">${c2 ? '' : esc(ini)}</span><span class="t"><b>${esc(it.name)}</b><span>${T('копит DOG', 'holds DOG')}${age ? ' · ' + esc(age) : ''}</span></span><span class="v"><b>${mdog(last[1] / 1e6)}</b><span>${mid ? '≈ ' + usd(last[1] * mid) : 'DOG'}</span></span></button>
       </section>`;
   }
   // DOG и мем-монеты за 90 дней — короткий список на «Главном» (широкий экран); нажатие открывает «Графики»
@@ -3543,7 +3634,7 @@ button.fng-head:hover .ico,button.ch-hbtn:hover .ico{transform:translateX(2px);c
     }).join('');
     const note = EN ? (it.note_en || '') : it.note;
     const c2 = /^C2\b/i.test(it.name || '');
-    openSheet(it.name, `${c2 || note ? `<div class="tre-hd">${c2 ? '<span class="tre-logo c2 lg" aria-hidden="true"><i></i></span>' : ''}${note ? `<p>${esc(note)}</p>` : ''}</div>` : ''}
+    openSheet(it.name, `${c2 || note ? `<div class="tre-hd">${c2 ? '<span class="tre-logo c2 lg" aria-hidden="true"></span>' : ''}${note ? `<p>${esc(note)}</p>` : ''}</div>` : ''}
       <dl class="kv"><dt>${T('Сейчас у компании', 'Holds now')}</dt><dd>${mdog(last[1] / 1e6, 2)} DOG</dd><dt>${T('Доля всех DOG', 'Share of all DOG')}</dt><dd>${n(last[1] / SUPPLY * 100, 2)}%</dd>${mid ? `<dt>${T('По текущей цене', 'At today’s price')}</dt><dd>≈ ${usd(last[1] * mid)}</dd>` : ''}${it.goal ? `<dt>${T('Цель компании', 'Company goal')}</dt><dd>${mdog(it.goal / 1e6, 1)} DOG</dd>` : ''}${it.custody ? `<dt>${T('Где хранит', 'Custody')}</dt><dd>${esc(it.custody)}</dd>` : ''}</dl>
       <h3>${T('Отчёты о покупках', 'Purchase reports')}</h3>
       <div class="group flush rows" style="background:var(--surface-2)">${rows}</div>
@@ -5700,12 +5791,12 @@ button.fng-head:hover .ico,button.ch-hbtn:hover .ico{transform:translateX(2px);c
     const path = arr => { let s = '', pen = false; arr.forEach((v, i) => { if (v == null) { pen = false; return; } s += (pen ? 'L' : 'M') + X(i).toFixed(1) + ',' + Y(v).toFixed(1); pen = true; }); return s; };
     let pk = -1; D.d.forEach((v, i) => { if (v != null && (pk < 0 || v > D.d[pk])) pk = i; });
     const grid = [25, 50, 75].map(v => `<line x1="0" x2="${W}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="var(--line)" stroke-width="1" stroke-dasharray="${v === 50 ? '0' : '3 6'}" vector-effect="non-scaling-stroke"/>`).join('');
-    // зоны страха и жадности — едва заметной заливкой: красная внизу, зелёная вверху
-    const zones = [0].concat(FNG_A.slice(0, 4)).map((lo, i) => { const hi = Math.min(100, FNG_A[i]); return `<rect x="0" width="${W}" y="${Y(hi).toFixed(1)}" height="${(Y(lo) - Y(hi)).toFixed(1)}" fill="var(--fz${i + 1})" opacity=".07"/>`; }).join('');
+    // фон спокойный: только крайний страх (0–25) и крайняя жадность (75–100) едва заметной заливкой
+    const zones = `<rect x="0" width="${W}" y="${Y(100).toFixed(1)}" height="${(Y(75) - Y(100)).toFixed(1)}" fill="var(--fz5)" opacity=".085"/><rect x="0" width="${W}" y="${Y(25).toFixed(1)}" height="${(Y(0) - Y(25)).toFixed(1)}" fill="var(--fz1)" opacity=".085"/>`;
     return `<div class="fng3c">
-        <div class="hd"><span><i class="mk" style="background:var(--f3m)"></i>alt.me <i class="mk" style="background:var(--k1);margin-left:8px"></i>CMC <i class="mk" style="background:var(--dog);margin-left:8px"></i>DOG</span>${pk >= 0 ? `<span>${T('пик DOG', 'DOG peak')} <b>${D.d[pk]}</b> · ${esc(fngDay(D.days[pk]))}</span>` : ''}</div>
+        <div class="hd"><span><i class="mk" style="background:var(--f3m)"></i>alt.me <i class="mk" style="background:var(--f3c);margin-left:8px"></i>CMC <i class="mk" style="background:var(--dog);margin-left:8px"></i>DOG</span>${pk >= 0 ? `<span>${T('пик DOG', 'DOG peak')} <b>${D.d[pk]}</b> · ${esc(fngDay(D.days[pk]))}</span>` : ''}</div>
         <div class="f3-read" id="f3read"></div>
-        <div class="f3-plot" id="f3plot" role="img" aria-label="${T('Три индекса страха и жадности за 90 дней', 'The three fear and greed indices over 90 days')}"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${zones}${grid}<path d="${path(D.c)}" fill="none" stroke="var(--k1)" stroke-width="1.6" stroke-linejoin="round" vector-effect="non-scaling-stroke"/><path d="${path(D.m)}" fill="none" stroke="var(--f3m)" stroke-width="1.6" stroke-linejoin="round" vector-effect="non-scaling-stroke"/><path d="${path(D.d)}" fill="none" stroke="var(--dog)" stroke-width="2.6" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg><div class="f3-x" id="f3x"></div></div>
+        <div class="f3-plot" id="f3plot" role="img" aria-label="${T('Три индекса страха и жадности за 90 дней', 'The three fear and greed indices over 90 days')}"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${zones}${grid}<path d="${path(D.c)}" fill="none" stroke="var(--f3c)" stroke-width="1.3" stroke-linejoin="round" vector-effect="non-scaling-stroke" opacity=".9"/><path d="${path(D.m)}" fill="none" stroke="var(--f3m)" stroke-width="1.3" stroke-linejoin="round" vector-effect="non-scaling-stroke" opacity=".9"/><path d="${path(D.d)}" fill="none" stroke="var(--dog)" stroke-width="2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg><div class="f3-x" id="f3x"></div></div>
         <div class="f3-ax"><span>${esc(fngDay(D.days[0]))}</span><span>${esc(fngDay(D.days[Math.floor(n1 / 2)]))}</span><span>${esc(fngDay(D.days[n1]))}</span></div>
         <button type="button" class="f3-more" data-info="fng_all">${T('История трёх индексов', 'History of all three')}<span>${T('с 2024 года', 'since 2024')}</span>${ico('chev')}</button>
       </div>`;
@@ -5714,7 +5805,7 @@ button.fng-head:hover .ico,button.ch-hbtn:hover .ico{transform:translateX(2px);c
     const D = F3.D, el = $('#f3read'); if (!D || !el) return;
     const last = i == null; i = last ? D.days.length - 1 : i;
     const v = (lab, x, col) => `<span><i class="mk" style="background:${col}"></i>${lab} <b>${x == null ? '—' : x}</b></span>`;
-    el.innerHTML = `<span>${last ? T('Сегодня', 'Today') : esc(fngDay(D.days[i]))}</span>${v('alt.me', D.m[i], 'var(--f3m)')}${v('CMC', D.c[i], 'var(--k1)')}${v('DOG', D.d[i], 'var(--dog)')}`;
+    el.innerHTML = `<span>${last ? T('Сегодня', 'Today') : esc(fngDay(D.days[i]))}</span>${v('alt.me', D.m[i], 'var(--f3m)')}${v('CMC', D.c[i], 'var(--f3c)')}${v('DOG', D.d[i], 'var(--dog)')}`;
     const x = $('#f3x'); if (x) { x.style.display = last ? 'none' : 'block'; x.style.left = (i / Math.max(1, D.days.length - 1) * 100).toFixed(2) + '%'; }
   }
   function fng3Bind() {
@@ -5739,12 +5830,14 @@ button.fng-head:hover .ico,button.ch-hbtn:hover .ico{transform:translateX(2px);c
   }
   function paintFngCharts() { const b = $('#fngc-sec'); if (!b) return; b.innerHTML = fngChartsHtml(); fng3Bind(); }
   // ---------- «Страх и жадность — история»: три индекса на одном графике, 30 дней — всё время ----------
-  // ведёте пальцем — числа всех трёх в этот день; отпустили — день остаётся; «Сегодня» возвращает к последнему дню
-  const F3S = { per: store.get('f3per', '90'), pin: null, D: null, drag: null };
+  // ведёте пальцем — числа всех трёх в этот день; отпустили — день остаётся; «Сегодня» — к последнему дню.
+  // Нажатие на карточку индекса — его линия ярко, остальные бледно. Минимум и максимум каждого за период — точки на
+  // графике; нажатие на число в таблице (или на точку) показывает этот день
+  const F3S = { per: store.get('f3per', '90'), pin: null, D: null, drag: null, focus: null };
   const F3P = [['30', T('30 дн', '30D')], ['90', T('90 дн', '90D')], ['365', T('1 год', '1Y')], ['all', T('Всё', 'All')]];
   // ключ, короткое имя, цвет линии, шкала зон
-  const F3K = [['m', 'alt.me', 'var(--f3m)', FNG_A], ['c', 'CMC', 'var(--k1)', FNG_C], ['d', 'DOG', 'var(--dog)', FNG_A]];
-  const F3W = 1000, F3H = 300, F3Y = v => 8 + (1 - v / 100) * (F3H - 16);
+  const F3K = [['m', 'alt.me', 'var(--f3m)', FNG_A], ['c', 'CMC', 'var(--f3c)', FNG_C], ['d', 'DOG', 'var(--dog)', FNG_A]];
+  const F3W = 1000, F3H = 300, F3Y = v => 10 + (1 - v / 100) * (F3H - 20);
   function f3sData(per) {
     const f = S.fng || {}, dl = fngNow(), mk = a => new Map((a || []).map(x => [x[0], x[1]]));
     // alternative.me: файл сайта и свежий ответ самого сайта (31 день) — свежий поверх
@@ -5755,7 +5848,11 @@ button.fng-head:hover .ico,button.ch-hbtn:hover .ico{transform:translateX(2px);c
     if (per !== 'all') { const cut = new Date(Date.now() - (+per) * 864e5).toISOString().slice(0, 10); days = days.filter(x => x > cut); }
     if (days.length < 5) return null;
     const g = (k, x) => M[k].has(x) ? M[k].get(x) : null;
-    return { days, m: days.map(x => g('m', x)), c: days.map(x => g('c', x)), d: days.map(x => g('d', x)) };
+    const D = { days, m: days.map(x => g('m', x)), c: days.map(x => g('c', x)), d: days.map(x => g('d', x)) };
+    // минимум и максимум каждого за период (при равенстве — первый такой день, как «пик DOG» на «Графиках»)
+    D.ext = {};
+    for (const [k] of F3K) { let lo = -1, hi = -1; D[k].forEach((v, i) => { if (v == null) return; if (lo < 0 || v < D[k][lo]) lo = i; if (hi < 0 || v > D[k][hi]) hi = i; }); D.ext[k] = lo < 0 ? null : { lo, hi }; }
+    return D;
   }
   const f3Date = ds => F3S.per === '365' || F3S.per === 'all' ? fngDmy(ds) : fngDay(ds);
   const f3Ax = ds => { if (F3S.per !== '365' && F3S.per !== 'all') return fngDay(ds); const d = new Date(String(ds) + 'T12:00:00Z'); return FU_M.format(d).replace('.', '') + ' ' + d.getUTCFullYear(); };
@@ -5763,28 +5860,32 @@ button.fng-head:hover .ico,button.ch-hbtn:hover .ico{transform:translateX(2px);c
     const D = F3S.D; if (!D) return '';
     const n1 = D.days.length - 1, last = i == null || i >= n1; if (last) i = n1;
     const day = D.days[i], today = day === new Date().toISOString().slice(0, 10);
-    const col = ([k, nm, c, sc]) => { const v = D[k][i]; return `<div class="f3s-c"><span class="nm"><i class="mk" style="background:${c}"></i>${nm}</span><b${v == null ? '' : ` style="color:${fngCol(v, sc)}"`}>${v == null ? '—' : v}</b><span class="zn">${v == null ? T('нет данных', 'no data') : esc(fngName(v, sc))}</span></div>`; };
-    return `<div class="f3s-d"><b>${last && today ? T('Сегодня', 'Today') : esc(fngDmy(day))}</b>${last ? `<span>${T('ведите пальцем по графику', 'slide along the chart')}</span>` : `<button type="button" class="f3s-now" data-f3now>${ico('refresh')}${T('Сегодня', 'Today')}</button>`}</div><div class="f3s-cols">${F3K.map(col).join('')}</div>`;
+    const col = ([k, nm, c, sc]) => { const v = D[k][i], on = F3S.focus === k; return `<button type="button" class="f3s-c${on ? ' on' : ''}${F3S.focus && !on ? ' dim' : ''}" data-f3focus="${k}" aria-pressed="${on}" style="--sc:${c}"><span class="nm"><i class="mk" style="background:${c}"></i>${nm}</span><b${v == null ? '' : ` style="color:${fngCol(v, sc)}"`}>${v == null ? '—' : v}</b><span class="zn">${v == null ? T('нет данных', 'no data') : esc(fngName(v, sc))}</span></button>`; };
+    const hint = F3S.focus ? T('нажмите на карточку ещё раз — все три', 'tap the card again for all three') : T('ведите пальцем · нажмите на индекс', 'slide along · tap an index');
+    return `<div class="f3s-d"><b>${last && today ? T('Сегодня', 'Today') : esc(fngDmy(day))}</b>${last && !F3S.focus ? `<span>${hint}</span>` : `<button type="button" class="f3s-now" data-f3now>${ico('refresh')}${T('Сегодня', 'Today')}</button>`}</div><div class="f3s-cols">${F3K.map(col).join('')}</div>`;
   }
   function f3sPlot(D) {
-    const n1 = D.days.length - 1, X = i => i / Math.max(1, n1) * F3W;
+    const n1 = D.days.length - 1, X = i => i / Math.max(1, n1) * F3W, pc = (v, t) => (v / t * 100).toFixed(3) + '%';
     const path = arr => { let p = '', pen = false; arr.forEach((v, i) => { if (v == null) { pen = false; return; } p += (pen ? 'L' : 'M') + X(i).toFixed(1) + ',' + F3Y(v).toFixed(1); pen = true; }); return p; };
-    const zones = [0].concat(FNG_A.slice(0, 4)).map((lo, i) => { const hi = Math.min(100, FNG_A[i]); return `<rect x="0" width="${F3W}" y="${F3Y(hi).toFixed(1)}" height="${(F3Y(lo) - F3Y(hi)).toFixed(1)}" fill="var(--fz${i + 1})" opacity=".1"/>`; }).join('');
+    // фон спокойный: только крайний страх (0–25) и крайняя жадность (75–100), линии 25 / 50 / 75
+    const band = (lo, hi, col) => `<rect x="0" width="${F3W}" y="${F3Y(hi).toFixed(1)}" height="${(F3Y(lo) - F3Y(hi)).toFixed(1)}" fill="${col}" opacity=".085"/>`;
     const grid = [25, 50, 75].map(v => `<line x1="0" x2="${F3W}" y1="${F3Y(v).toFixed(1)}" y2="${F3Y(v).toFixed(1)}" stroke="var(--line)" stroke-width="1" stroke-dasharray="${v === 50 ? '0' : '3 6'}" vector-effect="non-scaling-stroke"/>`).join('');
-    const ln = (k, col, w) => `<path d="${path(D[k])}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>`;
+    const ln = (k, col, w) => `<path class="f3s-l" data-k="${k}" d="${path(D[k])}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>`;
+    const dots = F3K.map(([k, nm, c]) => { const e = D.ext[k]; return !e ? '' : [['lo', T('минимум', 'low')], ['hi', T('максимум', 'high')]].map(([w, wt]) => { const i = e[w], v = D[k][i]; return `<i class="f3s-p" data-k="${k}" data-w="${w}" data-i="${i}" style="left:${pc(X(i), F3W)};top:${pc(F3Y(v), F3H)};background:${c}" title="${nm}: ${wt} ${v} · ${esc(f3Date(D.days[i]))}"></i>`; }).join(''); }).join('');
     const yl = [100, 75, 50, 25, 0].map(v => `<span style="top:${(F3Y(v) / F3H * 100).toFixed(2)}%">${v}</span>`).join('');
     const xi = n1 < 6 ? [0, n1] : [0, Math.round(n1 / 3), Math.round(2 * n1 / 3), n1];
     const xl = xi.map((i, j) => `<span class="${j === 0 ? 'l' : j === xi.length - 1 ? 'r' : ''}" style="left:${(i / Math.max(1, n1) * 100).toFixed(2)}%">${esc(f3Ax(D.days[i]))}</span>`).join('');
-    return `<div class="f3s-g"><div class="f3s-plot" role="img" aria-label="${T(`Три индекса страха и жадности: ${D.days.length} дней`, `The three fear and greed indices: ${D.days.length} days`)}"><svg viewBox="0 0 ${F3W} ${F3H}" preserveAspectRatio="none" aria-hidden="true">${zones}${grid}${ln('c', 'var(--k1)', 1.8)}${ln('m', 'var(--f3m)', 1.8)}${ln('d', 'var(--dog)', 2.8)}</svg><i class="f3s-x"></i>${F3K.map(([k, , c]) => `<i class="f3s-m" data-k="${k}" style="background:${c}"></i>`).join('')}</div><div class="f3s-y" aria-hidden="true">${yl}</div><div class="f3s-xl" aria-hidden="true">${xl}</div></div>`;
+    return `<div class="f3s-g${F3S.focus ? ' fx fx-' + F3S.focus : ''}"><div class="f3s-plot" role="img" aria-label="${T(`Три индекса страха и жадности: ${D.days.length} дней`, `The three fear and greed indices: ${D.days.length} days`)}"><svg viewBox="0 0 ${F3W} ${F3H}" preserveAspectRatio="none" aria-hidden="true">${band(75, 100, 'var(--fz5)')}${band(0, 25, 'var(--fz1)')}${grid}${ln('c', 'var(--f3c)', 1.3)}${ln('m', 'var(--f3m)', 1.3)}${ln('d', 'var(--dog)', 1.9)}</svg><i class="f3s-x"></i>${dots}${F3K.map(([k, , c]) => `<i class="f3s-m" data-k="${k}" style="background:${c}"></i>`).join('')}</div><div class="f3s-y" aria-hidden="true">${yl}</div><div class="f3s-xl" aria-hidden="true">${xl}</div></div>`;
   }
   function f3sStats(D) {
     const row = ([k, nm, c, sc]) => {
-      const a = D[k].map((v, i) => [v, i]).filter(x => x[0] != null); if (!a.length) return '';
-      let lo = a[0], hi = a[0], sum = 0; for (const x of a) { if (x[0] < lo[0]) lo = x; if (x[0] > hi[0]) hi = x; sum += x[0]; }
-      const now = a[a.length - 1][0];
-      return `<tr><td><i class="mk" style="background:${c}"></i>${nm}</td><td class="r"><b style="color:${fngCol(now, sc)}">${now}</b></td><td class="r"><b>${lo[0]}</b><span>${esc(f3Date(D.days[lo[1]]))}</span></td><td class="r"><b>${hi[0]}</b><span>${esc(f3Date(D.days[hi[1]]))}</span></td><td class="r"><b>${n(sum / a.length, 0)}</b></td></tr>`;
+      const a = D[k].filter(v => v != null), e = D.ext[k]; if (!a.length || !e) return '';
+      const now = a[a.length - 1], avg = a.reduce((x, y) => x + y, 0) / a.length;
+      const cell = w => { const i = e[w]; return `<td class="r"><button type="button" class="f3s-v" data-f3k="${k}" data-f3i="${i}" aria-pressed="false" aria-label="${nm}: ${w === 'lo' ? T('минимум', 'low') : T('максимум', 'high')} ${D[k][i]}, ${esc(f3Date(D.days[i]))}"><b>${D[k][i]}</b><span>${esc(f3Date(D.days[i]))}</span></button></td>`; };
+      return `<tr><td><i class="mk" style="background:${c}"></i>${nm}</td><td class="r"><b style="color:${fngCol(now, sc)}">${now}</b></td>${cell('lo')}${cell('hi')}<td class="r"><b>${n(avg, 0)}</b></td></tr>`;
     };
-    return `<table class="pf f3s-t"><thead><tr><th>${T('За период', 'In period')}</th><th class="r">${T('Сейчас', 'Now')}</th><th class="r">${T('Мин', 'Low')}</th><th class="r">${T('Макс', 'High')}</th><th class="r">${T('В среднем', 'Average')}</th></tr></thead><tbody>${F3K.map(row).join('')}</tbody></table>`;
+    return `<table class="pf f3s-t"><thead><tr><th>${T('За период', 'In period')}</th><th class="r">${T('Сейчас', 'Now')}</th><th class="r">${T('Мин', 'Low')}</th><th class="r">${T('Макс', 'High')}</th><th class="r">${T('В среднем', 'Average')}</th></tr></thead><tbody>${F3K.map(row).join('')}</tbody></table>
+      <p class="note f3s-tn">${T('Нажмите на число — на графике покажется этот день.', 'Tap a number to see that day on the chart.')}</p>`;
   }
   function f3sBody() {
     const D = f3sData(F3S.per); F3S.D = D; F3S.pin = null;
@@ -5796,9 +5897,10 @@ button.fng-head:hover .ico,button.ch-hbtn:hover .ico{transform:translateX(2px);c
   }
   function fngAllSheet() {
     if (!F3P.some(p => p[0] === F3S.per)) F3S.per = '90';
+    F3S.focus = null;
     const lk = (k, nm, sub) => `<button type="button" class="row" data-info="fng_${k}"><span class="t"><b>${nm}</b><span>${sub}</span></span>${ico('chev')}</button>`;
     return [T('Страх и жадность', 'Fear & Greed'), `<div id="f3s">${f3sBody()}</div>
-      <p class="note">${T('Все три — от 0 до 100: чем меньше число, тем сильнее страх. alternative.me и CoinMarketCap описывают весь крипторынок, DOG — наш индекс по DOG: цена DOG, биткоин и настроение рынка. Цветные полосы — зоны шкалы alternative.me (её же использует индекс DOG); у CoinMarketCap границы зон свои. Это история настроения, а не прогноз.', 'All three run from 0 to 100: the lower the number, the stronger the fear. alternative.me and CoinMarketCap describe the whole crypto market; DOG is our own index for DOG: its price, bitcoin and market mood. The coloured bands are the zones of the alternative.me scale (the DOG index uses it too); CoinMarketCap has its own zone limits. This is a history of mood, not a forecast.')}</p>
+      <p class="note">${T('Все три — от 0 до 100: чем меньше число, тем сильнее страх. alternative.me и CoinMarketCap описывают весь крипторынок, DOG — наш индекс по DOG: цена DOG, биткоин и настроение рынка. Красная полоса внизу — крайний страх (до 25), зелёная вверху — крайняя жадность (от 75). Это история настроения, а не прогноз.', 'All three run from 0 to 100: the lower the number, the stronger the fear. alternative.me and CoinMarketCap describe the whole crypto market; DOG is our own index for DOG: its price, bitcoin and market mood. The red band at the bottom is extreme fear (below 25), the green band at the top is extreme greed (75 and up). This is a history of mood, not a forecast.')}</p>
       <h3>${T('Каждый индекс подробно', 'Each index in detail')}</h3>
       <div class="group flush rows f3s-links">${lk('m', 'alternative.me', T('весь крипторынок · из чего складывается, развороты', 'whole crypto market · what goes into it, turning points'))}${lk('c', 'CoinMarketCap', T('весь крипторынок · из чего складывается, развороты', 'whole crypto market · what goes into it, turning points'))}${lk('d', T('DOG — наш индекс', 'DOG — our index'), T('из чего складывается сегодня, история с 2024 года', 'what drives it today, history since 2024'))}</div>`];
   }
@@ -5809,7 +5911,24 @@ button.fng-head:hover .ico,button.ch-hbtn:hover .ico{transform:translateX(2px);c
     const x = (i / Math.max(1, n1) * 100).toFixed(3) + '%';
     const xl = box.querySelector('.f3s-x'); if (xl) { xl.style.left = x; xl.classList.toggle('on', !!line); }
     box.querySelectorAll('.f3s-m').forEach(m => { const v = D[m.dataset.k][i]; m.hidden = v == null; if (v != null) { m.style.left = x; m.style.top = (F3Y(v) / F3H * 100).toFixed(2) + '%'; } });
+    // точка минимума/максимума этого дня — крупнее, число в таблице — выделено
+    box.querySelectorAll('.f3s-p').forEach(p => p.classList.toggle('on', !!line && +p.dataset.i === i && (!F3S.focus || p.dataset.k === F3S.focus)));
+    box.querySelectorAll('.f3s-v').forEach(b => b.setAttribute('aria-pressed', String(!!line && +b.dataset.f3i === i && (!F3S.focus || b.dataset.f3k === F3S.focus))));
     const rd = box.querySelector('.f3s-read'); if (rd) rd.innerHTML = f3sRead(line ? i : null);
+  }
+  // выбранный индекс: его линия и точки ярко, остальные бледно
+  function f3sFocus(k) {
+    F3S.focus = k || null;
+    const g = $('#f3s .f3s-g'); if (g) g.className = 'f3s-g' + (F3S.focus ? ' fx fx-' + F3S.focus : '');
+    f3sSet(F3S.pin, F3S.pin != null);
+  }
+  // показать день i индекса k (нажатие на число в таблице или на точку): индекс выделяется, график — в поле зрения
+  function f3sShow(k, i) {
+    F3S.pin = i; f3sFocus(k);
+    const pl = $('#f3s .f3s-plot'); if (!pl) return;
+    const r = pl.getBoundingClientRect(), sb = pl.closest('.sheet-body');
+    const top = sb ? sb.getBoundingClientRect().top : 0;
+    if (r.top < top + 8 || r.bottom > innerHeight - 8) pl.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'center' });
   }
   function f3sAfterOpen(day) {
     const D = F3S.D; if (!D) return;
@@ -5817,7 +5936,12 @@ button.fng-head:hover .ico,button.ch-hbtn:hover .ico{transform:translateX(2px);c
     if (k >= 0 && k < D.days.length - 1) { F3S.pin = k; f3sSet(k, true); } else f3sSet(null, false);
   }
   const f3sAt = (pl, e) => { const D = F3S.D, r = pl.getBoundingClientRect(); return D && r.width ? Math.round(Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * (D.days.length - 1)) : 0; };
-  document.addEventListener('pointerdown', e => { const pl = e.target.closest && e.target.closest('.f3s-plot'); if (!pl) return; F3S.drag = pl; F3S.pin = f3sAt(pl, e); f3sSet(F3S.pin, true); });
+  document.addEventListener('pointerdown', e => {
+    const pl = e.target.closest && e.target.closest('.f3s-plot'); if (!pl) return;
+    const dot = e.target.closest('.f3s-p');
+    if (dot) { F3S.drag = null; f3sShow(dot.dataset.k, +dot.dataset.i); return; }
+    F3S.drag = pl; F3S.pin = f3sAt(pl, e); f3sSet(F3S.pin, true);
+  });
   document.addEventListener('pointermove', e => {
     if (F3S.drag) { F3S.pin = f3sAt(F3S.drag, e); f3sSet(F3S.pin, true); return; }
     const pl = e.pointerType === 'mouse' && e.target.closest && e.target.closest('.f3s-plot'); if (pl && F3S.pin == null) f3sSet(f3sAt(pl, e), true);
@@ -5825,9 +5949,12 @@ button.fng-head:hover .ico,button.ch-hbtn:hover .ico{transform:translateX(2px);c
   ['pointerup', 'pointercancel'].forEach(t => document.addEventListener(t, () => { F3S.drag = null; }));
   document.addEventListener('pointerout', e => { const pl = e.pointerType === 'mouse' && e.target.closest && e.target.closest('.f3s-plot'); if (pl && F3S.pin == null && !(e.relatedTarget && pl.contains(e.relatedTarget))) f3sSet(null, false); });
   document.addEventListener('click', e => {
-    const p = e.target.closest && e.target.closest('[data-f3per]');
+    if (!e.target.closest) return;
+    const p = e.target.closest('[data-f3per]');
     if (p) { F3S.per = p.dataset.f3per; store.set('f3per', F3S.per); const b = $('#f3s'); if (b) { b.innerHTML = f3sBody(); f3sSet(null, false); } return; }
-    if (e.target.closest && e.target.closest('[data-f3now]')) { F3S.pin = null; f3sSet(null, false); }
+    if (e.target.closest('[data-f3now]')) { F3S.pin = null; f3sFocus(null); return; }
+    const fc = e.target.closest('[data-f3focus]'); if (fc) { f3sFocus(F3S.focus === fc.dataset.f3focus ? null : fc.dataset.f3focus); return; }
+    const v = e.target.closest('[data-f3k]'); if (v) f3sShow(v.dataset.f3k, +v.dataset.f3i);
   });
   function renderCharts(soft) {
     const el = $('#p-charts'); if (!el) return;
@@ -6272,11 +6399,24 @@ button.fng-head:hover .ico,button.ch-hbtn:hover .ico{transform:translateX(2px);c
     const chg = walletsSummaryHtml(s);
     el.innerHTML = `<div class="ptitle"><div><h1>${T('Кошельки', 'Wallets')}</h1><p>${T('кто сколько держит, крупные кошельки, биржи', 'who holds how much, large wallets, exchanges')}</p></div></div>
       ${tiles ? `<div class="tiles">${tiles}</div>` : ''}
-      <div class="cols2"><div class="col">${tiersHtml(s)}${exchCardHtml(s, xd)}</div><div class="col">${whalesCardHtml(s)}${ageCardHtml(s)}</div></div>
-      ${chg || ''}${t100}`;
+      <div class="cols2" data-bal><div class="col">${tiersHtml(s)}${exchCardHtml(s, xd)}</div><div class="col">${whalesCardHtml(s)}${ageCardHtml(s)}${chg ? `<div class="colf" data-float>${chg}</div>` : ''}</div></div>
+      ${t100}`;
+    requestAnimationFrame(() => balanceCols(el));
     const inp = $('#wsearch');
     if (inp && S._focusSearch) { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); }
   }
+  // две колонки на широком экране: «плавающий» блок встаёт в ту колонку, где после него меньше пустого места
+  function balanceCols(root) {
+    const g = root && root.querySelector('.cols2[data-bal]'); if (!g) return;
+    const cs = g.querySelectorAll(':scope > .col'), f = g.querySelector('[data-float]');
+    if (cs.length < 2 || !f) return;
+    const [c1, c2] = cs;
+    if (f.parentNode !== c2) c2.appendChild(f);
+    if (c1.offsetTop !== c2.offsetTop) return;                          // одна колонка (телефон) — после «Возраста монет»
+    const h1 = c1.offsetHeight, h2 = c2.offsetHeight, hf = f.offsetHeight + 16;
+    if (Math.max(h1 + hf, h2 - hf) < Math.max(h1, h2)) c1.appendChild(f);
+  }
+  addEventListener('resize', () => { clearTimeout(balanceCols.t); balanceCols.t = setTimeout(() => balanceCols($('#p-wallets')), 150); });
   $('#p-wallets').addEventListener('click', e => {
     const f = e.target.closest('[data-filter]');
     if (f) { S.filter = f.dataset.filter; renderWallets(); return; }
@@ -6385,7 +6525,7 @@ button.fng-head:hover .ico,button.ch-hbtn:hover .ico{transform:translateX(2px);c
         <li><b>Bottom cards</b> close with a swipe down on the top handle, or a tap outside the card. A card opened from another card has a <b>‹</b> arrow to go back.</li>
         <li><b>Bottom menu</b>: tap a section — or press the menu and slide your finger along it: the highlight follows your finger, and the section under it opens when you let go.</li>
         <li><b>Price chart on Home</b> works like the one in Charts: drag it to go back in time, pinch to zoom. Press and hold to bring up crosshairs — the price at your finger’s height appears on the right, and the top shows the price, what 1 million DOG cost and the market cap at that moment, plus the change from then to now. Let go and it stays put; tap a candle to pin it. The <b>Now</b> button returns to the current price.</li></ul></div>
-      <div><h3>Home</h3><p>At the top is <b>Fear &amp; Greed</b>: two indices of the whole crypto market (alternative.me and CoinMarketCap) and our own DOG index. The number sits right in the gauge: 0 = fear, 100 = greed. Tap one for what goes into it and its history next to the price; the dots on the chart are the index’s turning points — tap one to see its day. Tap the <b>Fear &amp; Greed</b> heading for all three on one chart, from 30 days to all time: slide your finger to see all three numbers on any day, with each index’s low, high and average for the period.</p>
+      <div><h3>Home</h3><p>At the top is <b>Fear &amp; Greed</b>: two indices of the whole crypto market (alternative.me and CoinMarketCap) and our own DOG index. The number sits right in the gauge: 0 = fear, 100 = greed. Tap one for what goes into it and its history next to the price; the dots on the chart are the index’s turning points — tap one to see its day. Tap the <b>Fear &amp; Greed</b> heading for all three on one chart, from 30 days to all time: slide your finger to see all three numbers on any day. Tap an index’s card to bring its line forward (the others fade); below is each index’s low, high and average for the period — tap a low or a high to see that day on the chart.</p>
         <p style="margin-top:8px">Below it: the DOG price in US dollars, what <b>1 million DOG</b> costs, the market cap and a chart of trades on Kraken. The 15m, 1h, 4h, 1d and 1w buttons set how much time one candle covers — 15 minutes, an hour, 4 hours, a day or a week; weekly candles show the whole history since trading began in April 2024, and the line under the chart says what span it shows. The two icons next to them switch between candles (with trading volume) and a simple line.</p>
         <p style="margin-top:8px">Then four tiles: who is stronger near the price (buyers or sellers), how many wallets hold 10M+ DOG (and how many were added or dropped since the date shown), how much DOG sits on exchanges and what share of coins is in profit. Tap a tile for its breakdown. Right under the tiles is the C2 Blockchain row; further down: the last 24 hours, exchange order books and DOG among meme coins.</p></div>
       <div><h3>Order book</h3><p>An order book is a list of orders on an exchange: who is ready to buy or sell DOG and at what price. The Order book section works like an exchange: real prices, asks on top, bids below.</p>
@@ -6424,7 +6564,7 @@ button.fng-head:hover .ico,button.ch-hbtn:hover .ico{transform:translateX(2px);c
         <li><b>Карточки снизу</b> закрываются свайпом вниз за верхнюю полоску или касанием мимо карточки. У карточки, открытой из другой карточки, есть стрелка <b>‹</b> — назад.</li>
         <li><b>Нижнее меню</b>: нажмите на раздел — или зажмите меню и ведите пальцем: плашка поедет за пальцем, а раздел под ней откроется, когда отпустите.</li>
         <li><b>График цены на главной</b> устроен как в «Графиках»: тяните его — увидите историю раньше, сводите и разводите пальцы — масштаб. Зажмите палец — появится перекрестие: справа цена на высоте пальца, а вверху — цена, сколько стоил 1 млн DOG и капитализация в тот момент и на сколько цена изменилась с тех пор. Отпустите — перекрестие останется на месте; нажатие на свечу закрепляет её. Кнопка <b>«Сейчас»</b> возвращает текущую цену.</li></ul></div>
-      <div><h3>Главная</h3><p>Вверху — <b>страх и жадность</b>: два индекса всего крипторынка (alternative.me и CoinMarketCap) и наш индекс DOG. Число — прямо в дуге: 0 — страх, 100 — жадность. Нажмите на любой — откроется, из чего он складывается, и его история рядом с ценой; точки на графике — развороты индекса, нажмите на точку — увидите её день. Нажмите на заголовок <b>«Страх и жадность»</b> — откроются все три на одном графике, от 30 дней до всей истории: ведите пальцем — увидите все три числа в любой день, ниже — минимум, максимум и среднее каждого за период.</p>
+      <div><h3>Главная</h3><p>Вверху — <b>страх и жадность</b>: два индекса всего крипторынка (alternative.me и CoinMarketCap) и наш индекс DOG. Число — прямо в дуге: 0 — страх, 100 — жадность. Нажмите на любой — откроется, из чего он складывается, и его история рядом с ценой; точки на графике — развороты индекса, нажмите на точку — увидите её день. Нажмите на заголовок <b>«Страх и жадность»</b> — откроются все три на одном графике, от 30 дней до всей истории: ведите пальцем — увидите все три числа в любой день. Нажмите на карточку индекса — его линия станет яркой, остальные побледнеют; ниже — минимум, максимум и среднее каждого за период: нажмите на минимум или максимум — на графике покажется этот день.</p>
         <p style="margin-top:8px">Под ним — цена DOG в долларах, сколько стоит <b>1 млн DOG</b>, капитализация и график по сделкам на Kraken. Кнопки 15м, 1ч, 4ч, 1д и 1н выбирают, сколько времени в одной свече: 15 минут, час, 4 часа, день или неделя. Недельные свечи показывают всю историю с начала торгов в апреле 2024 года, а какой отрезок виден сейчас — написано под графиком. Два значка рядом переключают вид: свечи с объёмом торгов или простая линия.</p>
         <p style="margin-top:8px">Ниже четыре плитки: кто сильнее у цены — покупатели или продавцы, сколько кошельков держат от 10 млн DOG (и сколько их прибавилось или убавилось с указанной даты), сколько DOG лежит на биржах и какая доля монет в прибыли. Нажмите на плитку — откроется разбор. Сразу под плитками — строка C2 Blockchain, дальше — главное за сутки, стаканы бирж и DOG среди мем-монет.</p></div>
       <div><h3>Стакан</h3><p>Стакан — список заявок на бирже: кто по какой цене готов купить или продать DOG. На главной у каждой биржи две полоски: <b class="up">зелёная</b> — сколько хотят купить, <b class="down">красная</b> — сколько хотят продать, в пределах 10% от цены. Раздел «Стакан» устроен как на бирже: настоящие цены, продажи сверху, покупки снизу.</p>

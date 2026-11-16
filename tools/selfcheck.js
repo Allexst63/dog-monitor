@@ -230,11 +230,14 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
           if (sh) {
             await page.touchscreen.tap(sh.x + sh.w * 0.6, sh.y + sh.h / 2); await page.waitForTimeout(300);
             read = await page.evaluate(() => (document.querySelector('#sheet-body .f3s-read') || {}).textContent || '');
+            // минимум в таблице: нажатие показывает этот день на графике — точка выделена, индекс выбран
+            await page.evaluate(() => { const v = document.querySelector('#sheet-body .f3s-v'); if (v) v.click(); }); await page.waitForTimeout(500);
+            sh.min = await page.evaluate(() => { const v = document.querySelector('#sheet-body .f3s-v'); const d = v ? (v.querySelector('span') || {}).textContent : ''; return { dot: document.querySelectorAll('#sheet-body .f3s-p.on').length, fx: /\bfx-/.test((document.querySelector('#sheet-body .f3s-g') || {}).className || ''), same: !!d && ((document.querySelector('#sheet-body .f3s-d b') || {}).textContent || '').trim() !== '' }; });
           }
           await page.evaluate(() => { const c = document.querySelector('#sheet [data-close]'); if (c) c.click(); }); await page.waitForTimeout(450);
         }
       }
-      add(f.rows === 3 && f.paths >= 2 && !!sh && sh.h >= 180 && sh.paths >= 3 && /DOG\s*\d/.test(read) && !/^(Сегодня|Today)/.test(read.trim()), `Графики: «Страх и жадность» — три строки и общий график; нажатие открывает историю трёх индексов, там нажатие показывает день`, `Charts: Fear & Greed — three rows and a shared chart; a tap opens the history of all three, where a tap shows that day`, `${f.rows} строки, ${f.paths} линии; ${sh ? `лист ${Math.round(sh.h)} px, ${sh.paths} линии; ` : 'листа нет; '}${read.replace(/\s+/g, ' ').slice(0, 60)}`);
+      add(f.rows === 3 && f.paths >= 2 && !!sh && sh.h >= 180 && sh.paths >= 3 && /DOG\s*\d/.test(read) && !/^(Сегодня|Today)/.test(read.trim()) && !!sh.min && sh.min.dot === 1 && sh.min.fx, `Графики: «Страх и жадность» — три строки и общий график; нажатие открывает историю трёх индексов, там нажатие показывает день, а нажатие на минимум — его точку`, `Charts: Fear & Greed — three rows and a shared chart; a tap opens the history of all three, where a tap shows that day and tapping a low shows its dot`, `${f.rows} строки, ${f.paths} линии; ${sh ? `лист ${Math.round(sh.h)} px, ${sh.paths} линии; ` : 'листа нет; '}${read.replace(/\s+/g, ' ').slice(0, 60)}`);
     }
     add(await page.evaluate(() => !document.querySelector('#p-charts .tv-wait')), 'Графики: ничего не «зависло» на загрузке', 'Charts: nothing is stuck loading');
     add(await noOverflow(), 'Графики: ничего не вылезает за экран телефона', 'Charts: nothing overflows the phone screen');
