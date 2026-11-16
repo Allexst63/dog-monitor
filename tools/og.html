@@ -1,38 +1,43 @@
 <!doctype html>
-<!-- Картинка для превью ссылки (og.jpg, 1200×630) — в оформлении сайта v5 («Тихая ночь»: графит, мягкий абрикос, Inter). Пересобрать:
-     node -e "const pw=require('playwright');(async()=>{const b=await pw.chromium.launch();const p=await b.newPage({viewport:{width:1200,height:630},deviceScaleFactor:2});await p.goto('file://'+process.cwd()+'/tools/og.html');await p.waitForTimeout(600);await p.screenshot({path:'og@2x.png'});await b.close()})()"
+<!-- Картинка для превью ссылки (og.jpg, 1200×630) — оформление v6: графит, луна-эмблема, яркие зелёный и красный, Inter. Пересобрать:
+     node -e "const pw=require('playwright');(async()=>{const b=await pw.chromium.launch();const p=await b.newPage({viewport:{width:1200,height:630},deviceScaleFactor:2});await p.goto('file://'+process.cwd()+'/tools/og.html');await p.waitForTimeout(800);await p.screenshot({path:'og@2x.png'});await b.close()})()"
      затем уменьшить до 1200×630 и сохранить как og.jpg (качество 90). Живых чисел на картинке нет: мессенджеры хранят превью днями. -->
 <html lang="en"><head><meta charset="utf-8">
 <style>
 @font-face{font-family:"Inter";src:url("../fonts/inter-400.woff") format("woff");font-weight:400}
 @font-face{font-family:"Inter";src:url("../fonts/inter-500.woff") format("woff");font-weight:500}
-@font-face{font-family:"Inter";src:url("../fonts/inter-600.woff") format("woff");font-weight:600 800}
-@font-face{font-family:"Inter Display";src:url("../fonts/inter-display-600.woff") format("woff");font-weight:500 800}
+@font-face{font-family:"Inter";src:url("../fonts/inter-600.woff") format("woff");font-weight:600}
+@font-face{font-family:"Inter";src:url("../fonts/inter-700.woff") format("woff");font-weight:700 800}
 @font-face{font-family:"DM Mark";src:url("../fonts/inter-mark.woff") format("woff");font-weight:700;font-style:italic}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:1200px;height:630px;overflow:hidden}
 body{font-family:"Inter",system-ui,sans-serif;color:#EFEEEB;position:relative;-webkit-font-smoothing:antialiased;
-  background:radial-gradient(760px 420px at 88% -6%, rgba(210,149,95,.14), transparent 70%),linear-gradient(165deg,#141821 0%,#0E1118 60%,#0B0D13 100%)}
-body::before{content:"";position:absolute;inset:0;background:repeating-conic-gradient(from -8deg at 86% 4%,rgba(210,149,95,.07) 0deg 2.2deg,transparent 2.2deg 9deg);-webkit-mask:radial-gradient(900px 560px at 86% 4%,#000 0%,rgba(0,0,0,.5) 40%,transparent 75%)}
-.wrap{position:absolute;inset:0;padding:58px 64px}
-.mark{display:inline-flex;align-items:center;gap:14px;font-family:"DM Mark","Inter",sans-serif;font-style:italic;font-weight:700;font-size:88px;letter-spacing:-.03em;line-height:1}
-.mark i{width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#F6DCC0,#D2955F 70%);box-shadow:0 0 0 6px rgba(210,149,95,.16),0 0 28px 6px rgba(210,149,95,.22);transform:translateY(-4px)}
-.eyebrow{font-size:22px;color:#A7ABB5;margin-top:18px;letter-spacing:.01em}
-.sub{font-size:27px;line-height:1.38;color:#CFCBC4;max-width:720px;margin-top:10px}
-.sub b{color:#EFEEEB;font-weight:600}
-.cards{position:absolute;left:64px;right:64px;bottom:82px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.card{height:176px;border-radius:24px;padding:18px 20px 16px;border:1px solid rgba(255,255,255,.05);display:flex;flex-direction:column}
-.c1{background:#16211D}.c2{background:#221B16}.c3{background:#161D29}.c4{background:#1C1B19}
-.card h3{font-size:20px;font-weight:600;letter-spacing:-.005em}
+  background:radial-gradient(520px 420px at 92% 18%, rgba(242,180,122,.16), transparent 70%),linear-gradient(160deg,#1A2131 0%,#10141D 58%,#0B0E14 100%)}
+.stars i{position:absolute;width:3px;height:3px;border-radius:50%;background:#F6E7D3}
+.moon{position:absolute;right:62px;top:46px;width:236px;height:236px;filter:drop-shadow(0 0 34px rgba(242,180,122,.42)) drop-shadow(0 0 90px rgba(242,180,122,.18))}
+.moon svg{width:100%;height:100%;display:block}
+.wrap{position:absolute;left:64px;top:56px;right:340px}
+.mark{font-family:"DM Mark","Inter",sans-serif;font-style:italic;font-weight:700;font-size:92px;letter-spacing:-.03em;line-height:1}
+.eyebrow{font-size:22px;font-weight:500;color:#E6B78F;margin-top:20px;letter-spacing:.01em}
+.sub{font-size:28px;line-height:1.36;color:#CFCBC4;margin-top:10px;font-weight:500}
+.sub b{color:#FFFFFF;font-weight:700}
+.cards{position:absolute;left:64px;right:64px;bottom:78px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.card{height:168px;border-radius:24px;padding:18px 20px 16px;border:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column}
+.c1{background:#13241D}.c2{background:#271C14}.c3{background:#141D2D}.c4{background:#211E18}
+.card h3{font-size:20px;font-weight:700;letter-spacing:-.01em}
 .card .v{flex:1;display:flex;align-items:center;justify-content:center}
-.card p{font-size:15.5px;color:#8D919B}
-.foot{position:absolute;left:64px;right:64px;bottom:30px;display:flex;justify-content:space-between;font-size:18px;color:#7E838F}
+.card p{font-size:15.5px;color:#9EA3AE;font-weight:500}
+.foot{position:absolute;left:64px;right:64px;bottom:28px;display:flex;justify-content:space-between;font-size:18px;color:#8D919B;font-weight:500}
+.foot .url{color:#EFEEEB;font-weight:600}
 .foot .tag{color:#E6B78F;font-weight:600}
 </style></head><body>
+<div class="stars"><i style="left:640px;top:70px;opacity:.5"></i><i style="left:800px;top:326px;opacity:.35"></i><i style="left:1150px;top:300px;opacity:.45"></i><i style="left:880px;top:40px;opacity:.4;width:2px;height:2px"></i><i style="left:1105px;top:34px;opacity:.55"></i></div>
+<!-- луна — та же, что в иконке приложения и шапке сайта (icons/moon.svg) -->
+<div class="moon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="m-f" cx="36%" cy="32%" r="78%"><stop offset="0" stop-color="#FFF6E6"/><stop offset=".38" stop-color="#F8DCB1"/><stop offset=".78" stop-color="#E7AE72"/><stop offset="1" stop-color="#CB8B50"/></radialGradient><radialGradient id="m-cr" cx="40%" cy="38%" r="70%"><stop offset="0" stop-color="#C8874B" stop-opacity=".55"/><stop offset="1" stop-color="#B57438" stop-opacity=".18"/></radialGradient><radialGradient id="m-sh" cx="28%" cy="26%" r="95%"><stop offset=".55" stop-color="#5A3214" stop-opacity="0"/><stop offset="1" stop-color="#4A2810" stop-opacity=".38"/></radialGradient><clipPath id="m-c"><circle cx="50" cy="50" r="46"/></clipPath><mask id="m-m"><rect x="0" y="0" width="100" height="100" fill="#fff"/><circle cx="78.52" cy="30.68" r="42.32" fill="#000"/></mask><radialGradient id="m-gb" cx="78%" cy="38%" r="70%"><stop offset="0" stop-color="#140B04" stop-opacity=".62"/><stop offset=".6" stop-color="#140B04" stop-opacity=".46"/><stop offset="1" stop-color="#140B04" stop-opacity=".18"/></radialGradient></defs><g clip-path="url(#m-c)"><circle cx="50" cy="50" r="46" fill="url(#m-f)"/><circle cx="68.74" cy="31.26" r="9.54" fill="url(#m-cr)" opacity="0.90"/><path d="M61.87,37.17A9.54,9.54 0 0 0 77.33,29.35" fill="none" stroke="#FFF6E8" stroke-opacity="0.32" stroke-width="1.53" stroke-linecap="round"/><circle cx="35.52" cy="67.04" r="13.29" fill="url(#m-cr)" opacity="0.90"/><path d="M25.95,75.28A13.29,13.29 0 0 0 47.48,64.38" fill="none" stroke="#FFF6E8" stroke-opacity="0.32" stroke-width="2.13" stroke-linecap="round"/><circle cx="75.56" cy="71.3" r="6.13" fill="url(#m-cr)" opacity="0.81"/><path d="M71.15,75.10A6.13,6.13 0 0 0 81.08,70.07" fill="none" stroke="#FFF6E8" stroke-opacity="0.29" stroke-width="0.98" stroke-linecap="round"/><circle cx="31.26" cy="29.56" r="5.28" fill="url(#m-cr)" opacity="0.77"/><path d="M27.46,32.83A5.28,5.28 0 0 0 36.01,28.50" fill="none" stroke="#FFF6E8" stroke-opacity="0.27" stroke-width="0.84" stroke-linecap="round"/><circle cx="56.81" cy="51.7" r="3.75" fill="url(#m-cr)" opacity="0.63"/><path d="M54.11,54.03A3.75,3.75 0 0 0 60.19,50.95" fill="none" stroke="#FFF6E8" stroke-opacity="0.22" stroke-width="0.60" stroke-linecap="round"/><circle cx="50" cy="84.07" r="4.43" fill="url(#m-cr)" opacity="0.68"/><path d="M46.81,86.82A4.43,4.43 0 0 0 53.99,83.18" fill="none" stroke="#FFF6E8" stroke-opacity="0.24" stroke-width="0.71" stroke-linecap="round"/><circle cx="50" cy="50" r="46" fill="url(#m-sh)"/></g><circle cx="50" cy="50" r="45.60" fill="none" stroke="#8A5226" stroke-opacity=".28" stroke-width="1.36"/></svg></div>
 <div class="wrap">
-  <div class="mark">dog monitor<i></i></div>
-  <div class="eyebrow">DOG•GO•TO•THE•MOON · the Bitcoin rune</div>
-  <div class="sub">Live price, a combined <b>order book</b>, <b>Fear &amp; Greed</b> and every big wallet — <b>cross-checked</b>, updated 4× a day.</div>
+  <div class="mark">dog monitor</div>
+  <div class="eyebrow">DOG on Bitcoin · live tracker</div>
+  <div class="sub">Price, <b>one order book</b> from 7 exchanges, <b>Fear &amp; Greed</b> and <b>every big wallet</b> — cross-checked, 4× a day.</div>
 </div>
 <div class="cards">
   <div class="card c1"><h3>Fear &amp; Greed</h3><div class="v" id="fg"></div><p>DOG + two market indices</p></div>
@@ -40,24 +45,24 @@ body::before{content:"";position:absolute;inset:0;background:repeating-conic-gra
   <div class="card c3"><h3>Meme coins</h3><div class="v" id="mm"></div><p>DOG vs 11 top memes</p></div>
   <div class="card c4"><h3>Wallets</h3><div class="v" id="wl"></div><p>top 100 + every 10M+</p></div>
 </div>
-<div class="foot"><span>English · Русский</span><span><span class="tag">unofficial</span> · free · no ads</span></div>
+<div class="foot"><span><span class="url">dog-monitor.github.io</span> · English · Русский</span><span><span class="tag">unofficial</span> · free · no ads</span></div>
 <script>
 // шкалы: пять цветных зон, как на сайте (без значений — превью живёт в кэше мессенджеров днями)
 const Z = ['#EA5A55', '#F09243', '#E6C548', '#9CCB56', '#3DBB80'], E = [25, 46, 54, 75, 100];
 const gauge = (x, mark) => { const cx = x + 30, cy = 40, r = 26, P = v => { const a = Math.PI * (1 - v / 100); return [(cx + r * Math.cos(a)).toFixed(1), (cy - r * Math.sin(a)).toFixed(1)]; };
-  let s = '', from = 0; E.forEach((e, i) => { const a = P(from + (i ? 1.6 : 0)), b = P(e - (i < 4 ? 1.6 : 0)); s += `<path d="M${a[0]},${a[1]}A${r},${r} 0 0 1 ${b[0]},${b[1]}" fill="none" stroke="${Z[i]}" stroke-width="5" stroke-linecap="round"/>`; from = e; });
-  const k = P(mark); return s + `<circle cx="${k[0]}" cy="${k[1]}" r="4.2" fill="#16211D" stroke="#EFEEEB" stroke-width="2.2"/>`; };
+  let s = '', from = 0; E.forEach((e, i) => { const a = P(from + (i ? 1.6 : 0)), b = P(e - (i < 4 ? 1.6 : 0)); s += `<path d="M${a[0]},${a[1]}A${r},${r} 0 0 1 ${b[0]},${b[1]}" fill="none" stroke="${Z[i]}" stroke-width="5.5" stroke-linecap="round"/>`; from = e; });
+  const k = P(mark); return s + `<circle cx="${k[0]}" cy="${k[1]}" r="4.4" fill="#13241D" stroke="#EFEEEB" stroke-width="2.3"/>`; };
 document.getElementById('fg').innerHTML = `<svg width="208" height="56" viewBox="0 0 208 56">${gauge(4, 22)}${gauge(74, 50)}${gauge(144, 82)}</svg>`;
 // стакан: покупки зелёным влево, продажи красным вправо
 const rows = [[.92, .35], [.55, .62], [.3, .18], [.66, .12], [.2, .28]];
-document.getElementById('ob').innerHTML = `<svg width="208" height="86" viewBox="0 0 208 86">${rows.map(([b, a], i) => { const y = 4 + i * 16; return `<rect x="${(102 - 96 * b).toFixed(1)}" y="${y}" width="${(96 * b).toFixed(1)}" height="9" rx="4.5" fill="#5BB38D"/><rect x="106" y="${y}" width="${(96 * a).toFixed(1)}" height="9" rx="4.5" fill="#D47D76"/>`; }).join('')}<line x1="104" x2="104" y1="0" y2="86" stroke="rgba(255,255,255,.2)"/></svg>`;
-// мем-монеты: тонкие цветные линии и толстая абрикосовая DOG
+document.getElementById('ob').innerHTML = `<svg width="208" height="86" viewBox="0 0 208 86">${rows.map(([b, a], i) => { const y = 4 + i * 16; return `<rect x="${(102 - 96 * b).toFixed(1)}" y="${y}" width="${(96 * b).toFixed(1)}" height="9" rx="4.5" fill="#26B37F"/><rect x="106" y="${y}" width="${(96 * a).toFixed(1)}" height="9" rx="4.5" fill="#E8505B"/>`; }).join('')}<line x1="104" x2="104" y1="0" y2="86" stroke="rgba(255,255,255,.2)"/></svg>`;
+// мем-монеты: цветные линии и толстая абрикосовая DOG
 const rnd = s => () => (s = (s * 16807) % 2147483647) / 2147483647;
 const line = (seed, drift, vol) => { const r = rnd(seed); let y = 50, d = ''; for (let i = 0; i <= 40; i++) { y += (r() - .5) * vol + drift; y = Math.max(6, Math.min(82, y)); d += `${i ? 'L' : 'M'}${(i * 5.2).toFixed(1)},${y.toFixed(1)}`; } return d; };
-const cols = ['#E3C341', '#40A449', '#4FB3E8', '#E58FB5', '#C9302C', '#4E82E5', '#8FC23A', '#2FA094'];
-document.getElementById('mm').innerHTML = `<svg width="208" height="88" viewBox="0 0 208 88">${cols.map((c, i) => `<path d="${line(11 + i * 7, (i % 3 - 1) * .5, 9)}" fill="none" stroke="${c}" stroke-width="1.5" opacity=".7" stroke-linejoin="round"/>`).join('')}<path d="${line(23, 0, 7)}" fill="none" stroke="#D2955F" stroke-width="3.6" stroke-linejoin="round"/></svg>`;
+const cols = ['#E8C547', '#3FB653', '#4FB8F0', '#EE94BF', '#E0453E', '#5B8FF0', '#99CF3C', '#25B3A2'];
+document.getElementById('mm').innerHTML = `<svg width="208" height="88" viewBox="0 0 208 88">${cols.map((c, i) => `<path d="${line(11 + i * 7, (i % 3 - 1) * .5, 9)}" fill="none" stroke="${c}" stroke-width="1.6" opacity=".8" stroke-linejoin="round"/>`).join('')}<path d="${line(23, 0, 7)}" fill="none" stroke="#F2A35F" stroke-width="3.8" stroke-linejoin="round"/></svg>`;
 // кошельки: кольцо долей, как «У кого сколько DOG»
-const seg = [[28.5, '#D2955F'], [12.1, '#EACBA8'], [16.6, '#7F9CC7'], [42.8, '#3A404C']];
+const seg = [[28.5, '#D2955F'], [12.1, '#EACBA8'], [16.6, '#6EA6F2'], [42.8, '#3A404C']];
 let off = 0; const C = 2 * Math.PI * 30;
 document.getElementById('wl').innerHTML = `<svg width="96" height="96" viewBox="0 0 96 96"><g transform="rotate(-90 48 48)"><circle cx="48" cy="48" r="30" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="11"/>${seg.map(([v, c]) => { const L = v / 100 * C - 2, o = `<circle cx="48" cy="48" r="30" fill="none" stroke="${c}" stroke-width="11" stroke-dasharray="${L.toFixed(1)} ${(C - L).toFixed(1)}" stroke-dashoffset="${(-off).toFixed(1)}"/>`; off += v / 100 * C; return o; }).join('')}</g></svg>`;
 </script>

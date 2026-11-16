@@ -118,9 +118,59 @@ def entity_kind(a):
     return ('unknown' if tx is not None and tx > 500 else 'private'), None
 
 
+def dd_history(data):
+    """дневная история DOG DATA (/api/metrics/history): число холдеров и доли топ-10/100/1000 кошельков.
+    DOG DATA хранит около 45 дней, поэтому копим у себя в data/ddhist.json: день → последнее значение за этот день
+    (новые дни добавляются, старые не удаляются). Ошибка здесь не мешает остальному расчёту."""
+    p = os.path.join(data, 'ddhist.json')
+    old = jload(p, {}) or {}
+    days = dict(old.get('d') or {})
+    keys = (('total_holders', 'h', lambda v: int(float(v))), ('top10_supply_pct', 't10', float), ('top100_supply_pct', 't100', float),
+            ('top1000_supply_pct', 't1000', float))
+    try:
+        d = get([h + '/api/metrics/history?range=365d&metrics=' + ','.join(k for k, _, _ in keys) for h in DD], tries=2)
+    except Exception as e:  # noqa: BLE001
+        print(f'DDHIST: нет ответа ({e}) — история не меняется')
+        return
+    rows = (d or {}).get('history') or []
+    best = {}
+    for r in rows:
+        t = iso_of(r.get('recorded_at'))
+        if not t:
+            continue
+        rec = {}
+        for k, short, f in keys:
+            v = r.get(k)
+            try:
+                if v is not None:
+                    rec[short] = f(v) if short == 'h' else round(f(v), 4)
+            except (TypeError, ValueError):
+                pass
+        if not rec.get('h') and 't1000' not in rec:
+            continue
+        day = t[:10]
+        if day not in best or t >= best[day][0]:
+            best[day] = (t, rec)
+    if not best:
+        print(f'DDHIST: в ответе нет строк ({len(rows)}) — история не меняется')
+        return
+    # дни, где DOG DATA повторила вчерашние цифры (у них бывают «заглушки»), не отличаем — берём как есть
+    for day, (t, rec) in best.items():
+        days[day] = dict(rec, ts=t)
+    out = {'v': 1, 'updated': iso(NOW), 'src': 'DOG DATA /api/metrics/history',
+           'd': {k: days[k] for k in sorted(days)}}
+    jdump(out, p)
+    ks = sorted(days)
+    print(f'DDHIST: {len(best)} дней из ответа, всего {len(ks)} ({ks[0]} … {ks[-1]})')
+
+
 def main():
     site = sys.argv[1] if len(sys.argv) > 1 else '.'
     data = os.path.join(site, 'data')
+    try:
+        dd_history(data)
+    except Exception as e:  # noqa: BLE001
+        print(f'DDHIST: ошибка {e}')
     p_out, p_map = os.path.join(data, 'whales.json'), os.path.join(data, 'whales_map.json')
     old, mp = jload(p_out, {}) or {}, jload(p_map, {}) or {}
     prev = mp.get('w') or {}

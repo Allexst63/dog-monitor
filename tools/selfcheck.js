@@ -66,7 +66,17 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
     add(await page.evaluate(() => document.querySelectorAll('#p-overview .tile').length >= 2 && !!document.querySelector('#p-overview .sum')), 'Главная: плитки и «что нового» на месте', 'Home: tiles and “what’s new” are in place');
     await page.waitForTimeout(4000);                       // даём странице закончить своё онлайн-обновление
     const fng = await page.evaluate(() => [...document.querySelectorAll('#fng-box .fng-g')].map(g => (g.querySelector('.gn') || {}).textContent || ''));
-    add(fng.length === 3 && fng.filter(t => /^\d+$/.test(t)).length >= 2, `Главная: «Страх и жадность» под ценой (DOG ${fng[0] || '—'}, alternative.me ${fng[1] || '—'}, CoinMarketCap ${fng[2] || '—'})`, `Home: Fear & Greed under the price (DOG ${fng[0] || '—'}, alternative.me ${fng[1] || '—'}, CoinMarketCap ${fng[2] || '—'})`);
+    const fngTop = await page.evaluate(() => { const f = document.querySelector('#fng-box .fng'), h = document.querySelector('#p-overview .hero'); return !!f && !!h && f.getBoundingClientRect().top < h.getBoundingClientRect().top; });
+    add(fng.length === 3 && fng.filter(t => /^\d+$/.test(t)).length >= 2 && fngTop, `Главная: «Страх и жадность» сверху, число в дуге (DOG ${fng[0] || '—'}, alternative.me ${fng[1] || '—'}, CoinMarketCap ${fng[2] || '—'})`, `Home: Fear & Greed on top, the number inside the gauge (DOG ${fng[0] || '—'}, alternative.me ${fng[1] || '—'}, CoinMarketCap ${fng[2] || '—'})`);
+    // график на «Главном»: свечи по интервалам (15м · 1ч · 4ч · 1д · 1н) и переключатель «свечи / линия»; 1 млн DOG и капитализация
+    {
+      const h = await page.evaluate(() => ({ tf: document.querySelectorAll('#p-overview [data-htf]').length, md: document.querySelectorAll('#p-overview [data-hmode]').length, m1: (document.querySelector('#h1m') || {}).textContent || '', cap: (document.querySelector('#hcap2') || {}).textContent || '', rays: getComputedStyle(document.querySelector('#p-overview .hero'), '::before').display }));
+      await page.evaluate(() => { const b = document.querySelector('#p-overview [data-hmode="line"]'); if (b) b.click(); });
+      const line = await wait(() => document.querySelector('#p-overview [data-hmode="line"][aria-pressed="true"]') && !!document.querySelector('#pchart canvas'), 8000);
+      await page.evaluate(() => { const b = document.querySelector('#p-overview [data-hmode="candles"]'); if (b) b.click(); });
+      const cand = await wait(() => document.querySelector('#p-overview [data-hmode="candles"][aria-pressed="true"]') && !!document.querySelector('#pchart canvas'), 8000);
+      add(h.tf === 5 && h.md === 2 && line && cand && /\d/.test(h.m1) && /\d/.test(h.cap) && h.rays === 'none', `Главная: интервалы свечей (${h.tf}), «свечи / линия» переключаются, 1 млн DOG ${h.m1.trim()}, капитализация ${h.cap.trim()}`, `Home: candle intervals (${h.tf}), candles/line toggle works, 1M DOG ${h.m1.trim()}, market cap ${h.cap.trim()}`, JSON.stringify({ line, cand, rays: h.rays }));
+    }
     const st = await page.evaluate(() => ({ c: document.querySelector('#status').className, t: document.querySelector('#status-t').textContent }));
     add(/\d\d:\d\d/.test(st.t), `Статус в шапке показывает время данных («${st.t.trim().slice(0, 40)}»)`, `Header status shows the data time (“${st.t.trim().slice(0, 40)}”)`);
     add(await noOverflow(), 'Главная: ничего не вылезает за экран телефона', 'Home: nothing overflows the phone screen');
@@ -243,7 +253,7 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
     await page.waitForTimeout(600);
     add(await page.evaluate(() => document.querySelectorAll('#p-history tbody tr').length >= 3), 'История: список обновлений показан', 'History: the list of updates is shown');
 
-    // 6. iPad и компьютер: на широком экране — пилюли вверху, нижнего меню нет; ничего не вылезает за экран
+    // 6. iPad и компьютер: меню слева (на iPad — значки с подписями, на компьютере — полное), нижнего меню нет; ничего не вылезает за экран
     for (const [vw, vh, nm, en] of [[820, 1180, 'iPad', 'iPad'], [1440, 900, 'компьютер', 'computer']]) {
       await page.setViewportSize({ width: vw, height: vh });
       await page.waitForTimeout(500);
@@ -251,9 +261,9 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
       for (const k of ['overview', 'books', 'charts', 'wallets']) {
         await page.evaluate(k2 => { const b = document.querySelector(`[data-tab="${k2}"]`); if (b) b.click(); }, k);
         await page.waitForTimeout(900);
-        const r = await page.evaluate(() => ({ ov: document.scrollingElement.scrollWidth > window.innerWidth + 1, top: getComputedStyle(document.querySelector('#topnav')).display !== 'none', bar: getComputedStyle(document.querySelector('#tabbar')).display !== 'none' }));
+        const r = await page.evaluate(() => { const rl = document.querySelector('.rail'), b = rl && rl.getBoundingClientRect(); return { ov: document.scrollingElement.scrollWidth > window.innerWidth + 1, rail: !!rl && getComputedStyle(rl).display !== 'none' && b.left <= 1 && b.width >= 60, bar: getComputedStyle(document.querySelector('#tabbar')).display !== 'none', sel: !!document.querySelector('.rail [data-tab][aria-selected="true"]') }; });
         if (r.ov) bad.push(k + ': ' + (en === 'iPad' ? 'вылезает' : 'overflow'));
-        if (vw >= 900 ? (!r.top || r.bar) : (r.top || !r.bar)) bad.push(k + ': меню');
+        if (!r.rail || r.bar || !r.sel) bad.push(k + ': меню');
       }
       add(!bad.length, `${nm}: все вкладки помещаются, меню на месте`, `${en}: every tab fits, navigation in place`, bad.join('; '));
       if (SHOTS) { await page.evaluate(() => { const b = document.querySelector('[data-tab="overview"]'); if (b) b.click(); }); await page.waitForTimeout(800); await shot('9-' + en.toLowerCase()); }

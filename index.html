@@ -13,6 +13,7 @@
 <meta name="color-scheme" content="light dark">
 <script>try{var t=JSON.parse(localStorage.getItem("dogmon.theme")||"null");if(t==="dark"||t==="light"){document.documentElement.setAttribute("data-theme",t);document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute("content",t==="dark"?"#0E1118":"#F2EFE9")})}}catch(e){}</script>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="icons/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -23,29 +24,33 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="ru_RU">
 <meta property="og:title" content="DOG Monitor">
-<meta property="og:description" content="Live tracker for DOG•GO•TO•THE•MOON, the Bitcoin rune: price and charts, order books from 7 exchanges, three Fear &amp; Greed indices, DOG vs the top meme coins, the top 100 and every 10M+ wallet. Cross-checked data, full report 4× a day.">
+<meta property="og:description" content="Live DOG tracker: price, one order book from 7 exchanges, three Fear &amp; Greed indices, DOG vs the top meme coins and every 10M+ wallet. Cross-checked, 4× a day. Free, no ads.">
 <meta property="og:url" content="https://dog-monitor.github.io/">
-<meta property="og:image" content="https://dog-monitor.github.io/og.jpg?v=2611b">
+<meta property="og:image" content="https://dog-monitor.github.io/og.jpg?v=2611d">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:type" content="image/jpeg">
-<meta property="og:image:alt" content="DOG Monitor: price, Fear &amp; Greed, order books, wallets and meme coins for DOG•GO•TO•THE•MOON">
+<meta property="og:image:alt" content="DOG Monitor: live price, one order book, Fear &amp; Greed and every big wallet for DOG on Bitcoin">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="DOG Monitor">
-<meta name="twitter:description" content="Live tracker for DOG•GO•TO•THE•MOON, the Bitcoin rune: price, order books from 7 exchanges, three Fear &amp; Greed indices, DOG vs the top meme coins and every 10M+ wallet.">
-<meta name="twitter:image" content="https://dog-monitor.github.io/og.jpg?v=2611b">
+<meta name="twitter:description" content="Live DOG tracker: price, one order book from 7 exchanges, three Fear &amp; Greed indices, DOG vs the top meme coins and every 10M+ wallet. Free, no ads.">
+<meta name="twitter:image" content="https://dog-monitor.github.io/og.jpg?v=2611d">
 <link rel="preload" href="fonts/inter-400.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="fonts/inter-600.woff" as="font" type="font/woff" crossorigin>
-<link rel="preload" href="fonts/inter-display-600.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="fonts/inter-500.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="fonts/inter-700.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="fonts/inter-display-700.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="fonts/inter-mark.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="vendor/lightweight-charts-5.0.8.js" as="script">
 <style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0}img{max-width:100%}[hidden]{display:none!important}
 </style>
 <style>
 @font-face{font-family:"Inter";src:url("fonts/inter-400.woff") format("woff");font-weight:300 400;font-style:normal;font-display:swap}
-@font-face{font-family:"Inter";src:url("fonts/inter-500.woff") format("woff");font-weight:500;font-style:normal;font-display:swap}
-@font-face{font-family:"Inter";src:url("fonts/inter-600.woff") format("woff");font-weight:600 800;font-style:normal;font-display:swap}
-@font-face{font-family:"Inter Display";src:url("fonts/inter-display-600.woff") format("woff");font-weight:500 800;font-style:normal;font-display:swap}
+@font-face{font-family:"Inter";src:url("fonts/inter-500.woff") format("woff");font-weight:450 500;font-style:normal;font-display:swap}
+@font-face{font-family:"Inter";src:url("fonts/inter-600.woff") format("woff");font-weight:550 600;font-style:normal;font-display:swap}
+@font-face{font-family:"Inter";src:url("fonts/inter-700.woff") format("woff");font-weight:650 800;font-style:normal;font-display:swap}
+@font-face{font-family:"Inter Display";src:url("fonts/inter-display-600.woff") format("woff");font-weight:500 600;font-style:normal;font-display:swap}
+@font-face{font-family:"Inter Display";src:url("fonts/inter-display-700.woff") format("woff");font-weight:650 800;font-style:normal;font-display:swap}
 @font-face{font-family:"DM Mark";src:url("fonts/inter-mark.woff") format("woff");font-weight:700;font-style:italic;font-display:block}
 /* ===== DOG Monitor v5 — «Тихая ночь»: графит и мягкий абрикос (цвета варианта A), шрифт и подача варианта B ===== */
 :root{
@@ -55,15 +60,15 @@
   --dog:#B8763F; --dog-ink:#9A5C2A; --dog-soft:rgba(184,118,63,.12); --dog-glow:rgba(184,118,63,.10);
   --cream:#23262D; --on-cream:#F7F4EE;
   --accent:var(--dog); --accent-ink:var(--dog-ink); --accent-soft:var(--dog-soft); --on-accent:#FFFFFF;
-  --bid:#3A9C77; --ask:#C9635C; --bid-soft:rgba(58,156,119,.14); --ask-soft:rgba(201,99,92,.12);
-  --bid-strong:rgba(58,156,119,.30); --ask-strong:rgba(201,99,92,.26); --bid-faint:rgba(58,156,119,.05); --ask-faint:rgba(201,99,92,.045);
-  --up:#237F5A; --down:#B14942; --warn:#9A6417; --warn-soft:#F6EBD9; --ok-soft:#E3EFE8;
-  --t-sage:#E7EFE9; --t-peach:#F4EADF; --t-slate:#E7EBF1; --t-sand:#EFEAE1;
-  --k1:#5F7FAD; --k2:#B8763F; --k3:#3A9C77; --k4:#B08A3E; --k5:#B9737F; --k8:#B8763F; --k7:#6F7E99; --k6:#3A9C77; --k-pr:#8E929C; --k-un:#6B707B;
+  --bid:#14A06F; --ask:#DE3F48; --bid-soft:rgba(20,160,111,.14); --ask-soft:rgba(222,63,72,.12);
+  --bid-strong:rgba(20,160,111,.32); --ask-strong:rgba(222,63,72,.28); --bid-faint:rgba(20,160,111,.055); --ask-faint:rgba(222,63,72,.05);
+  --up:#0C8A5C; --down:#C9313A; --warn:#9A6417; --warn-soft:#F6EBD9; --ok-soft:#E3EFE8;
+  --t-sage:#E2F0E7; --t-peach:#F7E8D9; --t-slate:#E3EAF5; --t-sand:#F1EADD;
+  --k1:#3D7BD6; --k2:#D9822F; --k3:#14A06F; --k4:#B8902F; --k5:#C2607E; --k8:#B8763F; --k7:#6676A0; --k6:#14A06F; --k-pr:#8E929C; --k-un:#6B707B;
   --k-peach:#DDB48E; --k-ink:#3B3F48;
-  --mc-dog:var(--dog); --mc-sel:#5F7FAD; --mc-oth:rgba(110,114,126,.38);
-  --o1:#C9635C; --o2:#C99A62; --o3:#93AE6E; --o4:#3A9C77;
-  --hero-a:#FFFFFF; --hero-b:#F7F2EA; --ray:rgba(184,118,63,.075); --card-ink:var(--ink); --card-ink-2:var(--ink-2); --card-line:var(--line);
+  --mc-dog:var(--dog); --mc-sel:#3D7BD6; --mc-oth:rgba(110,114,126,.42); --f3m:#1A9C8C; --moon-glow:drop-shadow(0 1px 1.5px rgba(120,70,30,.3));
+  --o1:#DE3F48; --o2:#D9963E; --o3:#86AE4E; --o4:#14A06F;
+  --hero-a:#FFFFFF; --hero-b:#F4F1EB; --ray:transparent; --card-ink:var(--ink); --card-ink-2:var(--ink-2); --card-line:var(--line);
   --space-0:#F7F2EA; --space-1:#FFFFFF; --space-2:#FFFFFF;
   --chart-line:var(--dog);
   --fz1:#E5534B; --fz2:#EE8F3C; --fz3:#E2C23E; --fz4:#93C24E; --fz5:#2FAE74;
@@ -82,15 +87,15 @@
     --ink:#EFEEEB; --ink-2:#A7ABB5; --ink-3:#727785; --line:#262C38; --line-2:#1D222C; --edge:rgba(255,255,255,.035);
     --dog:#D2955F; --dog-ink:#E6B78F; --dog-soft:rgba(210,149,95,.14); --dog-glow:rgba(210,149,95,.16);
     --cream:#EBDDC9; --on-cream:#18150F; --on-accent:#1A140E;
-    --bid:#5BB38D; --ask:#D47D76; --bid-soft:rgba(91,179,141,.17); --ask-soft:rgba(212,125,118,.16);
-    --bid-strong:rgba(91,179,141,.36); --ask-strong:rgba(212,125,118,.33); --bid-faint:rgba(91,179,141,.055); --ask-faint:rgba(212,125,118,.05);
-    --up:#6FCBA2; --down:#EC948D; --warn:#D9A862; --warn-soft:rgba(217,168,98,.12); --ok-soft:rgba(91,179,141,.14);
-    --t-sage:#16211D; --t-peach:#221B16; --t-slate:#161D29; --t-sand:#1C1B19;
-    --k1:#7F9CC7; --k2:#D2955F; --k3:#5BB38D; --k4:#C9A15A; --k5:#C58E98; --k8:#D2955F; --k7:#8D9AB3; --k6:#5BB38D; --k-pr:#878C98; --k-un:#A3A7B1;
+    --bid:#26B37F; --ask:#E8505B; --bid-soft:rgba(38,179,127,.19); --ask-soft:rgba(232,80,91,.17);
+    --bid-strong:rgba(38,179,127,.42); --ask-strong:rgba(232,80,91,.38); --bid-faint:rgba(38,179,127,.07); --ask-faint:rgba(232,80,91,.06);
+    --up:#3DD6A0; --down:#FF7A80; --warn:#D9A862; --warn-soft:rgba(217,168,98,.12); --ok-soft:rgba(91,179,141,.14);
+    --t-sage:#13241D; --t-peach:#271C14; --t-slate:#141D2D; --t-sand:#211E18;
+    --k1:#6EA6F2; --k2:#F2A35F; --k3:#26B37F; --k4:#D9B060; --k5:#E58FA9; --k8:#D2955F; --k7:#9AA6C2; --k6:#26B37F; --k-pr:#878C98; --k-un:#A3A7B1;
     --k-peach:#EACBA8; --k-ink:#3A404C;
-    --mc-sel:#7F9CC7; --mc-oth:rgba(135,140,152,.34);
-    --o1:#D47D76; --o2:#D7A874; --o3:#A6BF85; --o4:#5BB38D;
-    --hero-a:#1A1F2A; --hero-b:#141821; --ray:rgba(210,149,95,.055);
+    --mc-sel:#6EA6F2; --mc-oth:rgba(135,140,152,.4); --f3m:#3CC6B4; --moon-glow:drop-shadow(0 0 6px rgba(242,180,122,.45));
+    --o1:#E8505B; --o2:#E9A85E; --o3:#A9C76A; --o4:#26B37F;
+    --hero-a:#1B2234; --hero-b:#121723; --ray:transparent;
     --space-0:#141821; --space-1:#1A1F2A; --space-2:#1F2531;
     --fz1:#EA5A55; --fz2:#F09243; --fz3:#E6C548; --fz4:#9CCB56; --fz5:#3DBB80;
     --shadow-card:0 1px 0 rgba(255,255,255,.02) inset,0 12px 32px -24px rgba(0,0,0,.9);
@@ -104,15 +109,15 @@
   --ink:#EFEEEB; --ink-2:#A7ABB5; --ink-3:#727785; --line:#262C38; --line-2:#1D222C; --edge:rgba(255,255,255,.035);
   --dog:#D2955F; --dog-ink:#E6B78F; --dog-soft:rgba(210,149,95,.14); --dog-glow:rgba(210,149,95,.16);
   --cream:#EBDDC9; --on-cream:#18150F; --on-accent:#1A140E;
-  --bid:#5BB38D; --ask:#D47D76; --bid-soft:rgba(91,179,141,.17); --ask-soft:rgba(212,125,118,.16);
-  --bid-strong:rgba(91,179,141,.36); --ask-strong:rgba(212,125,118,.33); --bid-faint:rgba(91,179,141,.055); --ask-faint:rgba(212,125,118,.05);
-  --up:#6FCBA2; --down:#EC948D; --warn:#D9A862; --warn-soft:rgba(217,168,98,.12); --ok-soft:rgba(91,179,141,.14);
-  --t-sage:#16211D; --t-peach:#221B16; --t-slate:#161D29; --t-sand:#1C1B19;
-  --k1:#7F9CC7; --k2:#D2955F; --k3:#5BB38D; --k4:#C9A15A; --k5:#C58E98; --k8:#D2955F; --k7:#8D9AB3; --k6:#5BB38D; --k-pr:#878C98; --k-un:#A3A7B1;
+  --bid:#26B37F; --ask:#E8505B; --bid-soft:rgba(38,179,127,.19); --ask-soft:rgba(232,80,91,.17);
+  --bid-strong:rgba(38,179,127,.42); --ask-strong:rgba(232,80,91,.38); --bid-faint:rgba(38,179,127,.07); --ask-faint:rgba(232,80,91,.06);
+  --up:#3DD6A0; --down:#FF7A80; --warn:#D9A862; --warn-soft:rgba(217,168,98,.12); --ok-soft:rgba(91,179,141,.14);
+  --t-sage:#13241D; --t-peach:#271C14; --t-slate:#141D2D; --t-sand:#211E18;
+  --k1:#6EA6F2; --k2:#F2A35F; --k3:#26B37F; --k4:#D9B060; --k5:#E58FA9; --k8:#D2955F; --k7:#9AA6C2; --k6:#26B37F; --k-pr:#878C98; --k-un:#A3A7B1;
   --k-peach:#EACBA8; --k-ink:#3A404C;
-  --mc-sel:#7F9CC7; --mc-oth:rgba(135,140,152,.34);
-  --o1:#D47D76; --o2:#D7A874; --o3:#A6BF85; --o4:#5BB38D;
-  --hero-a:#1A1F2A; --hero-b:#141821; --ray:rgba(210,149,95,.055);
+  --mc-sel:#6EA6F2; --mc-oth:rgba(135,140,152,.4); --f3m:#3CC6B4; --moon-glow:drop-shadow(0 0 6px rgba(242,180,122,.45));
+  --o1:#E8505B; --o2:#E9A85E; --o3:#A9C76A; --o4:#26B37F;
+  --hero-a:#1B2234; --hero-b:#121723; --ray:transparent;
   --space-0:#141821; --space-1:#1A1F2A; --space-2:#1F2531;
   --fz1:#EA5A55; --fz2:#F09243; --fz3:#E6C548; --fz4:#9CCB56; --fz5:#3DBB80;
   --shadow-card:0 1px 0 rgba(255,255,255,.02) inset,0 12px 32px -24px rgba(0,0,0,.9);
@@ -139,7 +144,6 @@ p{margin:0}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 /* ---------- каркас ---------- */
-.rail{display:none!important}
 .main{padding-inline:16px;padding-block:0 calc(104px + env(safe-area-inset-bottom,0px))}
 .content{max-width:1180px;margin:0 auto}
 .topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;margin-inline:-16px;padding:10px 16px;display:flex;align-items:center;gap:6px;background:color-mix(in srgb,var(--bg) 82%,transparent);-webkit-backdrop-filter:saturate(1.3) blur(16px);backdrop-filter:saturate(1.3) blur(16px)}
@@ -1251,16 +1255,192 @@ html{overscroll-behavior-y:contain}
 .sheet-body .book-top h3{display:none}
 
 .iconbtn:focus-visible,.playbtn:focus-visible{outline:2px solid color-mix(in srgb,var(--ink-3) 70%,transparent);outline-offset:1px}
+
+/* ===== v6 (17.11.2026): ярче зелёный и красный, чуть жирнее шрифт, луна, меню слева на iPad и компьютере ===== */
+body{font-weight:450}
+p,.note,.lead,.help p,.help li,.brief-text,.tinfo,.foot-src,.site-foot,.tv-ul,.dl-read,.fng-p small{font-weight:400}
+h1{font-weight:700;letter-spacing:-.02em}
+h2,h3{font-family:var(--body);font-weight:650;letter-spacing:-.012em}
+.seg button,.periods button,.chip,.tabbar button,.status,.langbtn{font-weight:550}
+.seg button[aria-pressed="true"],.periods button[aria-pressed="true"]{font-weight:650}
+.hero-price,.tile .tv,.bignum b,.wh-top b,.tring .c b,.ob-mid b,.hk b,.crt b,.cbbig,.metric .mh b,.tre-row .v b,.tre-top .v b,.mood-legend b,.sum4 .v,.sbig,.fngr .v b{font-weight:700}
+.ob-r .q,.ob2 .h .q{font-weight:500}
+.ob-r .p,.ob2 .h .p{font-weight:650}
+.tile .tl{font-weight:500}
+.tile .ts2{display:block;margin-top:2px}
+
+/* знак: «dog monitor» и луна */
+.wordmark{gap:7px}
+.wordmark i{display:none}
+.wm-moon{width:20px;height:20px;display:block;flex:none;transform:translateY(-1px);filter:var(--moon-glow)}
+
+/* карточка цены: без лучей и «солнца», чуть синевы в графите */
+.hero::before,.hero::after{display:none}
+.hero-head{display:flex;flex-direction:column;gap:12px}
+.hero-pair{font-weight:500}
+.hero-price{font-size:44px;letter-spacing:-.032em;margin-top:2px}
+.hero-chg{margin-top:6px}
+.hstats{display:flex;gap:26px;margin:0}
+.hstats div{display:flex;flex-direction:column;gap:1px;min-width:0}
+.hstats span{font-size:11.5px;color:var(--ink-3);white-space:nowrap}
+.hstats b{font-size:16px;font-weight:650;font-variant-numeric:tabular-nums;white-space:nowrap}
+.hero.scrub .hstats b{color:var(--dog-ink)}
+.hero-ctl{display:flex;align-items:center;gap:8px;margin-top:14px}
+.hero-ctl .periods{flex:1;min-width:0}
+.periods button{padding:6px 0;font-size:13px}
+.hmodes{display:inline-flex;gap:2px;padding:3px;border-radius:999px;background:color-mix(in srgb,var(--ink) 5%,transparent);border:1px solid var(--line-2);flex:none}
+.hmodes button{width:36px;height:28px;border:0;border-radius:999px;background:transparent;color:var(--ink-3);display:grid;place-items:center;cursor:pointer;transition:background .2s,color .2s}
+.hmodes button .ico{width:17px;height:17px}
+.hmodes button:hover{color:var(--ink)}
+.hmodes button[aria-pressed="true"]{background:var(--surface-3);color:var(--ink)}
+.pchart.lw{height:228px}
+.hero-foot{margin-top:4px}
+#hcap,.hmode,.h24{display:none}
+
+/* страх и жадность: одна карточка, три шкалы, цифра в дуге */
+.fng{background:var(--surface);border:1px solid var(--edge);border-radius:var(--r);box-shadow:var(--shadow-card);padding:12px 6px 10px;gap:2px}
+.fng .fng-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:0 10px 4px}
+.fng .fng-head h3{font-size:15px}
+.fng .fng-head p{font-size:11.5px;color:var(--ink-3)}
+.fng-3{gap:0}
+.fng-g{border:0;border-radius:14px;background:transparent;box-shadow:none;padding:6px 4px 4px}
+.fng-g + .fng-g::before{content:"";position:absolute;left:0;top:12%;bottom:12%;width:1px;background:var(--line-2)}
+.fng-g:hover{background:var(--surface-2)}
+.fng-g .gauge{max-width:100px}
+.fng-g .gn{font-size:24px;font-weight:700}
+.fng-g .gk{font-size:12px;font-weight:650;margin-top:3px}
+.fng-g .gt{font-size:12px;font-weight:550;margin-top:1px;color:var(--ink)}
+.fng-g .gs{display:block;font-size:11px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.fng-g .gy{display:none}
+.fng-sp90{display:none!important}
+
+/* «Главное»: сверху вниз по смыслу; ниже — две колонки без пустот */
+.h-cols{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.h-cols > *{min-width:0}
+/* мем-монеты на широком экране — карточки в ряд: место, монета, изменение, линия за 90 дней */
+@media (min-width:700px){
+  .mmini{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .mmini .mr{grid-template-columns:auto auto minmax(0,1fr) auto;grid-template-rows:auto auto;gap:6px 7px;border:1px solid var(--line-2);border-radius:14px;padding:10px 12px 8px}
+  .mmini .mr:first-child{border-top:1px solid var(--line-2)}
+  .mmini .mr.dog,.mmini .mr.dog + .mr{border-color:var(--line-2)}
+  .mmini .mr.dog{background:linear-gradient(160deg,var(--dog-soft),transparent 75%)}
+  .mmini .mr svg{grid-row:2;grid-column:1 / -1;width:100%;height:30px}
+  .mmini .mr .v{grid-row:1;grid-column:4}
+  .mmini .mr:hover{border-color:var(--ink-3)}
+}
+@media (min-width:1100px){.mmini{grid-template-columns:repeat(6,minmax(0,1fr))}}
+.h-tre .group{padding:12px 14px}
+.cols2{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.cols2 > .col{display:flex;flex-direction:column;gap:14px;min-width:0}
+.cols2 > .col > *{min-width:0}
+
+/* «Страх и жадность» на «Графиках»: число в дуге, справа — зона и «вчера» */
+.fngr{grid-template-columns:78px minmax(0,1fr) auto;gap:2px 14px;padding:10px 0}
+.fngr .gauge{width:78px}
+.fngr .gauge .gn{display:inline;font-family:var(--display);font-size:26px;font-weight:700;fill:var(--ink);font-variant-numeric:tabular-nums}
+.fngr .v b{font-family:var(--body);font-size:14px;font-weight:650;letter-spacing:0;line-height:1.3}
+.fngr .v span{font-size:11.5px;font-weight:450;color:var(--ink-3)}
+
+/* меню слева: на iPad — значки с подписями, на широком экране — полное, как раньше */
+.rail{display:none}
+@media (min-width:700px){
+  .rail{display:flex;flex-direction:column;gap:2px;position:fixed;left:0;top:0;bottom:0;width:88px;padding:calc(14px + env(safe-area-inset-top,0px)) 8px calc(14px + env(safe-area-inset-bottom,0px)) calc(8px + env(safe-area-inset-left,0px));background:color-mix(in srgb,var(--surface) 60%,var(--bg));border-right:1px solid var(--line-2);z-index:25;overflow-y:auto;scrollbar-width:none}
+  .rail::-webkit-scrollbar{display:none}
+  .rail .brand{flex:none;justify-content:center;padding:6px 0 16px}
+  .rail .wm-t{display:none}
+  .rail .wm-moon{width:32px;height:32px;transform:none}
+  .rail button.nav{display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;border:0;background:transparent;color:var(--ink-3);font-size:11px;font-weight:550;line-height:1.2;padding:10px 2px 9px;border-radius:14px;cursor:pointer;position:relative;text-align:center;transition:background .2s,color .2s}
+  .rail button.nav .ico{width:22px;height:22px}
+  .rail button.nav span:not(.badge){max-width:100%;overflow:hidden;text-overflow:ellipsis}
+  .rail button.nav:hover{color:var(--ink);background:var(--surface-3)}
+  .rail button.nav[aria-selected="true"]{color:var(--dog-ink);background:var(--dog-soft)}
+  .rail .sep{height:1px;background:var(--line-2);margin:8px 12px}
+  .rail .badge{top:4px;left:calc(50% + 7px)}
+  .rail-foot{display:none}
+  .main{margin-left:88px;padding-bottom:48px}
+  .tabbar{display:none!important}
+  .topbar .brand{display:none}
+  .topbar .sect{display:block;flex:1;min-width:0;font-size:22px;font-weight:700;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .topnav{display:none!important}
+  .langbtn{display:inline-flex;align-items:center;justify-content:center}
+  .ptitle h1{display:none}
+  .ptitle p{font-size:13.5px;margin-top:0}
+  .hero-head{flex-direction:row;justify-content:space-between;align-items:flex-end;gap:16px}
+  .hstats{gap:30px;padding-bottom:4px}
+  .hstats div{align-items:flex-end}
+  .hstats b{font-size:18px}
+  .hero-price{font-size:54px}
+  .pchart.lw{height:290px}
+  .hero-ctl{justify-content:space-between}
+  .hero-ctl .periods{flex:none}
+  .hero-ctl .periods button{flex:none;padding:6px 14px}
+  .fng{padding:16px 10px 14px}
+  .fng .fng-head h3{font-size:16px}
+  .fng-g .gauge{max-width:128px}
+  .fng-g .gn{font-size:27px}
+  .fng-g .gk,.fng-g .gt{font-size:13.5px}
+  .fng-g .gs{font-size:12px}
+  .fng-g .gy{display:block;font-size:11.5px;color:var(--ink-3);margin-top:1px}
+}
+@media (min-width:900px){
+  .home{grid-template-columns:minmax(0,1fr);gap:16px}
+  .home > *{grid-column:1 / -1!important;grid-row:auto!important}
+  .h-cols{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);grid-template-areas:"sum ex" "memes memes";gap:16px;align-items:stretch}
+  .home .h-cols > .h-sum{grid-area:sum} .home .h-cols > .h-ex{grid-area:ex} .home .h-cols > .h-memes{grid-area:memes}
+  .h-sum > .group,.h-ex > .group{height:100%}
+  .h-fng .fng{height:auto;padding:16px 10px 14px;gap:2px;display:flex;flex-direction:column}
+  .h-fng .fng-3{grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
+  .h-fng .fng-g{display:flex;flex-direction:column;align-items:center;text-align:center;border:0;border-radius:14px;padding:6px 4px 4px}
+  .h-fng .fng-g:hover{background:var(--surface-2)}
+  .h-fng .fng-g .gauge{grid-row:auto;width:100%;max-width:128px}
+  .h-fng .fng-g .gauge .gn{display:inline}
+  .h-fng .fng-g .gt{grid-column:auto;font-size:13.5px;margin-top:1px}
+  .h-fng .fng-g .gs{display:block;grid-column:auto;font-size:12px}
+  .h-fng .fng-g .gk{display:block}
+  .h-fng .fng-g .gv{display:none}
+  .hero{padding:22px 24px 14px}
+  .hero-head .hero-ctl{margin-top:0}
+  .tiles{gap:14px}
+}
+@media (min-width:1100px){
+  .rail{width:244px;padding:calc(20px + env(safe-area-inset-top,0px)) 14px 18px calc(14px + env(safe-area-inset-left,0px))}
+  .rail .brand{justify-content:flex-start;padding:4px 10px 20px}
+  .rail .wm-t{display:inline}
+  .rail .wordmark{font-size:22px}
+  .rail .wm-moon{width:22px;height:22px;transform:translateY(-1px)}
+  .rail button.nav{flex-direction:row;justify-content:flex-start;gap:12px;font-size:14.5px;line-height:1.3;padding:10px 12px;border-radius:12px;text-align:left}
+  .rail button.nav .ico{width:20px;height:20px}
+  .rail .badge{position:static;margin-left:auto}
+  .rail .sep{margin:10px 12px}
+  .rail-foot{display:flex;flex-direction:column;gap:10px;margin-top:auto;padding:14px 10px 0;font-size:12.5px;line-height:1.45;color:var(--ink-3)}
+  .rail-foot .rf-btns{gap:6px}
+  .rail-foot .btn{align-self:flex-start}
+  .rail .langsw{align-self:flex-start}
+  .rail .langsw button{padding:6px 11px;font-size:13px}
+  .main{margin-left:244px}
+  .topbar .upd,.topbar .menu,.langbtn{display:none!important}
+  .hero-price{font-size:60px}
+  .pchart.lw{height:340px}
+}
+@media (min-width:900px){.topbar{padding-left:max(32px,calc((100% - 1180px) / 2));padding-right:max(32px,calc((100% - 1180px) / 2))}}
+@media (min-width:1300px){.cols2{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}.cols2 > .col{gap:16px}}
+@media (min-width:900px) and (max-width:1299px){.p-wallets .cols2,#p-wallets .cols2{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}}
+/* iPad в портрете (700–899): рядом меню слева, четыре плитки в ряд не помещают «22,36 млрд» и «Покупатели» — ставим 2×2 */
+@media (min-width:700px) and (max-width:899px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
 
 <div class="shell" id="shell">
+  <aside class="rail" aria-label="Sections">
+    <button type="button" class="brand" data-go="overview" aria-label="DOG Monitor — Home"><span class="wordmark" translate="no"><span class="wm-t">dog monitor</span><img class="wm-moon" src="icons/moon.svg" alt="" width="20" height="20" decoding="async"></span></button>
+    <nav id="railnav"></nav>
+    <div class="rail-foot" id="railfoot"></div>
+  </aside>
   <div class="main">
     <header class="topbar">
-      <button type="button" class="brand" data-go="overview" aria-label="DOG Monitor — Home"><span class="wordmark" translate="no">dog monitor<i aria-hidden="true"></i></span></button>
+      <button type="button" class="brand" data-go="overview" aria-label="DOG Monitor — Home"><span class="wordmark" translate="no"><span class="wm-t">dog monitor</span><img class="wm-moon" src="icons/moon.svg" alt="" width="20" height="20" decoding="async"></span></button>
       <h1 class="sect" id="sect">Home</h1>
-      <nav class="topnav" id="topnav" aria-label="Sections"></nav>
       <button type="button" class="status" id="status" aria-label="Data status and update"><span class="dot"></span><span id="status-t">Connecting…</span></button>
       <button type="button" class="langbtn" id="langbtn" data-lang="ru" aria-label="Русский язык">RU</button>
       <button type="button" class="iconbtn upd" id="updnow" data-updnow aria-label="Update data" title="Update"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 12a8.5 8.5 0 1 1-8.5-8.5c2.38 0 4.66.95 6.37 2.6L20.5 8M20.5 3.5V8H16"/></svg></button>
@@ -1392,7 +1572,7 @@ html{overscroll-behavior-y:contain}
     ['https://c2dog.com', 'C2 Blockchain', T('публичная компания, которая копит DOG в казне', 'a public company that holds DOG in its treasury')]
   ];
   const TABS = [['overview', T('Главное', 'Home'), 'home'], ['books', T('Стакан', 'Order book'), 'book'], ['charts', T('Графики', 'Charts'), 'candle'], ['wallets', T('Кошельки', 'Wallets'), 'wallet']];   // вкладки «Новости» больше нет: без доступа к X она почти всегда пустая
-  const EXTRA = [['history', T('История', 'History'), 'clock'], ['help', T('Справка', 'Guide'), 'help']];
+  const EXTRA = [['history', T('Архив сводок', 'Report archive'), 'clock'], ['help', T('Справка', 'Guide'), 'help']];
   const TITLES = Object.fromEntries(TABS.concat(EXTRA).map(t => [t[0], t[1]]));
   const ICON = {
     home: 'M3.5 10.5 12 3.5l8.5 7V20a1 1 0 0 1-1 1H15v-6H9v6H4.5a1 1 0 0 1-1-1z',
@@ -1414,6 +1594,7 @@ html{overscroll-behavior-y:contain}
     chev: 'M9 6l6 6-6 6', shield: 'M12 3 5 6v5c0 4.4 3 8.3 7 9.5 4-1.2 7-5.1 7-9.5V6z',
     sparkle: 'M12 3v4m0 10v4M3 12h4m10 0h4M6.3 6.3l2.5 2.5m6.4 6.4 2.5 2.5m0-11.4-2.5 2.5m-6.4 6.4-2.5 2.5',
     candle: 'M7 3.5v3m0 11v3M5 6.5h4v11H5zM17 3v5m0 8v5M15 8h4v8h-4z',
+    line: 'M3.5 16.5 9 11l4 3.5 7.5-8',
     info: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zm0-10.5V16m0-8.5h.01',
     building: 'M4 21h16M6 21V5.5A1.5 1.5 0 0 1 7.5 4h9A1.5 1.5 0 0 1 18 5.5V21M9.5 8h1m3 0h1m-5 4h1m3 0h1m-5 4h1m3 0h1',
     x: 'M5 4l14 16M19 4 5 20',
@@ -1435,7 +1616,7 @@ html{overscroll-behavior-y:contain}
     tab: 'overview', period: store.get('period', '1М'), range: 0.10, step: 1, bookView: store.get('bookView', 'sum'),
     filter: 'all', q: '', showAll: false, newsKind: 'all', evAll: false,
     seen: store.get('seen', {}), intro: true, lastId: null, lastPrice: null,
-    chartMode: store.get('chartMode', 'line') === 'candles' ? 'candles' : 'line', tre: null, live: null
+    chartMode: store.get('chartMode2', 'candles') === 'line' ? 'line' : 'candles', htf: store.get('htf', '1d'), tre: null, live: null
   };
   const okTabs = TABS.concat(EXTRA).map(t => t[0]);
   { const t = store.get('tab', null); if (okTabs.includes(t)) S.tab = t; else if (t === 'flows') S.tab = 'charts'; }
@@ -1679,13 +1860,12 @@ html{overscroll-behavior-y:contain}
 
   // ---------- навигация ----------
   // навигация: на телефоне — нижнее меню из четырёх разделов, на iPad и компьютере — пилюли в шапке (+ «История»)
-  function navHtml(top) {
-    const btn = ([k, t, i]) => top
-      ? `<button type="button" role="tab" data-tab="${k}" aria-selected="${String(S.tab === k)}">${t}</button>`
-      : `<button type="button" role="tab" data-tab="${k}" aria-selected="${String(S.tab === k)}">${ico(i)}<span>${t}</span><span class="badge" data-badge="${k}" hidden></span></button>`;
-    return top ? `<div class="pills" role="tablist">${TABS.concat(EXTRA.slice(0, 1)).map(btn).join('')}</div>` : TABS.map(btn).join('');
+  // меню: на телефоне — снизу (четыре раздела), на iPad и компьютере — слева (разделы, затем архив сводок и справка)
+  function navHtml(rail) {
+    const btn = ([k, t, i]) => `<button type="button"${rail ? ' class="nav"' : ''} role="tab" data-tab="${k}" aria-selected="${String(S.tab === k)}">${ico(i)}<span>${t}</span><span class="badge" data-badge="${k}" hidden></span></button>`;
+    return rail ? `<div role="tablist" aria-orientation="vertical">${TABS.map(btn).join('')}</div><div class="sep" aria-hidden="true"></div><div role="tablist" aria-orientation="vertical">${EXTRA.map(btn).join('')}</div>` : TABS.map(btn).join('');
   }
-  $('#topnav').innerHTML = navHtml(true);
+  $('#railnav').innerHTML = navHtml(true);
   $('#tabbar').innerHTML = navHtml(false);
   function setBadge(k, v) { $$(`[data-badge="${k}"]`).forEach(b => { b.hidden = !v; b.textContent = v || ''; }); }
   function setTab(t, push) {
@@ -1932,31 +2112,41 @@ html{overscroll-behavior-y:contain}
     return base ? (last / base - 1) * 100 : null;
   }
   const pillTxt = c => c == null ? '—' : (dir(c) === 'flat' ? n(0, 1) + '%' : sg(c, 1, '%'));
-  // изменение за сутки — рядом с изменением за выбранный период (если период не «сутки»)
-  const h24Txt = s => { if (S.period === '1Д') return ''; const c = perChange(s, '1Д'); return c == null ? '' : `· ${T('сутки', '24h')} <b class="${dir(c)}">${pillTxt(c)}</b>`; };
+  // ---------- «Главное»: цена и график — свечи Kraken по интервалам, как на «Графиках» (15м · 1ч · 4ч · 1д · 1н) ----------
+  // видно последних свечей: 15м — сутки, 1ч — 4 дня, 4ч — 15 дней, 1д — 4 месяца, 1н — вся история
+  const HTF = ['15m', '1h', '4h', '1d', '1w'];
+  const HTF_N = { '15m': 96, '1h': 96, '4h': 90, '1d': 120, '1w': 1000 };
+  const HTF_WHAT = { '15m': T('свечи по 15 минут · сутки', '15-minute candles · 24 hours'), '1h': T('часовые свечи · 4 дня', 'hourly candles · 4 days'), '4h': T('свечи по 4 часа · 15 дней', '4-hour candles · 15 days'), '1d': T('дневные свечи · 4 месяца', 'daily candles · 4 months'), '1w': T('недельные свечи · вся история', 'weekly candles · all history') };
+  if (!HTF.includes(S.htf)) S.htf = '1d';
+  function heroRows() {
+    const tf = S.htf, raw = typeof chInstant === 'function' ? chInstant(tf) : null;
+    if (!raw || raw.length < 2) return null;
+    const rows = chWithLive(raw, tf).slice(-HTF_N[tf]);
+    return rows.length >= 2 ? { rows, tf, intra: chIntra(tf) } : null;
+  }
+  const nowPx = () => { const s = V(); return livePrice() || ((s || {}).price || {}).mid || null; };
+  const chg24 = () => { const lc = liveChg(); if (lc != null) return lc; const s = V(); return s && s.price && s.price.chg24 != null ? s.price.chg24 : null; };
+  // цена, 1 млн DOG и капитализация — сейчас или в момент под пальцем
   function setHero(price, chg, label, scrub) {
-    const p = $('#hprice'), pill = $('#hpill'), lab = $('#hlabel'), h24 = $('#h24');
-    if (h24) { const s = V(); h24.innerHTML = scrub || !s ? '' : h24Txt(s); }
+    const p = $('#hprice'), pill = $('#hpill'), lab = $('#hlabel');
     if (p && p.firstChild && price != null) p.firstChild.nodeValue = fp(price);
-    const m = $('#h1m'); if (m && price != null) m.textContent = '≈ ' + m1usd(price);
-    const c2 = $('#hcap2'); if (c2 && price != null) c2.textContent = usd(price * SUPPLY);
+    const m = $('#h1m'); if (m && price != null) m.textContent = m1usd(price);
+    const c2 = $('#hcap2'); if (c2 && price != null) c2.textContent = capS(price * SUPPLY);
     if (pill) { pill.className = 'pill ' + dir(chg); pill.textContent = pillTxt(chg); }
     if (lab) lab.textContent = label || '';
     const h = $('#p-overview .hero'); if (h) h.classList.toggle('scrub', !!scrub);
   }
-  function resetHero() {
-    const s = V(); if (!s) return;
-    setHero(livePrice() || (s.price || {}).mid, perChange(s, S.period, priceRows(s, S.period)), PER_NAME[S.period], false);
-  }
+  function resetHero() { if (!V()) return; setHero(nowPx(), chg24(), T('за сутки', '24h'), false); }
+  // палец на свече: её цена закрытия, а рядом — сколько цена прошла с того момента до сейчас
   function scrubHero(v, tSec) {
     if (!HC) return;
-    const d = new Date(tSec * 1000);
-    const lab = HC.hourly ? dml(d) + ', ' + tl(d) : dml(d) + (d.getFullYear() !== new Date().getFullYear() ? ' ' + d.getFullYear() : '');
-    setHero(v, HC.base ? (v / HC.base - 1) * 100 : null, lab, true);
+    const d = new Date(tSec * 1000), now = nowPx(), yr = d.getUTCFullYear() !== new Date().getUTCFullYear() ? ' ' + d.getUTCFullYear() : '';
+    const when = HC.intra ? dml(d) + ', ' + tl(d) : (HC.tf === '1w' ? T('недели ', 'the week of ') : '') + fuDM(tSec) + yr;   // дневные и недельные свечи — по дате UTC
+    setHero(v, now && v ? (now / v - 1) * 100 : null, T('с ', 'since ') + when, true);
   }
   function chartLabel(R) {
     const cl = R.rows.map(r => r[4]);
-    return T(`График цены DOG ${PER_NAME[S.period]}: сейчас ${fp(cl[cl.length - 1])} $, максимум ${fp(Math.max(...cl))}, минимум ${fp(Math.min(...cl))}`, `DOG price chart, ${PER_NAME[S.period]}: now ${fpd(cl[cl.length - 1])}, high ${fpd(Math.max(...cl))}, low ${fpd(Math.min(...cl))}`);
+    return T(`График цены DOG, ${HTF_WHAT[R.tf]}: сейчас ${fp(cl[cl.length - 1])} $, максимум ${fp(Math.max(...cl))}, минимум ${fp(Math.min(...cl))}`, `DOG price chart, ${HTF_WHAT[R.tf]}: now ${fpd(cl[cl.length - 1])}, high ${fpd(Math.max(...cl))}, low ${fpd(Math.min(...cl))}`);
   }
 
   // ---------- цена: график TradingView Lightweight Charts (Apache-2.0) ----------
@@ -2016,7 +2206,7 @@ html{overscroll-behavior-y:contain}
       try { lg = HC.chart.timeScale().coordinateToLogical(clientX - r.left); } catch (e) { }
       if (lg == null || isNaN(lg)) return;
       const i = Math.max(0, Math.min(HC.rows.length - 1, Math.round(lg))), row = HC.rows[i];
-      try { HC.chart.setCrosshairPosition(row[4], row[0] + TZ, HC.main); } catch (e) { }
+      try { HC.chart.setCrosshairPosition(row[4], HC.Tm(row), HC.main); } catch (e) { }
       scrubHero(row[4], row[0]);
     };
     el.addEventListener('pointerdown', e => { if (!HC) return; HC.ptype = e.pointerType; if (e.pointerType !== 'mouse') { HC.touching = true; at(e.clientX); } });
@@ -2031,36 +2221,42 @@ html{overscroll-behavior-y:contain}
     killChart();
     el.className = 'pchart lw';
     el.innerHTML = '';
-    const candles = S.chartMode === 'candles' && !R.line, hourly = R.hourly, C = chColors();
+    const candles = S.chartMode !== 'line', intra = R.intra, C = chColors();
+    const Tm = r => intra ? r[0] + TZ : r[0];
+    const wide = (el.clientWidth || 360) >= 560;
     const chart = LW.createChart(el, {
       autoSize: true,
       layout: { background: { type: 'solid', color: 'rgba(0,0,0,0)' }, textColor: C.ink3, fontSize: 11, fontFamily: '"Inter", system-ui, sans-serif', attributionLogo: true },
-      grid: { vertLines: { visible: false }, horzLines: { color: hexA(C.line, 0.55) } },
-      rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.14, bottom: candles ? 0.26 : 0.08 } },
-      timeScale: { borderVisible: false, timeVisible: hourly, secondsVisible: false, fixLeftEdge: true, fixRightEdge: true, lockVisibleTimeRangeOnResize: true, tickMarkFormatter: tickFmt },
+      grid: { vertLines: { visible: false }, horzLines: { color: hexA(C.line, 0.5) } },
+      rightPriceScale: { borderVisible: false, entireTextOnly: true, scaleMargins: { top: 0.12, bottom: candles ? 0.2 : 0.08 } },
+      timeScale: { borderVisible: false, timeVisible: intra, secondsVisible: false, fixLeftEdge: true, fixRightEdge: true, lockVisibleTimeRangeOnResize: true, tickMarkFormatter: tickFmt },
       crosshair: { mode: 1, vertLine: { color: hexA(C.ink3, 0.8), width: 1, style: 2, labelVisible: false }, horzLine: { visible: false, labelVisible: false } },
       handleScroll: { mouseWheel: false, pressedMouseMove: false, horzTouchDrag: false, vertTouchDrag: false },
       handleScale: { mouseWheel: false, pinch: false, axisPressedMouseMove: false, axisDoubleClickReset: false },
       kineticScroll: { mouse: false, touch: false },
       trackingMode: { exitMode: 0 },
-      localization: { locale: LOC, priceFormatter: p => fp(p), timeFormatter: t => hourly ? fuDM(t) + ', ' + FU_T.format(ut(t)) : fuDM(t) }
+      localization: { locale: LOC, priceFormatter: p => fp(p), timeFormatter: t => intra ? fuDM(t) + ', ' + FU_T.format(ut(t)) : fuDM(t) + ' ' + FU_Y.format(ut(t)) }
     });
-    const pf = { type: 'price', precision: 7, minMove: 0.0000001 }, T = r => r[0] + TZ;
+    const pf = { type: 'price', precision: 7, minMove: 0.0000001 };
     let main, vol = null;
     try {
       if (candles) {
         main = addSer(chart, 'Candlestick', { upColor: C.up, downColor: C.down, wickUpColor: C.up, wickDownColor: C.down, borderVisible: false, priceFormat: pf, priceLineColor: hexA(C.ink3, 0.8), priceLineStyle: 2 });
-        main.setData(R.rows.map(r => ({ time: T(r), open: r[1], high: r[2], low: r[3], close: r[4] })));
-        vol = addSer(chart, 'Histogram', { priceScaleId: '', priceFormat: { type: 'volume' }, lastValueVisible: false, priceLineVisible: false });
-        try { vol.priceScale().applyOptions({ scaleMargins: { top: 0.8, bottom: 0 } }); } catch (e) { }
-        vol.setData(R.rows.map(r => ({ time: T(r), value: r[5] || 0, color: hexA(r[4] >= r[1] ? C.up : C.down, 0.32) })));
+        main.setData(R.rows.map(r => ({ time: Tm(r), open: r[1], high: r[2], low: r[3], close: r[4] })));
+        if (R.rows.some(r => r[5] > 0)) {
+          vol = addSer(chart, 'Histogram', { priceScaleId: '', priceFormat: { type: 'volume' }, lastValueVisible: false, priceLineVisible: false });
+          try { vol.priceScale().applyOptions({ scaleMargins: { top: 0.84, bottom: 0 } }); } catch (e) { }
+          vol.setData(R.rows.map(r => ({ time: Tm(r), value: r[5] || 0, color: hexA(r[4] >= r[1] ? C.up : C.down, 0.38) })));
+        }
       } else {
-        main = addSer(chart, 'Area', { lineColor: C.dog, topColor: hexA(C.dog, 0.26), bottomColor: hexA(C.dog, 0), lineWidth: 2, priceFormat: pf, priceLineColor: hexA(C.ink3, 0.7), priceLineStyle: 2, crosshairMarkerRadius: 5, crosshairMarkerBorderColor: C.bg, crosshairMarkerBackgroundColor: C.dog });
-        main.setData(R.rows.map(r => ({ time: T(r), value: r[4] })));
+        // линия — зелёная, если за видимый отрезок цена выросла, красная — если упала (как в приложениях бирж)
+        const col = R.rows[R.rows.length - 1][4] >= R.rows[0][4] ? C.up : C.down;
+        main = addSer(chart, 'Area', { lineColor: col, topColor: hexA(col, 0.28), bottomColor: hexA(col, 0), lineWidth: 2, priceFormat: pf, priceLineColor: hexA(C.ink3, 0.7), priceLineStyle: 2, crosshairMarkerRadius: 5, crosshairMarkerBorderColor: C.bg, crosshairMarkerBackgroundColor: col });
+        main.setData(R.rows.map(r => ({ time: Tm(r), value: r[4] })));
       }
       chart.timeScale().fitContent();
     } catch (e) { try { chart.remove(); } catch (er) { } throw e; }
-    HC = { chart, main, vol, el, key, rows: R.rows, base: R.line || R.closeBase ? R.rows[0][4] : R.rows[0][1], hourly, touching: false, ptype: 'mouse' };
+    HC = { chart, main, vol, el, key, rows: R.rows, tf: R.tf, intra, Tm, wide, touching: false, ptype: 'mouse' };
     chart.subscribeCrosshairMove(param => {
       if (!HC || HC.chart !== chart) return;
       if (HC.ptype !== 'mouse' && !HC.touching) return;
@@ -2068,29 +2264,39 @@ html{overscroll-behavior-y:contain}
       const d = param.seriesData && param.seriesData.get(main);
       const v = d ? (d.close != null ? d.close : d.value) : null;
       if (v == null || typeof param.time !== 'number') return;
-      scrubHero(v, param.time - TZ);
+      const k = HC.rows.findIndex(r => Tm(r) === param.time);
+      scrubHero(v, k >= 0 ? HC.rows[k][0] : param.time - (intra ? TZ : 0));
     });
     bindScrub(el);
+    tvFixAll(el);
   }
   function drawPrice(force) {
     const el = $('#pchart');
     if (!el) { killChart(); return; }
-    const s = V(), R = s && priceRows(s, S.period);
-    const mb = $('#hmode'); if (mb) mb.hidden = !R || !!R.line || lwState === 'failed';
-    if (!R) { killChart(); el.className = 'pchart'; el.innerHTML = `<p class="hero-foot">${T('График появится после следующего обновления.', 'The chart will appear after the next update.')}</p>`; return; }
+    const s = V(), tf = S.htf, R = s ? heroRows() : null;
+    // свежих свечей этого интервала ещё нет — просим у Kraken и перерисовываем, когда придут
+    if (s && typeof chFresh === 'function' && !chFresh(tf)) {
+      HWAIT[tf] = HWAIT[tf] || chOhlc(tf).then(rows => { HWAIT[tf] = null; if (S.htf === tf && $('#pchart')) { if (rows) drawPrice(true); else if (!heroRows()) $('#pchart').innerHTML = `<p class="hero-foot">${T('Свечи Kraken не загрузились — попробуйте другой интервал или позже.', 'Kraken candles didn’t load — try another interval or later.')}</p>`; } }).catch(() => { HWAIT[tf] = null; });
+    }
+    if (!R) {
+      killChart();
+      if (!el.querySelector('.pskel')) { el.className = 'pchart lw'; el.innerHTML = '<div class="pskel" aria-hidden="true"></div>'; }
+      return;
+    }
     if (lwState === 'loading' || (lwState === 'ready' && !el.clientWidth)) {
       if (!(HC && HC.el === el) && !el.querySelector('.pskel')) { el.className = 'pchart lw'; el.innerHTML = '<div class="pskel" aria-hidden="true"></div>'; }
       return;
     }
     if (lwState === 'ready') {
-      const key = [s.id, S.period, S.chartMode, R.rows.length, R.rows[R.rows.length - 1][4]].join('|');
+      const L = R.rows[R.rows.length - 1], key = [tf, S.chartMode, R.rows.length, R.rows[0][0], L[0], L[4]].join('|');
       if (!force && HC && HC.el === el && HC.key === key && el.isConnected) return;
       try { drawLW(el, R, key); el.setAttribute('role', 'img'); el.setAttribute('aria-label', chartLabel(R)); return; }
-      catch (e) { killChart(); lwState = 'failed'; if (mb) mb.hidden = true; }
+      catch (e) { killChart(); lwState = 'failed'; }
     }
     killChart();
     drawPriceSvg(el, R);
   }
+  const HWAIT = {};
   // запасной график, если библиотека не загрузилась
   function drawPriceSvg(el, R) {
     el.className = 'pchart';
@@ -2105,7 +2311,7 @@ html{overscroll-behavior-y:contain}
     const area = d + `L${X(xs1).toFixed(1)},${H - pb}L${X(xs0).toFixed(1)},${H - pb}Z`;
     const len = Math.round(pts.reduce((a, p, i) => i ? a + Math.hypot(X(p[0]) - X(pts[i - 1][0]), Y(p[1]) - Y(pts[i - 1][1])) : 0, 0));
     const yl = (v, txt) => `<line x1="${pl}" x2="${W - pr + 6}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="var(--card-line)"/><text class="ax" x="${W - pr + 10}" y="${(Y(v) + 4).toFixed(1)}">${txt}</text>`;
-    const hourly = R.hourly, fmtT = t => S.period === '1Д' ? tl(t) : dml(t);
+    const hourly = R.intra, fmtT = t => hourly ? dml(t) + ', ' + tl(t) : dml(t);
     const last = pts[pts.length - 1];
     const inner = `<defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFB35E" stop-opacity=".30"/><stop offset="1" stop-color="#FFB35E" stop-opacity="0"/></linearGradient></defs>`
       + yl(hi, fp(hi)) + yl(lo, fp(lo))
@@ -2522,14 +2728,16 @@ html{overscroll-behavior-y:contain}
     const el = $('#hprice');
     if (el && prev != null && lp !== prev && !RM) { el.classList.remove('tick-up', 'tick-down'); void el.offsetWidth; el.classList.add(lp > prev ? 'tick-up' : 'tick-down'); }
     if (HC && HC.rows && HC.rows.length && !HC.touching && typeof HC.main.update === 'function') {
-      const r = HC.rows[HC.rows.length - 1];
-      r[4] = lp; r[2] = Math.max(r[2], lp); r[3] = Math.min(r[3], lp);
-      try { HC.main.update(HC.vol ? { time: r[0] + TZ, open: r[1], high: r[2], low: r[3], close: r[4] } : { time: r[0] + TZ, value: r[4] }); } catch (e) { }
+      const r = HC.rows[HC.rows.length - 1], step = CH_TF[HC.tf][0] * 60, nt = Math.floor(Date.now() / 1000);
+      if (nt >= r[0] + step) drawPrice(true);
+      else {
+        r[4] = lp; r[2] = Math.max(r[2], lp); r[3] = Math.min(r[3], lp);
+        try { HC.main.update(S.chartMode !== 'line' ? { time: HC.Tm(r), open: r[1], high: r[2], low: r[3], close: r[4] } : { time: HC.Tm(r), value: r[4] }); } catch (e) { }
+      }
     }
     chLive();
     { const st = $('#chstats'); if (st && S.tab === 'charts') st.innerHTML = chStatsHtml(); }
-    const cap = $('#hcap'); if (cap) cap.textContent = T('капитализация ≈ ', 'market cap ≈ ') + usd(lp * SUPPLY);
-    if (!$('#p-overview .hero.scrub')) { const c2 = $('#hcap2'); if (c2) c2.textContent = usd(lp * SUPPLY); }
+
     try { document.title = fpd(lp) + ' · ' + T('DOG Монитор', 'DOG Monitor'); } catch (e) { }
     fngTick();
   }
@@ -2575,42 +2783,43 @@ html{overscroll-behavior-y:contain}
     if (!best || best === last || be > Math.max(0.35 * d * 864e5, 8 * 36e5)) return null;
     return { d: v - best[1], from: best[0], was: best[1] };
   }
-  function heroStats(s, price) {
-    const p = price || (s.price || {}).mid;
-    return `<div class="hstats"><div><span>${ONE_M}</span><b id="h1m">≈ ${m1usd(p)}</b></div><div><span>${T('Капитализация', 'Market cap')}</span><b id="hcap2">${usd(p * SUPPLY)}</b></div>${s.holders ? `<div><span>${T('Холдеров', 'Holders')}</span><b>${n(s.holders)}</b></div>` : ''}</div>`;
+  // 1 млн DOG и капитализация: сейчас, а при ведении пальцем по графику — на тот момент
+  function heroStats(price) {
+    return `<div class="hstats"><div><span>${ONE_M}</span><b id="h1m">${m1usd(price)}</b></div><div><span>${T('Капитализация', 'Market cap')}</span><b id="hcap2">${capS(price * SUPPLY)}</b></div></div>`;
   }
   function renderOverview() {
     const s = V(), el = $('#p-overview');
     if (!s) { killChart(); el.innerHTML = `<div class="empty">${T('Данных пока нет — первая сводка появится после ближайшего обновления.', 'No data yet — the first report will appear after the next update.')}</div>`; return; }
-    const pr = s.price || {};
-    const R = priceRows(s, S.period), chg = perChange(s, S.period, R);
+    const p0 = nowPx() || (s.price || {}).mid, c0 = chg24();
+    const tfb = HTF.map(k => `<button type="button" data-htf="${k}" aria-pressed="${String(S.htf === k)}" aria-label="${esc(HTF_WHAT[k])}">${esc(CH_TF[k][1])}</button>`).join('');
+    const md = (m, t) => `<button type="button" data-hmode="${m}" aria-pressed="${String(S.chartMode === m)}" aria-label="${t}" title="${t}">${ico(m === 'line' ? 'line' : 'candle')}</button>`;
     const hero = `<section class="hero" aria-label="${T('Цена DOG', 'DOG price')}">
         <div class="hero-head">
-          <div class="hero-main"><div class="hero-pair">${T('DOG•GO•TO•THE•MOON · цена в долларах', 'DOG•GO•TO•THE•MOON · price in US dollars')}<span class="live" id="hlive" hidden><i></i>${T('онлайн', 'live')}</span></div>
-            <div class="hero-price tnum${EN ? ' en' : ''}" id="hprice">${fp(pr.mid)}${RU ? '<small>$</small>' : ''}</div>
-            <div class="hero-chg"><span class="pill ${dir(chg)}" id="hpill">${pillTxt(chg)}</span><span id="hlabel">${PER_NAME[S.period]}</span><span class="h24" id="h24">${h24Txt(s)}</span></div>
-            ${heroStats(s)}
+          <div class="hero-main">
+            <div class="hero-pair">${T('DOG · цена в долларах', 'DOG · price in US dollars')}<span class="live" id="hlive" hidden><i></i>${T('онлайн', 'live')}</span></div>
+            <div class="hero-price tnum${EN ? ' en' : ''}" id="hprice">${fp(p0)}${RU ? '<small>$</small>' : ''}</div>
+            <div class="hero-chg"><span class="pill ${dir(c0)}" id="hpill">${pillTxt(c0)}</span><span id="hlabel">${T('за сутки', '24h')}</span></div>
           </div>
-          <div class="hero-ctl">
-            <div class="periods" role="group" aria-label="${T('Период графика', 'Chart period')}">${PERIODS.map(p => `<button type="button" data-per="${p}" aria-pressed="${String(S.period === p)}" aria-label="${PER_NAME[p]}">${PER_BTN[p]}</button>`).join('')}</div>
-            <button type="button" class="hmode" id="hmode" aria-pressed="${String(S.chartMode === 'candles')}" aria-label="${T('Свечи и объём торгов', 'Candles and trading volume')}" title="${T('Свечи и объём торгов', 'Candles and trading volume')}">${ico('candle')}</button>
-          </div>
+          ${heroStats(p0)}
         </div>
+        <div class="hero-ctl"><div class="periods" role="group" aria-label="${T('Свечи', 'Candles')}">${tfb}</div><div class="hmodes" role="group" aria-label="${T('Вид графика', 'Chart type')}">${md('candles', T('Свечи', 'Candles'))}${md('line', T('Линия', 'Line'))}</div></div>
         <div class="pchart" id="pchart"></div>
-        <div class="hero-foot"><span id="hsrc">${S.period === 'ВСЁ' ? 'Kraken + Gate' : 'Kraken, DOG/USD'}</span><span id="hcap">${T('капитализация ≈ ', 'market cap ≈ ')}${usd(pr.cap * 1e6)}</span></div>
+        <div class="hero-foot"><span>Kraken · DOG/USD</span><span id="hwhat">${esc(HTF_WHAT[S.htf])}</span></div>
       </section>`;
     killChart();
     el.innerHTML = `<div class="home">
-        <div class="h-hero">${hero}</div>
         <div class="h-fng" id="fng-box">${S.archived ? '' : fngHtml()}</div>
+        <div class="h-hero">${hero}</div>
         <div class="h-tiles" id="tiles-box">${tilesHtml(s)}</div>
-        <div class="h-sum" id="sum-box">${summaryHtml(s)}</div>
-        <div class="h-ex" id="ex-box">${exchangesHtml(s)}</div>
-        <div class="h-memes" id="mm-box">${memesMiniHtml()}</div>
         <div class="h-tre" id="tre-box">${treasuryHtml()}</div>
+        <div class="h-cols">
+          <div class="h-sum" id="sum-box">${summaryHtml(s)}</div>
+          <div class="h-ex" id="ex-box">${exchangesHtml(s)}</div>
+          <div class="h-memes" id="mm-box">${memesMiniHtml()}</div>
+        </div>
       </div>`;
     drawPrice(true);
-    animateIntro(pr.mid);
+    animateIntro(p0);
     applyLive(null);
   }
   function refreshHomeParts() {
@@ -2655,7 +2864,7 @@ html{overscroll-behavior-y:contain}
       from = to;
     });
     const k = v == null ? null : P(v);
-    return `<svg class="gauge" viewBox="0 0 100 57" aria-hidden="true">${arcs}${k ? `<circle cx="${k[0]}" cy="${k[1]}" r="5" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.6"/>` : ''}<text class="gn" x="50" y="50" text-anchor="middle">${v == null ? '—' : Math.round(v)}</text></svg>`;
+    return `<svg class="gauge" viewBox="0 0 100 57" aria-hidden="true">${arcs}${k ? `<circle cx="${k[0]}" cy="${k[1]}" r="5.2" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.6"/>` : ''}<text class="gn" x="50" y="51" text-anchor="middle">${v == null ? '—' : Math.round(v)}</text></svg>`;
   }
   // рынок: файл сайта или свежий ответ alternative.me — что новее
   function fngMarket() {
@@ -2732,17 +2941,16 @@ html{overscroll-behavior-y:contain}
     const m = fngMarket(), c = fngCmc(), d0 = (S.fng || {}).dog, dl = fngNow(), d = dl ? Object.assign({}, d0, { v: dl.v }) : d0;
     if (dl) fngLast.v = dl.v;
     if (!m && !c && !(d && d.v != null)) return '';
-    // телефон: маленькая шкала, имя (DOG / alt.me / CMC) и зона; широкий экран: строка — шкала, название, источник, число
-    const g = (key, v, sc, short, long, src, prev) => {
+    // шкала с числом внутри, под ней зона (цветом), что это за индекс и чей; на широком экране — ещё «вчера»
+    const g = (key, v, sc, name, src, prev) => {
       const na = v == null, nm = na ? T('нет данных', 'no data') : fngName(v, sc);
-      const y = !na && prev && prev.d1 != null ? T(`вчера ${prev.d1}`, `yesterday ${prev.d1}`) : '';
-      return `<button type="button" class="fng-g${na ? ' na' : ''}" data-info="${key}" aria-label="${esc(long)}, ${esc(src)}: ${na ? esc(nm) : Math.round(v) + ' — ' + esc(nm)}${y ? '; ' + esc(y) : ''}">${gaugeSvg(v, sc)}<span class="gt"><span class="sn">${esc(short)}</span><span class="ln">${esc(long)}</span></span><span class="gk"${na ? '' : ` style="color:${fngCol(v, sc)}"`}>${esc(nm)}</span><span class="gs">${esc(src)}${y ? ' · ' + esc(y) : ''}</span><span class="gv">${na ? '—' : Math.round(v)}</span></button>`;
+      const y = !na && prev && prev.d1 != null ? prev.d1 : null;
+      return `<button type="button" class="fng-g${na ? ' na' : ''}" data-info="${key}" aria-label="${esc(name)}, ${esc(src)}: ${na ? esc(nm) : Math.round(v) + ' — ' + esc(nm)}${y != null ? '; ' + T('вчера ', 'yesterday ') + y : ''}">${gaugeSvg(v, sc)}<span class="gk"${na ? '' : ` style="color:${fngCol(v, sc)}"`}>${esc(nm)}</span><span class="gt">${esc(name)}</span><span class="gs">${esc(src)}</span>${y != null ? `<span class="gy">${T('вчера', 'yesterday')} ${y}</span>` : ''}</button>`;
     };
     const mk = T('Крипторынок', 'Crypto market');
     return `<section class="fng" aria-label="${T('Страх и жадность', 'Fear and greed')}">
         <div class="fng-head"><h3>${T('Страх и жадность', 'Fear &amp; Greed')}</h3><p>${T('0 — страх · 100 — жадность', '0 fear · 100 greed')}</p></div>
-        <div class="fng-3">${g('fng_d', d && d.v != null ? d.v : null, FNG_A, 'DOG', 'DOG', T('наш индекс', 'our index'), d && d.prev)}${g('fng_m', m ? m.v : null, FNG_A, 'alt.me', mk, 'alternative.me', m && m.prev)}${g('fng_c', c ? c.v : null, FNG_C, 'CMC', mk, 'CoinMarketCap', c && c.prev)}</div>
-        ${fngSp90(d0, dl)}
+        <div class="fng-3">${g('fng_d', d && d.v != null ? d.v : null, FNG_A, 'DOG', T('наш индекс', 'our index'), d && d.prev)}${g('fng_m', m ? m.v : null, FNG_A, mk, 'alternative.me', m && m.prev)}${g('fng_c', c ? c.v : null, FNG_C, mk, 'CoinMarketCap', c && c.prev)}</div>
       </section>`;
   }
   // индекс DOG за 90 дней — маленький график в карточке индексов (широкий экран)
@@ -2991,17 +3199,19 @@ html{overscroll-behavior-y:contain}
     const N = W ? W.n : (t.n || {})['10000000'], dog = W ? W.dog : (t.dog || {})['10000000'];
     if (!N) return null;
     const H = ((W && W.hist) || []).map(h => [(toDate(h[0]) || { getTime: () => null }).getTime(), h[1], h[2]]).filter(h => h[0]).sort((a, b) => a[0] - b[0]);
-    let dN = null, days = null;
-    if (H.length >= 2) { const last = H[H.length - 1], from = H.find(h => last[0] - h[0] <= 31 * 864e5) || H[0]; if (from !== last) { dN = last[1] - from[1]; days = Math.max(1, Math.round((last[0] - from[0]) / 864e5)); } }
-    return { N, dog, pct: dog != null ? dog * 1e6 / SUPPLY * 100 : null, dN, days, H, W };
+    let dN = null, days = null, from = null;
+    if (H.length >= 2) { const last = H[H.length - 1], f = H.find(h => last[0] - h[0] <= 31 * 864e5) || H[0]; if (f !== last) { dN = last[1] - f[1]; days = Math.max(1, Math.round((last[0] - f[0]) / 864e5)); from = f[0]; } }
+    return { N, dog, pct: dog != null ? dog * 1e6 / SUPPLY * 100 : null, dN, days, from, H, W };
   }
   const dDays = (dN, days) => dN == null ? '' : `<b class="${dN > 0 ? 'up' : dN < 0 ? 'down' : ''}">${sg(dN, 0)}</b> ${T(`за ${days} ${plural(days, 'день', 'дня', 'дней')}`, `in ${days} day${days === 1 ? '' : 's'}`)}`;
+  // «+8 кошельков с 4 нояб.» — сколько кошельков от 10 млн прибавилось (убавилось) с первого дня наблюдений, до месяца назад
+  const whSince = w => w.dN == null ? '' : `<b class="${w.dN > 0 ? 'up' : w.dN < 0 ? 'down' : ''}">${sg(w.dN, 0)}</b> ${T(plural(w.dN, 'кошелёк', 'кошелька', 'кошельков'), Math.abs(w.dN) === 1 ? 'wallet' : 'wallets')} ${T('с', 'since')}&nbsp;<span class="nw">${esc(dml(w.from))}</span>`;
   function tilesHtml(s) {
     const ex = s.exch || {}, hl = s.health || {}, t = [];
     const md = moodOf(s);
-    if (md) t.push(tile('mood', T('Кто сильнее у цены', 'Who’s stronger near the price'), esc(md.who), T('в пределах 10% от цены', 'within 10% of the price'), 'sage', xTxt(md.x), md.cls));
+    if (md) t.push(tile('mood', T('Кто сильнее у цены', 'Buyers vs sellers'), esc(md.who), T('в пределах 10% от цены', 'within 10% of the price'), 'sage', xTxt(md.x), md.cls));
     const w = whNow(s);
-    if (w) t.push(tile('whales', T('Кошельки от 10 млн', 'Wallets with 10M+'), n(w.N), `${w.pct != null ? n(w.pct, 1) + '% ' + T('всех DOG', 'of all DOG') : ''}${w.dN != null ? ' · ' + dDays(w.dN, w.days) : ''}`, 'peach'));
+    if (w) t.push(tile('whales', T('Кошельки от 10 млн', 'Wallets with 10M+'), n(w.N), `${w.pct != null ? n(w.pct, 1) + '% ' + T('всех DOG', 'of all DOG') : ''}${w.dN != null ? `<span class="ts2">${whSince(w)}</span>` : ''}`, 'peach'));
     if (ex.bal != null) t.push(tile('exch', T('На биржах', 'On exchanges'), mdog(ex.bal), `${n(ex.pct, 1)}% ${T('всех монет', 'of all coins')}`, 'slate'));
     if (hl.profit != null) t.push(tile('profit', T('В прибыли', 'In profit'), n(hl.profit, 1) + '%', T('монет куплены дешевле', 'of coins bought lower'), 'sand'));
     if (t.length < 4 && s.holders) t.push(tile('holders', T('Холдеры', 'Holders'), n(s.holders), T('кошельков с DOG', 'wallets with DOG'), 'sand'));
@@ -3095,7 +3305,7 @@ html{overscroll-behavior-y:contain}
       return { id: c.id, sym: c.sym || c.id.toUpperCase(), v, i0, i1, chg: v[i1] / v[i0] - 1 };
     }).filter(Boolean).sort((x, y) => y.chg - x.chg);
     const k = rows.findIndex(r => r.id === 'dog'); if (k < 0) return '';
-    const show = rows.slice(0, 5); if (k >= 5) show.push(rows[k]);
+    const show = k < 6 ? rows.slice(0, 6) : rows.slice(0, 5).concat([rows[k]]);   // всегда шесть: на широком экране — ровный ряд карточек
     const sp = r => {
       const pts = []; for (let i = r.i0; i <= r.i1; i++) if (r.v[i] > 0) pts.push([i, Math.log(r.v[i])]);
       const lo = Math.min(...pts.map(p => p[1])), hi = Math.max(...pts.map(p => p[1])), W = 96, H = 22;
@@ -3192,6 +3402,30 @@ html{overscroll-behavior-y:contain}
     const p = H.map((h, i) => `${i ? 'L' : 'M'}${X(h[0]).toFixed(1)},${Y(h[1]).toFixed(1)}`).join('');
     return `<svg class="sline" viewBox="0 0 ${W} ${Hh}" preserveAspectRatio="none" aria-hidden="true"><path d="${p}V${Hh}H0Z" fill="${col}" opacity=".12"/><path d="${p}" fill="none" stroke="${col}" stroke-width="1.8" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg><div class="sline-ax"><span>${esc(dml(new Date(H[0][0])))} · ${fmt(H[0][1])}</span><span>${T('сейчас', 'now')} · ${fmt(H[H.length - 1][1])}</span></div>`;
   }
+  // ряд значений по дням: история DOG DATA (копится у нас в data/ddhist.json) и наши сводки (они точнее по времени)
+  function ddSer(key, hkey, d) {
+    const out = new Map(), D = (S.dd || {}).d || {};
+    for (const [day, r] of Object.entries(D)) if (r && r[key] != null) out.set(day, [Date.parse(day + 'T12:00:00Z'), +r[key]]);
+    if (hkey) for (const h of S.hist || []) { const t = toDate(h.ts); if (t && h[hkey] != null) out.set(t.toISOString().slice(0, 10), [t.getTime(), +h[hkey]]); }
+    const t0 = Date.now() - (d || 400) * 864e5;
+    return [...out.values()].filter(p => p[0] >= t0 && isFinite(p[1])).sort((a, b) => a[0] - b[0]);
+  }
+  // небольшой график ряда с подписями «с … · сейчас»
+  function serLine(H, col, fmt) {
+    if (!H || H.length < 3) return '';
+    const W = 300, Hh = 84, vs = H.map(h => h[1]);
+    let lo = Math.min(...vs), hi = Math.max(...vs); const span = Math.max(hi - lo, Math.abs(hi) * 0.004, 1e-9), c = (hi + lo) / 2; lo = c - span * 0.6; hi = c + span * 0.6;
+    const X = t => (t - H[0][0]) / Math.max(1, H[H.length - 1][0] - H[0][0]) * W, Y = v => 4 + (1 - (v - lo) / (hi - lo)) * (Hh - 8);
+    const p = H.map((h, i) => `${i ? 'L' : 'M'}${X(h[0]).toFixed(1)},${Y(h[1]).toFixed(1)}`).join('');
+    return `<svg class="sline" viewBox="0 0 ${W} ${Hh}" preserveAspectRatio="none" aria-hidden="true"><path d="${p}V${Hh}H0Z" fill="${col}" opacity=".14"/><path d="${p}" fill="none" stroke="${col}" stroke-width="2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg><div class="sline-ax"><span>${esc(dml(H[0][0]))} · ${fmt(H[0][1])}</span><span>${T('сейчас', 'now')} · ${fmt(H[H.length - 1][1])}</span></div>`;
+  }
+  // изменение ряда за d дней (по ближайшему дню не дальше трети срока)
+  function serDelta(H, d) {
+    if (!H || H.length < 2) return null;
+    const last = H[H.length - 1], want = last[0] - d * 864e5;
+    let best = null, be = 1e18; for (const h of H) { const e = Math.abs(h[0] - want); if (e < be) { be = e; best = h; } }
+    return best && best !== last && be <= Math.max(d * 864e5 / 3, 864e5) ? { d: last[1] - best[1], from: best[0], was: best[1] } : null;
+  }
   const statD = (label, x, f) => `<div><span class="l">${label}</span><b class="${x ? (x.d > 0 ? 'up' : x.d < 0 ? 'down' : '') : ''}">${x ? f(x.d) : '—'}</b></div>`;
   function healthHtml(s) {
     const hl = s.health || {}, pr = s.price || {};
@@ -3266,7 +3500,7 @@ html{overscroll-behavior-y:contain}
       const H = s.holders, hl = s.health || {}, D = tiersData(s), size = D.size, ch = hl.chains || [], air = hl.air;
       const f0 = v => sg(v, 0), cols = ['var(--dog)', 'var(--k-peach)', 'var(--k1)', 'var(--k5)', 'var(--k-ink)'], off = size && size.rows.length === 4 ? 1 : 0;
       return [T('Холдеры', 'Holders'), `<div class="bignum"><b>${n(H)}</b><span>${T('кошельков, на которых есть DOG', 'wallets holding DOG')}</span></div>
-        <div class="statg">${statD(T('за сутки', '24 hours'), histDelta('holders', 1, H), f0)}${statD(T('за неделю', '7 days'), histDelta('holders', 7, H), f0)}${statD(T('за месяц', '30 days'), histDelta('holders', 30, H), f0)}</div>
+        ${(() => { const L = ddSer('h', 'holders', 400); const x30 = histDelta('holders', 30, H) || serDelta(L, 30); return `<div class="statg">${statD(T('за сутки', '24 hours'), histDelta('holders', 1, H), f0)}${statD(T('за неделю', '7 days'), histDelta('holders', 7, H) || serDelta(L, 7), f0)}${statD(T('за месяц', '30 days'), x30, f0)}</div>${L.length >= 10 ? `<h3>${T('Как менялось число холдеров', 'How the holder count has changed')}</h3>${serLine(L, 'var(--k1)', v => n(v))}` : ''}`; })()}
         ${size ? `<h3>${T('Сколько у кого', 'How much each holds')}</h3><table class="pf"><thead><tr><th>${T('Баланс', 'Balance')}</th><th class="r">${T('Кошельков', 'Wallets')}</th><th class="r">${T('Монет', 'Coins')}</th></tr></thead><tbody>${size.rows.map((r, i) => `<tr><td><span class="key" style="background:${cols[i + off]};border-radius:50%"></span>${esc(r.name)}</td><td class="r">${n(r.cnt)}</td><td class="r">${r.sp == null ? '—' : n(r.sp, r.sp < 9.95 ? 1 : 0) + '%'}</td></tr>`).join('')}</tbody></table>` : ''}
         ${air ? `<h3>${T('Аирдроп апреля 2024', 'The April 2024 airdrop')}</h3><p class="lead">${T(`DOG бесплатно получили ${n(air.n)} кошельков. До сих пор держат ${n(air.hold)} — ${n(air.ret, 1)}%.`, `${n(air.n)} wallets got DOG for free. ${n(air.hold)} still hold it — ${n(air.ret, 1)}%.`)}</p><div class="meter"><i style="width:${Math.min(100, air.ret || 0)}%;background:var(--dog)"></i></div>` : ''}
         ${ch.length ? `<h3>DOG ${T('в других сетях', 'on other chains')}</h3><p class="lead">${ch.map(c => `${c.c === 'solana' ? 'Solana' : (c.c === 'stacks' ? 'Stacks' : esc(c.c))}: ${n(c.h)} ${P(c.h, 'холдер', 'холдера', 'холдеров', 'holder', 'holders')}`).join(' · ')}. ${T('Это DOG, перенесённые мостом с Bitcoin.', 'This is DOG bridged over from Bitcoin.')}</p>` : ''}
@@ -3334,9 +3568,10 @@ html{overscroll-behavior-y:contain}
     requestAnimationFrame(step);
   }
   $('#p-overview').addEventListener('click', e => {
-    const p = e.target.closest('[data-per]');
-    if (p) { S.period = p.dataset.per; store.set('period', S.period); { const hs = $('#hsrc'); if (hs) hs.textContent = S.period === 'ВСЁ' ? 'Kraken + Gate' : 'Kraken, DOG/USD'; } $$('[data-per]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.per === S.period))); resetHero(); drawPrice(true); return; }
-    if (e.target.closest('#hmode')) { S.chartMode = S.chartMode === 'candles' ? 'line' : 'candles'; store.set('chartMode', S.chartMode); $('#hmode').setAttribute('aria-pressed', String(S.chartMode === 'candles')); drawPrice(true); return; }
+    const p = e.target.closest('[data-htf]');
+    if (p) { S.htf = p.dataset.htf; store.set('htf', S.htf); $$('[data-htf]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.htf === S.htf))); { const w = $('#hwhat'); if (w) w.textContent = HTF_WHAT[S.htf]; } resetHero(); drawPrice(true); return; }
+    const hm = e.target.closest('[data-hmode]');
+    if (hm) { S.chartMode = hm.dataset.hmode === 'line' ? 'line' : 'candles'; store.set('chartMode2', S.chartMode); $$('[data-hmode]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.hmode === S.chartMode))); drawPrice(true); return; }
     const st = e.target.closest('[data-si]');
     if (st) { openStory(+st.dataset.si); return; }
     if (e.target.closest('#briefmore')) { briefSheet(); return; }
@@ -3357,7 +3592,7 @@ html{overscroll-behavior-y:contain}
       ${row('data-share', ico('share'), T('Поделиться ссылкой', 'Share link'), esc(siteUrl().replace(/^https?:\/\//, '')))}
     </div>
     <div class="group flush rows" style="background:var(--surface-2)">
-      ${row('data-go="history"', ico('clock'), T('История сводок', 'Report history'), T('графики и архив сводок', 'charts and report archive'))}
+      ${row('data-go="history"', ico('clock'), T('Архив сводок', 'Report archive'), T('все прошлые сводки и графики по ним', 'every past report, with charts'))}
       ${row('data-go="help"', ico('help'), T('Как читать дашборд', 'How to read this dashboard'), T('простыми словами, без жаргона', 'in plain words, no jargon'))}
       ${row('id="m-checks"', ico('check'), T('Проверка данных', 'Data checks'), `${ch.filter(c => c.ok).length} ${T('из', 'of')} ${ch.length} ${T('пройдено', 'passed')}${u ? T(' при обновлении', ' on update') : ''}`)}
     </div>
@@ -3380,7 +3615,7 @@ html{overscroll-behavior-y:contain}
   const OB = { ex: {}, gateAgg: null, t: 0, first: 0, run: null, timer: null, tick: null, err: {}, ev: [], hist: [] };
   { const v = store.get('bx', 'all'); S.bx = v === 'all' || (EXN[v] && v !== 'bitget') ? v : 'all'; }
   { const v = store.get('bstep', 1e-5); S.bstep = OB_STEPS.find(x => Math.abs(x - v) < x * 1e-6) || 1e-5; }
-  { const v = store.get('bview', 'col'); S.bview = ['col', 'two', 'table'].includes(v) ? v : 'col'; }
+  { const v = store.get('bview', 'two'); S.bview = ['col', 'two', 'table'].includes(v) ? v : 'two'; }   // по умолчанию — стакан в две колонки, как на Gate
   S.bunit = store.get('bunit', 'dog') === 'usd' ? 'usd' : 'dog';
   S.bpause = false; S.bmore = false;
   if (![0.02, 0.05, 0.10, 0.20, 0.30].includes(S.range)) S.range = 0.10;
@@ -4626,7 +4861,7 @@ html{overscroll-behavior-y:contain}
   const tvUrl = tf => 'https://www.tradingview.com/chart/?symbol=KRAKEN%3ADOGUSD&interval=' + (TV_INT[tf] || 'D');
   function tvLinkFor(a) {
     const box = a.closest('#tvchart, #crchart, #pchart');
-    return tvUrl(box && box.id === 'tvchart' ? CH.tf : box && box.id === 'pchart' ? (S.period === '1Д' || S.period === '1Н' ? '1h' : '1d') : '1d');
+    return tvUrl(box && box.id === 'tvchart' ? CH.tf : box && box.id === 'pchart' ? S.htf : '1d');
   }
   function tvFix(a) {
     const u = tvLinkFor(a);
@@ -4653,7 +4888,7 @@ html{overscroll-behavior-y:contain}
       autoSize: true,
       layout: { background: { type: 'solid', color: C.bg }, textColor: C.ink3, fontSize: 11, fontFamily: '"Inter", system-ui, sans-serif', attributionLogo: true, panes: { separatorColor: C.line, separatorHoverColor: C.line, enableResize: false } },
       grid: { vertLines: { color: C.line2 }, horzLines: { color: C.line2 } },
-      rightPriceScale: { borderColor: C.line, minimumWidth: 64 },
+      rightPriceScale: { borderColor: C.line, minimumWidth: 64, entireTextOnly: true },
       timeScale: { borderColor: C.line, rightOffset: 3, tickMarkFormatter: tickFmt },
       crosshair: { mode: 0, vertLine: { color: C.ink3, labelBackgroundColor: C.ink2 }, horzLine: { color: C.ink3, labelBackgroundColor: C.ink2 } },
       handleScroll: { mouseWheel: true, pressedMouseMove: true, horzTouchDrag: true, vertTouchDrag: false },
@@ -5067,7 +5302,7 @@ html{overscroll-behavior-y:contain}
   const MM = { p: String(store.get('mmP', '90')), sel: store.get('mmSel', 'doge'), lock: !!store.get('mmLock', false), pin: null, hov: null, F: null };
   // цвет каждой монеты — по её образу (Pepe — зелёный, Dogecoin — жёлтый, Brett — синий Base…); все цвета проверены
   // на различимость с оранжевым DOG, в том числе при нарушениях цветового зрения (DOG ещё и толще, с тёмной обводкой)
-  const MM_COL = { dog: 'var(--mc-dog)', doge: '#E3C341', shib: '#E3406A', pepe: '#40A449', pengu: '#4FB3E8', spx: '#A9B6CB', trump: '#C9302C', bonk: '#FFC48A', floki: '#2FA094', wif: '#E58FB5', fartcoin: '#8FC23A', brett: '#4E82E5' };
+  const MM_COL = { dog: 'var(--mc-dog)', doge: '#E8C547', shib: '#EF4E78', pepe: '#3FB653', pengu: '#4FB8F0', spx: '#B3C1D9', trump: '#E0453E', bonk: '#FFB86B', floki: '#25B3A2', wif: '#EE94BF', fartcoin: '#99CF3C', brett: '#5B8FF0' };
   const mmCol = id => MM_COL[id] || 'var(--mc-sel)';
   if (!MM_P.some(x => x[0] === MM.p)) MM.p = '90';
   const mmPct = x => x == null || !isFinite(x) ? '—' : sg(x * 100, Math.abs(x) >= 0.995 ? 0 : 1) + '%';
@@ -5128,7 +5363,7 @@ html{overscroll-behavior-y:contain}
     const path = r => { let d = '', pen = false; r.r.forEach((x, i) => { if (x > 0) { d += `${pen ? 'L' : 'M'}${X(i).toFixed(1)},${Y(Math.log(x)).toFixed(1)}`; pen = true; } else pen = false; }); return d; };
     const tk = mmTicks(F, H), sel = F.rows.find(r => r.id === MM.sel);
     const grid = tk.map(t => `<line x1="0" x2="${W}" y1="${t.y.toFixed(1)}" y2="${t.y.toFixed(1)}" stroke="${t.p === 0 ? 'var(--line)' : 'var(--line-2)'}" stroke-width="1" vector-effect="non-scaling-stroke"/>`).join('');
-    const others = F.rows.filter(r => r.id !== 'dog' && r.id !== MM.sel).map(r => `<path d="${path(r)}" fill="none" stroke="${mmCol(r.id)}" stroke-opacity=".42" stroke-width="1.2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>`).join('');
+    const others = F.rows.filter(r => r.id !== 'dog' && r.id !== MM.sel).map(r => `<path d="${path(r)}" fill="none" stroke="${mmCol(r.id)}" stroke-opacity=".62" stroke-width="1.4" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>`).join('');
     const dp = path(F.dog);
     el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${grid}${others}${sel ? `<path d="${path(sel)}" fill="none" stroke="var(--surface)" stroke-width="4.6" stroke-linejoin="round" vector-effect="non-scaling-stroke"/><path d="${path(sel)}" fill="none" stroke="${mmCol(sel.id)}" stroke-width="2.2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>` : ''}<path d="${dp}" fill="none" stroke="var(--surface)" stroke-width="5.6" stroke-linejoin="round" vector-effect="non-scaling-stroke"/><path d="${dp}" fill="none" stroke="var(--mc-dog)" stroke-width="2.8" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>`
       + tk.map(t => `<span class="mm-yl" style="top:${t.y.toFixed(1)}px">${t.p > 0 ? '+' : t.p < 0 ? '−' : ''}${Math.abs(t.p)}%</span>`).join('')
@@ -5146,7 +5381,7 @@ html{overscroll-behavior-y:contain}
     const vv = r => { const v = val(r, i); return v == null ? -1e9 : v; }, top = r => MM.lock ? (r.id === 'dog' ? 2 : r.id === MM.sel ? 1 : 0) : 0;
     const order = F.rows.slice().sort((a, b) => top(b) - top(a) || vv(b) - vv(a));
     ls.innerHTML = `<div class="hd"><span>${T('монета · сеть · капитализация', 'coin · chain · market cap')}</span><span>${cur ? T(`за ${F.P} дн.`, `${F.P}d`) : T('к ', 'to ') + esc(dml(F.days[i] + 'T12:00:00Z'))}</span><span>${T('связь с DOG', 'link to DOG')}</span></div>`
-      + order.map(r => { const v = val(r, i), dg = r.id === 'dog', on = r.id === MM.sel; return `<button type="button" data-mm="${esc(r.id)}" class="${dg ? 'dog' : ''}" aria-pressed="${String(on)}"${on && !dg ? ` style="--hl:color-mix(in srgb,${mmCol(r.id)} 13%,transparent)"` : ''}><span class="n"><i class="mk" style="background:${mmCol(r.id)}${dg || on ? '' : ';opacity:.75'}"></i><span><b>${esc(r.sym)}</b>${on && MM.lock ? ` <span class="mm-pin" title="${esc(T('закреплено', 'pinned'))}">${ICO_PIN}</span>` : ''}${r.ok === false ? ' <span class="faint" title="' + esc(T('цены бирж не сошлись — данные одной биржи', 'exchange prices didn’t match — single-exchange data')) + '">≈</span>' : ''}<small>${esc(r.chain)}${r.mc ? ' · ' + usd(r.mc) : ''}</small></span></span><span class="v ${v == null ? '' : v >= 0 ? 'up' : 'down'}">${mmPct(v)}</span><span class="c">${dg ? '—' : r.corr == null ? '—' : n(r.corr, 2)}</span></button>`; }).join('');
+      + order.map(r => { const v = val(r, i), dg = r.id === 'dog', on = r.id === MM.sel; return `<button type="button" data-mm="${esc(r.id)}" class="${dg ? 'dog' : ''}" aria-pressed="${String(on)}"${on && !dg ? ` style="--hl:color-mix(in srgb,${mmCol(r.id)} 13%,transparent)"` : ''}><span class="n"><i class="mk" style="background:${mmCol(r.id)}"></i><span><b>${esc(r.sym)}</b>${on && MM.lock ? ` <span class="mm-pin" title="${esc(T('закреплено', 'pinned'))}">${ICO_PIN}</span>` : ''}${r.ok === false ? ' <span class="faint" title="' + esc(T('цены бирж не сошлись — данные одной биржи', 'exchange prices didn’t match — single-exchange data')) + '">≈</span>' : ''}<small>${esc(r.chain)}${r.mc ? ' · ' + usd(r.mc) : ''}</small></span></span><span class="v ${v == null ? '' : v >= 0 ? 'up' : 'down'}">${mmPct(v)}</span><span class="c">${dg ? '—' : r.corr == null ? '—' : n(r.corr, 2)}</span></button>`; }).join('');
     // перекрестие и точки на DOG и выбранной монете
     const G = MM.geo; if (!el || !G) return;
     const x = el.querySelector('.mm-x'), pts = el.querySelectorAll('.mm-pt'), show = iHover != null || MM.pin != null;
@@ -5210,7 +5445,8 @@ html{overscroll-behavior-y:contain}
     if (!m && !c && !(d && d.v != null)) return '';
     const row = (key, v, sc, name, src, prev) => {
       const na = v == null, nm = na ? T('нет данных', 'no data') : fngName(v, sc), y = !na && prev && prev.d1 != null ? T(` · вчера ${prev.d1}`, ` · yesterday ${prev.d1}`) : '';
-      return `<button type="button" class="fngr" data-info="${key}" aria-label="${esc(name)}, ${esc(src)}: ${na ? esc(nm) : Math.round(v) + ' — ' + esc(nm)}">${gaugeSvg(v, sc)}<span class="t"><b>${esc(name)}</b><span>${esc(src)}${esc(y)}</span></span><span class="v"><b>${na ? '—' : Math.round(v)}</b><span${na ? '' : ` style="color:${fngCol(v, sc)}"`}>${esc(nm)}</span></span></button>`;
+      // число — прямо в дуге (как в CoinMarketCap): глазам не нужно бегать от шкалы к цифре
+      return `<button type="button" class="fngr" data-info="${key}" aria-label="${esc(name)}, ${esc(src)}: ${na ? esc(nm) : Math.round(v) + ' — ' + esc(nm)}">${gaugeSvg(v, sc)}<span class="t"><b>${esc(name)}</b><span>${esc(src)}</span></span><span class="v"><b${na ? '' : ` style="color:${fngCol(v, sc)}"`}>${esc(nm)}</b><span>${esc(y.replace(/^ · /, ''))}</span></span></button>`;
     };
     const mk = T('Крипторынок', 'Crypto market');
     return `<div class="ch-head"><h3>${T('Страх и жадность', 'Fear &amp; Greed')}</h3><span class="note">${T('0 — страх · 100 — жадность', '0 fear · 100 greed')}</span></div>
@@ -5233,10 +5469,12 @@ html{overscroll-behavior-y:contain}
     const path = arr => { let s = '', pen = false; arr.forEach((v, i) => { if (v == null) { pen = false; return; } s += (pen ? 'L' : 'M') + X(i).toFixed(1) + ',' + Y(v).toFixed(1); pen = true; }); return s; };
     let pk = -1; D.d.forEach((v, i) => { if (v != null && (pk < 0 || v > D.d[pk])) pk = i; });
     const grid = [25, 50, 75].map(v => `<line x1="0" x2="${W}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="var(--line)" stroke-width="1" stroke-dasharray="${v === 50 ? '0' : '3 6'}" vector-effect="non-scaling-stroke"/>`).join('');
+    // зоны страха и жадности — едва заметной заливкой: красная внизу, зелёная вверху
+    const zones = [0].concat(FNG_A.slice(0, 4)).map((lo, i) => { const hi = Math.min(100, FNG_A[i]); return `<rect x="0" width="${W}" y="${Y(hi).toFixed(1)}" height="${(Y(lo) - Y(hi)).toFixed(1)}" fill="var(--fz${i + 1})" opacity=".07"/>`; }).join('');
     return `<div class="fng3c">
-        <div class="hd"><span><i class="mk" style="background:var(--dog)"></i>DOG <i class="mk dash" style="margin-left:8px"></i>alt.me <i class="mk" style="background:var(--k1);margin-left:8px;opacity:.8"></i>CMC</span>${pk >= 0 ? `<span>${T('пик DOG', 'DOG peak')} <b>${D.d[pk]}</b> · ${esc(fngDay(D.days[pk]))}</span>` : ''}</div>
+        <div class="hd"><span><i class="mk" style="background:var(--dog)"></i>DOG <i class="mk" style="background:var(--f3m);margin-left:8px"></i>alt.me <i class="mk" style="background:var(--k1);margin-left:8px"></i>CMC</span>${pk >= 0 ? `<span>${T('пик DOG', 'DOG peak')} <b>${D.d[pk]}</b> · ${esc(fngDay(D.days[pk]))}</span>` : ''}</div>
         <div class="f3-read" id="f3read"></div>
-        <div class="f3-plot" id="f3plot" role="img" aria-label="${T('Три индекса страха и жадности за 90 дней', 'The three fear and greed indices over 90 days')}"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${grid}<path d="${path(D.c)}" fill="none" stroke="var(--k1)" stroke-opacity=".8" stroke-width="1.3" stroke-linejoin="round" vector-effect="non-scaling-stroke"/><path d="${path(D.m)}" fill="none" stroke="var(--ink-3)" stroke-width="1.4" stroke-dasharray="5 4" stroke-linejoin="round" vector-effect="non-scaling-stroke"/><path d="${path(D.d)}" fill="none" stroke="var(--dog)" stroke-width="2.2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg><div class="f3-x" id="f3x"></div></div>
+        <div class="f3-plot" id="f3plot" role="img" aria-label="${T('Три индекса страха и жадности за 90 дней', 'The three fear and greed indices over 90 days')}"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${zones}${grid}<path d="${path(D.c)}" fill="none" stroke="var(--k1)" stroke-width="1.6" stroke-linejoin="round" vector-effect="non-scaling-stroke"/><path d="${path(D.m)}" fill="none" stroke="var(--f3m)" stroke-width="1.6" stroke-linejoin="round" vector-effect="non-scaling-stroke"/><path d="${path(D.d)}" fill="none" stroke="var(--dog)" stroke-width="2.6" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg><div class="f3-x" id="f3x"></div></div>
         <div class="f3-ax"><span>${esc(fngDay(D.days[0]))}</span><span>${esc(fngDay(D.days[Math.floor(n1 / 2)]))}</span><span>${esc(fngDay(D.days[n1]))}</span></div>
       </div>`;
   }
@@ -5244,7 +5482,7 @@ html{overscroll-behavior-y:contain}
     const D = F3.D, el = $('#f3read'); if (!D || !el) return;
     const last = i == null; i = last ? D.days.length - 1 : i;
     const v = (lab, x, col) => `<span><i class="mk" style="background:${col}"></i>${lab} <b>${x == null ? '—' : x}</b></span>`;
-    el.innerHTML = `<span>${last ? T('Сегодня', 'Today') : esc(fngDay(D.days[i]))}</span>${v('DOG', D.d[i], 'var(--dog)')}${v('alt.me', D.m[i], 'var(--ink-3)')}${v('CMC', D.c[i], 'var(--k1)')}`;
+    el.innerHTML = `<span>${last ? T('Сегодня', 'Today') : esc(fngDay(D.days[i]))}</span>${v('DOG', D.d[i], 'var(--dog)')}${v('alt.me', D.m[i], 'var(--f3m)')}${v('CMC', D.c[i], 'var(--k1)')}`;
     const x = $('#f3x'); if (x) { x.style.display = last ? 'none' : 'block'; x.style.left = (i / Math.max(1, D.days.length - 1) * 100).toFixed(2) + '%'; }
   }
   function fng3Bind() {
@@ -5273,13 +5511,15 @@ html{overscroll-behavior-y:contain}
           <div class="chstats" id="chstats"></div>
           <details class="tvmore"><summary>${T('Что показывают индикаторы', 'What the indicators say')}</summary><div class="tv-read" id="tvread"></div></details>
         </section>
-        <div class="chgrid">
-          <section class="group" id="fngc-sec" aria-label="${T('Страх и жадность', 'Fear and greed')}"></section>
-          <section class="group" id="mmsec" aria-label="${T('DOG и мем-монеты', 'DOG and meme coins')}"><div class="ch-head"><h3>${T('DOG и мем-монеты', 'DOG and meme coins')}</h3><span class="seg" role="group" aria-label="${T('Период', 'Period')}" id="mm-p"></span></div><div class="mmbox" id="mmbox"></div></section>
-        </div>
-        <div class="chgrid">
-          <section class="group" aria-label="${T('Как менялась цена', 'How the price has moved')}"><div class="ch-head"><h3>${T('Как менялась цена', 'How the price has moved')}</h3><span class="note">${T('DOG и биткоин', 'DOG and bitcoin')}</span></div><div id="pfbox"></div></section>
-          <section class="group crbox" aria-label="${T('DOG и биткоин', 'DOG and bitcoin')}"><div class="ch-head" style="margin-bottom:0"><h3>${T('DOG и биткоин', 'DOG and bitcoin')}</h3><span class="note">${T('с запуска DOG, апрель 2024', 'since DOG’s launch, April 2024')}</span></div><div id="crstats"></div><div class="tv-leg crleg" id="crleg"></div><div class="tvchart" id="crchart"></div><div id="crread"></div></section>
+        <div class="cols2">
+          <div class="col">
+            <section class="group" id="fngc-sec" aria-label="${T('Страх и жадность', 'Fear and greed')}"></section>
+            <section class="group crbox" aria-label="${T('DOG и биткоин', 'DOG and bitcoin')}"><div class="ch-head" style="margin-bottom:0"><h3>${T('DOG и биткоин', 'DOG and bitcoin')}</h3><span class="note">${T('с запуска DOG, апрель 2024', 'since DOG’s launch, April 2024')}</span></div><div id="crstats"></div><div class="tv-leg crleg" id="crleg"></div><div class="tvchart" id="crchart"></div><div id="crread"></div></section>
+          </div>
+          <div class="col">
+            <section class="group" id="mmsec" aria-label="${T('DOG и мем-монеты', 'DOG and meme coins')}"><div class="ch-head"><h3>${T('DOG и мем-монеты', 'DOG and meme coins')}</h3><span class="seg" role="group" aria-label="${T('Период', 'Period')}" id="mm-p"></span></div><div class="mmbox" id="mmbox"></div></section>
+            <section class="group" aria-label="${T('Как менялась цена', 'How the price has moved')}"><div class="ch-head"><h3>${T('Как менялась цена', 'How the price has moved')}</h3><span class="note">${T('DOG и биткоин', 'DOG and bitcoin')}</span></div><div id="pfbox"></div></section>
+          </div>
         </div>
       </div>`;
     }
@@ -5624,6 +5864,14 @@ html{overscroll-behavior-y:contain}
           return `<div class="wh-tr">${c(T('Кошельков', 'Wallets'), P1, 'var(--k1)', v => n(v))}${c(T('DOG у них', 'DOG held'), P2, 'var(--accent)', v => n(v / 1e3, 2) + (EN ? 'B' : ' млрд'))}</div>`;
         })()}
         <p class="note" style="margin-top:12px">${T(`Это кошельки (адреса) с балансом от 10 млн DOG${W && W.asof ? ` по списку холдеров DOG DATA на ${esc(dtl(W.asof))}` : ''}: сайт проходит весь список, по 25 кошельков на страницу.`, `These are wallets (addresses) holding 10M+ DOG${W && W.asof ? ` from DOG DATA’s holder list as of ${esc(dtl(W.asof))}` : ''}: the site walks the whole list, 25 wallets per page.`)}${ch}${kn} ${T('Биржи и сервисы — по меткам топ-100 и профилям адресов DOG DATA; на их кошельках лежат монеты многих людей.', 'Exchanges & services come from the top-100 labels and DOG DATA’s address profiles; their wallets hold coins of many people.')}${since}</p>
+        ${(() => {
+          const L = ddSer('t1000', null, 400); if (L.length < 10) return '';
+          const d0 = L[0], d1 = L[L.length - 1], dd = d1[1] - d0[1];
+          return `<h3 style="margin-top:16px">${T('Крупные кошельки за полтора месяца', 'Big wallets over six weeks')}</h3>
+            <p class="lead">${T(`1000 крупнейших кошельков держат <b>${n(d1[1], 2)}%</b> всех DOG; ${esc(dml(d0[0]))} было ${n(d0[1], 2)}% — ${Math.abs(dd) < 0.05 ? 'почти без изменений' : dd > 0 ? `на <b class="up">${n(dd, 2)} п.п. больше</b>: крупные кошельки копят` : `на <b class="down">${n(-dd, 2)} п.п. меньше</b>: крупные кошельки раздают`}. В эту тысячу входят все кошельки от 10 млн DOG.`, `The 1,000 largest wallets hold <b>${n(d1[1], 2)}%</b> of all DOG; on ${esc(dml(d0[0]))} it was ${n(d0[1], 2)}% — ${Math.abs(dd) < 0.05 ? 'almost unchanged' : dd > 0 ? `<b class="up">${n(dd, 2)} pp more</b>: big wallets are accumulating` : `<b class="down">${n(-dd, 2)} pp less</b>: big wallets are distributing`}. This thousand includes every 10M+ wallet.`)}</p>
+            ${serLine(L, 'var(--accent)', v => n(v, 2) + '%')}
+            <p class="note">${T('Ежедневная история DOG DATA; сайт хранит её у себя, так что ряд со временем становится длиннее.', 'Daily history from DOG DATA; the site keeps its own copy, so the series grows longer over time.')}</p>`;
+        })()}
         ${utxo ? `<p class="note" style="margin-top:8px">${utxo.trim()}</p>` : ''}
       </div>`;
   }
@@ -5636,7 +5884,7 @@ html{overscroll-behavior-y:contain}
     const P1 = H.map(h => [h[0], h[1]]);
     const d0 = x => esc(dml(new Date(x[0]).toISOString()));
     return `<section class="group card-sage" id="whale-sec" aria-label="${T('Кошельки от 10 млн DOG', 'Wallets with 10M+ DOG')}">
-        <div class="ch-head"><h3>${T('Кошельки от 10 млн', 'Wallets with 10M+')}</h3>${w.dN != null ? `<span class="tag ${w.dN > 0 ? 'up' : w.dN < 0 ? 'down' : ''}">${sg(w.dN, 0)} ${T(`за ${w.days} ${plural(w.days, 'день', 'дня', 'дней')}`, `in ${w.days} day${w.days === 1 ? '' : 's'}`)}</span>` : ''}</div>
+        <div class="ch-head"><h3>${T('Кошельки от 10 млн', 'Wallets with 10M+')}</h3>${w.dN != null ? `<span class="tag ${w.dN > 0 ? 'up' : w.dN < 0 ? 'down' : ''}">${sg(w.dN, 0)} ${T(plural(w.dN, 'кошелёк', 'кошелька', 'кошельков'), Math.abs(w.dN) === 1 ? 'wallet' : 'wallets')} ${T('с', 'since')} ${esc(dml(w.from))}</span>` : ''}</div>
         <button type="button" class="cardlink" data-info="whales" aria-label="${T('Подробно о кошельках от 10 млн DOG', 'Details on wallets with 10M+ DOG')}">
           <div class="wh-top"><b>${n(w.N)}</b><span class="u">${w.pct != null ? T(`держат <strong>${n(w.pct, 1)}%</strong> всех DOG`, `hold <strong>${n(w.pct, 1)}%</strong> of all DOG`) : ''}${w.dog != null && mid ? ` · ≈ ${usd(w.dog * 1e6 * mid)}` : ''}</span></div>
           ${P1.length >= 2 ? `<div class="stepw">${whSpark(P1, 'var(--bid)')}</div><div class="stepax"><span>${d0(P1[0])} · ${n(P1[0][1])}</span><span>${T('сейчас', 'now')} · ${n(P1[P1.length - 1][1])}</span></div>` : ''}
@@ -5693,7 +5941,8 @@ html{overscroll-behavior-y:contain}
     const chg = walletsSummaryHtml(s);
     el.innerHTML = `<div class="ptitle"><div><h1>${T('Кошельки', 'Wallets')}</h1><p>${T('кто сколько держит, крупные кошельки, биржи', 'who holds how much, large wallets, exchanges')}</p></div></div>
       ${tiles ? `<div class="tiles">${tiles}</div>` : ''}
-      <div class="wgrid">${tiersHtml(s)}${whalesCardHtml(s)}${exchCardHtml(s, xd)}${ageCardHtml(s)}${chg ? `<div class="span2">${chg}</div>` : ''}<div class="span2">${t100}</div></div>`;
+      <div class="cols2"><div class="col">${tiersHtml(s)}${exchCardHtml(s, xd)}</div><div class="col">${whalesCardHtml(s)}${ageCardHtml(s)}</div></div>
+      ${chg || ''}${t100}`;
     const inp = $('#wsearch');
     if (inp && S._focusSearch) { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); }
   }
@@ -5799,22 +6048,22 @@ html{overscroll-behavior-y:contain}
   // ---------- СПРАВКА ----------
   const HELP_EN = `<div class="group help">
       <h2>How to use this page</h2>
-      <p>This page collects data on the DOG token (DOG•GO•TO•THE•MOON) from seven exchanges and from the Bitcoin blockchain on its own. There’s nothing to set up: sections are at the bottom of the screen on a phone and at the top on an iPad or a computer. Almost everything can be tapped: tiles, rows, indices and exchanges open their details. The site always opens in English; to switch to Russian use the “⋯” menu (top right) or the RU button — or open the site with ?lang=ru.</p>
+      <p>This page collects data on the DOG token (DOG•GO•TO•THE•MOON) from seven exchanges and from the Bitcoin blockchain on its own. There’s nothing to set up: sections are at the bottom of the screen on a phone and on the left on an iPad or a computer. Almost everything can be tapped: tiles, rows, indices and exchanges open their details. The site always opens in English; to switch to Russian use the “⋯” menu (top right) or the RU button — or open the site with ?lang=ru.</p>
       <div><h3>Gestures</h3><ul>
         <li><b>The day, step by step</b> — the ▶ button in “The last 24 hours”. Tap the right side for the next slide, the left side for the previous one; hold your finger down to pause. <b>Swipe up or down to close.</b></li>
         <li><b>Bottom cards</b> close with a swipe down on the top handle, or a tap outside the card.</li>
-        <li><b>Price chart</b>: slide your finger along the chart and the price at that moment appears at the top, with the change since the start of the period. Let go to return to the current price.</li></ul></div>
-      <div><h3>Home</h3><p>The DOG price in US dollars and a chart of trades on Kraken. The 1D, 1W, 1M, 3M, 1Y and All buttons change the period; “All” shows the whole history since trading began in April 2024. The candle button shows candlesticks and trading volume. On a computer, next to the price: what <b>1 million DOG</b> costs, the market cap and the number of holders.</p><p><b>Fear &amp; Greed</b> sits right under the price: our own DOG index and two indices of the whole crypto market (alternative.me and CoinMarketCap), 0 = fear, 100 = greed. Tap one for what goes into it and its history next to the price; the dots on the chart are the index’s turning points — tap one to see its day.</p>
-        <p style="margin-top:8px">Below are four tiles: who is stronger near the price (buyers or sellers), how many wallets hold 10M+ DOG, how much DOG sits on exchanges and what share of coins is in profit. Tap a tile for its breakdown. Further down: the last 24 hours, exchange order books, DOG among meme coins and company holdings.</p></div>
+        <li><b>Price chart</b>: slide your finger along the chart and the top shows the price at that moment, what 1 million DOG cost then and the market cap, plus how much the price has changed from then to now. Let go to return to the current price.</li></ul></div>
+      <div><h3>Home</h3><p>At the top is <b>Fear &amp; Greed</b>: our own DOG index and two indices of the whole crypto market (alternative.me and CoinMarketCap). The number sits right in the gauge: 0 = fear, 100 = greed. Tap one for what goes into it and its history next to the price; the dots on the chart are the index’s turning points — tap one to see its day.</p>
+        <p style="margin-top:8px">Below it: the DOG price in US dollars, what <b>1 million DOG</b> costs, the market cap and a chart of trades on Kraken. The 15m, 1h, 4h, 1d and 1w buttons set how much time one candle covers — 15 minutes, an hour, 4 hours, a day or a week; weekly candles show the whole history since trading began in April 2024, and the line under the chart says what span it shows. The two icons next to them switch between candles (with trading volume) and a simple line.</p>
+        <p style="margin-top:8px">Then four tiles: who is stronger near the price (buyers or sellers), how many wallets hold 10M+ DOG (and how many were added or dropped since the date shown), how much DOG sits on exchanges and what share of coins is in profit. Tap a tile for its breakdown. Right under the tiles is the C2 Blockchain row; further down: the last 24 hours, exchange order books and DOG among meme coins.</p></div>
       <div><h3>Order book</h3><p>An order book is a list of orders on an exchange: who is ready to buy or sell DOG and at what price. The Order book section works like an exchange: real prices, asks on top, bids below.</p>
         <ul><li><b>Price step</b> (the 0.00001 ▾ button) — like “Order Book Depth” on an exchange: orders are grouped into 0.0000001 / 0.000001 / 0.00001 / 0.0001 steps.</li><li><b>View</b>: column, two sides (bids left, asks right) or a table by exchange; amounts in DOG or dollars.</li><li><b>Exchange</b>: all combined or any one. While the section is open, Kraken, Gate, MEXC and BingX stream every change live (the book redraws about once a second); CoinW and DigiFinex refresh every 10 seconds.</li><li><b>The combined book</b> has one price — the midpoint of Kraken and Gate — with all bids below it and all asks above it. Prices differ a little between exchanges, so a few nearby orders that overlap another exchange’s price are left out here (the note under the book says how much); they are in that exchange’s own book. DigiFinex copies Gate’s order book, so it isn’t added a second time.</li><li><b>Tap a row</b> for details: which exchanges, exact prices, and how much would need to be bought or sold for the price to reach that level.</li><li><b>Wall</b> (amount in bold) — a single order of 5M+ DOG. Walls often hold the price, but can be pulled at any moment.</li><li><b>Balance near the price</b> — a small row next to the book: how many times bids outweigh asks within 2, 5, 10 and 25% of the price. Tap it for the breakdown in dollars, the nearest big orders and the gap between the best prices.</li><li><b>Large orders</b> — the biggest orders of 5M+ DOG; <b>changes over 24 hours</b> — which large orders appeared, were pulled or moved; <b>the feed</b> — what changes while the site is open.</li><li><b>Exchanges</b> — a list with spreads and orders within 10%; tap an exchange for its depth, large orders and an “Open order book” button.</li><li><b>Trades</b> — the latest trades on Kraken, Gate, MEXC and BingX, and who bought or sold at market more often over the hour.</li></ul></div>
-      <div><h3>Companies holding DOG</h3><p>Public companies that keep DOG in their treasury. Right now that’s C2 Blockchain (USA): the row at the bottom of Home shows its holdings and how many months ago it last reported; tap it for every purchase report with links. The company’s coins are held at Kraken, so it has no separate wallet in the top 100.</p></div>
+      <div><h3>Companies holding DOG</h3><p>Public companies that keep DOG in their treasury. Right now that’s C2 Blockchain (USA): the row on Home, right under the tiles, shows its holdings and how many months ago it last reported; tap it for every purchase report with links. The company’s coins are held at Kraken, so it has no separate wallet in the top 100.</p></div>
       <div><h3>Charts</h3><p>Charts that work like on an exchange (TradingView): drag to scroll, pinch to zoom, tap a candle or a day to see its values. The TradingView mark on a chart opens the full DOG/USD chart on TradingView.</p><ul><li><b>DOG price</b> — Kraken candles for 15 minutes, 1 hour, 4 hours, 1 day or 1 week, with volume. Below the candles run the RSI and MACD curves; moving averages and Bollinger Bands can be switched on. Under the chart, a plain-language reading of what the indicators show.</li><li><b>Fear &amp; Greed</b> — the three indices as rows and their shared 90-day chart: slide your finger to see all three on any day. Tap a row for the breakdown with turning points.</li><li><b>DOG and meme coins</b> — DOG next to 11 large meme coins on different chains over 7, 30, 90 days or a year: every coin’s price change on one scale. Tap a line to highlight that coin next to DOG; the list below shows each coin’s change, market cap and how closely it moves with DOG. Prices are cross-checked between Gate, MEXC and Kraken.</li><li><b>DOG and bitcoin</b> — since DOG’s launch in April 2024: how both have grown (log scale), how closely their daily moves are linked (correlation over 30 and 90 days), beta, and how many satoshis 1 DOG costs.</li></ul><p>Indicators describe past moves and don’t predict the future.</p></div>
       <div><h3>Wallets</h3><p>At the top, four tiles — <b>holders</b>, <b>top 100</b>, <b>wallets with 10M+ DOG</b> and <b>DOG on exchanges</b>; each opens its own breakdown: changes over a day, week and month, who holds how much, transfers to and from exchanges. Below: the “Who holds how much” ring with three views (by rank, by wallet size and by owner type; tap a row for details), the 10M+ wallets card with a chart of their number, DOG in exchange wallets, coin age and what changed among large wallets. At the bottom, the hundred largest DOG wallets: the small line next to each wallet is its balance day by day, the dollar value is shown under the balance; above the list — how the top 100’s share changed over a day, week and month.</p>
         <p style="margin-top:8px"><b>Avg buy</b> under a wallet’s description is the average price (per DOG) at which the wallet bought or was topped up after the airdrop: each deposit is valued at that day’s exchange price. Airdropped coins were free, so they’re left out of the average and their share is shown separately (“airdrop 40%”). The percentage shows how today’s price compares. Tap a wallet to see its balance, change, a larger chart, the average-cost details and an address you can copy. Exchange wallets have no average cost — they hold many customers’ coins.</p>
         <p style="margin-top:8px"><b>Fresh balances.</b> Four times a day the balances of the top 100 are read straight from the Bitcoin blockchain (the rune index on ordinals.com, with the Xverse wallet index as a second source), so the list stays current even when DOG DATA’s list lags behind. The holder count and labels come from DOG DATA.</p></div>
       <div><h3>How DOG is held</h3><ul><li><b>Average purchase price</b> — the average price at which coins last changed hands. If today’s price is lower, most holders bought higher.</li><li><b>In profit vs. at a loss</b> — what share of coins is now worth more or less than the price of its last transfer.</li><li><b>Held over a year</b> — the more coins that haven’t moved in over a year, the less holders are selling.</li></ul></div>
-      <div><h3>News</h3><p>Every morning the update looks for posts on X (Leonidas, the official DOG accounts, DOG DATA), listings, delistings, research and company reports on DOG purchases. Each item links to its source.</p></div>
       <div><h3>When it updates</h3><p>Four times a day a full report is built on a server; wallet balances are taken straight from the blockchain. On top of it, the page pulls fresh data itself — when you open it, every 2 minutes while it stays open, and whenever you tap <b>Update</b> (or pull the page down on a phone): order books from Kraken, Gate, DigiFinex and CoinW, the price chart, the holder count and the bitcoin price (and the top 100, if DOG DATA has a newer list than the latest report) — and then checks itself: are the sources fresh, do exchange prices agree, is every book sane. MEXC and BingX order books arrive live over a separate connection while the Order book tab is open. The status at the top shows the time of the data; tap it to see what changed since the latest report and the full list of checks. The price itself updates live from Kraken.</p></div>
       <div><h3>Use it like an app</h3><p>In the ⋯ menu (top right) choose <b>Install as an app</b> or, on an iPhone, <b>Add to Home Screen</b>. DOG Monitor then opens full-screen from its own icon, refreshes itself and shows the last saved data when there’s no connection. The same menu has the language and the appearance: automatic, light or dark. On a computer, press <b>R</b> to update.</p></div>
       <h2 id="sources">Sources and method</h2>
@@ -5823,7 +6072,7 @@ html{overscroll-behavior-y:contain}
         <p><b>Method.</b> The price is the median of the mid-prices of the Kraken, Gate, MEXC and BingX order books (on a live update — of Kraken and Gate). Market cap = price × 100B DOG. The combined order book adds up all exchanges at the chosen step (0.0000001–0.0001); Gate shares its nearest 100 levels exactly and deeper ones in 0.00001 steps; MEXC (nearest 20 levels) and BingX (100 levels) stream live — if that connection fails, they show the latest report and stay out of the live combined book; an exchange whose price differs from the others by more than 3% is left out. A wall is a level of 5M DOG or more. Indicators use Kraken candles: RSI 14 (Wilder), MACD 12/26/9 as a percentage of the price, Bollinger Bands 20/2, simple moving averages 20/50/200. The link to bitcoin is the Pearson correlation of daily log returns; beta is how much DOG moves on average per 1% move in bitcoin (90 days).</p>
         <p><b>Wallet owners.</b> Exchanges and services are labelled using DOG DATA tags, exchange disclosures and flow analysis. A label is an estimate, not a confirmed owner.</p>
         <p><b>Chart</b> built with <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener">Lightweight Charts™ by TradingView</a>.</p>
-        <p><b>This site</b> is an unofficial project, not affiliated with the DOG team, any exchange or C2 Blockchain, and it is not investment advice. It uses no cookies and no analytics; view settings (tab, chart period, language) are stored only in your browser. For fresh data, your browser requests public data directly from Kraken, Gate, DigiFinex, CoinW, MEXC and BingX, Coinbase and DOG DATA. The Inter font (SIL OFL) is hosted on the site itself; the chart library loads from jsDelivr.</p>
+        <p><b>This site</b> is an unofficial project, not affiliated with the DOG team, any exchange or C2 Blockchain, and it is not investment advice. It uses no cookies and no analytics; view settings (tab, chart period, language) are stored only in your browser. For fresh data, your browser requests public data directly from Kraken, Gate, DigiFinex, CoinW, MEXC and BingX, Coinbase and DOG DATA. The Inter font (SIL OFL) and the chart library are hosted on the site itself (jsDelivr is only a fallback for the library).</p>
         <p><b>Times</b> on the page are in <span id="tzname">your local time</span>.</p>
       </div></div>`;
   function renderHelp() {
@@ -5837,16 +6086,17 @@ html{overscroll-behavior-y:contain}
     }
     $('#p-help').innerHTML = `<div class="group help">
       <h2>Как пользоваться</h2>
-      <p>Страница сама собирает данные о токене DOG (DOG•GO•TO•THE•MOON) с семи бирж и из блокчейна Bitcoin. Ничего настраивать не нужно: разделы — внизу экрана, на iPad и компьютере — вверху. Почти всё нажимается: плитки, строки, индексы и биржи открывают подробности.</p>
+      <p>Страница сама собирает данные о токене DOG (DOG•GO•TO•THE•MOON) с семи бирж и из блокчейна Bitcoin. Ничего настраивать не нужно: разделы — внизу экрана, а на iPad и компьютере — слева. Почти всё нажимается: плитки, строки, индексы и биржи открывают подробности.</p>
       <div><h3>Жесты</h3><ul>
         <li><b>Итог дня по шагам</b> — кнопка ▶ в блоке «Главное за сутки». Касание справа — следующий слайд, слева — предыдущий, удерживайте палец, чтобы остановить. <b>Свайп вверх или вниз закрывает.</b></li>
         <li><b>Карточки снизу</b> закрываются свайпом вниз за верхнюю полоску или касанием мимо карточки.</li>
-        <li><b>График цены</b>: ведите пальцем по графику — вверху появится цена в этот момент и изменение с начала периода. Отпустите палец — вернётся текущая цена.</li></ul></div>
-      <div><h3>Главная</h3><p>Цена DOG в долларах и график по сделкам на Kraken. Кнопки 1Д, 1Н, 1М, 3М, 1Г и «Всё» меняют период: день, неделя, месяц, три месяца, год и вся история с начала торгов в апреле 2024 года. Кнопка со свечами показывает японские свечи и объём торгов. На компьютере рядом с ценой — сколько стоит <b>1 млн DOG</b>, капитализация и число холдеров.</p><p><b>Страх и жадность</b> — сразу под ценой: наш индекс DOG и два индекса всего крипторынка (alternative.me и CoinMarketCap), 0 — страх, 100 — жадность. Нажмите на любой — откроется, из чего он складывается, и его история рядом с ценой; точки на графике — развороты индекса, нажмите на точку — увидите её день.</p>
-        <p style="margin-top:8px">Ниже четыре плитки: кто сильнее у цены — покупатели или продавцы, сколько кошельков держат от 10 млн DOG, сколько DOG лежит на биржах и какая доля монет в прибыли. Нажмите на плитку — откроется разбор. Дальше — главное за сутки, стаканы бирж, DOG среди мем-монет и запасы компаний.</p></div>
+        <li><b>График цены</b>: ведите пальцем по графику — вверху появятся цена в этот момент, сколько тогда стоил 1 млн DOG и капитализация, а рядом — на сколько цена изменилась с того момента до сейчас. Отпустите палец — вернётся текущая цена.</li></ul></div>
+      <div><h3>Главная</h3><p>Вверху — <b>страх и жадность</b>: наш индекс DOG и два индекса всего крипторынка (alternative.me и CoinMarketCap). Число — прямо в дуге: 0 — страх, 100 — жадность. Нажмите на любой — откроется, из чего он складывается, и его история рядом с ценой; точки на графике — развороты индекса, нажмите на точку — увидите её день.</p>
+        <p style="margin-top:8px">Под ним — цена DOG в долларах, сколько стоит <b>1 млн DOG</b>, капитализация и график по сделкам на Kraken. Кнопки 15м, 1ч, 4ч, 1д и 1н выбирают, сколько времени в одной свече: 15 минут, час, 4 часа, день или неделя. Недельные свечи показывают всю историю с начала торгов в апреле 2024 года, а какой отрезок виден сейчас — написано под графиком. Два значка рядом переключают вид: свечи с объёмом торгов или простая линия.</p>
+        <p style="margin-top:8px">Ниже четыре плитки: кто сильнее у цены — покупатели или продавцы, сколько кошельков держат от 10 млн DOG (и сколько их прибавилось или убавилось с указанной даты), сколько DOG лежит на биржах и какая доля монет в прибыли. Нажмите на плитку — откроется разбор. Сразу под плитками — строка C2 Blockchain, дальше — главное за сутки, стаканы бирж и DOG среди мем-монет.</p></div>
       <div><h3>Стакан</h3><p>Стакан — список заявок на бирже: кто по какой цене готов купить или продать DOG. На главной у каждой биржи две полоски: <b class="up">зелёная</b> — сколько хотят купить, <b class="down">красная</b> — сколько хотят продать, в пределах 10% от цены. Раздел «Стакан» устроен как на бирже: настоящие цены, продажи сверху, покупки снизу.</p>
         <ul><li><b>Шаг цены</b> (кнопка 0,00001 ▾) — как «Order Book Depth» на бирже: заявки складываются в ступени 0,0000001 / 0,000001 / 0,00001 / 0,0001.</li><li><b>Вид</b>: столбиком, «две стороны» (покупки слева, продажи справа) и таблица по биржам; объём — в DOG или в долларах.</li><li><b>Биржа</b>: все вместе или любая одна. Пока раздел открыт, Kraken, Gate, MEXC и BingX присылают каждое изменение онлайн (стакан перерисовывается примерно раз в секунду); CoinW и DigiFinex обновляются каждые 10 секунд.</li><li><b>В сводном стакане</b> одна цена — середина между Kraken и Gate; все покупки ниже неё, все продажи выше. На разных биржах цены чуть расходятся, поэтому несколько ближних заявок, которые «заходят» за цену другой биржи, сюда не попадают (сколько — написано под стаканом); они есть в стакане своей биржи. DigiFinex копирует стакан Gate, поэтому второй раз не прибавляется.</li><li><b>Нажмите на строку</b> — откроются подробности: какие биржи, точные цены, сколько нужно купить или продать, чтобы цена дошла до этого уровня.</li><li><b>Стенка</b> (объём жирным) — одна заявка от 5 млн DOG. Такие заявки часто удерживают цену, но их могут снять в любой момент.</li><li><b>Перевес у цены</b> — маленькая строка рядом со стаканом: во сколько раз покупок больше, чем продаж, в пределах 2, 5, 10 и 25% от цены. Нажмите — откроется разбор в долларах, ближайшие крупные заявки и разрыв между лучшими ценами.</li><li><b>Крупные заявки</b> — самые большие заявки от 5 млн DOG; <b>изменения за сутки</b> — какие крупные заявки появились, сняты или переставлены; <b>лента</b> — что меняется, пока открыт сайт.</li><li><b>Биржи</b> — список со спредом и заявками в пределах 10%; нажмите на биржу — её глубина, крупные заявки и кнопка «Открыть стакан».</li><li><b>Сделки</b> — последние сделки Kraken, Gate, MEXC и BingX и кто за час чаще покупал или продавал по рынку.</li></ul></div>
-      <div><h3>Компании, которые копят DOG</h3><p>Публичные компании, которые держат DOG в казне. Сейчас это C2 Blockchain (США): строка внизу главной показывает её запас и сколько месяцев последнему отчёту; нажмите — все отчёты о покупках со ссылками. Монеты компании хранятся на Kraken, поэтому отдельного кошелька в топ-100 у неё нет.</p></div>
+      <div><h3>Компании, которые копят DOG</h3><p>Публичные компании, которые держат DOG в казне. Сейчас это C2 Blockchain (США): строка на главной, сразу под плитками, показывает её запас и сколько месяцев последнему отчёту; нажмите — все отчёты о покупках со ссылками. Монеты компании хранятся на Kraken, поэтому отдельного кошелька в топ-100 у неё нет.</p></div>
       <div><h3>Графики</h3><p>Графики, устроенные как на бирже (TradingView): двигайте пальцем, сводите и разводите пальцы для масштаба, нажмите на свечу или день — появятся значения. Значок TradingView на графике открывает полный график DOG/USD на TradingView.</p><ul><li><b>Цена DOG</b> — свечи Kraken за 15 минут, 1 час, 4 часа, 1 день или 1 неделю, с объёмом. Под свечами — кривые RSI и MACD; можно включить скользящие средние и полосы Боллинджера. Под графиком — что показывают индикаторы, простыми словами.</li><li><b>Страх и жадность</b> — три индекса строками и их общий график за 90 дней: ведите пальцем — увидите все три числа в любой день. Нажмите на строку — разбор с точками разворотов.</li><li><b>DOG и мем-монеты</b> — DOG рядом с 11 крупными мем-монетами разных сетей за 7, 30, 90 дней или год: изменение цены каждой на одной шкале. Нажмите на линию — монета подсветится рядом с DOG; в списке под графиком — изменение, капитализация и насколько монета движется вместе с DOG. Цены сверены между Gate, MEXC и Kraken.</li><li><b>DOG и биткоин</b> — с запуска DOG в апреле 2024: как выросли оба (логарифмическая шкала), насколько связаны их дневные движения (корреляция за 30 и 90 дней), бета и сколько сатоши стоит 1 DOG.</li></ul><p>Индикаторы описывают прошлое движение и не предсказывают будущее.</p></div>
       <div><h3>Кошельки</h3><p>Вверху четыре плитки — <b>холдеры</b>, <b>топ-100</b>, <b>кошельки от 10 млн DOG</b> и <b>DOG на биржах</b>; каждая открывает свой разбор: изменения за сутки, неделю и месяц, кто сколько держит, переводы на биржи и с бирж. Ниже — кольцо «У кого сколько DOG» с тремя видами (по месту в рейтинге, по размеру кошелька и по типу владельца; нажмите на строку — подробности), карточка кошельков от 10 млн с графиком их числа, DOG на кошельках бирж, возраст монет и что изменилось у крупных. Внизу — сто самых крупных кошельков: линия у кошелька — его баланс по дням, под балансом — сумма в долларах; над списком — как изменилась доля топ-100 за сутки, неделю и месяц.</p>
         <p style="margin-top:8px"><b>Ср. цена покупок</b> под описанием кошелька — по какой цене (за 1 DOG) в среднем кошелёк покупал и пополнялся после аирдропа: каждое поступление оценивается по цене дня на бирже. Монеты с аирдропа достались бесплатно, в среднюю цену не входят, их доля написана отдельно («аирдроп 40%»). Процент — насколько цена сейчас выше или ниже. Нажмите на кошелёк — откроются баланс, изменение, большой график, подробности о средней цене и адрес. Для кошельков бирж средней цены нет: там монеты многих клиентов.</p>
@@ -5860,7 +6110,7 @@ html{overscroll-behavior-y:contain}
         <p><b>Расчёт.</b> Цена — медиана середин стаканов Kraken, Gate, MEXC и BingX (при онлайн-обновлении — Kraken и Gate). Капитализация = цена × 100 млрд DOG. Сводный стакан складывает уровни всех бирж с выбранным шагом (0,0000001–0,0001); Gate отдаёт 100 ближних уровней точно, дальше — ступенями по 0,00001; MEXC (20 ближних уровней) и BingX (100 уровней) приходят онлайн — если подключиться не вышло, у них стакан из последней сводки и в общий онлайн-стакан они не входят; биржа, чья цена отличается от остальных больше чем на 3%, в сумму не входит. Стенка — уровень от 5 млн DOG. Индикаторы — по свечам Kraken: RSI 14 (по Уайлдеру), MACD 12/26/9 в процентах от цены, полосы Боллинджера 20/2, простые скользящие средние 20/50/200. Связь с биткоином — корреляция Пирсона дневных логарифмических изменений цены; бета — на сколько процентов в среднем меняется DOG, когда биткоин меняется на 1% (за 90 дней).</p>
         <p><b>Владельцы кошельков.</b> Биржи и сервисы — по меткам DOG DATA, публикациям бирж и анализу потоков. Метка — оценка, а не подтверждение владельца.</p>
         <p><b>График</b> построен с помощью <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener">Lightweight Charts™ от TradingView</a>.</p>
-        <p><b>Сайт</b> — неофициальный проект, не связан с командой DOG, биржами и C2 Blockchain; не является инвестиционной рекомендацией. Сайт не использует cookies и аналитику; настройки вида (вкладка, период графика) хранятся только в вашем браузере. Свежие данные браузер запрашивает напрямую у Kraken, Gate, DigiFinex, CoinW, MEXC и BingX, Coinbase и DOG DATA. Шрифт Inter (лицензия SIL OFL) хранится на самом сайте; библиотека графика загружается с jsDelivr.</p>
+        <p><b>Сайт</b> — неофициальный проект, не связан с командой DOG, биржами и C2 Blockchain; не является инвестиционной рекомендацией. Сайт не использует cookies и аналитику; настройки вида (вкладка, период графика) хранятся только в вашем браузере. Свежие данные браузер запрашивает напрямую у Kraken, Gate, DigiFinex, CoinW, MEXC и BingX, Coinbase и DOG DATA. Шрифт Inter (лицензия SIL OFL) и библиотека графика хранятся на самом сайте (jsDelivr — только запасной вариант для библиотеки).</p>
         <p><b>Время</b> на странице — <span id="tzname">местное</span>.</p>
       </div></div>`;
     try {
@@ -6488,17 +6738,14 @@ html{overscroll-behavior-y:contain}
     const el = $('#pchart'), s = V();
     if (!el || !s) return;
     if (!(HC && HC.el === el && el.isConnected) || HC.touching) { drawPrice(false); return; }
-    const R = priceRows(s, S.period);
-    if (!R || !R.rows.length) return;
+    const R = heroRows();
+    if (!R || R.tf !== HC.tf || R.rows.length !== HC.rows.length) { drawPrice(true); return; }
     try {
-      const Tm = r => r[0] + TZ;
-      if (HC.vol) {
-        HC.main.setData(R.rows.map(r => ({ time: Tm(r), open: r[1], high: r[2], low: r[3], close: r[4] })));
-        { const C = chColors(); HC.vol.setData(R.rows.map(r => ({ time: Tm(r), value: r[5] || 0, color: hexA(r[4] >= r[1] ? C.up : C.down, 0.32) }))); }
-      } else HC.main.setData(R.rows.map(r => ({ time: Tm(r), value: r[4] })));
-      HC.rows = R.rows; HC.base = R.line || R.closeBase ? R.rows[0][4] : R.rows[0][1];
-      HC.key = [s.id, S.period, S.chartMode, R.rows.length, R.rows[R.rows.length - 1][4]].join('|');
-      try { HC.chart.timeScale().fitContent(); } catch (e) { }
+      if (S.chartMode !== 'line') {
+        HC.main.setData(R.rows.map(r => ({ time: HC.Tm(r), open: r[1], high: r[2], low: r[3], close: r[4] })));
+        if (HC.vol) { const C = chColors(); HC.vol.setData(R.rows.map(r => ({ time: HC.Tm(r), value: r[5] || 0, color: hexA(r[4] >= r[1] ? C.up : C.down, 0.38) }))); }
+      } else HC.main.setData(R.rows.map(r => ({ time: HC.Tm(r), value: r[4] })));
+      HC.rows = R.rows;
     } catch (e) { drawPrice(true); }
   }
 
@@ -6714,7 +6961,7 @@ html{overscroll-behavior-y:contain}
     const cget = f => { try { return localStorage.getItem(LS + f); } catch (e) { return null; } };
     const cput = (f, text) => {
       try { localStorage.setItem(LS + f, text); }
-      catch (e) { try { ['prices.json', 'costbasis.json', 'wallets.json', 'btc.json', 'hist.json', 'memes.json', 'whales.json'].forEach(x => { if (x !== f) localStorage.removeItem(LS + x); }); localStorage.setItem(LS + f, text); } catch (e2) { } }
+      catch (e) { try { ['prices.json', 'costbasis.json', 'wallets.json', 'btc.json', 'hist.json', 'memes.json', 'whales.json', 'ddhist.json'].forEach(x => { if (x !== f) localStorage.removeItem(LS + x); }); localStorage.setItem(LS + f, text); } catch (e2) { } }
     };
     async function load(file) {
       const r = await fetch(BASE + file + '?' + bust(), { cache: 'no-store' });
@@ -6858,11 +7105,12 @@ html{overscroll-behavior-y:contain}
     // балансы по дням, средние цены, история цены DOG и биткоина: приходят вместе со сводкой (перечитываются, когда выходит новая)
     db.file('wallets.json', d => { if (d.b) { S.wh = d; if (V()) renderWallets(); } });
     db.file('costbasis.json', d => { if (d.w) { S.cb = d; if (V()) renderWallets(); } });
-    db.file('prices.json', d => { if (d.d) { S.px = d; { const st = $('#chstats'); if (st) st.innerHTML = chStatsHtml(); } if (V() && S.period === 'ВСЁ') { resetHero(); drawPrice(true); } if (V() && S.tab === 'charts') { if (CH.tf === '1w') chDrawTV(); crDraw(); } } });
+    db.file('prices.json', d => { if (d.d) { S.px = d; { const st = $('#chstats'); if (st) st.innerHTML = chStatsHtml(); } if (V() && S.htf === '1w') drawPrice(true); if (V() && S.tab === 'charts') { if (CH.tf === '1w') chDrawTV(); crDraw(); } } });
     db.file('btc.json', d => { if (d.d) { S.btcd = d; if (V() && S.tab === 'charts') crDraw(); } });
     db.file('fng.json', d => { if (d.dog || d.market) { S.fng = d; paintFng(); } });
     db.file('memes.json', d => { if (d.coins) { S.memes = d; if (V() && S.tab === 'charts') mmDraw(); } });
     db.file('whales.json', d => { if (d.n) { S.wl = d; if (V()) renderWallets(); } });
+    db.file('ddhist.json', d => { if (d.d) S.dd = d; });
     fngLive();
     db.doc('meta/selfcheck').onSnapshot(snap => { S.selfcheck = snap.exists ? snap.data() : null; }, () => { });
     db.doc('meta/audit').onSnapshot(snap => { S.audit = snap.exists ? snap.data() : null; }, () => { });
