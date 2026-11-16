@@ -36,6 +36,12 @@ jobs:
           ref: main
           fetch-depth: 1
 
+      - name: Адрес сайта (по имени репозитория — после переноса в организацию меняется сам)
+        run: |
+          OWNER="${GITHUB_REPOSITORY%%/*}"; NAME="${GITHUB_REPOSITORY#*/}"; HOST="${OWNER,,}.github.io"
+          if [ "${NAME,,}" = "$HOST" ]; then URL="https://$HOST/"; else URL="https://$HOST/$NAME/"; fi
+          echo "SITE_URL=$URL" >> "$GITHUB_ENV"; echo "Сайт: $URL"
+
       - name: Сбор данных и расчёт сводки
         if: ${{ github.event.inputs.mode != 'feed' && github.event.inputs.mode != 'wallets' }}
         env:
@@ -89,9 +95,10 @@ jobs:
 
       - name: Выкладка на сайт
         run: |
+          python3 tools/siteurl.py .
           git config user.name "DOG Monitor bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data
+          git add data index.html
           if git diff --cached --quiet; then echo "нет изменений"; exit 0; fi
           ID=$(python3 -c "import json;print(json.load(open('data/version.json'))['id'])")
           git commit -m "Сводка $ID (авто, ${{ github.event.inputs.mode || 'full' }})"
@@ -101,7 +108,14 @@ jobs:
             if ! git rebase origin/main; then
               # пока шёл запуск, в main уже легли другие данные: в спорных файлах data/ оставляем данные
               # этого запуска (они свежее), всё остальное берём из main
-              for f in $(git diff --name-only --diff-filter=U); do git checkout --theirs -- "$f" && git add -- "$f"; done
+              # (index.html этот запуск меняет только ссылками превью — там берём версию из main и пересчитываем адрес)
+              for f in $(git diff --name-only --diff-filter=U); do
+                case "$f" in
+                  data/*) git checkout --theirs -- "$f" ;;
+                  *) git checkout --ours -- "$f"; [ "$f" = "index.html" ] && python3 tools/siteurl.py . ;;
+                esac
+                git add -- "$f"
+              done
               GIT_EDITOR=true git rebase --continue || { git rebase --abort; exit 1; }
             fi
           done
@@ -110,7 +124,7 @@ jobs:
       - name: Проверка выкладки (живой сайт отдаёт новую сводку)
         if: ${{ github.event.inputs.mode != 'feed' && github.event.inputs.mode != 'wallets' }}
         timeout-minutes: 12
-        run: python3 tools/livecheck.py . https://allexst63.github.io/dog-monitor/
+        run: python3 tools/livecheck.py . "$SITE_URL"
 
       - name: Итог автопроверки
         if: ${{ always() && steps.selfcheck.outcome == 'failure' }}

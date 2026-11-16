@@ -4,9 +4,8 @@
 Copyright © TradingView, Inc. Лицензия Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0).
 Копия пакета `lightweight-charts@5.0.8` (файл `dist/lightweight-charts.standalone.production.js`, без изменений) лежит в `vendor/` вместе с текстом лицензии и NOTICE; jsDelivr — запасной путь. На графиках показан значок TradingView — он ведёт на график DOG/USD на https://www.tradingview.com; в подвале и справке сайта — ссылка на библиотеку и на TradingView.
 
-**Шрифт Jost** — Copyright 2020 The Jost Project Authors (https://github.com/indestructible-type).
-**Шрифт Golos Text** — Copyright 2019 The Golos Text Project Authors (https://github.com/googlefonts/golos-text).
-Оба шрифта распространяются по лицензии SIL Open Font License 1.1 (тексты лицензий — `fonts/OFL-Jost.txt`, `fonts/OFL-GolosText.txt`). На сайте лежат их сокращённые до латиницы и кириллицы версии в формате WOFF.
+**Шрифт Inter** (и Inter Display) — Copyright 2016–2023 The Inter Project Authors (https://github.com/rsms/inter). Лицензия SIL Open Font License 1.1 (текст — `fonts/OFL-Inter.txt`). На сайте лежат его сокращённые до латиницы и кириллицы версии в формате WOFF (обычный, средний и полужирный, Inter Display полужирный и курсив только для знака «dog monitor»).
+**Шрифты Jost и Golos Text** — Copyright 2020 The Jost Project Authors (https://github.com/indestructible-type) и 2019 The Golos Text Project Authors (https://github.com/googlefonts/golos-text), SIL Open Font License 1.1 (`fonts/OFL-Jost.txt`, `fonts/OFL-GolosText.txt`) — ими набран прежний вид сайта (`classic/`).
 
 **Данные**
 - DOG DATA (https://www.dogdata.xyz) — число холдеров, концентрация, метки кошельков, площадки, возраст монет, средняя цена покупки, аирдроп, DOG в других сетях; весь список кошельков от 10 млн DOG и профили их адресов (тип кошелька); переводы от 5 млн DOG — только чтобы найти новых кандидатов в топ-100.

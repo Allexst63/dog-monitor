@@ -2,10 +2,11 @@
 // Страница: сразу из сохранённой копии, свежая версия скачивается следом (если отличается — страница узнаёт об этом
 //   и перезагружается сама). Библиотека графиков, шрифты и значки не меняются — из кэша.
 // data/*.json: сначала сеть, при сбое — последняя сохранённая копия (страница и сама хранит последние данные).
+// Другие страницы сайта (например, /classic/ — прежний вид) — из сети, их не подменяем главной страницей.
 // Запросы к биржам и DOG DATA (другие сайты) не трогаем.
-const CACHE = 'dogmon-v2';
+const CACHE = 'dogmon-v3';
 const SHELL = new URL('./', self.location).href;
-const CORE = ['manifest.webmanifest', 'favicon.svg', 'fonts/jost.woff', 'fonts/golos-text.woff', 'icons/icon-192.png', 'icons/apple-touch-icon.png', 'vendor/lightweight-charts-5.0.8.js'];
+const CORE = ['manifest.webmanifest', 'favicon.svg', 'fonts/inter-400.woff', 'fonts/inter-500.woff', 'fonts/inter-600.woff', 'fonts/inter-display-600.woff', 'fonts/inter-mark.woff', 'icons/icon-192.png', 'icons/apple-touch-icon.png', 'vendor/lightweight-charts-5.0.8.js'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => Promise.all(
@@ -50,9 +51,13 @@ self.addEventListener('fetch', e => {
   if (u.origin !== self.location.origin) return;
   if (u.pathname.includes('/data/snapshots/')) return;            // архив сводок: только сеть, в кэше не копим
   const key = keyOf(req);
-  if (req.mode === 'navigate' || key === SHELL || key === SHELL + 'index.html') {
+  if (key === SHELL || key === SHELL + 'index.html') {
     if (/[?&]nosw=1\b/.test(u.search)) return;
     e.respondWith(shell(e));
+    return;
+  }
+  if (req.mode === 'navigate') {                                  // другие страницы сайта — только из сети, без сети — из копии
+    e.respondWith(fetch(req).catch(() => caches.match(key).then(m => m || caches.match(SHELL)).then(m => m || Response.error())));
     return;
   }
   if (/\/(fonts|icons|vendor)\//.test(u.pathname)) {

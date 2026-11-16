@@ -20,6 +20,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
+      - name: Адрес сайта (по имени репозитория — после переноса в организацию меняется сам)
+        run: |
+          OWNER="${GITHUB_REPOSITORY%%/*}"; NAME="${GITHUB_REPOSITORY#*/}"; HOST="${OWNER,,}.github.io"
+          if [ "${NAME,,}" = "$HOST" ]; then URL="https://$HOST/"; else URL="https://$HOST/$NAME/"; fi
+          echo "SITE_URL=$URL" >> "$GITHUB_ENV"; echo "Сайт: $URL"
       # состояние (о чём уже писали, кому писать) хранится в кэше Actions, а не в репозитории
       - uses: actions/cache/restore@v4
         with:

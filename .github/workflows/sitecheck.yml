@@ -26,13 +26,19 @@ jobs:
           ref: main
           fetch-depth: 1
 
-      - name: Живой сайт в браузере (телефон)
+      - name: Адрес сайта (по имени репозитория — после переноса в организацию меняется сам)
+        run: |
+          OWNER="${GITHUB_REPOSITORY%%/*}"; NAME="${GITHUB_REPOSITORY#*/}"; HOST="${OWNER,,}.github.io"
+          if [ "${NAME,,}" = "$HOST" ]; then URL="https://$HOST/"; else URL="https://$HOST/$NAME/"; fi
+          echo "SITE_URL=$URL" >> "$GITHUB_ENV"; echo "Сайт: $URL"
+
+      - name: Живой сайт в браузере (телефон, iPad и компьютер)
         run: |
           mkdir -p "$RUNNER_TEMP/pw" && cd "$RUNNER_TEMP/pw"
           npm init -y >/dev/null 2>&1
           npm i --no-audit --no-fund playwright-core@1.48.2 >/dev/null 2>&1
           cd "$GITHUB_WORKSPACE"
-          NODE_PATH="$RUNNER_TEMP/pw/node_modules" node tools/selfcheck.js . "$RUNNER_TEMP/selfcheck.json" --url https://allexst63.github.io/dog-monitor/
+          NODE_PATH="$RUNNER_TEMP/pw/node_modules" node tools/selfcheck.js . "$RUNNER_TEMP/selfcheck.json" --url "$SITE_URL"
 
       - name: Итог по пунктам
         if: always()

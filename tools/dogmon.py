@@ -49,7 +49,10 @@ ALERT_EXCH = 20.0         # баланс биржи изменился на 20 �
 ALERT_FLOW = 20.0         # переводы на биржу или с биржи за сутки (сумма по бирже); один перевод между кошельками
 ALERT_HOLDER = 20.0       # крупный холдер из топ-100 (не биржа) набрал или сбросил 20 млн и больше
 ALERT_PRICE = 7.0         # цена за сутки изменилась на 7% и больше
-SITE_URL = 'https://allexst63.github.io/dog-monitor/'
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from siteurl import site_url  # noqa: E402
+SITE_URL = site_url()
 EXCHANGES = (('kraken', 'Kraken'), ('gate', 'Gate'), ('mexc', 'MEXC'), ('bingx', 'BingX'),
              ('coinw', 'CoinW'), ('digifinex', 'DigiFinex'), ('bitget', 'Bitget'))
 EXN = dict(EXCHANGES)

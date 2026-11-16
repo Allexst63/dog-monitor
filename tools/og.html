@@ -1,72 +1,64 @@
 <!doctype html>
-<!-- Картинка для превью ссылки (og.jpg, 1200×630). Пересобрать:
+<!-- Картинка для превью ссылки (og.jpg, 1200×630) — в оформлении сайта v5 («Тихая ночь»: графит, мягкий абрикос, Inter). Пересобрать:
      node -e "const pw=require('playwright');(async()=>{const b=await pw.chromium.launch();const p=await b.newPage({viewport:{width:1200,height:630},deviceScaleFactor:2});await p.goto('file://'+process.cwd()+'/tools/og.html');await p.waitForTimeout(600);await p.screenshot({path:'og@2x.png'});await b.close()})()"
      затем уменьшить до 1200×630 и сохранить как og.jpg (качество 90). Живых чисел на картинке нет: мессенджеры хранят превью днями. -->
 <html lang="en"><head><meta charset="utf-8">
 <style>
-@font-face{font-family:"Jost";src:url("../fonts/jost.woff") format("woff");font-weight:100 900}
-@font-face{font-family:"Golos Text";src:url("../fonts/golos-text.woff") format("woff");font-weight:400 900}
+@font-face{font-family:"Inter";src:url("../fonts/inter-400.woff") format("woff");font-weight:400}
+@font-face{font-family:"Inter";src:url("../fonts/inter-500.woff") format("woff");font-weight:500}
+@font-face{font-family:"Inter";src:url("../fonts/inter-600.woff") format("woff");font-weight:600 800}
+@font-face{font-family:"Inter Display";src:url("../fonts/inter-display-600.woff") format("woff");font-weight:500 800}
+@font-face{font-family:"DM Mark";src:url("../fonts/inter-mark.woff") format("woff");font-weight:700;font-style:italic}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:1200px;height:630px;overflow:hidden}
-body{font-family:"Golos Text",system-ui,sans-serif;color:#fff;position:relative;
-  background:
-    radial-gradient(620px 420px at 12% 8%, rgba(46,86,214,.55), transparent 70%),
-    radial-gradient(520px 420px at 86% 22%, rgba(246,190,120,.20), transparent 70%),
-    radial-gradient(900px 500px at 50% 120%, rgba(36,58,160,.35), transparent 70%),
-    linear-gradient(160deg,#0D1430 0%,#0A0F25 55%,#070A18 100%)}
-.wrap{position:absolute;inset:0;padding:56px 64px}
-.eyebrow{font-size:23px;letter-spacing:.02em;color:#AEB9DD}
-h1{font-family:"Jost",sans-serif;font-weight:600;font-size:96px;line-height:1;margin:14px 0 18px;letter-spacing:-.01em}
-.sub{font-size:28px;line-height:1.35;color:#CFD6EE;max-width:690px}
-.sub b{color:#fff;font-weight:600}
-.moon{position:absolute;right:58px;top:30px;width:250px;height:250px}
-.cards{position:absolute;left:64px;right:64px;bottom:84px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-.card{height:172px;border-radius:22px;padding:18px 20px 16px;background:linear-gradient(180deg,rgba(255,255,255,.085),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.10);display:flex;flex-direction:column}
-.card h3{font-size:21px;font-weight:600;letter-spacing:.005em}
+body{font-family:"Inter",system-ui,sans-serif;color:#EFEEEB;position:relative;-webkit-font-smoothing:antialiased;
+  background:radial-gradient(760px 420px at 88% -6%, rgba(210,149,95,.14), transparent 70%),linear-gradient(165deg,#141821 0%,#0E1118 60%,#0B0D13 100%)}
+body::before{content:"";position:absolute;inset:0;background:repeating-conic-gradient(from -8deg at 86% 4%,rgba(210,149,95,.07) 0deg 2.2deg,transparent 2.2deg 9deg);-webkit-mask:radial-gradient(900px 560px at 86% 4%,#000 0%,rgba(0,0,0,.5) 40%,transparent 75%)}
+.wrap{position:absolute;inset:0;padding:58px 64px}
+.mark{display:inline-flex;align-items:center;gap:14px;font-family:"DM Mark","Inter",sans-serif;font-style:italic;font-weight:700;font-size:88px;letter-spacing:-.03em;line-height:1}
+.mark i{width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#F6DCC0,#D2955F 70%);box-shadow:0 0 0 6px rgba(210,149,95,.16),0 0 28px 6px rgba(210,149,95,.22);transform:translateY(-4px)}
+.eyebrow{font-size:22px;color:#A7ABB5;margin-top:18px;letter-spacing:.01em}
+.sub{font-size:27px;line-height:1.38;color:#CFCBC4;max-width:720px;margin-top:10px}
+.sub b{color:#EFEEEB;font-weight:600}
+.cards{position:absolute;left:64px;right:64px;bottom:82px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.card{height:176px;border-radius:24px;padding:18px 20px 16px;border:1px solid rgba(255,255,255,.05);display:flex;flex-direction:column}
+.c1{background:#16211D}.c2{background:#221B16}.c3{background:#161D29}.c4{background:#1C1B19}
+.card h3{font-size:20px;font-weight:600;letter-spacing:-.005em}
 .card .v{flex:1;display:flex;align-items:center;justify-content:center}
-.card p{font-size:16px;color:#A3AED3}
-.foot{position:absolute;left:64px;right:64px;bottom:30px;display:flex;justify-content:space-between;font-size:18px;color:#8F9BC6}
-.foot .tag{color:#F7B25A;font-weight:600}
+.card p{font-size:15.5px;color:#8D919B}
+.foot{position:absolute;left:64px;right:64px;bottom:30px;display:flex;justify-content:space-between;font-size:18px;color:#7E838F}
+.foot .tag{color:#E6B78F;font-weight:600}
 </style></head><body>
 <div class="wrap">
+  <div class="mark">dog monitor<i></i></div>
   <div class="eyebrow">DOG•GO•TO•THE•MOON · the Bitcoin rune</div>
-  <h1>DOG Monitor</h1>
-  <div class="sub">Live price, order books, <b>Fear &amp; Greed</b> and every big wallet — <b>cross-checked</b> and updated 4× a day.</div>
+  <div class="sub">Live price, a combined <b>order book</b>, <b>Fear &amp; Greed</b> and every big wallet — <b>cross-checked</b>, updated 4× a day.</div>
 </div>
-<svg class="moon" viewBox="0 0 100 100" aria-hidden="true"><defs>
-  <radialGradient id="mg" cx="38%" cy="34%" r="70%"><stop offset="0" stop-color="#FFF3DD"/><stop offset=".55" stop-color="#F6D49E"/><stop offset="1" stop-color="#D59A52"/></radialGradient>
-  <radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset=".55" stop-color="rgba(255,206,140,.38)"/><stop offset="1" stop-color="rgba(255,206,140,0)"/></radialGradient>
-  <mask id="ph"><rect width="100" height="100" fill="#000"/><circle cx="50" cy="50" r="40" fill="#fff"/><circle cx="20" cy="50" r="40" fill="#000"/></mask></defs>
-  <circle cx="50" cy="50" r="50" fill="url(#glow)"/>
-  <circle cx="50" cy="50" r="40" fill="rgba(255,255,255,.07)"/>
-  <g mask="url(#ph)"><circle cx="50" cy="50" r="40" fill="url(#mg)"/>
-    <circle cx="64" cy="38" r="6" fill="#C98E4C" opacity=".35"/><circle cx="57" cy="64" r="9" fill="#C98E4C" opacity=".28"/><circle cx="77" cy="57" r="4" fill="#C98E4C" opacity=".35"/></g>
-</svg>
 <div class="cards">
-  <div class="card"><h3>Fear &amp; Greed</h3><div class="v" id="fg"></div><p>2 market indices + DOG</p></div>
-  <div class="card"><h3>Order books</h3><div class="v" id="ob"></div><p>7 exchanges, one view</p></div>
-  <div class="card"><h3>Meme coins</h3><div class="v" id="mm"></div><p>DOG vs 11 top memes</p></div>
-  <div class="card"><h3>Wallets</h3><div class="v" id="wl"></div><p>top 100 + every 10M+</p></div>
+  <div class="card c1"><h3>Fear &amp; Greed</h3><div class="v" id="fg"></div><p>DOG + two market indices</p></div>
+  <div class="card c2"><h3>Order book</h3><div class="v" id="ob"></div><p>7 exchanges, one view</p></div>
+  <div class="card c3"><h3>Meme coins</h3><div class="v" id="mm"></div><p>DOG vs 11 top memes</p></div>
+  <div class="card c4"><h3>Wallets</h3><div class="v" id="wl"></div><p>top 100 + every 10M+</p></div>
 </div>
-<div class="foot"><span>allexst63.github.io/dog-monitor</span><span>English · Русский · <span class="tag">unofficial</span></span></div>
+<div class="foot"><span>English · Русский</span><span><span class="tag">unofficial</span> · free · no ads</span></div>
 <script>
 // шкалы: пять цветных зон, как на сайте (без значений — превью живёт в кэше мессенджеров днями)
-const Z = ['#EA3943', '#EA8C00', '#E6C52A', '#93C900', '#16B777'], E = [25, 46, 54, 75, 100];
+const Z = ['#EA5A55', '#F09243', '#E6C548', '#9CCB56', '#3DBB80'], E = [25, 46, 54, 75, 100];
 const gauge = (x, mark) => { const cx = x + 30, cy = 40, r = 26, P = v => { const a = Math.PI * (1 - v / 100); return [(cx + r * Math.cos(a)).toFixed(1), (cy - r * Math.sin(a)).toFixed(1)]; };
   let s = '', from = 0; E.forEach((e, i) => { const a = P(from + (i ? 1.6 : 0)), b = P(e - (i < 4 ? 1.6 : 0)); s += `<path d="M${a[0]},${a[1]}A${r},${r} 0 0 1 ${b[0]},${b[1]}" fill="none" stroke="${Z[i]}" stroke-width="5" stroke-linecap="round"/>`; from = e; });
-  const k = P(mark); return s + `<circle cx="${k[0]}" cy="${k[1]}" r="4.2" fill="#0A0F25" stroke="#fff" stroke-width="2.2"/>`; };
+  const k = P(mark); return s + `<circle cx="${k[0]}" cy="${k[1]}" r="4.2" fill="#16211D" stroke="#EFEEEB" stroke-width="2.2"/>`; };
 document.getElementById('fg').innerHTML = `<svg width="208" height="56" viewBox="0 0 208 56">${gauge(4, 22)}${gauge(74, 50)}${gauge(144, 82)}</svg>`;
-// стаканы: покупки зелёным влево, продажи красным вправо
+// стакан: покупки зелёным влево, продажи красным вправо
 const rows = [[.92, .35], [.55, .62], [.3, .18], [.66, .12], [.2, .28]];
-document.getElementById('ob').innerHTML = `<svg width="208" height="86" viewBox="0 0 208 86">${rows.map(([b, a], i) => { const y = 4 + i * 16; return `<rect x="${(102 - 96 * b).toFixed(1)}" y="${y}" width="${(96 * b).toFixed(1)}" height="10" rx="5" fill="#1BAF7A"/><rect x="106" y="${y}" width="${(96 * a).toFixed(1)}" height="10" rx="5" fill="#E34948"/>`; }).join('')}<line x1="104" x2="104" y1="0" y2="86" stroke="rgba(255,255,255,.25)"/></svg>`;
-// мем-монеты: тонкие цветные линии и толстая оранжевая DOG
+document.getElementById('ob').innerHTML = `<svg width="208" height="86" viewBox="0 0 208 86">${rows.map(([b, a], i) => { const y = 4 + i * 16; return `<rect x="${(102 - 96 * b).toFixed(1)}" y="${y}" width="${(96 * b).toFixed(1)}" height="9" rx="4.5" fill="#5BB38D"/><rect x="106" y="${y}" width="${(96 * a).toFixed(1)}" height="9" rx="4.5" fill="#D47D76"/>`; }).join('')}<line x1="104" x2="104" y1="0" y2="86" stroke="rgba(255,255,255,.2)"/></svg>`;
+// мем-монеты: тонкие цветные линии и толстая абрикосовая DOG
 const rnd = s => () => (s = (s * 16807) % 2147483647) / 2147483647;
 const line = (seed, drift, vol) => { const r = rnd(seed); let y = 50, d = ''; for (let i = 0; i <= 40; i++) { y += (r() - .5) * vol + drift; y = Math.max(6, Math.min(82, y)); d += `${i ? 'L' : 'M'}${(i * 5.2).toFixed(1)},${y.toFixed(1)}`; } return d; };
-const cols = ['#C9A227', '#3E9B4F', '#4FA3E0', '#E05A8C', '#D63B3B', '#2F6BE6', '#7BAE2A', '#1A9C8F'];
-document.getElementById('mm').innerHTML = `<svg width="208" height="88" viewBox="0 0 208 88">${cols.map((c, i) => `<path d="${line(11 + i * 7, (i % 3 - 1) * .5, 9)}" fill="none" stroke="${c}" stroke-width="1.6" opacity=".75" stroke-linejoin="round"/>`).join('')}<path d="${line(23, 0, 7)}" fill="none" stroke="#F7931A" stroke-width="3.6" stroke-linejoin="round"/></svg>`;
+const cols = ['#E3C341', '#40A449', '#4FB3E8', '#E58FB5', '#C9302C', '#4E82E5', '#8FC23A', '#2FA094'];
+document.getElementById('mm').innerHTML = `<svg width="208" height="88" viewBox="0 0 208 88">${cols.map((c, i) => `<path d="${line(11 + i * 7, (i % 3 - 1) * .5, 9)}" fill="none" stroke="${c}" stroke-width="1.5" opacity=".7" stroke-linejoin="round"/>`).join('')}<path d="${line(23, 0, 7)}" fill="none" stroke="#D2955F" stroke-width="3.6" stroke-linejoin="round"/></svg>`;
 // кошельки: кольцо долей, как «У кого сколько DOG»
-const seg = [[46, '#C79A00'], [10, '#F7931A'], [6, '#2A78D6'], [14, '#E87BA4'], [24, '#8A91A5']];
+const seg = [[28.5, '#D2955F'], [12.1, '#EACBA8'], [16.6, '#7F9CC7'], [42.8, '#3A404C']];
 let off = 0; const C = 2 * Math.PI * 30;
-document.getElementById('wl').innerHTML = `<svg width="96" height="96" viewBox="0 0 96 96"><g transform="rotate(-90 48 48)"><circle cx="48" cy="48" r="30" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="12"/>${seg.map(([v, c]) => { const L = v / 100 * C - 2, o = `<circle cx="48" cy="48" r="30" fill="none" stroke="${c}" stroke-width="12" stroke-dasharray="${L.toFixed(1)} ${(C - L).toFixed(1)}" stroke-dashoffset="${(-off).toFixed(1)}"/>`; off += v / 100 * C; return o; }).join('')}</g></svg>`;
+document.getElementById('wl').innerHTML = `<svg width="96" height="96" viewBox="0 0 96 96"><g transform="rotate(-90 48 48)"><circle cx="48" cy="48" r="30" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="11"/>${seg.map(([v, c]) => { const L = v / 100 * C - 2, o = `<circle cx="48" cy="48" r="30" fill="none" stroke="${c}" stroke-width="11" stroke-dasharray="${L.toFixed(1)} ${(C - L).toFixed(1)}" stroke-dashoffset="${(-off).toFixed(1)}"/>`; off += v / 100 * C; return o; }).join('')}</g></svg>`;
 </script>
 </body></html>

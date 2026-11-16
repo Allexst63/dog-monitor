@@ -19,7 +19,10 @@ import xml.etree.ElementTree as ET
 
 QUERIES = ['"DOG•GO•TO•THE•MOON"', '"DOG (Bitcoin)"', '"C2 Blockchain" DOG', 'Leonidas DOG bitcoin runes',
            '"$DOG" bitcoin rune', 'Bitcoin runes DOG exchange listing']
-UA = 'Mozilla/5.0 (compatible; DOG-Monitor/1.0; +https://allexst63.github.io/dog-monitor/)'
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from siteurl import site_url  # noqa: E402
+UA = f'Mozilla/5.0 (compatible; DOG-Monitor/1.0; +{site_url()})'
 SKIP = re.compile(r'price prediction|previs|prediksi|прогноз|predict|forecast|dogecoin|\bdoge\b|\bpets?\b|puppy|veterinar', re.I)
 
 

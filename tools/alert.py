@@ -18,9 +18,12 @@ import urllib.request
 
 A1H = float(os.environ.get('ALERT_1H') or 5)
 A24 = float(os.environ.get('ALERT_24H') or 10)
-SITE = 'https://allexst63.github.io/dog-monitor/'
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from siteurl import site_url  # noqa: E402
+SITE = site_url()
 TOKEN = (os.environ.get('TELEGRAM_BOT_TOKEN') or '').strip()
-UA = 'Mozilla/5.0 (compatible; DOG-Monitor/1.0; +https://allexst63.github.io/dog-monitor/)'
+UA = f'Mozilla/5.0 (compatible; DOG-Monitor/1.0; +{SITE})'
 
 
 def get(url, data=None):

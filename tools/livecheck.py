@@ -11,7 +11,10 @@ import sys
 import time
 import urllib.request
 
-UA = 'Mozilla/5.0 (compatible; DOG-Monitor/1.0; +https://allexst63.github.io/dog-monitor/)'
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+from siteurl import site_url  # noqa: E402
+UA = f'Mozilla/5.0 (compatible; DOG-Monitor/1.0; +{site_url()})'
 
 
 def get(url, timeout=25):

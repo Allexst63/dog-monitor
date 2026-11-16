@@ -66,7 +66,7 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
     add(await page.evaluate(() => document.querySelectorAll('#p-overview .tile').length >= 2 && !!document.querySelector('#p-overview .sum')), 'Главная: плитки и «что нового» на месте', 'Home: tiles and “what’s new” are in place');
     await page.waitForTimeout(4000);                       // даём странице закончить своё онлайн-обновление
     const fng = await page.evaluate(() => [...document.querySelectorAll('#fng-box .fng-g')].map(g => (g.querySelector('.gn') || {}).textContent || ''));
-    add(fng.length === 3 && fng.filter(t => /^\d+$/.test(t)).length >= 2, `Главная: «Страх и жадность» показан (alternative.me ${fng[0] || '—'}, CoinMarketCap ${fng[1] || '—'}, DOG ${fng[2] || '—'})`, `Home: Fear & Greed is shown (alternative.me ${fng[0] || '—'}, CoinMarketCap ${fng[1] || '—'}, DOG ${fng[2] || '—'})`);
+    add(fng.length === 3 && fng.filter(t => /^\d+$/.test(t)).length >= 2, `Главная: «Страх и жадность» под ценой (DOG ${fng[0] || '—'}, alternative.me ${fng[1] || '—'}, CoinMarketCap ${fng[2] || '—'})`, `Home: Fear & Greed under the price (DOG ${fng[0] || '—'}, alternative.me ${fng[1] || '—'}, CoinMarketCap ${fng[2] || '—'})`);
     const st = await page.evaluate(() => ({ c: document.querySelector('#status').className, t: document.querySelector('#status-t').textContent }));
     add(/\d\d:\d\d/.test(st.t), `Статус в шапке показывает время данных («${st.t.trim().slice(0, 40)}»)`, `Header status shows the data time (“${st.t.trim().slice(0, 40)}”)`);
     add(await noOverflow(), 'Главная: ничего не вылезает за экран телефона', 'Home: nothing overflows the phone screen');
@@ -98,7 +98,7 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
     }
     // индекс DOG везде одно и то же число: шкала на «Главном», «Сейчас» в разборе и сегодняшняя точка графика
     {
-      const g = await page.evaluate(() => { const x = document.querySelectorAll('#fng-box .fng-g .gn'); return x[2] ? x[2].textContent.trim() : ''; });
+      const g = await page.evaluate(() => { const x = document.querySelectorAll('#fng-box .fng-g .gn'); return x[0] ? x[0].textContent.trim() : ''; });
       await page.evaluate(() => { const b = document.querySelector('[data-info="fng_d"]'); if (b) b.click(); });
       await page.waitForTimeout(800);
       const k = await page.evaluate(() => ({ now: ((document.querySelector('#sheet-body .kv dd b') || {}).textContent || '').trim(), pt: ((document.querySelector('#sheet-body .fic-read .v b') || {}).textContent || '').trim(), d: ((document.querySelector('#sheet-body .fic-read .d') || {}).textContent || '').trim() }));
@@ -107,7 +107,7 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
       const now2 = await page.evaluate(() => ((document.querySelector('#sheet-body [data-fng-now="d"] b') || {}).textContent || '').trim());
       await page.evaluate(() => { const c = document.querySelector('#sheet [data-close]'); if (c) c.click(); });
       await page.waitForTimeout(450);
-      const g2 = await page.evaluate(() => { const x = document.querySelectorAll('#fng-box .fng-g .gn'); return x[2] ? x[2].textContent.trim() : ''; });
+      const g2 = await page.evaluate(() => { const x = document.querySelectorAll('#fng-box .fng-g .gn'); return x[0] ? x[0].textContent.trim() : ''; });
       add(!!g && g === k.now && g === k.pt && g2 === now2, `Индекс DOG одинаковый на шкале, в разборе и на графике (${g || '—'} / ${k.now || '—'} / ${k.pt || '—'}; после закрытия ${g2 || '—'} / ${now2 || '—'})`, `DOG index is the same on the gauge, in the breakdown and on the chart (${g || '—'} / ${k.now || '—'} / ${k.pt || '—'}; after closing ${g2 || '—'} / ${now2 || '—'})`, k.d);
     }
     // крупные заявки из «Что нового» — их потом ищем в сводном стакане
@@ -138,6 +138,13 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
     // сводный стакан: все покупки ниже цены, все продажи выше (без «пересечений» между биржами)
     const ob = await page.evaluate(() => { const num = e => parseFloat(e.textContent.replace(',', '.')); const b = [...document.querySelectorAll('#obcard .ob-r.b .p, #obcard .ob2 .h.b .p')].map(num), a = [...document.querySelectorAll('#obcard .ob-r.a .p, #obcard .ob2 .h.a .p')].map(num), m = document.querySelector('#obmidp'); return { b: b.length ? Math.max(...b) : null, a: a.length ? Math.min(...a) : null, m: m ? num(m) : null }; });
     add(ob.b != null && ob.a != null && ob.m != null && ob.b <= ob.m * 1.0000001 && ob.a >= ob.m * 0.9999999 && ob.b < ob.a * 1.0000001, 'Стакан: покупки ниже цены, продажи выше', 'Order book: bids below the price, asks above', JSON.stringify(ob));
+    // стакан — первым на вкладке; перевес у цены — маленькая строка, нажатие открывает разбор
+    {
+      const r = await page.evaluate(() => { const card = document.querySelector('#obcard'), imb = document.querySelector('#p-books [data-obimb]'); return { cardTop: card ? Math.round(card.getBoundingClientRect().top + window.scrollY) : null, imbH: imb ? Math.round(imb.getBoundingClientRect().height) : null, cells: imb ? imb.querySelectorAll('.c').length : 0 }; });
+      let opened = false;
+      if (r.cells) { await page.evaluate(() => document.querySelector('#p-books [data-obimb]').click()); await page.waitForTimeout(600); opened = await page.evaluate(() => !document.querySelector('#sheet').hidden && document.querySelectorAll('#sheet-body .wh-r').length >= 3); await page.evaluate(() => { const c = document.querySelector('#sheet [data-close]'); if (c) c.click(); }); await page.waitForTimeout(450); }
+      add(r.cardTop != null && r.cardTop < 360 && r.cells === 4 && r.imbH <= 80 && opened, `Стакан первым экраном, перевес у цены — одна строка (${r.cells} диапазона), разбор открывается`, `Order book comes first; the balance near the price is one row (${r.cells} ranges) and opens its breakdown`, JSON.stringify(r));
+    }
     await shot('2-books');
 
     // 3. графики
@@ -184,16 +191,37 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
       } else add(false, 'Графики: «DOG и мем-монеты» нарисован и отвечает на нажатие', 'Charts: “DOG and meme coins” is drawn and responds to taps', 'линий или списка нет');
       await shot('5-charts-memes');
     }
+    {
+      const f = await page.evaluate(() => ({ rows: document.querySelectorAll('#fngc-sec .fngr').length, paths: [...document.querySelectorAll('#f3plot path')].filter(p => (p.getAttribute('d') || '').length > 100).length }));
+      let read = '';
+      if (f.paths >= 2) { await page.evaluate(() => { const e = document.querySelector('#f3plot'); if (e) e.scrollIntoView({ block: 'center' }); }); await page.waitForTimeout(300); const b = await page.locator('#f3plot').boundingBox(); if (b) { await page.touchscreen.tap(b.x + b.width * 0.3, b.y + b.height / 2); await page.waitForTimeout(300); read = await page.evaluate(() => (document.querySelector('#f3read') || {}).textContent || ''); } }
+      add(f.rows === 3 && f.paths >= 2 && /DOG\s*\d/.test(read) && !/Сегодня|Today/.test(read), `Графики: «Страх и жадность» — три строки и общий график, нажатие показывает день`, `Charts: Fear & Greed — three rows and a shared chart; a tap shows that day`, `${f.rows} строки, ${f.paths} линии; ${read.replace(/\s+/g, ' ').slice(0, 60)}`);
+    }
     add(await page.evaluate(() => !document.querySelector('#p-charts .tv-wait')), 'Графики: ничего не «зависло» на загрузке', 'Charts: nothing is stuck loading');
     add(await noOverflow(), 'Графики: ничего не вылезает за экран телефона', 'Charts: nothing overflows the phone screen');
 
     // 4. кошельки
     await tab('wallets');
-    const w = await page.evaluate(() => ({ rows: document.querySelectorAll('#wlist .wrow').length, hk: (document.querySelector('#p-wallets .hk') || {}).textContent || '', own: !!document.querySelector('#p-wallets .own-bar'), warn: !!document.querySelector('#p-wallets .tag.warn') }));
-    add(w.rows >= 25 && w.own, `Кошельки: топ-100 и «кто владеет DOG» показаны (${w.rows} строк)`, `Wallets: top 100 and “who owns DOG” are shown (${w.rows} rows)`);
+    const w = await page.evaluate(() => ({ rows: document.querySelectorAll('#wlist .wrow').length, hk: (document.querySelector('#p-wallets .hk') || {}).textContent || '', ring: !!document.querySelector('#tiers-sec .tring svg circle[data-tier]'), warn: !!document.querySelector('#p-wallets .tag.warn') }));
+    add(w.rows >= 25 && w.ring, `Кошельки: топ-100 и кольцо «У кого сколько DOG» показаны (${w.rows} строк)`, `Wallets: top 100 and the “Who holds how much” ring are shown (${w.rows} rows)`);
+    // четыре плитки вверху — каждая открывает свой разбор
+    {
+      const res = [];
+      for (const k of ['holders', 'top', 'whales', 'exch']) {
+        const ok = await page.evaluate(k2 => { const b = document.querySelector(`#p-wallets .tiles [data-info="${k2}"]`); if (!b) return false; b.click(); return true; }, k);
+        await page.waitForTimeout(500);
+        const r = ok ? await page.evaluate(() => ({ open: !document.querySelector('#sheet').hidden, t: (document.querySelector('#sheet-title') || {}).textContent || '', n: ((document.querySelector('#sheet-body') || {}).textContent || '').length })) : { open: false, n: 0 };
+        res.push(r.open && r.n > 200 ? 1 : 0);
+        await page.evaluate(() => { const c = document.querySelector('#sheet [data-close]'); if (c) c.click(); });
+        await page.waitForTimeout(400);
+      }
+      add(res.every(Boolean), `Кошельки: плитки открывают разборы (${res.filter(Boolean).length} из 4)`, `Wallets: tiles open their breakdowns (${res.filter(Boolean).length} of 4)`);
+    }
     add(/\d[\d.,]*%/.test(w.hk), 'Кошельки: «как держат DOG» — доля в прибыли, в убытке и без движения больше года', 'Wallets: “how DOG is held” — share in profit, at a loss and unmoved for over a year');
     // кошельки от 10 млн: блок есть, число кошельков совпадает со ступенью «от 10 млн» в «У кого сколько DOG» (±3: списки сняты в разное время)
     {
+      await page.evaluate(() => { const b = document.querySelector('#tiers-sec [data-tmode="size"]'); if (b) b.click(); });
+      await page.waitForTimeout(300);
       const wh = await page.evaluate(() => {
         const num = t => +String(t || '').replace(/[^\d]/g, '');
         const big = num((document.querySelector('#whale-sec .wh-top b') || {}).textContent);
@@ -214,6 +242,23 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
     await page.evaluate(() => { const b = document.querySelector('[data-tab="history"]'); if (b) b.click(); });
     await page.waitForTimeout(600);
     add(await page.evaluate(() => document.querySelectorAll('#p-history tbody tr').length >= 3), 'История: список обновлений показан', 'History: the list of updates is shown');
+
+    // 6. iPad и компьютер: на широком экране — пилюли вверху, нижнего меню нет; ничего не вылезает за экран
+    for (const [vw, vh, nm, en] of [[820, 1180, 'iPad', 'iPad'], [1440, 900, 'компьютер', 'computer']]) {
+      await page.setViewportSize({ width: vw, height: vh });
+      await page.waitForTimeout(500);
+      const bad = [];
+      for (const k of ['overview', 'books', 'charts', 'wallets']) {
+        await page.evaluate(k2 => { const b = document.querySelector(`[data-tab="${k2}"]`); if (b) b.click(); }, k);
+        await page.waitForTimeout(900);
+        const r = await page.evaluate(() => ({ ov: document.scrollingElement.scrollWidth > window.innerWidth + 1, top: getComputedStyle(document.querySelector('#topnav')).display !== 'none', bar: getComputedStyle(document.querySelector('#tabbar')).display !== 'none' }));
+        if (r.ov) bad.push(k + ': ' + (en === 'iPad' ? 'вылезает' : 'overflow'));
+        if (vw >= 900 ? (!r.top || r.bar) : (r.top || !r.bar)) bad.push(k + ': меню');
+      }
+      add(!bad.length, `${nm}: все вкладки помещаются, меню на месте`, `${en}: every tab fits, navigation in place`, bad.join('; '));
+      if (SHOTS) { await page.evaluate(() => { const b = document.querySelector('[data-tab="overview"]'); if (b) b.click(); }); await page.waitForTimeout(800); await shot('9-' + en.toLowerCase()); }
+    }
+    await page.setViewportSize({ width: 390, height: 844 });
 
     // 6. русская версия
     await page.goto(base + '?nosw=1&lang=ru#overview', { waitUntil: 'load', timeout: 45000 });
