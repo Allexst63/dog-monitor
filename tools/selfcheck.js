@@ -52,7 +52,9 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
   page.on('pageerror', e => errs.push(String(e && e.message || e)));
   const shot = async name => { if (SHOTS) { fs.mkdirSync(SHOTS, { recursive: true }); await page.screenshot({ path: path.join(SHOTS, name + '.png') }); } };
   const tab = async k => { await page.evaluate(k2 => { const b = document.querySelector(`#tabbar [data-tab="${k2}"]`) || document.querySelector(`[data-tab="${k2}"]`); if (b) b.click(); else location.hash = '#' + k2; }, k); await page.waitForTimeout(700); };
-  const noOverflow = () => page.evaluate(() => document.scrollingElement.scrollWidth <= window.innerWidth + 1);
+  // ширина экрана — по самому экрану: телефонный браузер расширяет страницу под слишком широкое содержимое, и тогда
+  // innerWidth растёт вместе с ним (вылезание так не заметить)
+  const noOverflow = () => page.evaluate(() => document.scrollingElement.scrollWidth <= Math.min(window.innerWidth, screen.width || window.innerWidth) + 1);
   const wait = (fn, ms, arg) => page.waitForFunction(fn, arg, { timeout: ms }).then(() => true, () => false);
 
   try {
@@ -242,7 +244,8 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
         await page.touchscreen.tap(m.b.x + m.b.w * 0.5, m.b.y + m.b.h * 0.5); await page.waitForTimeout(300);
         const r = await page.evaluate(() => ({ read: (document.querySelector('#mmread') || {}).textContent || '', h: document.querySelector('#mmplot').getBoundingClientRect().height }));
         det = `${m.n} монет, связь у ${m.corr}; высота ${Math.round(r.h)} px; ${r.read.replace(/\s+/g, ' ').slice(0, 90)}`;
-        add(m.corr >= m.n - 2 && r.h >= 150 && /DOG [+−]?\d/.test(r.read), 'Графики: «DOG и мем-монеты» нарисован и отвечает на нажатие', 'Charts: “DOG and meme coins” is drawn and responds to taps', det);
+        // нажатие показывает день: вверху дата, а не «сейчас»
+        add(m.corr >= m.n - 2 && r.h >= 150 && /DOG [+−]?\d/.test(r.read) && !/^\s*(now|сейчас)/i.test(r.read), 'Графики: «DOG и мем-монеты» нарисован и отвечает на нажатие', 'Charts: “DOG and meme coins” is drawn and responds to taps', det);
       } else add(false, 'Графики: «DOG и мем-монеты» нарисован и отвечает на нажатие', 'Charts: “DOG and meme coins” is drawn and responds to taps', 'линий или списка нет');
       await shot('5-charts-memes');
     }

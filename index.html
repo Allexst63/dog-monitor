@@ -66,7 +66,7 @@
   --t-sage:#E2F0E7; --t-peach:#F7E8D9; --t-slate:#E3EAF5; --t-sand:#F1EADD;
   --k1:#3D7BD6; --k2:#D9822F; --k3:#14A06F; --k4:#B8902F; --k5:#C2607E; --k8:#B8763F; --k7:#6676A0; --k6:#14A06F; --k-pr:#8E929C; --k-un:#6B707B;
   --k-peach:#DDB48E; --k-ink:#3B3F48;
-  --mc-dog:var(--dog); --mc-sel:#3D7BD6; --mc-oth:rgba(110,114,126,.42); --f3m:#1A9C8C; --moon-glow:drop-shadow(0 1px 1.5px rgba(120,70,30,.3));
+  --mc-dog:var(--dog); --mc-sel:#3D7BD6; --mc-oth:rgba(110,114,126,.42); --f3m:#149483; --moon-glow:drop-shadow(0 1px 1.5px rgba(120,70,30,.3));
   --o1:#DE3F48; --o2:#D9963E; --o3:#86AE4E; --o4:#14A06F;
   --hero-a:#FFFFFF; --hero-b:#F4F1EB; --ray:transparent; --card-ink:var(--ink); --card-ink-2:var(--ink-2); --card-line:var(--line);
   --space-0:#F7F2EA; --space-1:#FFFFFF; --space-2:#FFFFFF;
@@ -74,7 +74,8 @@
   --fz1:#D9393E; --fz2:#E07A20; --fz3:#D6AC24; --fz4:#84B52F; --fz5:#1FA466;
   --hero-panel:#F8F4EC; --hero-edge:rgba(120,92,52,.085); --hero-line:rgba(120,92,52,.11);
   --c2-bg:#FFFFFF; --c2-ink:#47707A; --c2-edge:rgba(23,25,31,.10); --c2-img:url(icons/c2-lion-light.png);
-  --f3c:#3861FB;
+  /* три индекса страха и жадности: одна светлота и насыщенность (OKLCH), проверено на цветовую слепоту и контраст */
+  --f3c:#5277C7; --f3d:#C56B23;
   --shadow-card:0 1px 0 rgba(23,25,31,.03),0 10px 30px -22px rgba(23,25,31,.35);
   --shadow-hero:0 18px 40px -26px rgba(23,25,31,.45);
   --shadow-pop:0 28px 70px -24px rgba(23,25,31,.45);
@@ -96,14 +97,14 @@
     --t-sage:#13241D; --t-peach:#271C14; --t-slate:#141D2D; --t-sand:#211E18;
     --k1:#6EA6F2; --k2:#F2A35F; --k3:#26B37F; --k4:#D9B060; --k5:#E58FA9; --k8:#D2955F; --k7:#9AA6C2; --k6:#26B37F; --k-pr:#878C98; --k-un:#A3A7B1;
     --k-peach:#EACBA8; --k-ink:#3A404C;
-    --mc-sel:#6EA6F2; --mc-oth:rgba(135,140,152,.4); --f3m:#3CC6B4; --moon-glow:drop-shadow(0 0 6px rgba(242,180,122,.45));
+    --mc-sel:#6EA6F2; --mc-oth:rgba(135,140,152,.4); --f3m:#19AB91; --moon-glow:drop-shadow(0 0 6px rgba(242,180,122,.45));
     --o1:#E8505B; --o2:#E9A85E; --o3:#A9C76A; --o4:#26B37F;
     --hero-a:#1B2234; --hero-b:#121723; --ray:transparent;
     --space-0:#141821; --space-1:#1A1F2A; --space-2:#1F2531;
     --fz1:#E54348; --fz2:#EA832A; --fz3:#E6BC33; --fz4:#93C63A; --fz5:#2BB677;
     --hero-panel:rgba(6,9,15,.28); --hero-edge:rgba(255,255,255,.05); --hero-line:rgba(255,255,255,.07);
     --c2-bg:#16212B; --c2-ink:#93BCC6; --c2-edge:rgba(147,188,198,.2); --c2-img:url(icons/c2-lion-dark.png);
-    --f3c:#6E9BFF;
+    --f3c:#7191DD; --f3d:#D07C33;
     --shadow-card:0 1px 0 rgba(255,255,255,.02) inset,0 12px 32px -24px rgba(0,0,0,.9);
     --shadow-hero:0 22px 50px -28px rgba(0,0,0,.95);
     --shadow-pop:0 30px 80px -20px rgba(0,0,0,.85);
@@ -121,14 +122,14 @@
   --t-sage:#13241D; --t-peach:#271C14; --t-slate:#141D2D; --t-sand:#211E18;
   --k1:#6EA6F2; --k2:#F2A35F; --k3:#26B37F; --k4:#D9B060; --k5:#E58FA9; --k8:#D2955F; --k7:#9AA6C2; --k6:#26B37F; --k-pr:#878C98; --k-un:#A3A7B1;
   --k-peach:#EACBA8; --k-ink:#3A404C;
-  --mc-sel:#6EA6F2; --mc-oth:rgba(135,140,152,.4); --f3m:#3CC6B4; --moon-glow:drop-shadow(0 0 6px rgba(242,180,122,.45));
+  --mc-sel:#6EA6F2; --mc-oth:rgba(135,140,152,.4); --f3m:#19AB91; --moon-glow:drop-shadow(0 0 6px rgba(242,180,122,.45));
   --o1:#E8505B; --o2:#E9A85E; --o3:#A9C76A; --o4:#26B37F;
   --hero-a:#1B2234; --hero-b:#121723; --ray:transparent;
   --space-0:#141821; --space-1:#1A1F2A; --space-2:#1F2531;
   --fz1:#E54348; --fz2:#EA832A; --fz3:#E6BC33; --fz4:#93C63A; --fz5:#2BB677;
   --hero-panel:rgba(6,9,15,.28); --hero-edge:rgba(255,255,255,.05); --hero-line:rgba(255,255,255,.07);
   --c2-bg:#16212B; --c2-ink:#93BCC6; --c2-edge:rgba(147,188,198,.2); --c2-img:url(icons/c2-lion-dark.png);
-  --f3c:#6E9BFF;
+  --f3c:#7191DD; --f3d:#D07C33;
   --shadow-card:0 1px 0 rgba(255,255,255,.02) inset,0 12px 32px -24px rgba(0,0,0,.9);
   --shadow-hero:0 22px 50px -28px rgba(0,0,0,.95);
   --shadow-pop:0 30px 80px -20px rgba(0,0,0,.85);
@@ -1614,8 +1615,8 @@ button.fng-head:hover .ico,button.ch-hbtn:hover .ico{transform:translateX(2px);c
 .colf{min-width:0}
 /* история трёх индексов: тонкие линии, выбранный индекс — ярко, остальные бледно; точки минимума и максимума */
 .f3s-l{transition:opacity .2s ease,stroke-width .2s ease}
-.f3s-g.fx .f3s-l{opacity:.14}
-.f3s-g.fx-m .f3s-l[data-k="m"],.f3s-g.fx-c .f3s-l[data-k="c"],.f3s-g.fx-d .f3s-l[data-k="d"]{opacity:1;stroke-width:2.2px}
+.f3s-g.fx .f3s-l{opacity:.16}
+.f3s-g.fx-m .f3s-l[data-k="m"],.f3s-g.fx-c .f3s-l[data-k="c"],.f3s-g.fx-d .f3s-l[data-k="d"]{opacity:1;stroke-width:2px}
 .f3s-p{position:absolute;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;box-shadow:0 0 0 1.5px var(--surface);cursor:pointer;z-index:1;transition:transform .15s ease,opacity .2s ease}
 .f3s-p::before{content:'';position:absolute;left:-10px;top:-10px;right:-10px;bottom:-10px;border-radius:50%}
 .f3s-p.on{transform:scale(1.5);box-shadow:0 0 0 1.5px var(--surface),0 0 0 3px var(--ink);z-index:3}
@@ -1637,11 +1638,12 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   .fng,.h-fng .fng{padding:7px 6px 4px}
   .fng .fng-head,.h-fng .fng .fng-head{padding:0 8px 2px 10px}
   .fng-g{padding:2px 2px 1px}
-  .fng-g .gauge,.h-fng .fng-g .gauge{max-width:66px}
-  .fng-g .gnum,.h-fng .fng-g .gnum{font-size:17.5px}
-  .fng-g .gk{font-size:11px;line-height:1.18;margin-top:1px}
-  .fng-g .gt{font-size:11px;line-height:1.18}
-  .fng-g .gs{font-size:10px;line-height:1.2}
+  /* две строки вместо трёх — зона и чей индекс (alternative.me, CoinMarketCap, DOG); освободившееся место — шкалам */
+  .fng-g .gauge,.h-fng .fng-g .gauge{max-width:82px}
+  .fng-g .gnum,.h-fng .fng-g .gnum{font-size:21px}
+  .fng-g .gk{font-size:11.5px;line-height:1.2;margin-top:2px}
+  .fng-g .gt,.fng-g .gs{font-size:11.5px;line-height:1.2;font-weight:600;color:var(--ink)}
+  .fng-g:not([data-info="fng_d"]) .gt,.fng-g[data-info="fng_d"] .gs{display:none}
   .home{gap:9px}
   .hero{padding:8px 10px 8px}
   .hero-head{padding:6px 11px 6px}
@@ -1654,8 +1656,6 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   .hero-row .hero-chg{gap:2px;line-height:1.2}
   .hero-row .hero-chg .pill{padding:2px 8px}
 }
-/* «Страх и жадность» на «Главном»: перед источником — чёрточка цвета линии индекса (как на общем графике) */
-.fng-g .gs .mk{width:9px;height:3px;margin-right:4px}
 /* строки карточки цены — постоянной высоты, без переносов: при ведении пальцем по графику ничего не прыгает */
 .hero .hero-pair{height:22px;min-height:0;flex-wrap:nowrap;white-space:nowrap}
 .hero .hwhen{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -1691,18 +1691,56 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
 .hero .pchart.lw{height:300px}
 @media (min-width:700px){.hero .pchart.lw{height:330px}}
 
-/* «Графики»: подпись над свечами — постоянной высоты (строки не переносятся, ячейки цен одной ширины): график не прыгает */
-.tv-leg{min-height:0}
-.tv-leg .l1{flex-wrap:nowrap;white-space:nowrap;min-width:0;overflow:hidden;height:22px;align-items:center}
-.tv-leg .l1 .tv-when{line-height:18px;padding-top:0;padding-bottom:0}
-.tv-leg .l1 > *{flex:none}
-.tv-leg .l1 .faint{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
-.tv-leg .l2{display:grid;grid-template-columns:repeat(3,max-content);gap:1px 12px}
-.tv-leg .l2 span{white-space:nowrap}
-.tv-leg .l2 b{display:inline-block;min-width:9.6ch}
-.tv-leg .l2.ma{display:flex;flex-wrap:wrap;gap:1px 12px;min-height:17px}
-@media (max-width:559px){.tv-leg .l2.ma.m3{min-height:35px}}
-@media (min-width:560px){.tv-leg .l2{grid-template-columns:repeat(5,max-content)}}
+/* «Графики»: подпись над свечами — постоянной высоты (строки не переносятся, ячейки цен одной ширины): график не прыгает.
+   Только у главного графика свечей (#tvleg) — у «DOG и биткоин» своя подпись */
+#tvleg{min-height:0}
+#tvleg .l1{flex-wrap:nowrap;white-space:nowrap;min-width:0;overflow:hidden;height:22px;align-items:center}
+#tvleg .l1 .tv-when{line-height:18px;padding-top:0;padding-bottom:0}
+#tvleg .l1 > *{flex:none}
+#tvleg .l1 .faint{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
+#tvleg .l2{display:grid;grid-template-columns:repeat(3,max-content);gap:1px 11px;min-width:0;overflow:hidden}
+#tvleg .l2 span{white-space:nowrap}
+#tvleg .l2 b{display:inline-block;min-width:9.4ch}
+#tvleg .l2.ma{display:flex;flex-wrap:wrap;gap:1px 12px;min-height:17px}
+@media (max-width:379px){#tvleg .l2{grid-template-columns:repeat(2,max-content)}}
+@media (max-width:559px){#tvleg .l2.ma.m3{min-height:35px}}
+@media (min-width:560px){#tvleg .l2{grid-template-columns:repeat(5,max-content)}}
+/* «Главное»: «DOG и мем-монеты» — шесть карточек 3 × 2 сразу под плитками (и на телефоне), потом C2 Blockchain */
+.home .h-memes{display:block}
+.h-memes:empty{display:none}
+.h-memes > .group{padding:13px 12px 12px}
+.h-memes > .group > .sec-head{margin:0 2px 10px}
+.h-memes .mmini{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.h-memes .mmini .mr{display:grid;grid-template-columns:auto auto minmax(0,1fr);grid-template-areas:"i k n" "v v v" "s s s";align-items:center;column-gap:5px;row-gap:2px;min-width:0;padding:9px 9px 7px;border:1px solid var(--line-2);border-radius:14px;background:var(--surface-2);transition:border-color .2s,transform .15s}
+.h-memes .mmini .mr:first-child{border-top:1px solid var(--line-2)}
+.h-memes .mmini .mr:active{transform:scale(.97)}
+.h-memes .mmini .mr .i{grid-area:i;font-size:11px;color:var(--ink-3)}
+.h-memes .mmini .mr .mk{grid-area:k;width:9px;height:3px}
+.h-memes .mmini .mr b{grid-area:n;min-width:0;font-size:12.5px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.h-memes .mmini .mr .v{grid-area:v;text-align:left;font-family:var(--display);font-size:16px;font-weight:650;letter-spacing:-.01em;margin-top:1px}
+.h-memes .mmini .mr svg{grid-area:s;width:100%;height:26px;margin-top:3px;overflow:visible}
+.h-memes .mmini .mr.dog{background:linear-gradient(160deg,var(--dog-soft),var(--surface-2) 85%);border-color:color-mix(in srgb,var(--dog) 42%,var(--line-2))}
+.h-memes .mmini .mr.dog + .mr{border-top-color:var(--line-2)}
+.intro .h-memes .mr{animation:tileIn .55s cubic-bezier(.2,.8,.2,1) both}
+.intro .h-memes .mr:nth-child(2){animation-delay:.04s} .intro .h-memes .mr:nth-child(3){animation-delay:.08s}
+.intro .h-memes .mr:nth-child(4){animation-delay:.12s} .intro .h-memes .mr:nth-child(5){animation-delay:.16s} .intro .h-memes .mr:nth-child(6){animation-delay:.2s}
+@media (min-width:700px){
+  .h-memes > .group{padding:16px 16px 16px}
+  .h-memes .mmini{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  .h-memes .mmini .mr{grid-template-columns:auto auto minmax(0,1fr) auto;grid-template-areas:"i k n v" "s s s s";column-gap:7px;row-gap:6px;padding:11px 13px 10px}
+  .h-memes .mmini .mr b{font-size:14px}
+  .h-memes .mmini .mr .v{text-align:right;font-size:15.5px;margin:0}
+  .h-memes .mmini .mr svg{height:34px;margin:0}
+  .h-memes .mmini .mr:hover{border-color:var(--ink-3)}
+}
+@media (min-width:900px){.h-cols{grid-template-areas:"sum ex"}}
+/* «Графики» → «DOG и мем-монеты»: подпись над графиком постоянной высоты (дата и кнопки сверху, значения ниже) */
+.mm-read .r1{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"d b" "v v";align-items:center;gap:2px 10px;min-height:48px}
+.mm-read .r1 .d{grid-area:d;white-space:nowrap}
+.mm-read .r1 .vs{grid-area:v;display:flex;gap:14px;align-items:baseline;white-space:nowrap;min-width:0;overflow:hidden}
+.mm-read .r1 .bt{grid-area:b;display:flex;gap:6px;align-items:center;justify-content:flex-end;height:24px}
+.mm-read .tv-last.off{visibility:hidden}
+@media (min-width:560px){.mm-read .r1{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"d v b";min-height:26px}}
 /* «Страх и жадность — история»: карточки индексов — шарик цвета линии с числом внутри */
 .f3s-c{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"b n" "z z";align-items:center;column-gap:8px;row-gap:5px;padding:8px 9px 8px}
 .f3s-ball{grid-area:b;position:relative;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;box-sizing:border-box;border:2px solid var(--sc);background:radial-gradient(circle at 34% 28%,color-mix(in srgb,var(--sc) 34%,transparent),color-mix(in srgb,var(--sc) 12%,transparent) 72%);color:var(--sc);font-family:var(--display);font-size:19px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1;transition:background .2s,color .2s,transform .2s}
@@ -1722,6 +1760,14 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
 .f3s-p.on b,.f3s-g.fx-m .f3s-p[data-k="m"] b,.f3s-g.fx-c .f3s-p[data-k="c"] b,.f3s-g.fx-d .f3s-p[data-k="d"] b{opacity:1}
 .f3s-p.on b{transform:translateX(-50%) scale(.74)}
 .f3s-g{touch-action:pan-y;-webkit-user-select:none;user-select:none}
+/* развороты (1 год и всё время): маленькие точки цвета индекса. Пока индекс не выбран — только у DOG (наш индекс, чтобы
+   график не пестрел); нажали на карточку индекса — его развороты с числами, у остальных скрыты */
+.f3s-g:not(.fx) .f3s-p.tp:not([data-k="d"]){display:none}
+.f3s-p.tp{width:8px;height:8px;margin:-4px 0 0 -4px;box-shadow:0 0 0 1.5px var(--surface)}
+.f3s-p.tp.on{transform:scale(1.5)}
+.f3s-p.tp.on b{transform:translateX(-50%) scale(.67)}
+.f3s-g.fx .f3s-p.tp{opacity:0;pointer-events:none}
+.f3s-g.fx-m .f3s-p.tp[data-k="m"],.f3s-g.fx-c .f3s-p.tp[data-k="c"],.f3s-g.fx-d .f3s-p.tp[data-k="d"]{opacity:1;pointer-events:auto}
 /* таблица за период: минимум и максимум — кнопки цвета своей зоны (страх — красный, жадность — зелёный) */
 .f3s-t td.r{padding-left:6px}
 .f3s-v{padding:4px 8px;margin:-4px -8px -4px 0;border-radius:10px;border:1px solid transparent}
@@ -3413,11 +3459,11 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
         <div class="h-fng" id="fng-box">${S.archived ? '' : fngHtml()}</div>
         <div class="h-hero">${hero}</div>
         <div class="h-tiles" id="tiles-box">${tilesHtml(s)}</div>
+        <div class="h-memes" id="mm-box">${memesMiniHtml()}</div>
         <div class="h-tre" id="tre-box">${treasuryHtml()}</div>
         <div class="h-cols">
           <div class="h-sum" id="sum-box">${summaryHtml(s)}</div>
           <div class="h-ex" id="ex-box">${exchangesHtml(s)}</div>
-          <div class="h-memes" id="mm-box">${memesMiniHtml()}</div>
         </div>
       </div>`;
     drawPrice(true);
@@ -3541,7 +3587,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   }
   let FNG_ROW = null, FNG_SETF = null;
   // цвет каждого индекса — как его линия на общем графике: alternative.me бирюзовый, CoinMarketCap синий, DOG абрикосовый
-  const FNG_LC = { fng_m: 'var(--f3m)', fng_c: 'var(--f3c)', fng_d: 'var(--dog)' };
+  const FNG_LC = { fng_m: 'var(--f3m)', fng_c: 'var(--f3c)', fng_d: 'var(--f3d)' };
   function fngHtml() {
     const m = fngMarket(), c = fngCmc(), d0 = (S.fng || {}).dog, dl = fngNow(), d = dl ? Object.assign({}, d0, { v: dl.v }) : d0;
     if (dl) fngLast.v = dl.v;
@@ -3550,7 +3596,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const g = (key, v, sc, name, src, prev) => {
       const na = v == null, nm = na ? T('нет данных', 'no data') : fngName(v, sc);
       const y = !na && prev && prev.d1 != null ? prev.d1 : null;
-      return `<button type="button" class="fng-g${na ? ' na' : ''}" data-info="${key}" aria-label="${esc(name)}, ${esc(src)}: ${na ? esc(nm) : Math.round(v) + ' — ' + esc(nm)}${y != null ? '; ' + T('вчера ', 'yesterday ') + y : ''}">${gaugeSvg(v, sc)}<span class="gk"${na ? '' : ` style="color:${fngCol(v, sc)}"`}>${esc(nm)}</span><span class="gt">${esc(name)}</span><span class="gs"><i class="mk" style="background:${FNG_LC[key]}"></i>${esc(src)}</span>${y != null ? `<span class="gy">${T('вчера', 'yesterday')} ${y}</span>` : ''}</button>`;
+      return `<button type="button" class="fng-g${na ? ' na' : ''}" data-info="${key}" aria-label="${esc(name)}, ${esc(src)}: ${na ? esc(nm) : Math.round(v) + ' — ' + esc(nm)}${y != null ? '; ' + T('вчера ', 'yesterday ') + y : ''}">${gaugeSvg(v, sc)}<span class="gk"${na ? '' : ` style="color:${fngCol(v, sc)}"`}>${esc(nm)}</span><span class="gt">${esc(name)}</span><span class="gs">${esc(src)}</span>${y != null ? `<span class="gy">${T('вчера', 'yesterday')} ${y}</span>` : ''}</button>`;
     };
     const mk = T('Крипторынок', 'Crypto market');
     return `<section class="fng" aria-label="${T('Страх и жадность', 'Fear and greed')}">
@@ -3671,7 +3717,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   }
   const ficPath = F => F.rows.map((x, i) => `${i ? 'L' : 'M'}${(i / F.n1 * 1000).toFixed(1)},${(F.pad + (1 - x[1] / 100) * (F.H - 2 * F.pad)).toFixed(1)}`).join('');
   // цвет линии индекса — как на общем графике трёх индексов: alternative.me бирюзовый, CoinMarketCap синий, DOG абрикосовый
-  const FIC_COL = { m: 'var(--f3m)', c: 'var(--f3c)', d: 'var(--dog)' };
+  const FIC_COL = { m: 'var(--f3m)', c: 'var(--f3c)', d: 'var(--f3d)' };
   function fngChart(id, idx, pxd, pxName, sc, turns, fmtP, ohlc) {
     const rows = (idx || []).filter(x => x && pxd[x[0]] > 0 && x[1] != null);
     if (rows.length < 30) return '';
@@ -3913,16 +3959,18 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     }).filter(Boolean).sort((x, y) => y.chg - x.chg);
     const k = rows.findIndex(r => r.id === 'dog'); if (k < 0) return '';
     const show = k < 6 ? rows.slice(0, 6) : rows.slice(0, 5).concat([rows[k]]);   // всегда шесть: на широком экране — ровный ряд карточек
+    // мини-график: линия цвета монеты и под ней лёгкая заливка того же цвета
     const sp = r => {
       const pts = []; for (let i = r.i0; i <= r.i1; i++) if (r.v[i] > 0) pts.push([i, Math.log(r.v[i])]);
-      const lo = Math.min(...pts.map(p => p[1])), hi = Math.max(...pts.map(p => p[1])), W = 96, H = 22;
-      const X = i => (i - r.i0) / Math.max(1, r.i1 - r.i0) * W, Y = l => 2 + (1 - (l - lo) / ((hi - lo) || 1)) * (H - 4);
-      return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><path d="${pts.map((p, j) => `${j ? 'L' : 'M'}${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join('')}" fill="none" stroke="${mmCol(r.id)}" stroke-width="1.4" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>`;
+      const lo = Math.min(...pts.map(p => p[1])), hi = Math.max(...pts.map(p => p[1])), W = 96, H = 26;
+      const X = i => (i - r.i0) / Math.max(1, r.i1 - r.i0) * W, Y = l => 2 + (1 - (l - lo) / ((hi - lo) || 1)) * (H - 5);
+      const d = pts.map((p, j) => `${j ? 'L' : 'M'}${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join(''), col = mmCol(r.id);
+      return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><path d="${d}L${X(pts[pts.length - 1][0]).toFixed(1)},${H}L${X(pts[0][0]).toFixed(1)},${H}Z" fill="${col}" fill-opacity=".12" stroke="none"/><path d="${d}" fill="none" stroke="${col}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>`;
     };
     const place = rows[k] ? k + 1 : null;
     return `<section class="group" aria-label="${T('DOG и мем-монеты', 'DOG and meme coins')}">
         <div class="sec-head c"><h3>${T('DOG и мем-монеты', 'DOG and meme coins')}</h3><p>${T(`за 90 дней · DOG ${place}-й из ${rows.length}`, `90 days · DOG #${place} of ${rows.length}`)}</p></div>
-        <div class="mmini">${show.map(r => `<button type="button" class="mr${r.id === 'dog' ? ' dog' : ''}" data-go="charts" data-mmgo="${esc(r.id)}"><span class="i">${rows.indexOf(r) + 1}</span><span class="mk" style="background:${mmCol(r.id)}"></span><b>${esc(r.sym)}</b>${sp(r)}<span class="v ${r.chg >= 0 ? 'up' : 'down'}">${mmPct(r.chg)}</span></button>`).join('')}</div>
+        <div class="mmini">${show.map(r => `<button type="button" class="mr${r.id === 'dog' ? ' dog' : ''}" data-go="charts" data-mmgo="${esc(r.id)}" aria-label="${esc(r.sym)}: ${T('место', 'rank')} ${rows.indexOf(r) + 1}, ${mmPct(r.chg)} ${T('за 90 дней', 'in 90 days')}"><span class="i">${rows.indexOf(r) + 1}</span><span class="mk" style="background:${mmCol(r.id)}"></span><b>${esc(r.sym)}</b>${sp(r)}<span class="v ${r.chg >= 0 ? 'up' : 'down'}">${mmPct(r.chg)}</span></button>`).join('')}</div>
       </section>`;
   }
   function treSheet() {
@@ -6000,7 +6048,9 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const i = iHover != null ? iHover : (MM.pin != null ? MM.pin : F.n1), cur = i === F.n1;
     const sel = F.rows.find(r => r.id === MM.sel), val = (r, k) => { let j = k; while (j > r.i0 && r.r[j] == null) j--; return r.r[j] != null ? r.r[j] - 1 : null; };
     const it = (r, col) => `<span class="s"><i class="mk" style="background:${col}"></i>${esc(r.sym)} <b>${mmPct(val(r, i))}</b></span>`;
-    rd.innerHTML = `<span class="r1"><span class="d">${cur ? T('сейчас', 'now') : esc(fngDmy(F.days[i]))}</span>${it(F.dog, 'var(--mc-dog)')}${sel ? it(sel, mmCol(sel.id)) : ''}${MM.lock ? `<button type="button" class="mm-lock" data-mmunlock title="${esc(T('Открепить: снова можно выбирать линию на графике', 'Unpin: lines on the chart become tappable again'))}">${ICO_PIN}${T('закреплено', 'pinned')} ✕</button>` : ''}${MM.pin != null ? `<button type="button" class="tv-last" data-mmlast>${T('Сейчас', 'Latest')}</button>` : ''}</span>`
+    // строка постоянной высоты: дата и кнопки — сверху, значения — под ними; кнопка «Сейчас» есть всегда (когда день не
+    // выбран — невидима), поэтому при ведении пальцем ничего не переносится и график не прыгает
+    rd.innerHTML = `<span class="r1"><span class="d">${cur ? T('сейчас', 'now') : esc(fngDmy(F.days[i]))}</span><span class="vs">${it(F.dog, 'var(--mc-dog)')}${sel ? it(sel, mmCol(sel.id)) : ''}</span><span class="bt"><button type="button" class="tv-last${MM.pin != null ? '' : ' off'}" data-mmlast${MM.pin != null ? '' : ' tabindex="-1" aria-hidden="true"'}>${T('Сейчас', 'Latest')}</button>${MM.lock ? `<button type="button" class="mm-lock" data-mmunlock title="${esc(T('Открепить: снова можно выбирать линию на графике', 'Unpin: lines on the chart become tappable again'))}">${ICO_PIN}${T('закреплено', 'pinned')} ✕</button>` : ''}</span></span>`
       + `<span class="r2">${T(`с ${esc(fngDmy(F.days[0]))}`, `since ${esc(fngDmy(F.days[0]))}`)}${sel && sel.corr != null ? T(` · связь ${esc(sel.sym)} с DOG за ${F.cw} дней: <b>${n(sel.corr, 2)}</b> — ${corrWord(sel.corr)}`, ` · ${esc(sel.sym)}–DOG link over ${F.cw} days: <b>${n(sel.corr, 2)}</b> — ${corrWord(sel.corr)}`) : ''}</span>`;
     const vv = r => { const v = val(r, i); return v == null ? -1e9 : v; }, top = r => MM.lock ? (r.id === 'dog' ? 2 : r.id === MM.sel ? 1 : 0) : 0;
     const order = F.rows.slice().sort((a, b) => top(b) - top(a) || vv(b) - vv(a));
@@ -6096,9 +6146,9 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     // фон спокойный: только крайний страх (0–25) и крайняя жадность (75–100) едва заметной заливкой
     const zones = `<rect x="0" width="${W}" y="${Y(100).toFixed(1)}" height="${(Y(75) - Y(100)).toFixed(1)}" fill="var(--fz5)" opacity=".085"/><rect x="0" width="${W}" y="${Y(25).toFixed(1)}" height="${(Y(0) - Y(25)).toFixed(1)}" fill="var(--fz1)" opacity=".085"/>`;
     return `<div class="fng3c">
-        <div class="hd"><span><i class="mk" style="background:var(--f3m)"></i>alt.me <i class="mk" style="background:var(--f3c);margin-left:8px"></i>CMC <i class="mk" style="background:var(--dog);margin-left:8px"></i>DOG</span>${pk >= 0 ? `<span>${T('пик DOG', 'DOG peak')} <b>${D.d[pk]}</b> · ${esc(fngDay(D.days[pk]))}</span>` : ''}</div>
+        <div class="hd"><span><i class="mk" style="background:var(--f3m)"></i>alt.me <i class="mk" style="background:var(--f3c);margin-left:8px"></i>CMC <i class="mk" style="background:var(--f3d);margin-left:8px"></i>DOG</span>${pk >= 0 ? `<span>${T('пик DOG', 'DOG peak')} <b>${D.d[pk]}</b> · ${esc(fngDay(D.days[pk]))}</span>` : ''}</div>
         <div class="f3-read" id="f3read"></div>
-        <div class="f3-plot" id="f3plot" role="img" aria-label="${T('Три индекса страха и жадности за 90 дней', 'The three fear and greed indices over 90 days')}"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${zones}${grid}<path d="${path(D.c)}" fill="none" stroke="var(--f3c)" stroke-width="1.3" stroke-linejoin="round" vector-effect="non-scaling-stroke" opacity=".9"/><path d="${path(D.m)}" fill="none" stroke="var(--f3m)" stroke-width="1.3" stroke-linejoin="round" vector-effect="non-scaling-stroke" opacity=".9"/><path d="${path(D.d)}" fill="none" stroke="var(--dog)" stroke-width="2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg><div class="f3-x" id="f3x"></div></div>
+        <div class="f3-plot" id="f3plot" role="img" aria-label="${T('Три индекса страха и жадности за 90 дней', 'The three fear and greed indices over 90 days')}"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${zones}${grid}<path d="${path(D.c)}" fill="none" stroke="var(--f3c)" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/><path d="${path(D.m)}" fill="none" stroke="var(--f3m)" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/><path d="${path(D.d)}" fill="none" stroke="var(--f3d)" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg><div class="f3-x" id="f3x"></div></div>
         <div class="f3-ax"><span>${esc(fngDay(D.days[0]))}</span><span>${esc(fngDay(D.days[Math.floor(n1 / 2)]))}</span><span>${esc(fngDay(D.days[n1]))}</span></div>
         <button type="button" class="f3-more" data-info="fng_all">${T('История трёх индексов', 'History of all three')}<span>${T('с 2024 года', 'since 2024')}</span>${ico('chev')}</button>
       </div>`;
@@ -6107,7 +6157,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const D = F3.D, el = $('#f3read'); if (!D || !el) return;
     const last = i == null; i = last ? D.days.length - 1 : i;
     const v = (lab, x, col) => `<span><i class="mk" style="background:${col}"></i>${lab} <b>${x == null ? '—' : x}</b></span>`;
-    el.innerHTML = `<span>${last ? T('Сегодня', 'Today') : esc(fngDay(D.days[i]))}</span>${v('alt.me', D.m[i], 'var(--f3m)')}${v('CMC', D.c[i], 'var(--f3c)')}${v('DOG', D.d[i], 'var(--dog)')}`;
+    el.innerHTML = `<span>${last ? T('Сегодня', 'Today') : esc(fngDay(D.days[i]))}</span>${v('alt.me', D.m[i], 'var(--f3m)')}${v('CMC', D.c[i], 'var(--f3c)')}${v('DOG', D.d[i], 'var(--f3d)')}`;
     const x = $('#f3x'); if (x) { x.style.display = last ? 'none' : 'block'; x.style.left = (i / Math.max(1, D.days.length - 1) * 100).toFixed(2) + '%'; }
   }
   function fng3Bind() {
@@ -6138,7 +6188,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   const F3S = { per: store.get('f3per', '90'), pin: null, D: null, drag: null, focus: null };
   const F3P = [['30', T('30 дн', '30D')], ['90', T('90 дн', '90D')], ['365', T('1 год', '1Y')], ['all', T('Всё', 'All')]];
   // ключ, короткое имя, цвет линии, шкала зон
-  const F3K = [['m', 'alt.me', 'var(--f3m)', FNG_A], ['c', 'CMC', 'var(--f3c)', FNG_C], ['d', 'DOG', 'var(--dog)', FNG_A]];
+  const F3K = [['m', 'alt.me', 'var(--f3m)', FNG_A], ['c', 'CMC', 'var(--f3c)', FNG_C], ['d', 'DOG', 'var(--f3d)', FNG_A]];
   const F3W = 1000, F3H = 300, F3Y = v => 10 + (1 - v / 100) * (F3H - 20);
   function f3sData(per) {
     const f = S.fng || {}, dl = fngNow(), mk = a => new Map((a || []).map(x => [x[0], x[1]]));
@@ -6154,6 +6204,14 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     // минимум и максимум каждого за период (при равенстве — первый такой день, как «пик DOG» на «Графиках»)
     D.ext = {};
     for (const [k] of F3K) { let lo = -1, hi = -1; D[k].forEach((v, i) => { if (v == null) return; if (lo < 0 || v < D[k][lo]) lo = i; if (hi < 0 || v > D[k][hi]) hi = i; }); D.ext[k] = lo < 0 ? null : { lo, hi }; }
+    // за год и за всё время — ещё и ключевые развороты: пики и дна, после которых индекс ушёл не меньше чем на 35 пунктов
+    // (тот же зигзаг, что у точек разворотов в листе каждого индекса); минимум и максимум уже отмечены — их не повторяем
+    D.turns = {};
+    if (per === '365' || per === 'all') for (const [k] of F3K) {
+      const h = []; D[k].forEach((v, i) => { if (v != null) h.push([i, v]); });
+      const e = D.ext[k];
+      D.turns[k] = fngTurns(h, 35).filter(t => !e || (t[0] !== e.lo && t[0] !== e.hi)).map(t => [t[0], t[2]]);
+    }
     return D;
   }
   const f3Date = ds => F3S.per === '365' || F3S.per === 'all' ? fngDmy(ds) : fngDay(ds);
@@ -6175,10 +6233,11 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const grid = [25, 50, 75].map(v => `<line x1="0" x2="${F3W}" y1="${F3Y(v).toFixed(1)}" y2="${F3Y(v).toFixed(1)}" stroke="var(--line)" stroke-width="1" stroke-dasharray="${v === 50 ? '0' : '3 6'}" vector-effect="non-scaling-stroke"/>`).join('');
     const ln = (k, col, w) => `<path class="f3s-l" data-k="${k}" d="${path(D[k])}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>`;
     const dots = F3K.map(([k, nm, c]) => { const e = D.ext[k]; return !e ? '' : [['lo', T('минимум', 'low')], ['hi', T('максимум', 'high')]].map(([w, wt]) => { const i = e[w], v = D[k][i]; return `<i class="f3s-p" data-k="${k}" data-w="${w}" data-i="${i}" style="left:${pc(X(i), F3W)};top:${pc(F3Y(v), F3H)};background:${c}" title="${nm}: ${wt} ${v} · ${esc(f3Date(D.days[i]))}"><b>${v}</b></i>`; }).join(''); }).join('');
+    const tdots = F3K.map(([k, nm, c]) => ((D.turns || {})[k] || []).map(([i, w]) => { const v = D[k][i]; return `<i class="f3s-p tp" data-k="${k}" data-w="${w === 'p' ? 'hi' : 'lo'}" data-i="${i}" style="left:${pc(X(i), F3W)};top:${pc(F3Y(v), F3H)};background:${c}" title="${nm}: ${w === 'p' ? T('пик', 'peak') : T('дно', 'low')} ${v} · ${esc(f3Date(D.days[i]))}"><b>${v}</b></i>`; }).join('')).join('');
     const yl = [100, 75, 50, 25, 0].map(v => `<span style="top:${(F3Y(v) / F3H * 100).toFixed(2)}%">${v}</span>`).join('');
     const xi = n1 < 6 ? [0, n1] : [0, Math.round(n1 / 3), Math.round(2 * n1 / 3), n1];
     const xl = xi.map((i, j) => `<span class="${j === 0 ? 'l' : j === xi.length - 1 ? 'r' : ''}" style="left:${(i / Math.max(1, n1) * 100).toFixed(2)}%">${esc(f3Ax(D.days[i]))}</span>`).join('');
-    return `<div class="f3s-g${F3S.focus ? ' fx fx-' + F3S.focus : ''}"><div class="f3s-plot" role="img" aria-label="${T(`Три индекса страха и жадности: ${D.days.length} дней`, `The three fear and greed indices: ${D.days.length} days`)}"><svg viewBox="0 0 ${F3W} ${F3H}" preserveAspectRatio="none" aria-hidden="true">${band(75, 100, 'var(--fz5)')}${band(0, 25, 'var(--fz1)')}${grid}${ln('c', 'var(--f3c)', 1.3)}${ln('m', 'var(--f3m)', 1.3)}${ln('d', 'var(--dog)', 1.9)}</svg><i class="f3s-x"></i>${dots}${F3K.map(([k, , c]) => `<i class="f3s-m" data-k="${k}" style="background:${c}"></i>`).join('')}</div><div class="f3s-y" aria-hidden="true">${yl}</div><div class="f3s-xl" aria-hidden="true">${xl}</div></div>`;
+    return `<div class="f3s-g${F3S.focus ? ' fx fx-' + F3S.focus : ''}"><div class="f3s-plot" role="img" aria-label="${T(`Три индекса страха и жадности: ${D.days.length} дней`, `The three fear and greed indices: ${D.days.length} days`)}"><svg viewBox="0 0 ${F3W} ${F3H}" preserveAspectRatio="none" aria-hidden="true">${band(75, 100, 'var(--fz5)')}${band(0, 25, 'var(--fz1)')}${grid}${ln('c', 'var(--f3c)', 1.25)}${ln('m', 'var(--f3m)', 1.25)}${ln('d', 'var(--f3d)', 1.25)}</svg><i class="f3s-x"></i>${tdots}${dots}${F3K.map(([k, , c]) => `<i class="f3s-m" data-k="${k}" style="background:${c}"></i>`).join('')}</div><div class="f3s-y" aria-hidden="true">${yl}</div><div class="f3s-xl" aria-hidden="true">${xl}</div></div>`;
   }
   function f3sStats(D) {
     const row = ([k, nm, c, sc]) => {
@@ -6189,7 +6248,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       return `<tr><td><i class="mk" style="background:${c}"></i>${nm}</td><td class="r"><b style="color:${fngCol(now, sc)}">${now}</b></td>${cell('lo')}${cell('hi')}</tr>`;
     };
     return `<table class="pf f3s-t"><thead><tr><th>${T('За период', 'In period')}</th><th class="r">${T('Сейчас', 'Now')}</th><th class="r">${T('Мин', 'Low')}</th><th class="r">${T('Макс', 'High')}</th></tr></thead><tbody>${F3K.map(row).join('')}</tbody></table>
-      <p class="note f3s-tn">${T('Нажмите на число — на графике покажется этот день.', 'Tap a number to see that day on the chart.')}</p>`;
+      <p class="note f3s-tn">${T('Нажмите на число или на точку — на графике покажется этот день.', 'Tap a number or a dot to see that day on the chart.')}${F3S.per === '365' || F3S.per === 'all' ? T(' Маленькие точки — развороты: пики и дна, после которых индекс ушёл на 35 пунктов и больше (сразу видны у DOG; нажмите на карточку индекса — появятся его развороты с числами).', ' Small dots are the turns: peaks and lows after which the index moved 35 points or more (DOG’s are shown right away; tap an index card to see its turns with numbers).') : ''}</p>`;
   }
   function f3sBody() {
     const D = f3sData(F3S.per); F3S.D = D; F3S.pin = null;
