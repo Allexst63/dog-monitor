@@ -2,11 +2,11 @@
 // Страница: сразу из сохранённой копии, свежая версия скачивается следом (если отличается — страница узнаёт об этом
 //   и перезагружается сама). Библиотека графиков, шрифты и значки не меняются — из кэша.
 // data/*.json: сначала сеть, при сбое — последняя сохранённая копия (страница и сама хранит последние данные).
-// Другие страницы сайта (например, /classic/ — прежний вид) — из сети, их не подменяем главной страницей.
+// Другие страницы сайта (например, /classic/ — теперь только переадресация на главную) — из сети, их не подменяем главной страницей.
 // Запросы к биржам и DOG DATA (другие сайты) не трогаем.
-const CACHE = 'dogmon-v6';
+const CACHE = 'dogmon-v7';
 const SHELL = new URL('./', self.location).href;
-const CORE = ['manifest.webmanifest', 'favicon.svg', 'icons/moon.svg', 'icons/c2-lion-light.png', 'icons/c2-lion-dark.png', 'fonts/inter-400.woff', 'fonts/inter-500.woff', 'fonts/inter-600.woff', 'fonts/inter-700.woff', 'fonts/inter-display-600.woff', 'fonts/inter-display-700.woff', 'fonts/inter-mark.woff', 'icons/icon-192.png', 'icons/apple-touch-icon.png', 'vendor/lightweight-charts-5.0.8.js'];
+const CORE = ['manifest.webmanifest', 'favicon.svg', 'icons/moon.svg', 'icons/c2-lion-light.png', 'icons/c2-lion-dark.png', 'fonts/inter-400.woff', 'fonts/inter-500.woff', 'fonts/inter-600.woff', 'fonts/inter-700.woff', 'fonts/inter-display-600.woff', 'fonts/inter-display-700.woff', 'fonts/inter-mark.woff', 'icons/icon-192.png', 'icons/apple-touch-icon.png', 'vendor/lightweight-charts-5.0.8-dm1.js'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => Promise.all(

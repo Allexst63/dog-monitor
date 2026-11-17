@@ -41,7 +41,7 @@
 <link rel="preload" href="fonts/inter-700.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="fonts/inter-display-700.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="fonts/inter-mark.woff" as="font" type="font/woff" crossorigin>
-<link rel="preload" href="vendor/lightweight-charts-5.0.8.js" as="script">
+<link rel="preload" href="vendor/lightweight-charts-5.0.8-dm1.js" as="script">
 <style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0}img{max-width:100%}[hidden]{display:none!important}
 </style>
 <style>
@@ -74,7 +74,7 @@
   --fz1:#D9393E; --fz2:#E07A20; --fz3:#D6AC24; --fz4:#84B52F; --fz5:#1FA466;
   --hero-panel:#F8F4EC; --hero-edge:rgba(120,92,52,.085); --hero-line:rgba(120,92,52,.11);
   --c2-bg:#FFFFFF; --c2-ink:#47707A; --c2-edge:rgba(23,25,31,.10); --c2-img:url(icons/c2-lion-light.png);
-  --f3c:#6F5BD0;
+  --f3c:#3861FB;
   --shadow-card:0 1px 0 rgba(23,25,31,.03),0 10px 30px -22px rgba(23,25,31,.35);
   --shadow-hero:0 18px 40px -26px rgba(23,25,31,.45);
   --shadow-pop:0 28px 70px -24px rgba(23,25,31,.45);
@@ -103,7 +103,7 @@
     --fz1:#E54348; --fz2:#EA832A; --fz3:#E6BC33; --fz4:#93C63A; --fz5:#2BB677;
     --hero-panel:rgba(6,9,15,.28); --hero-edge:rgba(255,255,255,.05); --hero-line:rgba(255,255,255,.07);
     --c2-bg:#16212B; --c2-ink:#93BCC6; --c2-edge:rgba(147,188,198,.2); --c2-img:url(icons/c2-lion-dark.png);
-    --f3c:#A291F2;
+    --f3c:#6E9BFF;
     --shadow-card:0 1px 0 rgba(255,255,255,.02) inset,0 12px 32px -24px rgba(0,0,0,.9);
     --shadow-hero:0 22px 50px -28px rgba(0,0,0,.95);
     --shadow-pop:0 30px 80px -20px rgba(0,0,0,.85);
@@ -128,7 +128,7 @@
   --fz1:#E54348; --fz2:#EA832A; --fz3:#E6BC33; --fz4:#93C63A; --fz5:#2BB677;
   --hero-panel:rgba(6,9,15,.28); --hero-edge:rgba(255,255,255,.05); --hero-line:rgba(255,255,255,.07);
   --c2-bg:#16212B; --c2-ink:#93BCC6; --c2-edge:rgba(147,188,198,.2); --c2-img:url(icons/c2-lion-dark.png);
-  --f3c:#A291F2;
+  --f3c:#6E9BFF;
   --shadow-card:0 1px 0 rgba(255,255,255,.02) inset,0 12px 32px -24px rgba(0,0,0,.9);
   --shadow-hero:0 22px 50px -28px rgba(0,0,0,.95);
   --shadow-pop:0 30px 80px -20px rgba(0,0,0,.85);
@@ -917,7 +917,7 @@ table.whc td.up{color:var(--up)} table.whc td.down{color:var(--down)} table.whc 
 .fic-mp{background:var(--ink-2)}
 .fic-leg{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;font-size:12px;color:var(--ink-3)}
 .fic-leg i{display:inline-block;width:14px;height:3px;border-radius:2px;margin-right:6px;vertical-align:middle}
-.fic-leg .li{background:var(--dog)} .fic-leg .lp{background:var(--ink-3)} .fic-leg .h{margin-left:auto}
+.fic-leg .li{background:var(--ic,var(--dog))} .fic-leg .lp{background:var(--ink-3)} .fic-leg .h{margin-left:auto}
 .fic-leg .ld{width:8px;height:8px;border-radius:50%;background:linear-gradient(90deg,var(--fz1) 50%,var(--fz5) 50%)}
 .fng-turns{display:flex;flex-direction:column;border-top:1px solid var(--line-2)}
 .fng-turns .tr{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:4px 14px;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--line-2);font-size:13.5px}
@@ -1630,6 +1630,103 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
 .f3s-v b{font-weight:600;text-decoration:underline dotted color-mix(in srgb,var(--ink-3) 70%,transparent);text-underline-offset:3px}
 .f3s-v span{display:block;font-size:11px;color:var(--ink-3);white-space:nowrap}
 .f3s-tn{margin-top:6px}
+
+/* ===== v9 (17.11.2026) ===== */
+/* первый экран «Главного» на телефоне: индексы и цена компактнее — график крупнее и целиком над нижним меню */
+@media (max-width:699px){
+  .fng,.h-fng .fng{padding:7px 6px 4px}
+  .fng .fng-head,.h-fng .fng .fng-head{padding:0 8px 2px 10px}
+  .fng-g{padding:2px 2px 1px}
+  .fng-g .gauge,.h-fng .fng-g .gauge{max-width:66px}
+  .fng-g .gnum,.h-fng .fng-g .gnum{font-size:17.5px}
+  .fng-g .gk{font-size:11px;line-height:1.18;margin-top:1px}
+  .fng-g .gt{font-size:11px;line-height:1.18}
+  .fng-g .gs{font-size:10px;line-height:1.2}
+  .home{gap:9px}
+  .hero{padding:8px 10px 8px}
+  .hero-head{padding:6px 11px 6px}
+  .hero .hero-price{font-size:32px;line-height:1.04}
+  .hero-head .hstats{margin-top:3px;padding-top:4px}
+  .hero-ctl{margin-top:7px}
+  .hero-ctl .periods button{padding:4px 0}
+  .hero .hmodes button{height:26px}
+  .hero .pchart.lw{margin-top:2px}
+  .hero-row .hero-chg{gap:2px;line-height:1.2}
+  .hero-row .hero-chg .pill{padding:2px 8px}
+}
+/* «Страх и жадность» на «Главном»: перед источником — чёрточка цвета линии индекса (как на общем графике) */
+.fng-g .gs .mk{width:9px;height:3px;margin-right:4px}
+/* строки карточки цены — постоянной высоты, без переносов: при ведении пальцем по графику ничего не прыгает */
+.hero .hero-pair{height:22px;min-height:0;flex-wrap:nowrap;white-space:nowrap}
+.hero .hwhen{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hero .hero-pair .live,.hero .hero-pair .hnow{flex:none}
+.hero .hnow{height:22px;padding:0 10px 0 8px;box-sizing:border-box}
+.hero.scrub .hwhen{color:var(--ink);font-weight:600}
+.hero .hero-row{flex-wrap:nowrap}
+.hero .hero-price{min-width:0;overflow:hidden}
+.hero-row .hero-chg,.hero-row .hero-chg > *{white-space:nowrap}
+.hero-row .hero-chg{min-width:0}
+.hero-head .hstats > div{min-width:0;white-space:nowrap}
+.hero-head .hstats > div > span{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.hero-head .hstats b{flex:none;font-variant-numeric:tabular-nums}
+/* узкие телефоны (iPhone SE, mini, Android 360 px): подписи «1 млн DOG» и «Капитализация» мельче — строка помещается */
+@media (max-width:389px){
+  .hero-head .hstats span{font-size:10.5px;letter-spacing:-.01em}
+  .hero-head .hstats b{font-size:13.5px}
+  .hero-head .hstats > div,.hero-head .hstats > div + div{gap:4px}
+  .hero-head .hstats > div + div{padding-left:7px;margin-left:7px}
+  .hero .hero-price{font-size:30px}
+}
+/* О/Макс/Мин/З — ячейки постоянной ширины: на телефоне две строки, на широком экране одна */
+.hleg{display:grid;grid-template-columns:repeat(3,max-content);column-gap:10px;row-gap:0;max-width:none;justify-content:start}
+.hleg span{white-space:nowrap}
+.hleg b{display:inline-block;min-width:9ch;font-variant-numeric:tabular-nums}
+.hleg .ch{display:inline-block;min-width:7ch;font-variant-numeric:tabular-nums}
+@media (min-width:560px){.hleg{grid-template-columns:repeat(5,max-content)}.hleg .sp{display:none}}
+/* подпись под графиком — одной строкой (длинный отрезок дат сокращается многоточием): высота карточки не меняется */
+.hero .hero-foot{flex-wrap:nowrap;white-space:nowrap;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.hero .hero-foot > span:first-child{flex:none}
+.hero .hero-foot #hwhat{min-width:0;overflow:hidden;text-overflow:ellipsis;text-align:right}
+/* график: высоту задаёт fitHomeChart (до первого подсчёта — эти) */
+.hero .pchart.lw{height:300px}
+@media (min-width:700px){.hero .pchart.lw{height:330px}}
+
+/* «Графики»: подпись над свечами — постоянной высоты (строки не переносятся, ячейки цен одной ширины): график не прыгает */
+.tv-leg{min-height:0}
+.tv-leg .l1{flex-wrap:nowrap;white-space:nowrap;min-width:0;overflow:hidden;height:22px;align-items:center}
+.tv-leg .l1 .tv-when{line-height:18px;padding-top:0;padding-bottom:0}
+.tv-leg .l1 > *{flex:none}
+.tv-leg .l1 .faint{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.tv-leg .l2{display:grid;grid-template-columns:repeat(3,max-content);gap:1px 12px}
+.tv-leg .l2 span{white-space:nowrap}
+.tv-leg .l2 b{display:inline-block;min-width:9.6ch}
+.tv-leg .l2.ma{display:flex;flex-wrap:wrap;gap:1px 12px;min-height:17px}
+@media (max-width:559px){.tv-leg .l2.ma.m3{min-height:35px}}
+@media (min-width:560px){.tv-leg .l2{grid-template-columns:repeat(5,max-content)}}
+/* «Страх и жадность — история»: карточки индексов — шарик цвета линии с числом внутри */
+.f3s-c{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"b n" "z z";align-items:center;column-gap:8px;row-gap:5px;padding:8px 9px 8px}
+.f3s-ball{grid-area:b;position:relative;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;box-sizing:border-box;border:2px solid var(--sc);background:radial-gradient(circle at 34% 28%,color-mix(in srgb,var(--sc) 34%,transparent),color-mix(in srgb,var(--sc) 12%,transparent) 72%);color:var(--sc);font-family:var(--display);font-size:19px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1;transition:background .2s,color .2s,transform .2s}
+.f3s-c .nm{grid-area:n;display:flex;align-items:center;gap:0;font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.f3s-c .zn{grid-area:z;font-size:11.5px;font-weight:600;line-height:1.2}
+.f3s-c.on{border-color:var(--sc);box-shadow:inset 0 0 0 1px var(--sc)}
+.f3s-c.on .f3s-ball{background:var(--sc);color:var(--surface);transform:scale(1.04)}
+.f3s-c.dim{opacity:.5}
+@media (min-width:700px){.f3s-c{grid-template-areas:"b n" "b z";row-gap:1px;column-gap:12px;padding:10px 12px}.f3s-ball{width:50px;height:50px;font-size:21px}.f3s-c .nm{align-self:end}.f3s-c .zn{align-self:start;font-size:12px}}
+/* точки минимума и максимума: крупнее, нажимаются легко (палец попадает в круг 44 px); у выбранного индекса — с числом */
+.f3s-p{width:12px;height:12px;margin:-6px 0 0 -6px;box-shadow:0 0 0 2px var(--surface)}
+.f3s-p::before{left:-16px;top:-16px;right:-16px;bottom:-16px}
+.f3s-p.on{transform:scale(1.35);box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--ink)}
+.f3s-p b{position:absolute;left:50%;transform:translateX(-50%);font-style:normal;padding:1px 5px;border-radius:7px;background:var(--surface);box-shadow:0 0 0 1px var(--line-2);color:var(--ink);font-size:11px;font-weight:650;line-height:1.3;white-space:nowrap;font-variant-numeric:tabular-nums;opacity:0;transition:opacity .2s;pointer-events:none}
+.f3s-p[data-w="hi"] b{bottom:calc(100% + 5px)}
+.f3s-p[data-w="lo"] b{top:calc(100% + 5px)}
+.f3s-p.on b,.f3s-g.fx-m .f3s-p[data-k="m"] b,.f3s-g.fx-c .f3s-p[data-k="c"] b,.f3s-g.fx-d .f3s-p[data-k="d"] b{opacity:1}
+.f3s-p.on b{transform:translateX(-50%) scale(.74)}
+.f3s-g{touch-action:pan-y;-webkit-user-select:none;user-select:none}
+/* таблица за период: минимум и максимум — кнопки цвета своей зоны (страх — красный, жадность — зелёный) */
+.f3s-t td.r{padding-left:6px}
+.f3s-v{padding:4px 8px;margin:-4px -8px -4px 0;border-radius:10px;border:1px solid transparent}
+.f3s-v b{text-decoration:none;font-size:15px}
+.f3s-v[aria-pressed="true"]{background:var(--surface-3);border-color:var(--line)}
 </style>
 </head>
 <body>
@@ -2390,23 +2487,26 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   const nowPx = () => { const s = V(); return livePrice() || ((s || {}).price || {}).mid || null; };
   const chg24 = () => { const lc = liveChg(); if (lc != null) return lc; const s = V(); return s && s.price && s.price.chg24 != null ? s.price.chg24 : null; };
   // цена, 1 млн DOG и капитализация — сейчас или в момент под пальцем
-  function setHero(price, chg, label, scrub) {
+  // строки карточки цены — постоянной высоты и без переносов: при ведении пальцем по графику ничего не прыгает.
+  // Сверху — что показано («DOG · цена в долларах» или дата свечи под пальцем), справа от цены — изменение и короткая подпись
+  function setHero(price, chg, label, scrub, when) {
     const p = $('#hprice'), pill = $('#hpill'), lab = $('#hlabel');
     if (p && p.firstChild && price != null) p.firstChild.nodeValue = fp(price);
     const m = $('#h1m'); if (m && price != null) m.textContent = m1usd(price);
     const c2 = $('#hcap2'); if (c2 && price != null) c2.textContent = capS(price * SUPPLY);
     if (pill) { pill.className = 'pill ' + dir(chg); pill.textContent = pillTxt(chg); }
     if (lab) lab.textContent = label || '';
+    const w = $('#hwhen'); if (w) w.textContent = when || T('DOG · цена в долларах', 'DOG · price in US dollars');
     const h = $('#p-overview .hero'); if (h) h.classList.toggle('scrub', !!scrub);
     const nw = $('#hnow'); if (nw) nw.hidden = !scrub;
   }
   function resetHero() { if (!V()) return; setHero(nowPx(), chg24(), T('за сутки', '24h'), false); }
-  // палец на свече: её цена закрытия, а рядом — сколько цена прошла с того момента до сейчас
+  // палец на свече: сверху — её дата, крупно — её цена закрытия, рядом — сколько цена прошла с того момента до сейчас
   function scrubHero(v, tSec) {
     if (!HC) return;
     const d = new Date(tSec * 1000), now = nowPx(), yr = d.getUTCFullYear() !== new Date().getUTCFullYear() ? ' ' + d.getUTCFullYear() : '';
-    const when = HC.intra ? dml(d) + ', ' + tl(d) : (HC.tf === '1w' ? T('недели ', 'the week of ') : '') + fuDM(tSec) + yr;   // дневные и недельные свечи — по дате UTC
-    setHero(v, now && v ? (now / v - 1) * 100 : null, T('с ', 'since ') + when, true);
+    const when = HC.intra ? dml(d) + ', ' + tl(d) : (HC.tf === '1w' ? T('Неделя с ', 'Week of ') : '') + fuDM(tSec) + yr;   // дневные и недельные свечи — по дате UTC
+    setHero(v, now && v ? (now / v - 1) * 100 : null, T('с тех пор', 'since then'), true, when);
   }
   function chartLabel(R) {
     const cl = R.rows.slice(-R.n).map(r => r[4]);
@@ -2416,7 +2516,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   // ---------- цена: график TradingView Lightweight Charts (Apache-2.0) ----------
   // своя копия библиотеки лежит рядом с сайтом (vendor/): не зависит от чужого CDN и попадает в офлайн-кэш — графики
   // появляются сразу; если файл почему-то не загрузился, пробуем jsDelivr
-  const LWC_URL = 'vendor/lightweight-charts-5.0.8.js';
+  const LWC_URL = 'vendor/lightweight-charts-5.0.8-dm1.js';
   const LWC_CDN = 'https://cdn.jsdelivr.net/npm/lightweight-charts@5.0.8/dist/lightweight-charts.standalone.production.js';
   let LW = window.LightweightCharts || null, lwState = LW ? 'ready' : 'loading';
   function lwRedraw() { drawPrice(true); if (S.tab === 'charts' && typeof chDrawAll === 'function') chDrawAll(); }
@@ -2484,7 +2584,9 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const r = HC && k != null ? HC.rows[k] : null;
     if (!r || HC.mode !== 'candles') { lg.hidden = true; return; }
     const chg = HC.rows[k - 1] ? (r[4] / HC.rows[k - 1][4] - 1) * 100 : null;
-    lg.innerHTML = `<span>${T('О', 'O')} <b>${fp(r[1])}</b></span><span>${T('Макс', 'H')} <b>${fp(r[2])}</b></span><span>${T('Мин', 'L')} <b>${fp(r[3])}</b></span><span>${T('З', 'C')} <b>${fp(r[4])}</b></span>${chg == null ? '' : `<span class="${chg >= 0 ? 'up' : 'down'}">${sg(chg, 2)}%</span>`}`;
+    // ячейки постоянной ширины (цифры одной ширины): подпись не «ездит», когда палец переходит со свечи на свечу
+    // на телефоне — две строки: «О · Макс» и «Мин · З · изменение»; на широком экране — одна строка О · Макс · Мин · З · изменение
+    lg.innerHTML = `<span>${T('О', 'O')} <b>${fp(r[1])}</b></span><span>${T('Макс', 'H')} <b>${fp(r[2])}</b></span><span class="sp"></span><span>${T('Мин', 'L')} <b>${fp(r[3])}</b></span><span>${T('З', 'C')} <b>${fp(r[4])}</b></span><span class="ch ${chg == null ? '' : chg >= 0 ? 'up' : 'down'}">${chg == null ? '' : sg(chg, 2) + '%'}</span>`;
     lg.hidden = false;
   }
   // подпись под графиком: какие свечи и какой отрезок сейчас виден (листаете — меняется)
@@ -2505,8 +2607,14 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       w.textContent = HTF_KIND[HC.tf] + ' · ' + txt;
     });
   }
-  // как на «Графиках»: тянете — листаете историю, сводите пальцы — масштаб; зажмите палец — перекрестие с ценой на высоте
-  // пальца, вверху — цена, 1 млн DOG и капитализация в тот момент; отпустили — остаётся; нажатие на свечу закрепляет её
+  // верхний отступ свечей — под подпись О/Макс/Мин/З (на телефоне — две строки), в пикселях: высота графика теперь
+  // подстраивается под экран, а подпись — нет
+  const hlegMargins = (el, candles, wide) => {
+    const h = Math.max(160, el.clientHeight || 300);
+    return candles ? { top: Math.min(0.3, (wide ? 34 : 50) / h), bottom: 0.2 } : { top: Math.min(0.2, 24 / h), bottom: 0.08 };
+  };
+  // мышью (компьютер) — как на «Графиках»: тянете — листаете историю, наводите — перекрестие; пальцем — см. heroTouch ниже:
+  // ведёте — цена свечи под пальцем, нажатие закрепляет свечу, двумя пальцами — сдвиг и масштаб
   function drawLW(el, R, key) {
     const mode = S.chartMode !== 'line' ? 'candles' : 'line';
     // тот же интервал и вид (новая свеча, новые данные) — сохраняем видимый участок и закреплённую свечу
@@ -2522,13 +2630,14 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       autoSize: true,
       layout: { background: { type: 'solid', color: 'rgba(0,0,0,0)' }, textColor: C.ink3, fontSize: 11, fontFamily: '"Inter", system-ui, sans-serif', attributionLogo: true },
       grid: { vertLines: { visible: false }, horzLines: { color: hexA(C.line, 0.5) } },
-      rightPriceScale: { borderVisible: false, entireTextOnly: true, scaleMargins: { top: candles ? (wide ? 0.14 : 0.21) : 0.1, bottom: candles ? 0.2 : 0.08 } },
+      rightPriceScale: { borderVisible: false, entireTextOnly: true, scaleMargins: hlegMargins(el, candles, wide) },
       timeScale: { borderVisible: false, timeVisible: intra, secondsVisible: false, fixLeftEdge: true, fixRightEdge: true, rightOffset: 0, lockVisibleTimeRangeOnResize: true, tickMarkFormatter: tickFmt },
       crosshair: { mode: 0, vertLine: xh, horzLine: xh },
-      handleScroll: { mouseWheel: false, pressedMouseMove: true, horzTouchDrag: true, vertTouchDrag: false },
-      handleScale: { mouseWheel: false, pinch: true, axisPressedMouseMove: false, axisDoubleClickReset: true },
-      kineticScroll: { mouse: false, touch: true },
-      localization: { locale: LOC, priceFormatter: p => fp(p), timeFormatter: t => intra ? fuDM(t) + ', ' + FU_T.format(ut(t)) : fuDM(t) + ' ' + FU_Y.format(ut(t)).replace(/\s*г\.?$/, '') }
+      // пальцем библиотека ничего не листает и не масштабирует — жесты пальцем ведёт сам сайт (heroTouch)
+      handleScroll: { mouseWheel: false, pressedMouseMove: true, horzTouchDrag: false, vertTouchDrag: false },
+      handleScale: { mouseWheel: false, pinch: false, axisPressedMouseMove: false, axisDoubleClickReset: true },
+      kineticScroll: { mouse: false, touch: false },
+      localization: { locale: LOC, priceFormatter: p => p > 0 ? fp(p) : '', timeFormatter: t => intra ? fuDM(t) + ', ' + FU_T.format(ut(t)) : fuDM(t) + ' ' + FU_Y.format(ut(t)).replace(/\s*г\.?$/, '') }
     });
     const pf = { type: 'price', precision: 7, minMove: 0.0000001 };
     const vis = R.rows.slice(-R.n);
@@ -2555,8 +2664,12 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const lg = document.createElement('div'); lg.className = 'hleg'; lg.id = 'hleg'; lg.hidden = true; lg.setAttribute('aria-hidden', 'true'); el.appendChild(lg);
     HC = { chart, main, vol, el, key, rows: R.rows, tf: R.tf, intra, Tm, wide, mode, n: R.n, pin: null, moveAt: 0, at: new Map(R.rows.map((r, k) => [Tm(r), k])) };
     if (keep && keep.pinT != null) { const k = R.rows.findIndex(r => r[0] === keep.pinT); if (k >= 0 && k < R.rows.length - 1) HC.pin = k; }
+    HC.fit = () => { try { chart.priceScale('right').applyOptions({ scaleMargins: hlegMargins(el, candles, wide) }); } catch (e) { } };
+    // мышь: наведение показывает свечу, нажатие закрепляет. Пальцем эти события не приходят (жесты пальцем — heroTouch)
     chart.subscribeCrosshairMove(param => {
-      if (!HC || HC.chart !== chart) return;
+      if (!HC || HC.chart !== chart || HG.on) return;
+      // библиотека сама переставляет перекрестие при сдвиге и масштабе (без мыши) — это не выбор свечи
+      if (param && param.point && !param.sourceEvent) return;
       if (!param || param.time == null || !param.point) { heroPin(false); return; }
       const k = HC.at.get(param.time); if (k == null) return;
       HC.moveAt = Date.now();
@@ -2564,7 +2677,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     });
     // нажатие на свечу закрепляет её (вверху — её цена); на ту же или на последнюю — снова «сейчас»
     chart.subscribeClick(param => {
-      if (!HC || HC.chart !== chart || !param || param.time == null) return;
+      if (!HC || HC.chart !== chart || !param || param.time == null || Date.now() - HG.touchAt < 900) return;
       const k = HC.at.get(param.time); if (k == null) return;
       HC.pin = HC.pin === k || k === HC.rows.length - 1 ? null : k;
       heroPin(true);
@@ -2574,9 +2687,194 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     if (HC.pin != null) heroPin(true);
     tvFixAll(el);
   }
+  // ---------- высота графика на «Главном»: первый экран — индексы, цена и график целиком ----------
+  // график тянется до нижнего меню (значок TradingView в левом нижнем углу виден сразу), но не больше ~0,44 высоты экрана
+  // (в альбомной ориентации — 0,56) и не меньше 220 px. Пересчёт — при смене ширины экрана и когда меняется что-то выше графика;
+  // когда браузер прячет свои панели при листании, высота не меняется (ничего не прыгает под пальцем)
+  const FIT = { vh: 0, w: 0 };
+  function fitHomeChart(force) {
+    const el = $('#pchart');
+    if (!el || S.tab !== 'overview' || !el.isConnected || !el.clientWidth) return;
+    const hero = el.closest('.hero'); if (!hero) return;
+    const vw = window.innerWidth, ih = Math.round(window.innerHeight);
+    if (force || !FIT.vh || FIT.w !== vw || Math.abs(ih - FIT.vh) > 140) { FIT.vh = ih; FIT.w = vw; }
+    const vh = FIT.vh;
+    const foot = hero.querySelector('.hero-foot');
+    const top = el.getBoundingClientRect().top + window.scrollY;
+    const tb = $('#tabbar');
+    let bottom = vh - 10;
+    // нижнее меню прижато к низу экрана: его верх — в тех же координатах, что и запомненная высота экрана
+    if (tb && getComputedStyle(tb).display !== 'none') { const r = tb.getBoundingClientRect(); if (r.height) bottom = Math.min(bottom, r.top - (ih - vh) - 8); }
+    const below = (foot ? foot.getBoundingClientRect().height + 2 : 0) + (parseFloat(getComputedStyle(hero).paddingBottom) || 0) + 1;
+    const avail = bottom - below - top;
+    const land = vw > vh, minH = vw >= 700 ? 280 : 220;
+    const h = Math.round(Math.max(minH, Math.min(avail, vh * (land ? 0.56 : 0.44))));
+    if (Math.abs(el.getBoundingClientRect().height - h) > 1) {
+      el.style.height = h + 'px';
+      if (HC && HC.el === el && HC.fit) HC.fit();
+    }
+  }
+  // ---------- лёгкий щелчок под пальцем, когда палец переходит на другую свечу ----------
+  // Android — вибрация; iPhone — системный щелчок переключателя (Safari 17.4+). Apple даёт сайтам щелчок только на нажатие:
+  // при ведении пальцем по графику на iPhone его, скорее всего, не будет, на Android — будет
+  const HAP = { t: 0, el: null, ios: /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) };
+  function haptic() {
+    const now = performance.now(); if (now - HAP.t < 30) return; HAP.t = now;
+    try { if (!HAP.ios && typeof navigator.vibrate === 'function') { navigator.vibrate(5); return; } } catch (e) { }
+    if (!HAP.ios) return;
+    try {
+      if (!HAP.el) {
+        const l = document.createElement('label'), i = document.createElement('input');
+        l.setAttribute('aria-hidden', 'true'); l.style.display = 'none';          // скрыт целиком: фокус никуда не уходит
+        i.type = 'checkbox'; i.setAttribute('switch', ''); i.tabIndex = -1;
+        l.appendChild(i); l.addEventListener('click', e => e.stopPropagation()); document.body.appendChild(l); HAP.el = l;
+      }
+      HAP.el.click();
+    } catch (e) { }
+  }
+  // ---------- график на «Главном» пальцем — как в приложениях бирж ----------
+  // Ведёте влево-вправо — вверху цена свечи под пальцем, на каждой новой свече — лёгкий щелчок. Полоса графика — во всю
+  // ширину экрана: левее свечей — первая видимая свеча, правее (над шкалой цен и у края экрана) — последняя.
+  // Отпустили — свеча остаётся («Сейчас» — назад). Ведёте вверх-вниз — страница листается как обычно (жест считается
+  // горизонтальным, если он не круче ~50°). Нажатие — закрепить свечу (на ту же или на последнюю — снова «сейчас»).
+  // Двумя пальцами — сдвинуть историю и приблизить / отдалить.
+  const HG = { g: null, on: false, touchAt: 0 };
+  (function heroTouch() {
+    const SLOP = 6, K = 1.2;
+    const zone = t => {
+      if (S.tab !== 'overview' || !HC || !HC.el || !HC.el.isConnected) return false;
+      const r = HC.el.getBoundingClientRect(); if (!r.width) return false;
+      const f = HC.el.parentElement && HC.el.parentElement.querySelector('.hero-foot');
+      return t.clientY >= r.top && t.clientY <= (f ? f.getBoundingClientRect().bottom : r.bottom);
+    };
+    // свеча под пальцем; левее свечей — первая видимая, правее — последняя видимая
+    const idxAt = clientX => {
+      const ts = HC.chart.timeScale(), r = HC.el.getBoundingClientRect(), L = HC.rows.length;
+      let lr = null; try { lr = ts.getVisibleLogicalRange(); } catch (e) { }
+      const lo = lr ? Math.max(0, Math.ceil(lr.from - 0.5 + 1e-6)) : 0, hi = lr ? Math.min(L - 1, Math.floor(lr.to + 0.5 - 1e-6)) : L - 1;
+      const x = clientX - r.left, w = ts.width() || r.width;
+      let k = x <= 0 ? lo : x >= w ? hi : Math.round(ts.coordinateToLogical(x));
+      if (!isFinite(k)) k = hi;
+      return Math.max(lo, Math.min(hi, k));
+    };
+    // перекрестие: вертикаль — на свече, горизонталь — на высоте пальца (вне свечей — на цене закрытия)
+    const show = (k, clientY) => {
+      const row = HC.rows[k]; if (!row) return;
+      let pr = row[4];
+      try {
+        const r = HC.el.getBoundingClientRect(), y = clientY - r.top, ph = HC.el.clientHeight - (HC.chart.timeScale().height() || 26);
+        if (y >= 0 && y <= ph) { const v = HC.main.coordinateToPrice(y); if (v != null && isFinite(v)) pr = v; }
+      } catch (e) { }
+      try { HC.chart.setCrosshairPosition(pr, HC.Tm(row), HC.main); } catch (e) { }
+      heroAt(k);
+    };
+    const scrub = t => {
+      const g = HG.g, k = idxAt(t.clientX);
+      HC.moveAt = Date.now();
+      if (k !== g.k) { g.k = k; HC.pin = k === HC.rows.length - 1 ? null : k; haptic(); }
+      show(k, t.clientY);
+    };
+    const pinchStart = e => {
+      const a = e.touches[0], b = e.touches[1], ts = HC.chart.timeScale(), r = HC.el.getBoundingClientRect();
+      let lr = null; try { lr = ts.getVisibleLogicalRange(); } catch (er) { }
+      if (!lr) { HG.g = null; return; }
+      HG.g = { mode: 'pinch', lr: { from: lr.from, to: lr.to }, m0: (a.clientX + b.clientX) / 2 - r.left, d0: Math.max(30, Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY)), w: ts.width() || r.width };
+      HG.on = false;
+    };
+    const pinchMove = e => {
+      const g = HG.g; if (e.touches.length < 2 || !HC) return;
+      const a = e.touches[0], b = e.touches[1], r = HC.el.getBoundingClientRect();
+      const m = (a.clientX + b.clientX) / 2 - r.left, d = Math.max(30, Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY));
+      const L = HC.rows.length, len0 = g.lr.to - g.lr.from;
+      const len = Math.max(Math.min(12, L), Math.min(L, len0 * g.d0 / d));
+      const at = g.lr.from + g.m0 / g.w * len0;
+      const from = Math.max(-0.5, Math.min(L - 0.5 - len, at - m / g.w * len));
+      try { HC.chart.timeScale().setVisibleLogicalRange({ from, to: from + len }); } catch (er) { }
+      if (HC.pin != null) heroPin(true);                           // закреплённая свеча остаётся под перекрестием
+      HC.moveAt = Date.now();
+    };
+    document.addEventListener('touchstart', e => {
+      const g = HG.g;
+      if (g && (g.mode === 'pinch' || (e.touches.length === 2 && g.mode !== 'v'))) {
+        if (g.mode !== 'pinch' && HC) pinchStart(e);
+        e.stopPropagation(); return;
+      }
+      HG.g = null; HG.on = false;
+      if (e.touches.length !== 1 || !$('#sheet').hidden || !$('#story').hidden) return;
+      const t = e.touches[0];
+      if (e.target.closest && e.target.closest('a, button, input, select, textarea, label, #tabbar, .topbar, .archive, #story, .sheet-wrap')) return;
+      if (!zone(t)) return;
+      HG.g = { id: t.identifier, x0: t.clientX, y0: t.clientY, mode: null, k: null };
+      HG.touchAt = Date.now();
+      if (HC.el.contains(e.target)) e.stopPropagation();          // библиотека графика этот жест не получает
+    }, { capture: true, passive: true });
+    document.addEventListener('touchmove', e => {
+      const g = HG.g; if (!g || !HC) return;
+      if (g.mode === 'pinch') { pinchMove(e); e.stopPropagation(); if (e.cancelable) e.preventDefault(); return; }
+      let t = null; for (const x of e.touches) if (x.identifier === g.id) t = x;
+      if (!t) return;
+      if (g.mode == null) {
+        const dx = Math.abs(t.clientX - g.x0), dy = Math.abs(t.clientY - g.y0);
+        if (dx + dy < SLOP) { e.stopPropagation(); return; }
+        if (dy > K * dx) { HG.g = null; return; }                    // вверх-вниз — это страница
+        g.mode = 'h'; HG.on = true;
+      }
+      e.stopPropagation(); if (e.cancelable) e.preventDefault();
+      scrub(t);
+    }, { capture: true, passive: false });
+    const end = e => {
+      const g = HG.g; if (!g) return;
+      if (g.mode === 'pinch') { e.stopPropagation(); if (e.cancelable) e.preventDefault(); if (!e.touches.length) { HG.g = null; HG.touchAt = Date.now(); } return; }
+      let t = null; for (const x of e.changedTouches) if (x.identifier === g.id) t = x;
+      if (!t) return;
+      HG.g = null; HG.on = false; HG.touchAt = Date.now();
+      e.stopPropagation();
+      if (!HC) return;
+      if (e.type === 'touchend' && e.cancelable) e.preventDefault();   // без «мышиных» событий и щелчка следом
+      // отпустили — свеча остаётся (на последней — «сейчас»). На iPhone щелчок возможен только сейчас — на отпускание
+      if (g.mode === 'h') { heroPin(HC.pin == null); if (HAP.ios) haptic(); return; }
+      if (g.mode == null && e.type === 'touchend') {
+        const k = idxAt(t.clientX);
+        HC.pin = HC.pin === k || k === HC.rows.length - 1 ? null : k;
+        heroPin(true); haptic();
+      }
+    };
+    document.addEventListener('touchend', end, { capture: true, passive: false });
+    document.addEventListener('touchcancel', end, { capture: true, passive: false });
+    // Safari: два пальца на графике — масштаб графика, а не всей страницы
+    document.addEventListener('gesturestart', e => { if (HG.g && HG.g.mode === 'pinch' && e.cancelable) e.preventDefault(); }, { passive: false });
+  })();
+  // ---------- остальные графики (свои, не TradingView): ведёте пальцем влево-вправо — страница не листается ----------
+  // Браузер сам решает, листать ли страницу, по первому движению пальца; наклонное движение он часто отдаёт странице, и
+  // график «уезжает» вверх-вниз. Здесь движение считается горизонтальным, если оно не круче ~50° (как у графиков
+  // TradingView на сайте), — тогда страница стоит на месте, пока палец не отпущен
+  const TOUCH = { n: 0, x: 0, y: 0 };
+  (function chartTouchGuard() {
+    const SEL = '.f3-plot, .f3s-g, .fic-plot, .mm-plot, .lchart, .dchart, .pchart:not(.lw)';
+    let g = null;
+    document.addEventListener('touchstart', e => {
+      TOUCH.n = e.touches.length; if (e.touches[0]) { TOUCH.x = e.touches[0].clientX; TOUCH.y = e.touches[0].clientY; }
+      g = null;
+      if (e.touches.length !== 1 || !e.target.closest) return;
+      const z = e.target.closest(SEL); if (!z) return;
+      g = { x: e.touches[0].clientX, y: e.touches[0].clientY, d: null };
+    }, { capture: true, passive: true });
+    document.addEventListener('touchmove', e => {
+      if (e.touches[0]) { TOUCH.x = e.touches[0].clientX; TOUCH.y = e.touches[0].clientY; }
+      if (!g) return;
+      if (e.touches.length !== 1) { g = null; return; }
+      const t = e.touches[0];
+      if (!g.d) { const dx = Math.abs(t.clientX - g.x), dy = Math.abs(t.clientY - g.y); if (dx + dy < 6) return; g.d = dy > 1.2 * dx ? 'v' : 'h'; }
+      if (g.d === 'h' && e.cancelable) e.preventDefault();
+    }, { capture: true, passive: false });
+    const end = e => { TOUCH.n = e.touches.length; if (!e.touches.length) g = null; };
+    document.addEventListener('touchend', end, { capture: true, passive: true });
+    document.addEventListener('touchcancel', end, { capture: true, passive: true });
+  })();
   function drawPrice(force) {
     const el = $('#pchart');
     if (!el) { killChart(); return; }
+    fitHomeChart();
     const s = V(), tf = S.htf, R = s ? heroRows() : null;
     // свежих свечей этого интервала ещё нет — просим у Kraken и перерисовываем, когда придут
     if (s && typeof chFresh === 'function' && !chFresh(tf)) {
@@ -3101,7 +3399,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const hero = `<section class="hero" aria-label="${T('Цена DOG', 'DOG price')}">
         <div class="hero-head">
           <div class="hero-main">
-            <div class="hero-pair"><span>${T('DOG · цена в долларах', 'DOG · price in US dollars')}</span><span class="live" id="hlive" hidden><i></i>${T('онлайн', 'live')}</span><button type="button" class="hnow" id="hnow" hidden>${ico('refresh')}${T('Сейчас', 'Now')}</button></div>
+            <div class="hero-pair"><span class="hwhen" id="hwhen">${T('DOG · цена в долларах', 'DOG · price in US dollars')}</span><span class="live" id="hlive" hidden><i></i>${T('онлайн', 'live')}</span><button type="button" class="hnow" id="hnow" hidden>${ico('refresh')}${T('Сейчас', 'Now')}</button></div>
             <div class="hero-row"><div class="hero-price tnum${EN ? ' en' : ''}" id="hprice">${fp(p0)}${RU ? '<small>$</small>' : ''}</div><div class="hero-chg"><span class="pill ${dir(c0)}" id="hpill">${pillTxt(c0)}</span><span id="hlabel">${T('за сутки', '24h')}</span></div></div>
           </div>
           ${heroStats(p0)}
@@ -3242,6 +3540,8 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const pt = $('#sheet-body .fng-parts'); if (pt && FNG_ROW) { if (FNG_SETF) FNG_SETF(L.facts); pt.innerHTML = (L.parts || []).map(FNG_ROW).join(''); }
   }
   let FNG_ROW = null, FNG_SETF = null;
+  // цвет каждого индекса — как его линия на общем графике: alternative.me бирюзовый, CoinMarketCap синий, DOG абрикосовый
+  const FNG_LC = { fng_m: 'var(--f3m)', fng_c: 'var(--f3c)', fng_d: 'var(--dog)' };
   function fngHtml() {
     const m = fngMarket(), c = fngCmc(), d0 = (S.fng || {}).dog, dl = fngNow(), d = dl ? Object.assign({}, d0, { v: dl.v }) : d0;
     if (dl) fngLast.v = dl.v;
@@ -3250,7 +3550,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const g = (key, v, sc, name, src, prev) => {
       const na = v == null, nm = na ? T('нет данных', 'no data') : fngName(v, sc);
       const y = !na && prev && prev.d1 != null ? prev.d1 : null;
-      return `<button type="button" class="fng-g${na ? ' na' : ''}" data-info="${key}" aria-label="${esc(name)}, ${esc(src)}: ${na ? esc(nm) : Math.round(v) + ' — ' + esc(nm)}${y != null ? '; ' + T('вчера ', 'yesterday ') + y : ''}">${gaugeSvg(v, sc)}<span class="gk"${na ? '' : ` style="color:${fngCol(v, sc)}"`}>${esc(nm)}</span><span class="gt">${esc(name)}</span><span class="gs">${esc(src)}</span>${y != null ? `<span class="gy">${T('вчера', 'yesterday')} ${y}</span>` : ''}</button>`;
+      return `<button type="button" class="fng-g${na ? ' na' : ''}" data-info="${key}" aria-label="${esc(name)}, ${esc(src)}: ${na ? esc(nm) : Math.round(v) + ' — ' + esc(nm)}${y != null ? '; ' + T('вчера ', 'yesterday ') + y : ''}">${gaugeSvg(v, sc)}<span class="gk"${na ? '' : ` style="color:${fngCol(v, sc)}"`}>${esc(nm)}</span><span class="gt">${esc(name)}</span><span class="gs"><i class="mk" style="background:${FNG_LC[key]}"></i>${esc(src)}</span>${y != null ? `<span class="gy">${T('вчера', 'yesterday')} ${y}</span>` : ''}</button>`;
     };
     const mk = T('Крипторынок', 'Crypto market');
     return `<section class="fng" aria-label="${T('Страх и жадность', 'Fear and greed')}">
@@ -3268,7 +3568,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const d = h.map((x, i) => `${i ? 'L' : 'M'}${X(i).toFixed(1)},${Y(x[1]).toFixed(1)}`).join('');
     return `<div class="fng-sp90"><div class="hd"><span>${T('Индекс DOG за 90 дней', 'DOG index, 90 days')}</span><span>${T('пик', 'peak')} ${h[pk][1]} · ${esc(fngDay(h[pk][0]))}</span></div><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><line x1="0" x2="${W}" y1="${Y(50).toFixed(1)}" y2="${Y(50).toFixed(1)}" stroke="var(--line)" stroke-dasharray="2 4" vector-effect="non-scaling-stroke"/><path d="${d}V${H}H0Z" fill="var(--dog-soft)"/><path d="${d}" fill="none" stroke="var(--dog)" stroke-width="1.6" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg></div>`;
   }
-  function paintFng() { const b = $('#fng-box'); if (b && !S.archived) b.innerHTML = fngHtml(); if (typeof paintFngCharts === 'function') paintFngCharts(); }
+  function paintFng() { const b = $('#fng-box'); if (b && !S.archived) b.innerHTML = fngHtml(); if (typeof paintFngCharts === 'function') paintFngCharts(); fitHomeChart(); }
   // свежий индекс рынка прямо с alternative.me (он обновляется раз в сутки; ответ храним час)
   async function fngLive() {
     const c = store.get('fng.m', null);
@@ -3370,6 +3670,8 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     return `<div class="fng-turns" data-fturns="${id}"><div class="tr hd"><span>${T('разворот индекса', 'index turn')}</span><span>${T('индекс', 'index')}</span><span>${esc(pxName)}${T(', закрытие дня', ', day close')}</span></div>${tl.map(t => { const px = pxd[t[0]] || t[3]; return `<button type="button" class="tr" data-fturn="${esc(t[0])}" aria-pressed="false"><span class="d">${esc(fngDmy(t[0]))}</span><span class="k">${t[2] === 'p' ? T('пик', 'peak') : T('дно', 'low')} <b style="color:${fngCol(t[1], sc)}">${t[1]}</b></span><span class="p">${px ? fmtP(px) : ''}</span></button>`; }).join('')}</div>`;
   }
   const ficPath = F => F.rows.map((x, i) => `${i ? 'L' : 'M'}${(i / F.n1 * 1000).toFixed(1)},${(F.pad + (1 - x[1] / 100) * (F.H - 2 * F.pad)).toFixed(1)}`).join('');
+  // цвет линии индекса — как на общем графике трёх индексов: alternative.me бирюзовый, CoinMarketCap синий, DOG абрикосовый
+  const FIC_COL = { m: 'var(--f3m)', c: 'var(--f3c)', d: 'var(--dog)' };
   function fngChart(id, idx, pxd, pxName, sc, turns, fmtP, ohlc) {
     const rows = (idx || []).filter(x => x && pxd[x[0]] > 0 && x[1] != null);
     if (rows.length < 30) return '';
@@ -3383,9 +3685,9 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     FIC[id] = { rows, lp, lmin, lr, n1, H, pad, pxd, pxName, sc: Z, fmtP, ohlc, turnAt, pin: false };
     const dots = tv.map(t => `<i class="fic-t" data-i="${at.get(t[0])}" style="left:${pc(X(at.get(t[0])), W)};top:${pc(YI(t[1]), H)};background:${fngCol(t[1], Z)}" title="${esc(fngDmy(t[0]))}"></i>`).join('');
     const last = rows[n1], mid = rows[Math.floor(n1 / 2)][0];
-    return `<div class="fic" data-fic="${id}">
+    return `<div class="fic" data-fic="${id}" style="--ic:${FIC_COL[id] || 'var(--accent)'}">
         <div class="fic-read" aria-live="polite">${ficRead(id, n1)}</div>
-        <div class="fic-plot" role="img" aria-label="${T(`Индекс и цена ${pxName}, ${rows.length} дней`, `Index and ${pxName} price, ${rows.length} days`)}"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="${YI(100).toFixed(1)}" width="${W}" height="${(YI(Z[3]) - YI(100)).toFixed(1)}" fill="var(--fz5)" opacity=".1"/><rect x="0" y="${YI(Z[0] - 0.5).toFixed(1)}" width="${W}" height="${(YI(0) - YI(Z[0] - 0.5)).toFixed(1)}" fill="var(--fz1)" opacity=".1"/><path d="${lpp}L${W},${H}L0,${H}Z" fill="var(--ink-3)" opacity=".1"/><path d="${lpp}" fill="none" stroke="var(--ink-3)" stroke-width="1.2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/><path data-li d="${li}" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>${dots}<i class="fic-x"></i><i class="fic-m fic-mp" style="left:100%;top:${pc(YP(lp[n1]), H)}"></i><i class="fic-m fic-mi" style="left:100%;top:${pc(YI(last[1]), H)};background:${fngCol(last[1], Z)}"></i></div>
+        <div class="fic-plot" role="img" aria-label="${T(`Индекс и цена ${pxName}, ${rows.length} дней`, `Index and ${pxName} price, ${rows.length} days`)}"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="${YI(100).toFixed(1)}" width="${W}" height="${(YI(Z[3]) - YI(100)).toFixed(1)}" fill="var(--fz5)" opacity=".1"/><rect x="0" y="${YI(Z[0] - 0.5).toFixed(1)}" width="${W}" height="${(YI(0) - YI(Z[0] - 0.5)).toFixed(1)}" fill="var(--fz1)" opacity=".1"/><path d="${lpp}L${W},${H}L0,${H}Z" fill="var(--ink-3)" opacity=".1"/><path d="${lpp}" fill="none" stroke="var(--ink-3)" stroke-width="1.2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/><path data-li d="${li}" fill="none" stroke="var(--ic)" stroke-width="1.6" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>${dots}<i class="fic-x"></i><i class="fic-m fic-mp" style="left:100%;top:${pc(YP(lp[n1]), H)}"></i><i class="fic-m fic-mi" style="left:100%;top:${pc(YI(last[1]), H)};background:${fngCol(last[1], Z)}"></i></div>
         <div class="fng-ax"><span>${esc(fngDmy(rows[0][0]))}</span><span>${esc(fngDmy(mid))}</span><span>${esc(fngDmy(last[0]))}</span></div>
         <div class="fic-leg"><span><i class="li"></i>${T('индекс', 'index')}</span><span><i class="lp"></i>${T(`цена ${pxName}`, `${pxName} price`)}</span>${tv.length ? `<span><i class="ld"></i>${T('разворот', 'turn')}</span>` : ''}<span class="h">${T('нажмите на график или точку', 'tap the chart or a dot')}</span></div>
       </div>`;
@@ -3917,9 +4219,6 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       ${row('data-go="history"', ico('clock'), T('Архив сводок', 'Report archive'), T('все прошлые сводки и графики по ним', 'every past report, with charts'))}
       ${row('data-go="help"', ico('help'), T('Как читать дашборд', 'How to read this dashboard'), T('простыми словами, без жаргона', 'in plain words, no jargon'))}
       ${row('id="m-checks"', ico('check'), T('Проверка данных', 'Data checks'), `${ch.filter(c => c.ok).length} ${T('из', 'of')} ${ch.length} ${T('пройдено', 'passed')}${u ? T(' при обновлении', ' on update') : ''}`)}
-    </div>
-    <div class="group flush rows" style="background:var(--surface-2)">
-      <a class="row" href="classic/${RU ? '?lang=ru' : ''}"><span class="av">${ico('clock')}</span><span class="t"><b>${T('Прежний вид сайта', 'The previous look')}</b><span>${T('как было до 16 ноября 2026 — для сравнения', 'as it was before 16 Nov 2026 — to compare')}</span></span><span class="v faint">${ico('chev')}</span></a>
     </div>`);
   }
   $('#menu').addEventListener('click', openMore);
@@ -5384,6 +5683,9 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       if (!CH.tv || CH.tv.chart !== chart) return;
       let i = CH.tv.pin != null ? CH.tv.pin : rows.length - 1;
       if (param && param.time != null) { const t = param.time; const k = rows.findIndex(r => Tm(r) === t); if (k >= 0) i = k; }
+      // перекрестие ведут пальцем (после долгого нажатия) — лёгкий щелчок на каждой новой свече
+      if (param && param.time != null && param.point && TOUCH.n === 1 && param.time !== CH.tv.ht && Math.abs(el.getBoundingClientRect().left + param.point.x - TOUCH.x) < 32) haptic();
+      CH.tv.ht = param ? param.time : null;
       chLegend(i);
     });
     // нажали на свечу — её значения закрепляются в подписи над графиком (на телефоне перекрестие иначе появляется только
@@ -5423,7 +5725,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const when = chIntra(tv.tf) ? fuDM(tm) + ', ' + FU_T.format(ut(tm)) : (tv.tf === '1w' ? T('неделя с ', 'week of ') : '') + fuDM(tm) + ' ' + FU_Y.format(ut(tm)).replace(/\s*г\.?$/, '');
     if (leg) leg.innerHTML = `<div class="l1"><b>DOG/USD</b><span class="faint">Kraken · ${esc(CH_TF[tv.tf][1])}</span><span class="${chg == null ? '' : chg >= 0 ? 'up' : 'down'}">${chg == null ? '' : sg(chg, 2) + '%'}</span>${last ? '' : `<span class="tv-when${tv.pin === i ? ' pin' : ''}">${esc(when)}</span>`}</div>
       <div class="l2"><span>${T('О', 'O')} <b>${fpx(r[1], 1e-7)}</b></span><span>${T('Макс', 'H')} <b>${fpx(r[2], 1e-7)}</b></span><span>${T('Мин', 'L')} <b>${fpx(r[3], 1e-7)}</b></span><span>${T('З', 'C')} <b>${fpx(r[4], 1e-7)}</b></span>${tv.ser.vol ? `<span>${T('Объём', 'Vol')} <b>${qf(r[5])}</b></span>` : ''}</div>
-      ${tv.ser.ma.length ? `<div class="l2">${tv.ser.ma.map(([k, , col, v]) => v[i] == null ? '' : `<span><i class="dot" style="background:${col}"></i>SMA ${k} <b>${fpx(v[i], 1e-7)}</b></span>`).join('')}</div>` : ''}`;
+      ${tv.ser.ma.length ? `<div class="l2 ma${tv.ser.ma.length >= 3 ? ' m3' : ''}">${tv.ser.ma.map(([k, , col, v]) => v[i] == null ? '' : `<span><i class="dot" style="background:${col}"></i>SMA ${k} <b>${fpx(v[i], 1e-7)}</b></span>`).join('')}</div>` : ''}`;
     const lr = $('#tvl-rsi'); if (lr) lr.innerHTML = `RSI 14 <b>${A.rsi[i] == null ? '—' : n(A.rsi[i], 1)}</b>`;
     const lm = $('#tvl-macd'); if (lm) lm.innerHTML = `MACD 12 26 9 <span class="faint">${T('в % от цены', 'as % of price')}</span> <b style="color:var(--k1)">${A.mp[i] == null ? '—' : sg(A.mp[i], 2)}</b> <b style="color:var(--k2)">${A.sig[i] == null ? '—' : sg(A.sig[i], 2)}</b>`;
   }
@@ -5768,7 +6070,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const row = (key, v, sc, name, src, prev) => {
       const na = v == null, nm = na ? T('нет данных', 'no data') : fngName(v, sc), y = !na && prev && prev.d1 != null ? T(` · вчера ${prev.d1}`, ` · yesterday ${prev.d1}`) : '';
       // число — прямо в дуге (как в CoinMarketCap): глазам не нужно бегать от шкалы к цифре
-      return `<button type="button" class="fngr" data-info="${key}" aria-label="${esc(name)}, ${esc(src)}: ${na ? esc(nm) : Math.round(v) + ' — ' + esc(nm)}">${gaugeSvg(v, sc)}<span class="t"><b>${esc(name)}</b><span>${esc(src)}</span></span><span class="v"><b${na ? '' : ` style="color:${fngCol(v, sc)}"`}>${esc(nm)}</b><span>${esc(y.replace(/^ · /, ''))}</span></span></button>`;
+      return `<button type="button" class="fngr" data-info="${key}" aria-label="${esc(name)}, ${esc(src)}: ${na ? esc(nm) : Math.round(v) + ' — ' + esc(nm)}">${gaugeSvg(v, sc)}<span class="t"><b>${esc(name)}</b><span><i class="mk" style="background:${FNG_LC[key]};width:10px;margin-right:5px"></i>${esc(src)}</span></span><span class="v"><b${na ? '' : ` style="color:${fngCol(v, sc)}"`}>${esc(nm)}</b><span>${esc(y.replace(/^ · /, ''))}</span></span></button>`;
     };
     const mk = T('Крипторынок', 'Crypto market');
     return `<button type="button" class="ch-head ch-hbtn" data-info="fng_all" aria-label="${T('Страх и жадность: история всех трёх индексов', 'Fear and greed: history of all three indices')}"><h3>${T('Страх и жадность', 'Fear &amp; Greed')}</h3><span class="note">${T('0 — страх · 100 — жадность', '0 fear · 100 greed')}</span>${ico('chev')}</button>
@@ -5860,7 +6162,8 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const D = F3S.D; if (!D) return '';
     const n1 = D.days.length - 1, last = i == null || i >= n1; if (last) i = n1;
     const day = D.days[i], today = day === new Date().toISOString().slice(0, 10);
-    const col = ([k, nm, c, sc]) => { const v = D[k][i], on = F3S.focus === k; return `<button type="button" class="f3s-c${on ? ' on' : ''}${F3S.focus && !on ? ' dim' : ''}" data-f3focus="${k}" aria-pressed="${on}" style="--sc:${c}"><span class="nm"><i class="mk" style="background:${c}"></i>${nm}</span><b${v == null ? '' : ` style="color:${fngCol(v, sc)}"`}>${v == null ? '—' : v}</b><span class="zn">${v == null ? T('нет данных', 'no data') : esc(fngName(v, sc))}</span></button>`; };
+    // карточка индекса: шарик цвета его линии с числом внутри, рядом имя, под ним зона (цветом зоны)
+    const col = ([k, nm, c, sc]) => { const v = D[k][i], on = F3S.focus === k; return `<button type="button" class="f3s-c${on ? ' on' : ''}${F3S.focus && !on ? ' dim' : ''}" data-f3focus="${k}" aria-pressed="${on}" aria-label="${nm}: ${v == null ? T('нет данных', 'no data') : v + ' — ' + esc(fngName(v, sc))}" style="--sc:${c}"><span class="nm">${nm}</span><span class="f3s-ball" aria-hidden="true">${v == null ? '—' : v}</span><span class="zn"${v == null ? '' : ` style="color:${fngCol(v, sc)}"`}>${v == null ? T('нет данных', 'no data') : esc(fngName(v, sc))}</span></button>`; };
     const hint = F3S.focus ? T('нажмите на карточку ещё раз — все три', 'tap the card again for all three') : T('ведите пальцем · нажмите на индекс', 'slide along · tap an index');
     return `<div class="f3s-d"><b>${last && today ? T('Сегодня', 'Today') : esc(fngDmy(day))}</b>${last && !F3S.focus ? `<span>${hint}</span>` : `<button type="button" class="f3s-now" data-f3now>${ico('refresh')}${T('Сегодня', 'Today')}</button>`}</div><div class="f3s-cols">${F3K.map(col).join('')}</div>`;
   }
@@ -5871,7 +6174,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const band = (lo, hi, col) => `<rect x="0" width="${F3W}" y="${F3Y(hi).toFixed(1)}" height="${(F3Y(lo) - F3Y(hi)).toFixed(1)}" fill="${col}" opacity=".085"/>`;
     const grid = [25, 50, 75].map(v => `<line x1="0" x2="${F3W}" y1="${F3Y(v).toFixed(1)}" y2="${F3Y(v).toFixed(1)}" stroke="var(--line)" stroke-width="1" stroke-dasharray="${v === 50 ? '0' : '3 6'}" vector-effect="non-scaling-stroke"/>`).join('');
     const ln = (k, col, w) => `<path class="f3s-l" data-k="${k}" d="${path(D[k])}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>`;
-    const dots = F3K.map(([k, nm, c]) => { const e = D.ext[k]; return !e ? '' : [['lo', T('минимум', 'low')], ['hi', T('максимум', 'high')]].map(([w, wt]) => { const i = e[w], v = D[k][i]; return `<i class="f3s-p" data-k="${k}" data-w="${w}" data-i="${i}" style="left:${pc(X(i), F3W)};top:${pc(F3Y(v), F3H)};background:${c}" title="${nm}: ${wt} ${v} · ${esc(f3Date(D.days[i]))}"></i>`; }).join(''); }).join('');
+    const dots = F3K.map(([k, nm, c]) => { const e = D.ext[k]; return !e ? '' : [['lo', T('минимум', 'low')], ['hi', T('максимум', 'high')]].map(([w, wt]) => { const i = e[w], v = D[k][i]; return `<i class="f3s-p" data-k="${k}" data-w="${w}" data-i="${i}" style="left:${pc(X(i), F3W)};top:${pc(F3Y(v), F3H)};background:${c}" title="${nm}: ${wt} ${v} · ${esc(f3Date(D.days[i]))}"><b>${v}</b></i>`; }).join(''); }).join('');
     const yl = [100, 75, 50, 25, 0].map(v => `<span style="top:${(F3Y(v) / F3H * 100).toFixed(2)}%">${v}</span>`).join('');
     const xi = n1 < 6 ? [0, n1] : [0, Math.round(n1 / 3), Math.round(2 * n1 / 3), n1];
     const xl = xi.map((i, j) => `<span class="${j === 0 ? 'l' : j === xi.length - 1 ? 'r' : ''}" style="left:${(i / Math.max(1, n1) * 100).toFixed(2)}%">${esc(f3Ax(D.days[i]))}</span>`).join('');
@@ -5880,11 +6183,12 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   function f3sStats(D) {
     const row = ([k, nm, c, sc]) => {
       const a = D[k].filter(v => v != null), e = D.ext[k]; if (!a.length || !e) return '';
-      const now = a[a.length - 1], avg = a.reduce((x, y) => x + y, 0) / a.length;
-      const cell = w => { const i = e[w]; return `<td class="r"><button type="button" class="f3s-v" data-f3k="${k}" data-f3i="${i}" aria-pressed="false" aria-label="${nm}: ${w === 'lo' ? T('минимум', 'low') : T('максимум', 'high')} ${D[k][i]}, ${esc(f3Date(D.days[i]))}"><b>${D[k][i]}</b><span>${esc(f3Date(D.days[i]))}</span></button></td>`; };
-      return `<tr><td><i class="mk" style="background:${c}"></i>${nm}</td><td class="r"><b style="color:${fngCol(now, sc)}">${now}</b></td>${cell('lo')}${cell('hi')}<td class="r"><b>${n(avg, 0)}</b></td></tr>`;
+      const now = a[a.length - 1];
+      // минимум и максимум — числа цвета своей зоны: нажатие показывает этот день на графике
+      const cell = w => { const i = e[w], v = D[k][i]; return `<td class="r"><button type="button" class="f3s-v" data-f3k="${k}" data-f3i="${i}" aria-pressed="false" aria-label="${nm}: ${w === 'lo' ? T('минимум', 'low') : T('максимум', 'high')} ${v}, ${esc(f3Date(D.days[i]))}"><b style="color:${fngCol(v, sc)}">${v}</b><span>${esc(f3Date(D.days[i]))}</span></button></td>`; };
+      return `<tr><td><i class="mk" style="background:${c}"></i>${nm}</td><td class="r"><b style="color:${fngCol(now, sc)}">${now}</b></td>${cell('lo')}${cell('hi')}</tr>`;
     };
-    return `<table class="pf f3s-t"><thead><tr><th>${T('За период', 'In period')}</th><th class="r">${T('Сейчас', 'Now')}</th><th class="r">${T('Мин', 'Low')}</th><th class="r">${T('Макс', 'High')}</th><th class="r">${T('В среднем', 'Average')}</th></tr></thead><tbody>${F3K.map(row).join('')}</tbody></table>
+    return `<table class="pf f3s-t"><thead><tr><th>${T('За период', 'In period')}</th><th class="r">${T('Сейчас', 'Now')}</th><th class="r">${T('Мин', 'Low')}</th><th class="r">${T('Макс', 'High')}</th></tr></thead><tbody>${F3K.map(row).join('')}</tbody></table>
       <p class="note f3s-tn">${T('Нажмите на число — на графике покажется этот день.', 'Tap a number to see that day on the chart.')}</p>`;
   }
   function f3sBody() {
@@ -5936,17 +6240,28 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     if (k >= 0 && k < D.days.length - 1) { F3S.pin = k; f3sSet(k, true); } else f3sSet(null, false);
   }
   const f3sAt = (pl, e) => { const D = F3S.D, r = pl.getBoundingClientRect(); return D && r.width ? Math.round(Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * (D.days.length - 1)) : 0; };
+  // палец можно ставить и на подписи осей: левее графика — первый день, правее — последний. Нажатие на точку минимума или
+  // максимума — этот день; если с точки повели пальцем — обычное ведение по дням
   document.addEventListener('pointerdown', e => {
-    const pl = e.target.closest && e.target.closest('.f3s-plot'); if (!pl) return;
+    const gz = e.target.closest && e.target.closest('.f3s-g'); if (!gz) return;
+    const pl = gz.querySelector('.f3s-plot'); if (!pl) return;
     const dot = e.target.closest('.f3s-p');
-    if (dot) { F3S.drag = null; f3sShow(dot.dataset.k, +dot.dataset.i); return; }
+    F3S.down = { x: e.clientX, dot, pl };
+    if (dot) { F3S.drag = null; return; }
     F3S.drag = pl; F3S.pin = f3sAt(pl, e); f3sSet(F3S.pin, true);
   });
   document.addEventListener('pointermove', e => {
-    if (F3S.drag) { F3S.pin = f3sAt(F3S.drag, e); f3sSet(F3S.pin, true); return; }
+    const d = F3S.down;
+    if (d && d.dot && !F3S.drag && Math.abs(e.clientX - d.x) > 8) F3S.drag = d.pl;
+    if (F3S.drag) { const i = f3sAt(F3S.drag, e); if (i !== F3S.pin) { F3S.pin = i; f3sSet(i, true); } return; }
     const pl = e.pointerType === 'mouse' && e.target.closest && e.target.closest('.f3s-plot'); if (pl && F3S.pin == null) f3sSet(f3sAt(pl, e), true);
   });
-  ['pointerup', 'pointercancel'].forEach(t => document.addEventListener(t, () => { F3S.drag = null; }));
+  document.addEventListener('pointerup', () => {
+    const d = F3S.down; F3S.down = null;
+    if (d && d.dot && !F3S.drag) { f3sShow(d.dot.dataset.k, +d.dot.dataset.i); haptic(); }
+    F3S.drag = null;
+  });
+  document.addEventListener('pointercancel', () => { F3S.drag = null; F3S.down = null; });
   document.addEventListener('pointerout', e => { const pl = e.pointerType === 'mouse' && e.target.closest && e.target.closest('.f3s-plot'); if (pl && F3S.pin == null && !(e.relatedTarget && pl.contains(e.relatedTarget))) f3sSet(null, false); });
   document.addEventListener('click', e => {
     if (!e.target.closest) return;
@@ -6524,8 +6839,8 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
         <li><b>The day, step by step</b> — the ▶ button in “The last 24 hours”. Tap the right side for the next slide, the left side for the previous one; hold your finger down to pause. <b>Swipe up or down to close.</b></li>
         <li><b>Bottom cards</b> close with a swipe down on the top handle, or a tap outside the card. A card opened from another card has a <b>‹</b> arrow to go back.</li>
         <li><b>Bottom menu</b>: tap a section — or press the menu and slide your finger along it: the highlight follows your finger, and the section under it opens when you let go.</li>
-        <li><b>Price chart on Home</b> works like the one in Charts: drag it to go back in time, pinch to zoom. Press and hold to bring up crosshairs — the price at your finger’s height appears on the right, and the top shows the price, what 1 million DOG cost and the market cap at that moment, plus the change from then to now. Let go and it stays put; tap a candle to pin it. The <b>Now</b> button returns to the current price.</li></ul></div>
-      <div><h3>Home</h3><p>At the top is <b>Fear &amp; Greed</b>: two indices of the whole crypto market (alternative.me and CoinMarketCap) and our own DOG index. The number sits right in the gauge: 0 = fear, 100 = greed. Tap one for what goes into it and its history next to the price; the dots on the chart are the index’s turning points — tap one to see its day. Tap the <b>Fear &amp; Greed</b> heading for all three on one chart, from 30 days to all time: slide your finger to see all three numbers on any day. Tap an index’s card to bring its line forward (the others fade); below is each index’s low, high and average for the period — tap a low or a high to see that day on the chart.</p>
+        <li><b>Price chart on Home</b> works like in exchange apps: slide your finger left or right across it — the top shows that candle’s date and price, what 1 million DOG cost and the market cap at that moment, plus the change from then to now (on Android the phone gives a light tick on every candle). The whole width of the screen counts: put your finger left of the candles for the first one, right of them for the latest. Let go and the candle stays; tap a candle to pin it. Slide up or down to scroll the page as usual. Two fingers move the history and zoom in or out. The <b>Now</b> button returns to the current price.</li></ul></div>
+      <div><h3>Home</h3><p>At the top is <b>Fear &amp; Greed</b>: two indices of the whole crypto market (alternative.me and CoinMarketCap) and our own DOG index. The number sits right in the gauge: 0 = fear, 100 = greed. Tap one for what goes into it and its history next to the price; the dots on the chart are the index’s turning points — tap one to see its day. Tap the <b>Fear &amp; Greed</b> heading for all three on one chart, from 30 days to all time: slide your finger to see all three numbers on any day. Each index has its own colour: alternative.me turquoise, CoinMarketCap blue, DOG apricot — its number sits in a ball of that colour. Tap an index’s card to bring its line forward (the others fade, and its low and high get labels); the dots are each index’s low and high for the period — tap a dot, or a low or a high in the table below, to see that day on the chart.</p>
         <p style="margin-top:8px">Below it: the DOG price in US dollars, what <b>1 million DOG</b> costs, the market cap and a chart of trades on Kraken. The 15m, 1h, 4h, 1d and 1w buttons set how much time one candle covers — 15 minutes, an hour, 4 hours, a day or a week; weekly candles show the whole history since trading began in April 2024, and the line under the chart says what span it shows. The two icons next to them switch between candles (with trading volume) and a simple line.</p>
         <p style="margin-top:8px">Then four tiles: who is stronger near the price (buyers or sellers), how many wallets hold 10M+ DOG (and how many were added or dropped since the date shown), how much DOG sits on exchanges and what share of coins is in profit. Tap a tile for its breakdown. Right under the tiles is the C2 Blockchain row; further down: the last 24 hours, exchange order books and DOG among meme coins.</p></div>
       <div><h3>Order book</h3><p>An order book is a list of orders on an exchange: who is ready to buy or sell DOG and at what price. The Order book section works like an exchange: real prices, asks on top, bids below.</p>
@@ -6563,8 +6878,8 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
         <li><b>Итог дня по шагам</b> — кнопка ▶ в блоке «Главное за сутки». Касание справа — следующий слайд, слева — предыдущий, удерживайте палец, чтобы остановить. <b>Свайп вверх или вниз закрывает.</b></li>
         <li><b>Карточки снизу</b> закрываются свайпом вниз за верхнюю полоску или касанием мимо карточки. У карточки, открытой из другой карточки, есть стрелка <b>‹</b> — назад.</li>
         <li><b>Нижнее меню</b>: нажмите на раздел — или зажмите меню и ведите пальцем: плашка поедет за пальцем, а раздел под ней откроется, когда отпустите.</li>
-        <li><b>График цены на главной</b> устроен как в «Графиках»: тяните его — увидите историю раньше, сводите и разводите пальцы — масштаб. Зажмите палец — появится перекрестие: справа цена на высоте пальца, а вверху — цена, сколько стоил 1 млн DOG и капитализация в тот момент и на сколько цена изменилась с тех пор. Отпустите — перекрестие останется на месте; нажатие на свечу закрепляет её. Кнопка <b>«Сейчас»</b> возвращает текущую цену.</li></ul></div>
-      <div><h3>Главная</h3><p>Вверху — <b>страх и жадность</b>: два индекса всего крипторынка (alternative.me и CoinMarketCap) и наш индекс DOG. Число — прямо в дуге: 0 — страх, 100 — жадность. Нажмите на любой — откроется, из чего он складывается, и его история рядом с ценой; точки на графике — развороты индекса, нажмите на точку — увидите её день. Нажмите на заголовок <b>«Страх и жадность»</b> — откроются все три на одном графике, от 30 дней до всей истории: ведите пальцем — увидите все три числа в любой день. Нажмите на карточку индекса — его линия станет яркой, остальные побледнеют; ниже — минимум, максимум и среднее каждого за период: нажмите на минимум или максимум — на графике покажется этот день.</p>
+        <li><b>График цены на главной</b> — как в приложениях бирж: ведите пальцем влево-вправо — вверху появятся дата и цена свечи под пальцем, сколько стоил 1 млн DOG и капитализация в тот момент и на сколько цена изменилась с тех пор (на Android телефон слегка щёлкает на каждой свече). Работает вся ширина экрана: левее свечей — первая, правее — последняя. Отпустите — свеча останется; нажатие на свечу закрепляет её. Вверх-вниз страница листается как обычно. Двумя пальцами — сдвинуть историю и приблизить или отдалить. Кнопка <b>«Сейчас»</b> возвращает текущую цену.</li></ul></div>
+      <div><h3>Главная</h3><p>Вверху — <b>страх и жадность</b>: два индекса всего крипторынка (alternative.me и CoinMarketCap) и наш индекс DOG. Число — прямо в дуге: 0 — страх, 100 — жадность. Нажмите на любой — откроется, из чего он складывается, и его история рядом с ценой; точки на графике — развороты индекса, нажмите на точку — увидите её день. Нажмите на заголовок <b>«Страх и жадность»</b> — откроются все три на одном графике, от 30 дней до всей истории: ведите пальцем — увидите все три числа в любой день. У каждого индекса свой цвет: alternative.me — бирюзовый, CoinMarketCap — синий, DOG — абрикосовый; его число — в шарике этого цвета. Нажмите на карточку индекса — его линия станет яркой, остальные побледнеют, а у минимума и максимума появятся числа; точки на графике — минимум и максимум каждого за период: нажмите на точку или на минимум и максимум в таблице ниже — на графике покажется этот день.</p>
         <p style="margin-top:8px">Под ним — цена DOG в долларах, сколько стоит <b>1 млн DOG</b>, капитализация и график по сделкам на Kraken. Кнопки 15м, 1ч, 4ч, 1д и 1н выбирают, сколько времени в одной свече: 15 минут, час, 4 часа, день или неделя. Недельные свечи показывают всю историю с начала торгов в апреле 2024 года, а какой отрезок виден сейчас — написано под графиком. Два значка рядом переключают вид: свечи с объёмом торгов или простая линия.</p>
         <p style="margin-top:8px">Ниже четыре плитки: кто сильнее у цены — покупатели или продавцы, сколько кошельков держат от 10 млн DOG (и сколько их прибавилось или убавилось с указанной даты), сколько DOG лежит на биржах и какая доля монет в прибыли. Нажмите на плитку — откроется разбор. Сразу под плитками — строка C2 Blockchain, дальше — главное за сутки, стаканы бирж и DOG среди мем-монет.</p></div>
       <div><h3>Стакан</h3><p>Стакан — список заявок на бирже: кто по какой цене готов купить или продать DOG. На главной у каждой биржи две полоски: <b class="up">зелёная</b> — сколько хотят купить, <b class="down">красная</b> — сколько хотят продать, в пределах 10% от цены. Раздел «Стакан» устроен как на бирже: настоящие цены, продажи сверху, покупки снизу.</p>
@@ -6601,6 +6916,9 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   }
   let rzT = null, lastW = window.innerWidth;
   window.addEventListener('resize', () => { if (Math.abs(window.innerWidth - lastW) < 2) return; lastW = window.innerWidth; clearTimeout(rzT); rzT = setTimeout(drawCharts, 120); });
+  // высота графика на «Главном»: после загрузки шрифтов (меняются высоты строк выше графика) и при повороте экрана
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => fitHomeChart()).catch(() => { });
+  window.addEventListener('orientationchange', () => setTimeout(() => fitHomeChart(true), 350));
   // ---------- ОБНОВИТЬ СЕЙЧАС: свежие данные прямо со страницы + самопроверка ----------
   // Браузер может спросить напрямую только те API, что разрешают запросы со сторонних сайтов (CORS):
   // Kraken, Gate, DigiFinex, CoinW (стаканы), Kraken (свечи), Coinbase (BTC) и DOG DATA (топ-100, число холдеров, переводы от 5 млн).

@@ -94,6 +94,34 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
       await page.evaluate(() => window.scrollTo(0, 0));
       add(!!r && /^(с|since) /.test(r.lab) && r.now && /(Макс|H) \d/.test(r.leg) && /^(за сутки|24h)\|true$/.test(r.back), 'Главная: нажатие на свечу закрепляет её цену, «Сейчас» возвращает текущую', 'Home: tapping a candle pins its price, “Now” returns to the current one', r ? `${r.lab}; ${r.leg.slice(0, 60)}` : 'графика нет');
     }
+    // первый экран (v9): индексы, цена и график целиком — значок TradingView виден над нижним меню; ведение пальцем
+    // наискосок по графику — страница стоит, карточка цены не меняет высоту, вверху — дата и цена свечи
+    {
+      await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(300);
+      const fit = await page.evaluate(() => {
+        const ch = document.querySelector('#pchart'), lg = document.querySelector('#pchart a#tv-attr-logo'), tb = document.querySelector('#tabbar'), f = document.querySelector('#fng-box .fng');
+        if (!ch || !lg || !tb) return null;
+        const c = ch.getBoundingClientRect(), l = lg.getBoundingClientRect(), t = tb.getBoundingClientRect();
+        return { h: Math.round(c.height), vh: innerHeight, logo: Math.round(l.bottom), tab: Math.round(t.top), fng: f ? Math.round(f.getBoundingClientRect().top) : -1 };
+      });
+      add(!!fit && fit.logo > 0 && fit.logo <= fit.tab && fit.h >= 0.3 * fit.vh && fit.fng >= 0, `Главная: первый экран — индексы, цена и весь график (${fit ? fit.h : '—'} px), значок TradingView над нижним меню`, `Home: the first screen shows the indices, the price and the whole chart (${fit ? fit.h : '—'} px), TradingView mark above the bottom menu`, JSON.stringify(fit));
+      let g = null;
+      const b = await page.locator('#pchart').boundingBox();
+      if (b) {
+        const cdp = await ctx.newCDPSession(page);
+        const tch = (type, pts) => cdp.send('Input.dispatchTouchEvent', { type, touchPoints: pts.map((p, i) => ({ x: p[0], y: p[1], id: i })) });
+        const h0 = await page.evaluate(() => [Math.round(scrollY), document.querySelector('.hero-head').getBoundingClientRect().height]);
+        const x0 = b.x + b.width * 0.25, y0 = b.y + b.height * 0.4, hs = [];
+        await tch('touchStart', [[x0, y0]]);
+        for (let k = 1; k <= 10; k++) { await tch('touchMove', [[x0 + b.width * 0.04 * k, y0 + b.width * 0.034 * k]]); await page.waitForTimeout(20); hs.push(await page.evaluate(() => document.querySelector('.hero-head').getBoundingClientRect().height)); }
+        await tch('touchEnd', []); await page.waitForTimeout(300);
+        g = await page.evaluate(() => ({ sy: Math.round(scrollY), lab: document.querySelector('#hlabel').textContent, when: (document.querySelector('#hwhen') || {}).textContent || '' }));
+        g.sy0 = h0[0]; g.jump = Math.round(Math.max(...hs.map(h => Math.abs(h - h0[1]))) * 10) / 10;
+        await page.evaluate(() => { const n = document.querySelector('#hnow'); if (n) n.click(); }); await page.waitForTimeout(300);
+        await cdp.detach().catch(() => { });
+      }
+      add(!!g && g.sy === g.sy0 && g.jump < 0.5 && /^(с|since) /.test(g.lab) && !!g.when && !/^DOG/.test(g.when), 'Главная: ведение пальцем наискосок по графику — страница стоит, карточка цены не прыгает, вверху дата и цена свечи', 'Home: a slanted finger slide over the chart keeps the page still and the price card steady, with the candle’s date and price on top', g ? `${g.when}; ${g.lab}; прокрутка ${g.sy - g.sy0}, сдвиг ${g.jump}` : 'графика нет');
+    }
     const st = await page.evaluate(() => ({ c: document.querySelector('#status').className, t: document.querySelector('#status-t').textContent }));
     add(/\d\d:\d\d/.test(st.t), `Статус в шапке показывает время данных («${st.t.trim().slice(0, 40)}»)`, `Header status shows the data time (“${st.t.trim().slice(0, 40)}”)`);
     add(await noOverflow(), 'Главная: ничего не вылезает за экран телефона', 'Home: nothing overflows the phone screen');
@@ -228,6 +256,11 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
           await page.touchscreen.tap(b.x + b.width * 0.3, b.y + b.height / 2); await page.waitForTimeout(900);
           sh = await page.evaluate(() => { const pl = document.querySelector('#sheet-body .f3s-plot'); if (!pl) return null; const r = pl.getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, h: r.height, paths: [...pl.querySelectorAll('path')].filter(p => (p.getAttribute('d') || '').length > 100).length, read: (document.querySelector('#sheet-body .f3s-read') || {}).textContent || '' }; });
           if (sh) {
+            sh.v9 = await page.evaluate(() => {
+              const c = getComputedStyle(document.documentElement).getPropertyValue('--f3c').trim(), m = c.match(/^#([0-9a-f]{6})$/i);
+              let blue = false; if (m) { const v = parseInt(m[1], 16), r = v >> 16, g = (v >> 8) & 255, b = v & 255; blue = b > 180 && b > r + 60 && b > g + 30; }
+              return { th: document.querySelectorAll('#sheet-body .f3s-t thead th').length, balls: document.querySelectorAll('#sheet-body .f3s-ball').length, c, blue };
+            });
             await page.touchscreen.tap(sh.x + sh.w * 0.6, sh.y + sh.h / 2); await page.waitForTimeout(300);
             read = await page.evaluate(() => (document.querySelector('#sheet-body .f3s-read') || {}).textContent || '');
             // минимум в таблице: нажатие показывает этот день на графике — точка выделена, индекс выбран
@@ -238,6 +271,7 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
         }
       }
       add(f.rows === 3 && f.paths >= 2 && !!sh && sh.h >= 180 && sh.paths >= 3 && /DOG\s*\d/.test(read) && !/^(Сегодня|Today)/.test(read.trim()) && !!sh.min && sh.min.dot === 1 && sh.min.fx, `Графики: «Страх и жадность» — три строки и общий график; нажатие открывает историю трёх индексов, там нажатие показывает день, а нажатие на минимум — его точку`, `Charts: Fear & Greed — three rows and a shared chart; a tap opens the history of all three, where a tap shows that day and tapping a low shows its dot`, `${f.rows} строки, ${f.paths} линии; ${sh ? `лист ${Math.round(sh.h)} px, ${sh.paths} линии; ` : 'листа нет; '}${read.replace(/\s+/g, ' ').slice(0, 60)}`);
+      { const v = sh && sh.v9; add(!!v && v.th === 4 && v.balls === 3 && v.blue, '«Страх и жадность — история»: CoinMarketCap — синий, числа индексов — в шариках цвета линии, колонки «В среднем» нет', 'Fear & Greed history: CoinMarketCap in blue, index numbers in balls of their line colour, no “Average” column', JSON.stringify(v || null)); }
     }
     add(await page.evaluate(() => !document.querySelector('#p-charts .tv-wait')), 'Графики: ничего не «зависло» на загрузке', 'Charts: nothing is stuck loading');
     add(await noOverflow(), 'Графики: ничего не вылезает за экран телефона', 'Charts: nothing overflows the phone screen');

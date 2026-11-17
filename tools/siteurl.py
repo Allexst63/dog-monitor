@@ -8,8 +8,9 @@
     python3 tools/siteurl.py <папка сайта>
 
 Запускается в GitHub Actions перед выкладкой: считает адрес по имени репозитория (GITHUB_REPOSITORY) и, если он
-поменялся, записывает его в data/site.json и в ссылки превью (og:url, og:image, hreflang) в index.html и в
-classic/index.html (прежний вид сайта)."""
+поменялся, записывает его в data/site.json и в ссылки превью (og:url, og:image, hreflang) в index.html.
+classic/index.html с 17.11.2026 — только переадресация на главную (прежний вид сайта убран); её тоже проверяем,
+но адресов в ней нет."""
 import json
 import os
 import re

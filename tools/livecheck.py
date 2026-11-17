@@ -37,7 +37,7 @@ def main(site, base):
         time.sleep(20)
     print(f'LIVE version: сайт {got}, репозиторий {want}, ждали {time.time() - t0:.0f} с')
     bad = [] if got == want else [f'сайт не обновился за {time.time() - t0:.0f} с (на сайте {got})']
-    for f, need in (('', b'DOG Monitor'), ('sw.js', b'dogmon-'), ('vendor/lightweight-charts-5.0.8.js', b'Lightweight Charts'),
+    for f, need in (('', b'DOG Monitor'), ('sw.js', b'dogmon-'), ('vendor/lightweight-charts-5.0.8-dm1.js', b'Lightweight Charts'),
                     ('data/live.json', b'"top100"'), ('data/prices.json', b'"d"'), ('data/selfcheck.json', b'"items"'), ('manifest.webmanifest', b'"icons"')):
         try:
             st, body = get(base + f)
