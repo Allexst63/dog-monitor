@@ -1,9 +1,7 @@
-// DOG Monitor — мгновенный запуск и офлайн-копия сайта (service worker).
-// Страница: сразу из сохранённой копии, свежая версия скачивается следом (если отличается — страница узнаёт об этом
-//   и перезагружается сама). Библиотека графиков, шрифты и значки не меняются — из кэша.
-// data/*.json: сначала сеть, при сбое — последняя сохранённая копия (страница и сама хранит последние данные).
-// Другие страницы сайта (например, /classic/ — теперь только переадресация на главную) — из сети, их не подменяем главной страницей.
-// Запросы к биржам и DOG DATA (другие сайты) не трогаем.
+// DOG Monitor service worker: instant start and an offline copy of the site.
+// Page: served from the saved copy at once; the fresh version downloads next (if it differs, the page is told and reloads itself).
+// Chart library, fonts and icons never change — from the cache. data/*.json: network first, the last saved copy on failure.
+// Other pages of the site (e.g. /classic/, now only a redirect) — network only. Requests to exchanges and DOG DATA are not touched.
 const CACHE = 'dogmon-v7';
 const SHELL = new URL('./', self.location).href;
 const CORE = ['manifest.webmanifest', 'favicon.svg', 'icons/moon.svg', 'icons/c2-lion-light.png', 'icons/c2-lion-dark.png', 'fonts/inter-400.woff', 'fonts/inter-500.woff', 'fonts/inter-600.woff', 'fonts/inter-700.woff', 'fonts/inter-display-600.woff', 'fonts/inter-display-700.woff', 'fonts/inter-mark.woff', 'icons/icon-192.png', 'icons/apple-touch-icon.png', 'vendor/lightweight-charts-5.0.8-dm1.js'];
@@ -20,10 +18,8 @@ self.addEventListener('activate', e => {
     .then(() => self.clients.claim()));
 });
 
-// ключ без ?v=… — чтобы без сети нашлась последняя версия файла
 const keyOf = req => { const u = new URL(req.url); u.search = ''; u.hash = ''; return u.href; };
 
-// страница: сохранённая копия сразу, обновление — в фоне
 async function shell(e) {
   const cache = await caches.open(CACHE);
   const cached = await cache.match(SHELL);
@@ -34,7 +30,7 @@ async function shell(e) {
     let changed = false;
     if (old) { try { const [a, b] = await Promise.all([old.text(), r.clone().text()]); changed = a !== b; } catch (er) { } }
     await cache.put(SHELL, copy);
-    if (changed) {            // страница, которая сейчас открывается, ещё не готова слушать — сообщаем чуть позже
+    if (changed) {
       await new Promise(x => setTimeout(x, 2500));
       (await self.clients.matchAll({ type: 'window', includeUncontrolled: true })).forEach(c => c.postMessage({ type: 'dogmon-shell' }));
     }
@@ -49,14 +45,14 @@ self.addEventListener('fetch', e => {
   if (req.method !== 'GET') return;
   const u = new URL(req.url);
   if (u.origin !== self.location.origin) return;
-  if (u.pathname.includes('/data/snapshots/')) return;            // архив сводок: только сеть, в кэше не копим
+  if (u.pathname.includes('/data/snapshots/')) return;
   const key = keyOf(req);
   if (key === SHELL || key === SHELL + 'index.html') {
     if (/[?&]nosw=1\b/.test(u.search)) return;
     e.respondWith(shell(e));
     return;
   }
-  if (req.mode === 'navigate') {                                  // другие страницы сайта — только из сети, без сети — из копии
+  if (req.mode === 'navigate') {
     e.respondWith(fetch(req).catch(() => caches.match(key).then(m => m || caches.match(SHELL)).then(m => m || Response.error())));
     return;
   }

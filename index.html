@@ -1694,6 +1694,51 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
 .f3s-v{padding:4px 8px;margin:-4px -8px -4px 0;border-radius:10px;border:1px solid transparent}
 .f3s-v b{text-decoration:none;font-size:15px}
 .f3s-v[aria-pressed="true"]{background:var(--surface-3);border-color:var(--line)}
+
+/* ===== v12 ===== */
+/* back to the latest candle — appears when a chart was scrolled into the past */
+.ch-last{position:absolute;right:64px;bottom:36px;z-index:4;width:32px;height:32px;padding:0;border-radius:50%;border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 92%,transparent);color:var(--ink-2);display:grid;place-items:center;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.16);-webkit-tap-highlight-color:transparent}
+.ch-last[hidden]{display:none}
+.ch-last svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ch-last:active{transform:scale(.94)}
+/* earlier candles are on their way (shown only while the chart sits at its left edge) */
+.ch-more{position:absolute;left:8px;top:42%;z-index:4;display:flex;align-items:center;gap:6px;padding:4px 10px 4px 8px;border-radius:999px;border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 92%,transparent);font-size:11.5px;color:var(--ink-3);pointer-events:none}
+.ch-more[hidden]{display:none}
+.ch-more .spinner{width:11px;height:11px;border-width:1.5px}
+#tvchart > .ch-more{top:120px}
+/* liquidity map (Charts) */
+.lq-wrap{display:flex;flex-direction:column;gap:10px}
+@media (min-width:900px){.lq-wrap{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:18px;align-items:start}}
+.lqbox{position:relative;touch-action:pan-y;-webkit-user-select:none;user-select:none;outline:none;border-radius:10px}
+.lqbox:focus-visible{box-shadow:0 0 0 2px var(--k1)}
+.lqbox svg{display:block;width:100%;height:auto;overflow:visible}
+.lqbox .lq-b{fill:var(--bid)} .lqbox .lq-a{fill:var(--ask)}
+.lqbox .lq-t{fill:var(--ink-3);opacity:.42}
+.lqbox .lq-grid{stroke:var(--line-2);stroke-width:1}
+.lqbox .lq-ax{font-size:10.5px;fill:var(--ink-3);font-variant-numeric:tabular-nums}
+.lqbox .lq-h{font-size:11px;font-weight:600;fill:var(--ink-3)}
+.lqbox .lq-v,.lqbox .lq-side,.lqbox .lq-zt{paint-order:stroke;stroke:var(--surface);stroke-width:3px;stroke-linejoin:round}
+.lqbox .lq-v{font-size:10.5px;font-weight:600;fill:var(--ink-2);font-variant-numeric:tabular-nums}
+.lqbox .lq-side{font-size:10px;fill:var(--ink-3)}
+.lqbox .lq-now{stroke:var(--ink);stroke-width:1.5}
+.lqbox .lq-nowb{fill:var(--ink)} .lqbox .lq-nowt{font-size:10.5px;font-weight:650;fill:var(--surface);font-variant-numeric:tabular-nums}
+.lqbox .lq-zone{fill:var(--k1);opacity:.13} .lqbox .lq-zl{stroke:var(--k1);stroke-width:1.5}
+.lqbox .lq-zt{font-size:10.5px;font-weight:600;fill:var(--ink-2)}
+.lqbox .lq-chip rect{fill:var(--surface-3);stroke:var(--k1);stroke-width:1} .lqbox .lq-chip text{font-size:10.5px;font-weight:600;fill:var(--ink-2)}
+.lqbox .lq-hit{fill:transparent;cursor:pointer}
+.lqbox .lq-selr{fill:var(--ink);opacity:.07}
+.lq-info{min-height:52px;font-size:12.5px;line-height:1.5;color:var(--ink-2);padding:6px 8px;border-radius:10px;background:color-mix(in srgb,var(--ink) 4%,transparent)}
+.lq-info b{color:var(--ink)} .lq-info .up{color:var(--up)} .lq-info .down{color:var(--down)}
+.lq-sum{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px;font-size:13px;line-height:1.45;color:var(--ink-2)}
+.lq-sum li{display:flex;gap:8px;align-items:flex-start} .lq-sum b{color:var(--ink)}
+.lq-sw{display:inline-block;flex:none;width:10px;height:10px;border-radius:3px;margin-top:4px;background:var(--ink-3)}
+.lq-sw.b{background:var(--bid)} .lq-sw.a{background:var(--ask)} .lq-sw.t{background:color-mix(in srgb,var(--ink-3) 50%,transparent)} .lq-sw.c{background:color-mix(in srgb,var(--k1) 35%,transparent);box-shadow:inset 0 0 0 1.5px var(--k1)} .lq-sw.n{background:var(--ink-3)}
+.lq-leg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--ink-3);margin-top:10px}
+.lq-leg span{display:inline-flex;align-items:center;gap:6px} .lq-leg .lq-sw{margin-top:0}
+.lqsec .ch-head .note{display:block;margin-top:2px}
+.lq-out{display:flex;gap:8px;align-items:flex-start;margin:0 0 8px;font-size:12.5px;line-height:1.45;color:var(--ink-2)}
+.lq-out[hidden]{display:none} .lq-out b{color:var(--ink)} .lq-out .lq-sw{margin-top:4px}
+.linkbtn{border:0;background:none;padding:0;font:inherit;font-weight:600;color:var(--k1);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
 </style>
 </head>
 <body>
@@ -2347,9 +2392,10 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   function heroRows() {
     const tf = S.htf, raw = typeof chInstant === 'function' ? chInstant(tf) : null;
     if (!raw || raw.length < 2) return null;
-    const rows = chWithLive(raw, tf);
+    const rows = chWithLive(chFull(tf, raw), tf);
     return rows.length >= 2 ? { rows, tf, intra: chIntra(tf), n: Math.min(rows.length, HTF_N[tf]) } : null;
   }
+  const heroKey = R => { const L = R.rows[R.rows.length - 1]; return [R.tf, S.chartMode, R.rows.length, R.rows[0][0], L[0], L[4]].join('|'); };
   const HTF_KIND = { '15m': '15-minute candles', '1h': 'hourly candles', '4h': '4-hour candles', '1d': 'daily candles', '1w': 'weekly candles' };
   const nowPx = () => { const s = V(); return livePrice() || ((s || {}).price || {}).mid || null; };
   const chg24 = () => { const lc = liveChg(); if (lc != null) return lc; const s = V(); return s && s.price && s.price.chg24 != null ? s.price.chg24 : null; };
@@ -2365,10 +2411,10 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const nw = $('#hnow'); if (nw) nw.hidden = !scrub;
   }
   function resetHero() { if (!V()) return; setHero(nowPx(), chg24(), '24h', false); }
-  function scrubHero(v, tSec) {
+  function scrubHero(v, tSec, gate) {
     if (!HC) return;
     const d = new Date(tSec * 1000), now = nowPx(), yr = d.getUTCFullYear() !== new Date().getUTCFullYear() ? ' ' + d.getUTCFullYear() : '';
-    const when = HC.intra ? dml(d) + ', ' + tl(d) : (HC.tf === '1w' ? 'Week of ' : '') + fuDM(tSec) + yr;
+    const when = (HC.intra ? dml(d) + ', ' + tl(d) : (HC.tf === '1w' ? 'Week of ' : '') + fuDM(tSec) + yr) + (gate ? ' · Gate' : '');
     setHero(v, now && v ? (now / v - 1) * 100 : null, 'since then', true, when);
   }
   function chartLabel(R) {
@@ -2422,7 +2468,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   function heroAt(k) {
     if (!HC || !HC.rows[k]) return;
     const r = HC.rows[k];
-    if (k === HC.rows.length - 1) resetHero(); else scrubHero(r[4], r[0]);
+    if (k === HC.rows.length - 1) resetHero(); else scrubHero(r[4], r[0], r[6]);
     hlegSet(k);
   }
   function heroPin(set) {
@@ -2447,11 +2493,17 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   function hwhatSync() {
     cancelAnimationFrame(hwhatSync.f);
     hwhatSync.f = requestAnimationFrame(() => {
-      const w = $('#hwhat'); if (!w || !HC) return;
+      if (!HC) return;
       let lr = null; try { lr = HC.chart.timeScale().getVisibleLogicalRange(); } catch (e) { }
       const L = HC.rows.length;
+      if (lr && lr.from < Math.max(MORE_AT, lr.to - lr.from) && chCanMore(HC.tf)) chMore(HC.tf);
+      chMoreUi();
+      lastSync(HC.el, HC.chart, lr, L);
+      const w = $('#hwhat'); if (!w) return;
       if (!lr) { w.textContent = HTF_WHAT[HC.tf]; return; }
       const a = Math.max(0, Math.min(L - 1, Math.ceil(lr.from))), b = Math.max(0, Math.min(L - 1, Math.floor(lr.to)));
+      const src = $('#hsrc'), g0 = !!(HC.rows[a] || [])[6], g1 = !!(HC.rows[b] || [])[6];
+      if (src) { const t = g1 ? 'Gate · DOG/USDT' : g0 ? 'Gate + Kraken' : 'Kraken · DOG/USD'; if (src.textContent !== t) src.textContent = t; }
       if (b >= L - 1 && Math.abs(b - a + 1 - HC.n) <= 1) { w.textContent = HTF_WHAT[HC.tf]; return; }
       const yr = t => FU_Y.format(ut(t));
       const t0 = HC.Tm(HC.rows[a]), t1 = HC.Tm(HC.rows[b]);
@@ -2460,6 +2512,54 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       else txt = yr(t0) === yr(t1) ? `${fuDM(t0)} – ${fuDM(t1)} ${yr(t1)}` : `${fuDM(t0)} ${yr(t0)} – ${fuDM(t1)} ${yr(t1)}`;
       w.textContent = HTF_KIND[HC.tf] + ' · ' + txt;
     });
+  }
+  // round "»" button: back to the latest candle when the chart was scrolled into the past
+  function lastBtn(go) {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'ch-last'; b.hidden = true; b.title = 'Back to the latest candle'; b.setAttribute('aria-label', b.title);
+    b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l6 6-6 6M13 6l6 6-6 6"/></svg>';
+    b.addEventListener('click', e => { e.stopPropagation(); go(); });
+    return b;
+  }
+  // glide back to the newest candle (ease-out, ~0.4 s, however far away the chart was)
+  function toEnd(chart, endAt) {
+    let lr = null; try { lr = chart.timeScale().getVisibleLogicalRange(); } catch (e) { }
+    if (!lr) return;
+    const len = lr.to - lr.from, f0 = lr.from, t0 = performance.now(), D = RM ? 1 : 380;
+    const step = now => {
+      const end = endAt(); if (end == null) return;
+      const k = Math.min(1, (now - t0) / D), e = 1 - Math.pow(1 - k, 3), f = f0 + (end - len - f0) * e;
+      try { chart.timeScale().setVisibleLogicalRange({ from: f, to: f + len }); } catch (er) { return; }
+      if (k < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+  function lastSync(box, chart, lr, L, top) {
+    const b = box && box.querySelector(':scope > .ch-last'); if (!b) return;
+    const away = !!lr && lr.to < L - 1.5;
+    if (b.hidden === away) b.hidden = !away;
+    if (!away) return;
+    let pw = 56; try { pw = chart.priceScale('right').width() || pw; } catch (e) { }
+    b.style.right = (pw + 8) + 'px';
+    if (top != null) { b.style.top = top + 'px'; b.style.bottom = 'auto'; }
+  }
+  // earlier candles arrived: put them in front without rebuilding the chart (a finger or a glide keeps going)
+  function heroGrow() {
+    if (!HC || !HC.el.isConnected || S.tab !== 'overview') return;
+    const R = heroRows(); if (!R || R.tf !== HC.tf) return;
+    const N = R.rows.length - HC.rows.length;
+    if (N <= 0) return;
+    if (!R.rows[N] || R.rows[N][0] !== HC.rows[0][0]) { drawPrice(true); return; }
+    let lr = null; try { lr = HC.chart.timeScale().getVisibleLogicalRange(); } catch (e) { }
+    try {
+      HC.fill(R.rows);
+      HC.rows = R.rows; HC.at = new Map(R.rows.map((r, k) => [HC.Tm(r), k])); HC.key = heroKey(R);
+      if (HC.pin != null) HC.pin += N;
+      if (HG.g && HG.g.k != null) HG.g.k += N;
+      if (lr) HC.chart.timeScale().setVisibleLogicalRange({ from: lr.from + N, to: lr.to + N });
+    } catch (e) { drawPrice(true); return; }
+    if (HC.pin != null) heroPin(true);
+    hwhatSync();
   }
   const hlegMargins = (el, candles, wide) => {
     const h = Math.max(160, el.clientHeight || 300);
@@ -2490,26 +2590,30 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const pf = { type: 'price', precision: 7, minMove: 0.0000001 };
     const vis = R.rows.slice(-R.n);
     let main, vol = null;
+    const fill = rows => {
+      if (candles) main.setData(rows.map(r => ({ time: Tm(r), open: r[1], high: r[2], low: r[3], close: r[4] })));
+      else main.setData(rows.map(r => ({ time: Tm(r), value: r[4] })));
+      if (vol) vol.setData(rows.map(r => ({ time: Tm(r), value: r[5] || 0, color: hexA(r[4] >= r[1] ? C.up : C.down, 0.38) })));
+    };
     try {
       if (candles) {
         main = addSer(chart, 'Candlestick', { upColor: C.up, downColor: C.down, wickUpColor: C.up, wickDownColor: C.down, borderVisible: false, priceFormat: pf, priceLineColor: hexA(C.ink3, 0.8), priceLineStyle: 2 });
-        main.setData(R.rows.map(r => ({ time: Tm(r), open: r[1], high: r[2], low: r[3], close: r[4] })));
         if (R.rows.some(r => r[5] > 0)) {
           vol = addSer(chart, 'Histogram', { priceScaleId: '', priceFormat: { type: 'volume' }, lastValueVisible: false, priceLineVisible: false });
           try { vol.priceScale().applyOptions({ scaleMargins: { top: 0.84, bottom: 0 } }); } catch (e) { }
-          vol.setData(R.rows.map(r => ({ time: Tm(r), value: r[5] || 0, color: hexA(r[4] >= r[1] ? C.up : C.down, 0.38) })));
         }
       } else {
         const col = vis[vis.length - 1][4] >= vis[0][4] ? C.up : C.down;
         main = addSer(chart, 'Area', { lineColor: col, topColor: hexA(col, 0.28), bottomColor: hexA(col, 0), lineWidth: 2, priceFormat: pf, priceLineColor: hexA(C.ink3, 0.7), priceLineStyle: 2, crosshairMarkerRadius: 5, crosshairMarkerBorderColor: C.bg, crosshairMarkerBackgroundColor: col });
-        main.setData(R.rows.map(r => ({ time: Tm(r), value: r[4] })));
       }
+      fill(R.rows);
       const L = R.rows.length;
       if (keep && keep.lr) chart.timeScale().setVisibleLogicalRange({ from: L + keep.lr.from, to: L + keep.lr.to });
       else chart.timeScale().setVisibleLogicalRange({ from: Math.max(0, L - R.n) - 0.5, to: L - 0.5 });
     } catch (e) { try { chart.remove(); } catch (er) { } throw e; }
     const lg = document.createElement('div'); lg.className = 'hleg'; lg.id = 'hleg'; lg.hidden = true; lg.setAttribute('aria-hidden', 'true'); el.appendChild(lg);
-    HC = { chart, main, vol, el, key, rows: R.rows, tf: R.tf, intra, Tm, wide, mode, n: R.n, pin: null, moveAt: 0, at: new Map(R.rows.map((r, k) => [Tm(r), k])) };
+    el.appendChild(lastBtn(() => toEnd(chart, () => HC && HC.chart === chart ? HC.rows.length - 0.5 : null)));
+    HC = { chart, main, vol, el, key, fill, rows: R.rows, tf: R.tf, intra, Tm, wide, mode, n: R.n, pin: null, moveAt: 0, at: new Map(R.rows.map((r, k) => [Tm(r), k])) };
     if (keep && keep.pinT != null) { const k = R.rows.findIndex(r => r[0] === keep.pinT); if (k >= 0 && k < R.rows.length - 1) HC.pin = k; }
     HC.fit = () => { try { chart.priceScale('right').applyOptions({ scaleMargins: hlegMargins(el, candles, wide) }); } catch (e) { } };
     chart.subscribeCrosshairMove(param => {
@@ -2565,19 +2669,30 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     } catch (e) { }
   }
   // ---------- Home chart by finger — like exchange apps ----------
-  const HG = { g: null, on: false, touchAt: 0, hold: 0 };
+  // One finger: slide = scroll the history like a touchpad (with momentum); hold ¼ s = crosshair under the finger
+  // (its date, price and change since then on top); release = live price again. Two fingers: zoom and scroll.
+  const HG = { g: null, on: false, touchAt: 0, hold: 0, mo: 0, redraw: false };
   (function heroTouch() {
     const SLOP = 6, K = 1.2, HOLD = 260;
     const noHold = () => { clearTimeout(HG.hold); HG.hold = 0; };
+    const stopMo = () => { if (HG.mo) { cancelAnimationFrame(HG.mo); HG.mo = 0; } };
     const zone = t => {
       if (S.tab !== 'overview' || !HC || !HC.el || !HC.el.isConnected) return false;
       const r = HC.el.getBoundingClientRect(); if (!r.width) return false;
       const f = HC.el.parentElement && HC.el.parentElement.querySelector('.hero-foot');
       return t.clientY >= r.top && t.clientY <= (f ? f.getBoundingClientRect().bottom : r.bottom);
     };
+    const tsc = () => HC.chart.timeScale();
+    const lrNow = () => { try { return tsc().getVisibleLogicalRange(); } catch (e) { return null; } };
+    const plotW = () => { try { return tsc().width() || HC.el.clientWidth || 300; } catch (e) { return HC.el.clientWidth || 300; } };
+    const setFrom = (from, len) => {
+      const L = HC.rows.length, f = Math.max(-0.5, Math.min(L - 0.5 - len, from));
+      try { tsc().setVisibleLogicalRange({ from: f, to: f + len }); } catch (e) { }
+      return f;
+    };
     const idxAt = clientX => {
-      const ts = HC.chart.timeScale(), r = HC.el.getBoundingClientRect(), L = HC.rows.length;
-      let lr = null; try { lr = ts.getVisibleLogicalRange(); } catch (e) { }
+      const ts = tsc(), r = HC.el.getBoundingClientRect(), L = HC.rows.length;
+      const lr = lrNow();
       const lo = lr ? Math.max(0, Math.ceil(lr.from - 0.5 + 1e-6)) : 0, hi = lr ? Math.min(L - 1, Math.floor(lr.to + 0.5 - 1e-6)) : L - 1;
       const x = clientX - r.left, w = ts.width() || r.width;
       let k = x <= 0 ? lo : x >= w ? hi : Math.round(ts.coordinateToLogical(x));
@@ -2588,7 +2703,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       const row = HC.rows[k]; if (!row) return;
       let pr = row[4];
       try {
-        const r = HC.el.getBoundingClientRect(), y = clientY - r.top, ph = HC.el.clientHeight - (HC.chart.timeScale().height() || 26);
+        const r = HC.el.getBoundingClientRect(), y = clientY - r.top, ph = HC.el.clientHeight - (tsc().height() || 26);
         if (y >= 0 && y <= ph) { const v = HC.main.coordinateToPrice(y); if (v != null && isFinite(v)) pr = v; }
       } catch (e) { }
       try { HC.chart.setCrosshairPosition(pr, HC.Tm(row), HC.main); } catch (e) { }
@@ -2600,23 +2715,47 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       if (k !== g.k) { g.k = k; HC.pin = k === HC.rows.length - 1 ? null : k; haptic(); }
       show(k, t.clientY);
     };
+    // the chart follows the finger exactly; the anchor counts from the end, so earlier candles arriving mid-drag change nothing
+    const pan = (g, t) => {
+      setFrom(g.lr.from + (HC.rows.length - g.L) - (t.clientX - g.x0) / g.bs, g.lr.to - g.lr.from);
+      const now = performance.now(), dt = now - g.lt;
+      if (dt > 0) { const v = (t.clientX - g.lx) / dt; g.v = dt > 50 ? v : g.v * 0.5 + v * 0.5; }
+      g.lx = t.clientX; g.lt = now;
+      HC.moveAt = Date.now();
+    };
+    const glide = v => {
+      stopMo();
+      if (!HC || !isFinite(v) || Math.abs(v) < 0.15) return;
+      v = Math.max(-6, Math.min(6, v));
+      let last = performance.now();
+      const step = now => {
+        HG.mo = 0;
+        if (!HC || S.tab !== 'overview') return;
+        const dt = Math.min(40, Math.max(1, now - last)); last = now;
+        v *= Math.pow(0.95, dt / 16);
+        const lr = lrNow(); if (!lr) return;
+        const len = lr.to - lr.from, f = setFrom(lr.from - v * dt / (plotW() / len), len);
+        if (Math.abs(v) < 0.02 || Math.abs(f - lr.from) < 1e-4) return;
+        HG.mo = requestAnimationFrame(step);
+      };
+      HG.mo = requestAnimationFrame(step);
+    };
     const pinchStart = e => {
-      noHold();
-      const a = e.touches[0], b = e.touches[1], ts = HC.chart.timeScale(), r = HC.el.getBoundingClientRect();
-      let lr = null; try { lr = ts.getVisibleLogicalRange(); } catch (er) { }
+      noHold(); stopMo();
+      const a = e.touches[0], b = e.touches[1], r = HC.el.getBoundingClientRect();
+      const lr = lrNow();
       if (!lr) { HG.g = null; return; }
-      HG.g = { mode: 'pinch', lr: { from: lr.from, to: lr.to }, m0: (a.clientX + b.clientX) / 2 - r.left, d0: Math.max(30, Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY)), w: ts.width() || r.width };
+      HG.g = { mode: 'pinch', lr: { from: lr.from, to: lr.to }, L: HC.rows.length, m0: (a.clientX + b.clientX) / 2 - r.left, d0: Math.max(30, Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY)), w: plotW() };
       HG.on = false;
     };
     const pinchMove = e => {
       const g = HG.g; if (e.touches.length < 2 || !HC) return;
       const a = e.touches[0], b = e.touches[1], r = HC.el.getBoundingClientRect();
       const m = (a.clientX + b.clientX) / 2 - r.left, d = Math.max(30, Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY));
-      const L = HC.rows.length, len0 = g.lr.to - g.lr.from;
+      const L = HC.rows.length, len0 = g.lr.to - g.lr.from, sh = L - g.L;
       const len = Math.max(Math.min(12, L), Math.min(L, len0 * g.d0 / d));
-      const at = g.lr.from + g.m0 / g.w * len0;
-      const from = Math.max(-0.5, Math.min(L - 0.5 - len, at - m / g.w * len));
-      try { HC.chart.timeScale().setVisibleLogicalRange({ from, to: from + len }); } catch (er) { }
+      const at = g.lr.from + sh + g.m0 / g.w * len0;
+      setFrom(at - m / g.w * len, len);
       if (HC.pin != null) heroPin(true);
       HC.moveAt = Date.now();
     };
@@ -2631,6 +2770,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       const t = e.touches[0];
       if (e.target.closest && e.target.closest('a, button, input, select, textarea, label, #tabbar, .topbar, .archive, #story, .sheet-wrap')) return;
       if (!zone(t)) return;
+      stopMo();
       HG.g = { id: t.identifier, x0: t.clientX, y0: t.clientY, mode: null, k: null };
       HG.touchAt = Date.now();
       const g0 = HG.g;
@@ -2647,14 +2787,20 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
         if (dx + dy < SLOP) { e.stopPropagation(); return; }
         noHold();
         if (dy > K * dx) { HG.g = null; return; }
-        g.mode = 'h'; HG.on = true;
+        const lr = lrNow(); if (!lr) { HG.g = null; return; }
+        Object.assign(g, { mode: 'p', lr: { from: lr.from, to: lr.to }, L: HC.rows.length, bs: plotW() / Math.max(1, lr.to - lr.from), v: 0, lx: t.clientX, lt: performance.now() });
+        if (HC.pin != null) { HC.pin = null; heroPin(true); }
       }
       e.stopPropagation(); if (e.cancelable) e.preventDefault();
-      scrub(t);
+      if (g.mode === 'p') pan(g, t); else scrub(t);
     }, { capture: true, passive: false });
     const end = e => {
       const g = HG.g; if (!g) return;
-      if (g.mode === 'pinch') { e.stopPropagation(); if (e.cancelable) e.preventDefault(); if (!e.touches.length) { HG.g = null; HG.touchAt = Date.now(); } return; }
+      if (g.mode === 'pinch') {
+        e.stopPropagation(); if (e.cancelable) e.preventDefault();
+        if (!e.touches.length) { HG.g = null; HG.touchAt = Date.now(); if (HG.redraw) { HG.redraw = false; drawPrice(true); } }
+        return;
+      }
       let t = null; for (const x of e.changedTouches) if (x.identifier === g.id) t = x;
       if (!t) return;
       HG.g = null; HG.on = false; HG.touchAt = Date.now(); noHold();
@@ -2662,6 +2808,8 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       if (!HC) return;
       if (e.type === 'touchend' && e.cancelable) e.preventDefault();
       if (g.mode === 'h') { HC.pin = null; heroPin(true); }
+      if (HG.redraw) { HG.redraw = false; drawPrice(true); }
+      if (g.mode === 'p' && e.type === 'touchend') glide(performance.now() - g.lt > 90 ? 0 : g.v);
     };
     document.addEventListener('touchend', end, { capture: true, passive: false });
     document.addEventListener('touchcancel', end, { capture: true, passive: false });
@@ -2709,8 +2857,9 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       return;
     }
     if (lwState === 'ready') {
-      const L = R.rows[R.rows.length - 1], key = [tf, S.chartMode, R.rows.length, R.rows[0][0], L[0], L[4]].join('|');
+      const key = heroKey(R);
       if (!force && HC && HC.el === el && HC.key === key && el.isConnected) return;
+      if (HC && HC.el === el && el.isConnected && HC.tf === tf && HG.g && HG.g.mode) { HG.redraw = true; return; }
       try { drawLW(el, R, key); el.setAttribute('role', 'img'); el.setAttribute('aria-label', chartLabel(R)); return; }
       catch (e) { killChart(); lwState = 'failed'; }
     }
@@ -3103,7 +3252,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
         try { HC.main.update(S.chartMode !== 'line' ? { time: HC.Tm(r), open: r[1], high: r[2], low: r[3], close: r[4] } : { time: HC.Tm(r), value: r[4] }); } catch (e) { }
       }
     }
-    chLive();
+    chLive(); lqSoon();
     const st = $('#chstats'); if (st && S.tab === 'charts') st.innerHTML = chStatsHtml();
 
     try { document.title = fpd(lp) + ' · ' + 'DOG Monitor'; } catch (e) { }
@@ -3168,7 +3317,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
         </div>
         <div class="hero-ctl"><div class="periods" role="group" aria-label="Candles">${tfb}</div><div class="hmodes" role="group" aria-label="Chart type">${md('candles', 'Candles')}${md('line', 'Line')}</div></div>
         <div class="pchart" id="pchart"></div>
-        <div class="hero-foot"><span>Kraken · DOG/USD</span><span id="hwhat">${esc(HTF_WHAT[S.htf])}</span></div>
+        <div class="hero-foot"><span id="hsrc">Kraken · DOG/USD</span><span id="hwhat">${esc(HTF_WHAT[S.htf])}</span></div>
       </section>`;
     killChart();
     el.innerHTML = `<div class="home">
@@ -5094,13 +5243,13 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   }
   function chWeekly(d1) {
     const days = new Map();
-    if (S.px && S.px.d) for (const k of Object.keys(S.px.d)) { const v = S.px.d[k]; if (v && v[3] > 0) days.set(Date.parse(k + 'T00:00:00Z') / 1000, [0, v[0], v[1], v[2], v[3], 0]); }
+    if (S.px && S.px.d) for (const k of Object.keys(S.px.d)) { const v = S.px.d[k]; if (v && v[3] > 0) days.set(Date.parse(k + 'T00:00:00Z') / 1000, [0, v[0], v[1], v[2], v[3], 0, (S.px.s || {})[k] === 'k' ? 0 : 1]); }
     for (const r of d1 || []) days.set(r[0] - r[0] % 86400, r);
     const out = [];
     for (const t of Array.from(days.keys()).sort((a, b) => a - b)) {
       const r = days.get(t), wk = weekStart(t), L = out[out.length - 1];
-      if (L && L[0] === wk) { L[2] = Math.max(L[2], r[2]); L[3] = Math.min(L[3], r[3]); L[4] = r[4]; L[5] += r[5] || 0; }
-      else out.push([wk, r[1], r[2], r[3], r[4], r[5] || 0]);
+      if (L && L[0] === wk) { L[2] = Math.max(L[2], r[2]); L[3] = Math.min(L[3], r[3]); L[4] = r[4]; L[5] += r[5] || 0; if (r[6]) L[6] = 1; }
+      else out.push([wk, r[1], r[2], r[3], r[4], r[5] || 0, r[6] ? 1 : 0]);
     }
     return out.length > 8 ? out : null;
   }
@@ -5124,13 +5273,107 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       try {
         const r = await upGet('https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=' + CH_TF[tf][0], 12000);
         const rows = ohlcRows(r.d);
-        if (rows && rows.length > 30) { CH.ohlc[tf] = { t: Date.now(), rows }; store.set('chc.' + tf, { t: Date.now(), rows }); return rows; }
+        if (rows && rows.length > 30) { chKeepLost(tf, CH.ohlc[tf] && CH.ohlc[tf].rows, rows); CH.ohlc[tf] = { t: Date.now(), rows }; store.set('chc.' + tf, { t: Date.now(), rows }); return rows; }
       } catch (e) { }
       const old = CH.ohlc[tf] || (chInstant(tf) ? CH.ohlc[tf] : null);
       if (old) { old.t = Date.now() - CH_TTL[tf] + 60e3; return old.rows; }
       return null;
     })().finally(() => { CH.run[tf] = null; });
     return CH.run[tf];
+  }
+  // ---------- deep history: Kraken keeps 720 candles, older ones come from Gate (DOG/USDT) ----------
+  // 1d: data/prices.json (every day since 25 Apr 2024); 15m · 1h · 4h: Gate pages of 1000 candles, loaded when a chart reaches its left edge.
+  // Older rows carry r[6] = 1 (source: Gate) and no volume, so the Kraken volume bars are not mixed with another exchange.
+  const DOG_T0 = Date.UTC(2024, 3, 24) / 1000, MORE_AT = 30;
+  const GATE_TF = { '15m': '15m', '1h': '1h', '4h': '4h' };
+  const CH_OLD = {};
+  let PXD = null;
+  function pxDays() {
+    if (!S.px || !S.px.d) return [];
+    if (PXD && PXD.src === S.px) return PXD.rows;
+    const rows = [];
+    const src = S.px.s || {};
+    for (const d of Object.keys(S.px.d).sort()) { const v = S.px.d[d]; if (v && v[3] > 0) rows.push([Date.parse(d + 'T00:00:00Z') / 1000, v[0], v[1], v[2], v[3], 0, src[d] === 'k' ? 0 : 1]); }
+    PXD = { src: S.px, rows };
+    return rows;
+  }
+  function chFull(tf, raw) {
+    if (!raw || !raw.length) return raw;
+    const older = tf === '1d' ? pxDays() : GATE_TF[tf] && CH_OLD[tf] ? CH_OLD[tf].rows : null;
+    if (!older || !older.length || older[0][0] >= raw[0][0]) return raw;
+    let k = older.length; while (k > 0 && older[k - 1][0] >= raw[0][0]) k--;
+    return older.slice(0, k).concat(raw);
+  }
+  // Kraken's window slides forward with time: candles that drop out of it are kept so the history has no gap
+  function chKeepLost(tf, prev, rows) {
+    if (!GATE_TF[tf] || !prev || !prev.length || !rows || !rows.length) return;
+    const lost = prev.filter(r => r[0] < rows[0][0]);
+    if (!lost.length) return;
+    const o = CH_OLD[tf] = CH_OLD[tf] || { rows: [], done: false, run: null, fail: 0 };
+    const m = new Map(o.rows.map(r => [r[0], r])); lost.forEach(r => m.set(r[0], r));
+    o.rows = [...m.values()].sort((a, b) => a[0] - b[0]);
+  }
+  const chCanMore = tf => !!GATE_TF[tf] && !(CH_OLD[tf] && CH_OLD[tf].done);
+  const chLoadingMore = tf => !!(CH_OLD[tf] && CH_OLD[tf].run);
+  function gateRows(d) {
+    const out = [];
+    for (const a of Array.isArray(d) ? d : []) {
+      const t = parseInt(a[0], 10), c = num(a[2]), h = num(a[3]), lo = num(a[4]), o = num(a[5]);
+      if (t && o > 0 && c > 0 && lo > 0 && h >= lo) out.push([t, o, Math.max(h, o, c), Math.min(lo, o, c), c, 0, 1]);
+    }
+    return out.sort((a, b) => a[0] - b[0]);
+  }
+  function chMore(tf) {
+    if (!chCanMore(tf)) return null;
+    const o = CH_OLD[tf] = CH_OLD[tf] || { rows: [], done: false, run: null, fail: 0 };
+    if (o.run) return o.run;
+    if (o.fail && Date.now() - o.failAt < 15e3 * o.fail) return null;
+    const base = chInstant(tf); if (!base || !base.length) return null;
+    const step = CH_TF[tf][0] * 60;
+    const first = o.rows.length && o.rows[0][0] < base[0][0] ? o.rows[0][0] : base[0][0];
+    const to = first - step;
+    if (to < DOG_T0) { o.done = true; return null; }
+    const url = (a, b) => `https://api.gateio.ws/api/v4/spot/candlesticks?currency_pair=DOG_USDT&interval=${GATE_TF[tf]}&from=${a}&to=${b}`;
+    const from = Math.max(DOG_T0 - DOG_T0 % step, to - 999 * step);
+    // Gate serves at most ~10 000 candles back from now for each interval
+    const lim = Math.floor(Date.now() / 1000 / step) * step - 9990 * step;
+    o.run = (async () => {
+      let rows;
+      try { rows = gateRows((await upGet(url(from, to), 12000)).d); }
+      catch (e) {
+        if (from < lim && to > lim) { try { rows = gateRows((await upGet(url(lim, to), 12000)).d); } catch (e2) { rows = null; } }
+        if (!rows) {
+          o.fail = (o.fail || 0) + 1; o.failAt = Date.now();
+          if (o.fail >= 3 || to <= lim) o.done = true;
+          return 0;
+        }
+      }
+      o.fail = 0;
+      const fresh = rows.filter(r => r[0] < first);
+      if (!fresh.length) { o.done = true; return 0; }
+      o.rows = fresh.concat(o.rows.filter(r => r[0] > fresh[fresh.length - 1][0]));
+      if (fresh.length < 50 || fresh[0][0] - step < DOG_T0) o.done = true;
+      return fresh.length;
+    })().finally(() => { o.run = null; setTimeout(() => chMoreDone(tf), 0); });
+    chMoreUi();
+    return o.run;
+  }
+  // a chart reached its left edge: load earlier candles, then grow every chart of that interval in place
+  function chMoreDone(tf) {
+    if (S.tab === 'overview' && S.htf === tf) heroGrow();
+    if (S.tab === 'charts' && CH.tf === tf) chGrow();
+    chMoreUi();
+  }
+  function chMoreUi() {
+    for (const [box, tf, chart] of [[HC && HC.el, HC && HC.tf, HC && HC.chart], [$('#tvchart'), CH.tv && CH.tv.tf, CH.tv && CH.tv.chart]]) {
+      if (!box || !chart) continue;
+      let lr = null; try { lr = chart.timeScale().getVisibleLogicalRange(); } catch (e) { }
+      let tag = box.querySelector(':scope > .ch-more');
+      const on = chLoadingMore(tf) && lr && lr.from < 3;
+      if (!on) { if (tag) tag.hidden = true; continue; }
+      if (!tag) { tag = document.createElement('div'); tag.className = 'ch-more'; tag.setAttribute('aria-hidden', 'true'); tag.innerHTML = '<span class="spinner"></span>Earlier candles…'; box.appendChild(tag); }
+      tag.hidden = false;
+    }
   }
   function chWithLive(rows, tf) {
     const lp = !S.archived ? livePrice() : null;
@@ -5166,7 +5409,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       });
     }
     if (!raw) { chKill('tv'); el.innerHTML = chWait(); return; }
-    const rows = chWithLive(raw, tf), A = chInd(rows), C = chColors(), intra = chIntra(tf);
+    const rows = chWithLive(chFull(tf, raw), tf), A = chInd(rows), C = chColors(), intra = chIntra(tf);
     const Tm = r => intra ? r[0] + TZ : r[0];
     const keep = CH.tv && CH.tv.tf === tf ? (() => { try { const lr = CH.tv.chart.timeScale().getVisibleLogicalRange(); return lr ? { from: lr.from - CH.tv.rows.length, to: lr.to - CH.tv.rows.length } : null; } catch (e) { return null; } })() : null;
     const pinT = CH.tv && CH.tv.tf === tf && CH.tv.pin != null && CH.tv.rows[CH.tv.pin] ? CH.tv.rows[CH.tv.pin][0] : null;
@@ -5175,31 +5418,26 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const panes = [CH.ind.rsi ? 'rsi' : null, CH.ind.macd ? 'macd' : null].filter(Boolean);
     const H0 = el.clientWidth < 560 ? 280 : 360, HP = el.clientWidth < 560 ? 104 : 120;
     el.style.height = (H0 + panes.length * (HP + 1) + 28) + 'px';
-    const chart = lwChart(el, { timeScale: { borderColor: C.line, rightOffset: 3, barSpacing: intra ? 6 : 7, timeVisible: intra, secondsVisible: false, tickMarkFormatter: tickFmt },
+    const chart = lwChart(el, { timeScale: { borderColor: C.line, rightOffset: 3, barSpacing: intra ? 6 : 7, fixLeftEdge: true, timeVisible: intra, secondsVisible: false, tickMarkFormatter: tickFmt },
       localization: { locale: LOC, timeFormatter: t => intra ? fuDM(t) + ', ' + FU_T.format(ut(t)) : fuDM(t) + ' ' + FU_Y.format(ut(t)) } });
     const pf = { type: 'custom', formatter: p => fpx(p, 1e-7), minMove: 1e-7 };
     const cs = lwSer(chart, 'Candlestick', { upColor: C.up, downColor: C.down, wickUpColor: C.up, wickDownColor: C.down, borderVisible: false, priceFormat: pf }, 0);
-    cs.setData(rows.map(r => ({ time: Tm(r), open: r[1], high: r[2], low: r[3], close: r[4] })));
     const ser = { cs, ma: [], bb: [] };
     ser.vol = lwSer(chart, 'Histogram', { priceScaleId: 'vol', priceFormat: { type: 'custom', formatter: v => qf(v) }, lastValueVisible: false, priceLineVisible: false }, 0);
     try { ser.vol.priceScale().applyOptions({ scaleMargins: { top: 0.8, bottom: 0 } }); } catch (e) { }
-    ser.vol.setData(rows.map(r => ({ time: Tm(r), value: r[5] || 0, color: hexA(r[4] >= r[1] ? C.up : C.down, 0.35) })));
     const maCol = [C.k1, C.k2, C.k5];
     if (CH.ind.ma) A.ma.forEach(([k, v], i) => {
       if (v.filter(x => x != null).length < 2) return;
       const s2 = lwSer(chart, 'Line', { color: maCol[i], lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false, priceFormat: pf }, 0);
-      s2.setData(rows.map((r, j) => v[j] == null ? { time: Tm(r) } : { time: Tm(r), value: v[j] }));
       ser.ma.push([k, s2, maCol[i], v]);
     });
     if (CH.ind.bb) ['u', 'l'].forEach(key => {
       const s2 = lwSer(chart, 'Line', { color: hexA(C.ink3, 0.8) || C.ink3, lineWidth: 1, lineStyle: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false, priceFormat: pf }, 0);
-      s2.setData(rows.map((r, j) => A.bb[j] ? { time: Tm(r), value: A.bb[j][key] } : { time: Tm(r) }));
-      ser.bb.push(s2);
+      ser.bb.push([key, s2]);
     });
     let pi = 1;
     if (CH.ind.rsi) {
       ser.rsi = lwSer(chart, 'Line', { color: C.acc, lineWidth: 2, priceLineVisible: false, lastValueVisible: true, priceFormat: { type: 'custom', formatter: v => n(v, 0), minMove: 1 }, autoscaleInfoProvider: () => ({ priceRange: { minValue: 0, maxValue: 100 } }) }, pi);
-      ser.rsi.setData(rows.map((r, j) => A.rsi[j] == null ? { time: Tm(r) } : { time: Tm(r), value: A.rsi[j] }));
       [[70, C.down], [30, C.up]].forEach(([p, col]) => ser.rsi.createPriceLine({ price: p, color: col, lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: '' }));
       ser.rsi.createPriceLine({ price: 50, color: C.line, lineWidth: 1, lineStyle: 1, axisLabelVisible: false, title: '' });
       ser.rsiPane = pi++;
@@ -5207,34 +5445,42 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     if (CH.ind.macd) {
       const mf = { type: 'custom', formatter: v => sg(v, 2) + '%', minMove: 0.0001 };
       ser.hist = lwSer(chart, 'Histogram', { priceFormat: mf, priceLineVisible: false, lastValueVisible: false }, pi);
-      ser.hist.setData(rows.map((r, j) => {
-        const h = A.hist[j]; if (h == null) return { time: Tm(r) };
-        const p = A.hist[j - 1], grow = p == null || Math.abs(h) >= Math.abs(p);
-        return { time: Tm(r), value: h, color: hexA(h >= 0 ? C.up : C.down, grow ? 0.85 : 0.4) };
-      }));
       ser.macd = lwSer(chart, 'Line', { color: C.k1, lineWidth: 2, priceLineVisible: false, lastValueVisible: true, priceFormat: mf }, pi);
-      ser.macd.setData(rows.map((r, j) => A.mp[j] == null ? { time: Tm(r) } : { time: Tm(r), value: A.mp[j] }));
       ser.sig = lwSer(chart, 'Line', { color: C.k2, lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false, priceFormat: mf }, pi);
-      ser.sig.setData(rows.map((r, j) => A.sig[j] == null ? { time: Tm(r) } : { time: Tm(r), value: A.sig[j] }));
       ser.macdPane = pi++;
     }
+    chFill({ ser, Tm, C }, rows, A);
     lwPanes(chart, [H0].concat(panes.map(() => HP)));
     try { if (ser.rsiPane) chart.priceScale('right', ser.rsiPane).applyOptions({ scaleMargins: { top: 0.1, bottom: 0.08 } }); if (ser.macdPane) chart.priceScale('right', ser.macdPane).applyOptions({ scaleMargins: { top: 0.12, bottom: 0.08 } }); } catch (e) { }
     try {
       if (keep) chart.timeScale().setVisibleLogicalRange({ from: rows.length + keep.from, to: rows.length + keep.to });
       else { const nB = intra ? (el.clientWidth < 560 ? 70 : 120) : (el.clientWidth < 560 ? 90 : 160); chart.timeScale().setVisibleLogicalRange({ from: Math.max(0, rows.length - nB), to: rows.length + 2 }); }
     } catch (e) { }
-    CH.tv = { chart, tf, rows, A, ser, H0, HP, Tm, pin: null };
+    CH.tv = { chart, tf, rows, A, ser, H0, HP, Tm, C, pin: null };
     if (pinT != null) { const k = rows.findIndex(r => r[0] === pinT); if (k >= 0 && k < rows.length - 1) CH.tv.pin = k; }
     tvFixAll(el);
     const box = el.parentElement;
-    $$('.tv-pl', box).forEach(x => x.remove());
+    $$(':scope > .tv-pl, :scope > .ch-last', box).forEach(x => x.remove());
     const mk = id => { const d = document.createElement('div'); d.className = 'tv-pl'; d.id = id; d.style.visibility = 'hidden'; box.appendChild(d); return d; };
     if (ser.rsiPane) mk('tvl-rsi');
     if (ser.macdPane) mk('tvl-macd');
     requestAnimationFrame(() => requestAnimationFrame(tvLabels)); setTimeout(tvLabels, 300);
+    box.appendChild(lastBtn(() => toEnd(chart, () => CH.tv && CH.tv.chart === chart ? CH.tv.rows.length - 1 + 3 : null)));
+    const onRange = () => {
+      cancelAnimationFrame(onRange.f);
+      onRange.f = requestAnimationFrame(() => {
+        const tv = CH.tv; if (!tv || tv.chart !== chart) return;
+        let lr = null; try { lr = chart.timeScale().getVisibleLogicalRange(); } catch (e) { }
+        if (lr && lr.from < Math.max(MORE_AT, lr.to - lr.from) && chCanMore(tf)) chMore(tf);
+        chMoreUi();
+        lastSync(box, chart, lr, tv.rows.length + 3, el.offsetTop + H0 - 40);
+      });
+    };
+    try { chart.timeScale().subscribeVisibleLogicalRangeChange(onRange); } catch (e) { }
+    onRange();
     chart.subscribeCrosshairMove(param => {
       if (!CH.tv || CH.tv.chart !== chart) return;
+      const rows = CH.tv.rows;
       let i = CH.tv.pin != null ? CH.tv.pin : rows.length - 1;
       if (param && param.time != null) { const t = param.time; const k = rows.findIndex(r => Tm(r) === t); if (k >= 0) i = k; }
       if (param && param.time != null && param.point && TOUCH.n === 1 && param.time !== CH.tv.ht && Math.abs(el.getBoundingClientRect().left + param.point.x - TOUCH.x) < 32) haptic();
@@ -5243,12 +5489,46 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     });
     chart.subscribeClick(param => {
       if (!CH.tv || CH.tv.chart !== chart || !param || param.time == null) return;
-      const k = rows.findIndex(r => Tm(r) === param.time); if (k < 0) return;
+      const rows = CH.tv.rows, k = rows.findIndex(r => Tm(r) === param.time); if (k < 0) return;
       CH.tv.pin = CH.tv.pin === k || k === rows.length - 1 ? null : k;
       chPin();
     });
     chPin();
     chRead();
+  }
+  // every series of the Charts chart from one set of rows (first draw and when earlier candles arrive)
+  function chFill(tv, rows, A) {
+    const { ser, Tm, C } = tv, at = (v, j, r) => v[j] == null ? { time: Tm(r) } : { time: Tm(r), value: v[j] };
+    ser.cs.setData(rows.map(r => ({ time: Tm(r), open: r[1], high: r[2], low: r[3], close: r[4] })));
+    ser.vol.setData(rows.map(r => ({ time: Tm(r), value: r[5] || 0, color: hexA(r[4] >= r[1] ? C.up : C.down, 0.35) })));
+    ser.ma.forEach(m => { const v = (A.ma.find(x => x[0] === m[0]) || [])[1] || []; m[3] = v; m[1].setData(rows.map((r, j) => at(v, j, r))); });
+    ser.bb.forEach(([key, s2]) => s2.setData(rows.map((r, j) => A.bb[j] ? { time: Tm(r), value: A.bb[j][key] } : { time: Tm(r) })));
+    if (ser.rsi) ser.rsi.setData(rows.map((r, j) => at(A.rsi, j, r)));
+    if (ser.hist) {
+      ser.hist.setData(rows.map((r, j) => {
+        const h = A.hist[j]; if (h == null) return { time: Tm(r) };
+        const p = A.hist[j - 1], grow = p == null || Math.abs(h) >= Math.abs(p);
+        return { time: Tm(r), value: h, color: hexA(h >= 0 ? C.up : C.down, grow ? 0.85 : 0.4) };
+      }));
+      ser.macd.setData(rows.map((r, j) => at(A.mp, j, r)));
+      ser.sig.setData(rows.map((r, j) => at(A.sig, j, r)));
+    }
+  }
+  function chGrow() {
+    const tv = CH.tv; if (!tv || !$('#tvchart')) return;
+    const raw = chInstant(tv.tf); if (!raw) return;
+    const rows = chWithLive(chFull(tv.tf, raw), tv.tf), N = rows.length - tv.rows.length;
+    if (N <= 0) return;
+    if (!rows[N] || rows[N][0] !== tv.rows[0][0]) { chDrawTV(); return; }
+    let lr = null; try { lr = tv.chart.timeScale().getVisibleLogicalRange(); } catch (e) { }
+    try {
+      const A = chInd(rows);
+      chFill(tv, rows, A);
+      tv.rows = rows; tv.A = A;
+      if (tv.pin != null) tv.pin += N;
+      if (lr) tv.chart.timeScale().setVisibleLogicalRange({ from: lr.from + N, to: lr.to + N });
+    } catch (e) { chDrawTV(); return; }
+    chPin();
   }
   function chPin() {
     const tv = CH.tv; if (!tv) return;
@@ -5273,7 +5553,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const chg = prev ? (r[4] / prev[4] - 1) * 100 : null;
     const leg = $('#tvleg'), tm = tv.Tm(r), last = i === tv.rows.length - 1;
     const when = chIntra(tv.tf) ? fuDM(tm) + ', ' + FU_T.format(ut(tm)) : (tv.tf === '1w' ? 'week of ' : '') + fuDM(tm) + ' ' + FU_Y.format(ut(tm));
-    if (leg) leg.innerHTML = `<div class="l1"><b>DOG/USD</b><span class="faint">Kraken · ${esc(CH_TF[tv.tf][1])}</span><span class="${chg == null ? '' : chg >= 0 ? 'up' : 'down'}">${chg == null ? '' : sg(chg, 2) + '%'}</span>${last ? '' : `<span class="tv-when${tv.pin === i ? ' pin' : ''}">${esc(when)}</span>`}</div>
+    if (leg) leg.innerHTML = `<div class="l1"><b>DOG/USD</b><span class="faint">${r[6] ? 'Gate' : 'Kraken'} · ${esc(CH_TF[tv.tf][1])}</span><span class="${chg == null ? '' : chg >= 0 ? 'up' : 'down'}">${chg == null ? '' : sg(chg, 2) + '%'}</span>${last ? '' : `<span class="tv-when${tv.pin === i ? ' pin' : ''}">${esc(when)}</span>`}</div>
       <div class="l2"><span>O <b>${fpx(r[1], 1e-7)}</b></span><span>H <b>${fpx(r[2], 1e-7)}</b></span><span>L <b>${fpx(r[3], 1e-7)}</b></span><span>C <b>${fpx(r[4], 1e-7)}</b></span>${tv.ser.vol ? `<span>Vol <b>${qf(r[5])}</b></span>` : ''}</div>
       ${tv.ser.ma.length ? `<div class="l2 ma${tv.ser.ma.length >= 3 ? ' m3' : ''}">${tv.ser.ma.map(([k, , col, v]) => v[i] == null ? '' : `<span><i class="dot" style="background:${col}"></i>SMA ${k} <b>${fpx(v[i], 1e-7)}</b></span>`).join('')}</div>` : ''}`;
     const lr = $('#tvl-rsi'); if (lr) lr.innerHTML = `RSI 14 <b>${A.rsi[i] == null ? '—' : n(A.rsi[i], 1)}</b>`;
@@ -5581,6 +5861,173 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   document.addEventListener('pointerout', e => { if (e.pointerType === 'mouse' && e.target.id === 'mmplot' && !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('#mmplot'))) mmShow(); });
   window.addEventListener('resize', () => { if (S.tab === 'charts' && MM.F) { mmPlot(); mmShow(); } });
 
+  // ---------- liquidity map: big orders waiting in the books, where DOG traded, where holders bought ----------
+  // One price axis (log). Left: buy and sell orders of all exchanges combined (DOG per $0.00001 step; the price line splits them).
+  // Middle: how much DOG traded at each price over the last 120 days (Kraken 4-hour candles). Band: the average price holders paid.
+  const LQ = { wide: !!store.get('lqWide', false), sel: null, fetching: false, at: 0 };
+  const LQ_STEP = 1e-5, LQ_NEAR = 0.30, LQ_DAYS = 120;
+  function lqLevels(s) {
+    const h = (s && s.health) || {}, out = [];
+    const hc = holdersCost();
+    if (h.rp > 0) out.push({ k: 'all', p: h.rp, name: 'All DOG', note: 'the average price at which every coin last changed hands' });
+    if (hc && hc.buy > 0) out.push({ k: 'top', p: hc.buy, name: `Top ${hc.k} wallets`, note: 'average buy price of the biggest wallets, exchanges and airdropped coins left out' });
+    return out;
+  }
+  function lqData() {
+    const s = V(); if (!s) return null;
+    let set, ag;
+    try { set = obSet(s, LQ_STEP, 'all'); ag = obAgg(set.keys, s, LQ_STEP); } catch (e) { return null; }
+    const mid = ag.ref || set.mid || curPrice(); if (!mid) return null;
+    const P = curPrice() || mid;
+    const levels = lqLevels(s);
+    let lo = mid * (1 - LQ_NEAR), hi = mid * (1 + LQ_NEAR);
+    if (LQ.wide) for (const l of levels) { lo = Math.min(lo, l.p / 1.12); hi = Math.max(hi, l.p * 1.12); }
+    // display bins: the order-book step near the price, log-spaced when the view is wide
+    const bins = [];
+    if (!LQ.wide) for (let k = Math.floor(lo / LQ_STEP); k * LQ_STEP < hi; k++) bins.push({ a: k * LQ_STEP, b: (k + 1) * LQ_STEP });
+    else { const N = 64, r = Math.pow(hi / lo, 1 / N); for (let i = 0; i < N; i++) bins.push({ a: lo * Math.pow(r, i), b: lo * Math.pow(r, i + 1) }); }
+    for (const x of bins) Object.assign(x, { bq: 0, aq: 0, bv: 0, av: 0, by: {}, tq: 0, big: null });
+    lo = bins[0].a; hi = bins[bins.length - 1].b;
+    const binOf = p => { if (p < lo || p >= hi) return null; if (!LQ.wide) return bins[Math.min(bins.length - 1, Math.floor((p - lo) / LQ_STEP + 1e-9))]; return bins[Math.min(bins.length - 1, Math.floor(Math.log(p / lo) / Math.log(hi / lo) * bins.length))]; };
+    const put = (side, r, at) => {
+      const x = binOf(at); if (!x) return;
+      if (side === 'b') { x.bq += r.q; x.bv += r.v; } else { x.aq += r.q; x.av += r.v; }
+      for (const [k, q] of Object.entries(r.by || {})) if (q > 0) x.by[k] = (x.by[k] || 0) + q;
+      if (r.big > (x.big ? x.big.q : 0)) x.big = { q: r.big, k: r.bigBy, p: r.bigP, side };
+    };
+    for (const r of ag.b) if (r.q > 0) put('b', r, r.p + LQ_STEP / 2);
+    for (const r of ag.a) if (r.q > 0) put('a', r, r.p - LQ_STEP / 2);
+    // traded volume by price: each 4-hour candle's volume spread evenly over its low–high range
+    const c4 = chInstant('4h'), t0 = Date.now() / 1000 - LQ_DAYS * 86400;
+    let traded = false;
+    for (const r of c4 || []) {
+      if (r[0] < t0 || !(r[5] > 0) || r[6]) continue;
+      const a = Math.max(r[3], lo), b = Math.min(r[2], hi); if (!(b >= a)) continue;
+      traded = true;
+      if (r[2] - r[3] < 1e-12) { const x = binOf(r[4]); if (x) x.tq += r[5]; continue; }
+      for (const x of bins) { if (x.b <= r[3] || x.a >= r[2]) continue; x.tq += r[5] * (Math.min(x.b, r[2]) - Math.max(x.a, r[3])) / (r[2] - r[3]); }
+    }
+    const cov = { b: ag.cov.b > 0 ? ag.cov.b : null, a: isFinite(ag.cov.a) ? ag.cov.a : null };
+    const exs = set.keys.map(k => EXN[k] || k);
+    return { s, P, mid, lo, hi, bins, levels, traded, cov, exs, live: set.live, bookT: Math.max(0, ...set.keys.map(k => { const x = obSrc(k, s, LQ_STEP); return x ? x.ft || 0 : 0; })) };
+  }
+  const lqPct = (p, P) => { const v = (p / P - 1) * 100; return Math.abs(v) >= 100 ? '×' + n(p / P, 1) : sg(v, Math.abs(v) < 10 ? 1 : 0) + '%'; };
+  function lqSummary(D) {
+    const bb = D.bins.filter(x => x.bq > 0 && x.b <= D.mid * 1.0001).sort((x, y) => y.bq - x.bq)[0];
+    const ba = D.bins.filter(x => x.aq > 0 && x.a >= D.mid * 0.9999).sort((x, y) => y.aq - x.aq)[0];
+    const near = f => D.bins.reduce((t, x) => { if (x.a >= D.mid * (1 - f) && x.b <= D.mid * 1.0001) t.b += x.bv; if (x.b <= D.mid * (1 + f) && x.a >= D.mid * 0.9999) t.a += x.av; return t; }, { b: 0, a: 0 });
+    const t = near(0.10), h = D.s.health || {}, lv = D.levels;
+    const where = x => { const k = Object.entries(x.by).sort((p, q) => q[1] - p[1])[0]; return k ? ` on ${EXN[k[0]] || k[0]}` : ''; };
+    const out = [];
+    if (bb) out.push(`<li><span class="lq-sw b"></span><span>Biggest buy wall: <b>${qf(bb.bq)} DOG</b> at ${fpd(bb.a)}–${fp(bb.b)} (${lqPct((bb.a + bb.b) / 2, D.P)})${where(bb)}.</span></li>`);
+    if (ba) out.push(`<li><span class="lq-sw a"></span><span>Biggest sell wall: <b>${qf(ba.aq)} DOG</b> at ${fpd(ba.a)}–${fp(ba.b)} (${lqPct((ba.a + ba.b) / 2, D.P)})${where(ba)}.</span></li>`);
+    if (t.b || t.a) out.push(`<li><span class="lq-sw n"></span><span>Within 10% of the price, buyers have <b>${usdC(t.b)}</b> waiting and sellers <b>${usdC(t.a)}</b>${t.b && t.a ? ` — ${t.b >= t.a ? 'more on the buy side' : 'more on the sell side'} (×${n(Math.max(t.b, t.a) / Math.max(1, Math.min(t.b, t.a)), 1)})` : ''}.</span></li>`);
+    const all = lv.find(l => l.k === 'all') || lv[0];
+    if (all) out.push(`<li><span class="lq-sw c"></span><span>Holders paid <b>${fpd(all.p)}</b> per DOG on average — ${all.p > D.P ? `${n(all.p / D.P, 1)}× today’s price` : `${n((1 - all.p / D.P) * 100, 0)}% below today’s price`}${h.profit != null ? `; <b>${n(h.profit, 0)}%</b> of all DOG is worth more now than when it last moved` : ''}.</span></li>`);
+    return `<ul class="lq-sum">${out.join('')}</ul>`;
+  }
+  function lqSvg(D, W) {
+    const H = Math.max(300, Math.min(520, D.bins.length * (W < 520 ? 7.5 : 9) + 30)), top = 22, bot = 8, ph = H - top - bot;
+    const axW = 64, gap = 12, W2 = Math.round((W - axW) * 0.26), W1 = W - axW - gap - W2 - 6, x2 = W1 + gap;
+    const lyHi = Math.log(D.hi), lyLo = Math.log(D.lo), Y = p => top + (lyHi - Math.log(p)) / (lyHi - lyLo) * ph;
+    const maxQ = Math.max(1, ...D.bins.map(x => Math.max(x.bq, x.aq))), maxT = Math.max(1, ...D.bins.map(x => x.tq));
+    const LBL = 40, bl = q => q >= maxQ * 0.004 ? Math.max(1.5, q / maxQ * (W1 - LBL)) : 0, tl = q => q >= maxT * 0.004 ? Math.max(1.5, q / maxT * W2) : 0;
+    const rr = (x, y, w, h, r, cls) => { if (w <= 0 || h <= 0) return ''; r = Math.min(r, h / 2, w); return `<path class="${cls}" d="M${x},${y}h${(w - r).toFixed(1)}a${r},${r} 0 0 1 ${r},${r}v${(h - 2 * r).toFixed(1)}a${r},${r} 0 0 1 -${r},${r}h-${(w - r).toFixed(1)}z"/>`; };
+    let g = '', lab = '';
+    // grid + price ticks
+    const nice = (() => { const span = D.hi - D.lo, raw = span / 6, m = Math.pow(10, Math.floor(Math.log10(raw))), st = [1, 2, 2.5, 5, 10].map(k => k * m).find(k => k >= raw) || raw; const t = []; for (let v = Math.ceil(D.lo / st) * st; v <= D.hi; v += st) t.push(+v.toPrecision(6)); return t; })();
+    const pyy = Y(D.P);
+    for (const v of nice) { const y = Y(v); if (y < top + 6 || y > H - bot - 4 || Math.abs(y - pyy) < 14) continue; g += `<line class="lq-grid" x1="0" x2="${W - axW + 4}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}"/>`; lab += `<text class="lq-ax" x="${W - axW + 8}" y="${(y + 4).toFixed(1)}">${fp(v)}</text>`; }
+    // holders' average cost: a band between the two averages (or a line), edge chips when outside the view
+    const lv = D.levels, inV = lv.filter(l => l.p > D.lo && l.p < D.hi), outV = lv.filter(l => !(l.p > D.lo && l.p < D.hi));
+    if (inV.length) {
+      const a = Math.min(...inV.map(l => l.p)), b = Math.max(...inV.map(l => l.p)), ya = Y(a), yb = Y(b);
+      const y0 = Math.min(ya, yb) - (Math.abs(ya - yb) < 6 ? 3 : 0), y1 = Math.max(ya, yb) + (Math.abs(ya - yb) < 6 ? 3 : 0);
+      g += `<rect class="lq-zone" x="0" y="${y0.toFixed(1)}" width="${W - axW + 4}" height="${(y1 - y0).toFixed(1)}"/>`;
+      inV.forEach(l => { g += `<line class="lq-zl" x1="0" x2="${W - axW + 4}" y1="${Y(l.p).toFixed(1)}" y2="${Y(l.p).toFixed(1)}"/>`; });
+      const ly = y0 - 5 < top + 10 ? y1 + 13 : y0 - 5;
+      lab += `<text class="lq-zt" x="4" y="${ly.toFixed(1)}">Holders’ average cost ${inV.map(l => l.p).sort((p, q) => p - q).map(fpd).join(' – ')}</text>`;
+    }
+    // bars
+    let hit = '';
+    D.bins.forEach((x, i) => {
+      const y0 = Y(x.b), y1 = Y(x.a), hgt = y1 - y0, th = Math.min(24, Math.max(1, hgt - 2)), yc = y0 + (hgt - th) / 2;
+      const pm = Y(D.mid), split = x.bq > 0 && x.aq > 0 && pm > y0 && pm < y1;
+      if (split) { g += rr(0, y0 + 1, bl(x.aq), Math.max(1, pm - y0 - 1.5), 2, 'lq-a') + rr(0, pm + 0.5, bl(x.bq), Math.max(1, y1 - pm - 1.5), 2, 'lq-b'); }
+      else { if (x.bq > 0) g += rr(0, yc, bl(x.bq), th, Math.min(4, th / 2), 'lq-b'); if (x.aq > 0) g += rr(0, yc, bl(x.aq), th, Math.min(4, th / 2), 'lq-a'); }
+      if (x.tq > 0) g += rr(x2, yc, tl(x.tq), th, Math.min(3, th / 2), 'lq-t');
+      hit += `<rect class="lq-hit" data-lqi="${i}" x="0" y="${y0.toFixed(1)}" width="${W - axW}" height="${Math.max(1, hgt).toFixed(1)}"/>`;
+    });
+    // amounts on the two biggest walls of each side
+    const tops = side => D.bins.map((x, i) => [i, side === 'b' ? x.bq : x.aq]).filter(e => e[1] >= maxQ * 0.12).sort((p, q) => q[1] - p[1]).slice(0, 2);
+    const pm0 = Y(D.mid);
+    for (const side of ['b', 'a']) for (const [i, q] of tops(side)) {
+      const x = D.bins[i], y0 = Y(x.b), y1 = Y(x.a), split = x.bq > 0 && x.aq > 0 && pm0 > y0 && pm0 < y1;
+      const yc = split ? (side === 'a' ? Math.min(pm0 - 8.5, (y0 + pm0) / 2) : Math.max(pm0 + 9.5, (pm0 + y1) / 2)) : (y0 + y1) / 2;
+      lab += `<text class="lq-v" x="${(bl(q) + 4).toFixed(1)}" y="${(yc + 3.5).toFixed(1)}">${qf(q)}</text>`;
+    }
+    // the price now
+    const py = Y(D.P);
+    g += `<line class="lq-now" x1="0" x2="${W - axW + 2}" y1="${py.toFixed(1)}" y2="${py.toFixed(1)}"/>`;
+    lab += `<rect class="lq-nowb" x="${W - axW + 2}" y="${(py - 9).toFixed(1)}" width="${axW - 2}" height="18" rx="4"/><text class="lq-nowt" x="${W - axW / 2 + 1}" y="${(py + 4).toFixed(1)}" text-anchor="middle">${fp(D.P)}</text>`;
+    lab += `<text class="lq-side" x="${W1}" y="${(py - 6).toFixed(1)}" text-anchor="end">sell orders ↑</text><text class="lq-side" x="${W1}" y="${(py + 14).toFixed(1)}" text-anchor="end">buy orders ↓</text>`;
+    // column titles
+    lab += `<text class="lq-h" x="0" y="12">Orders waiting (DOG)</text><text class="lq-h" x="${x2}" y="12">Traded · ${LQ_DAYS} days</text>`;
+    const sel = LQ.sel != null && D.bins[LQ.sel] ? (() => { const x = D.bins[LQ.sel]; return `<rect class="lq-selr" x="0" y="${Y(x.b).toFixed(1)}" width="${W - axW + 4}" height="${(Y(x.a) - Y(x.b)).toFixed(1)}"/>`; })() : '';
+    return { H, svg: `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${esc(lqAria(D))}">${sel}${g}${lab}${hit}</svg>` };
+  }
+  function lqAria(D) {
+    const bb = D.bins.reduce((m, x) => x.bq > (m ? m.bq : 0) ? x : m, null), ba = D.bins.reduce((m, x) => x.aq > (m ? m.aq : 0) ? x : m, null);
+    return `Liquidity map. Price now ${fp(D.P)}.` + (bb ? ` Biggest buy orders ${qf(bb.bq)} DOG near ${fp(bb.a)}.` : '') + (ba ? ` Biggest sell orders ${qf(ba.aq)} DOG near ${fp(ba.a)}.` : '') + D.levels.map(l => ` ${l.name} average cost ${fp(l.p)}.`).join('');
+  }
+  function lqInfo(D, i) {
+    const x = D.bins[i]; if (!x) return '';
+    const by = Object.entries(x.by).filter(e => e[1] >= 1).sort((p, q) => q[1] - p[1]).map(([k, q]) => `${esc(EXN[k] || k)} ${qf(q)}`).join(' · ');
+    const parts = [];
+    if (x.bq > 0) parts.push(`<b class="up">${qf(x.bq)} DOG</b> to buy (${usdC(x.bv)})`);
+    if (x.aq > 0) parts.push(`<b class="down">${qf(x.aq)} DOG</b> to sell (${usdC(x.av)})`);
+    if (!parts.length) parts.push('no orders in the books here');
+    return `<b>${fpd(x.a)} – ${fp(x.b)}</b> <span class="faint">${lqPct((x.a + x.b) / 2, D.P)}</span><br>${parts.join(' · ')}${by ? `<br><span class="faint">${by}</span>` : ''}${x.tq > 0 ? `<br>Traded here over ${LQ_DAYS} days: <b>${qf(x.tq)} DOG</b> on Kraken` : ''}`;
+  }
+  function lqDraw() {
+    const box = $('#lqbox'); if (!box) return;
+    const D = lqData();
+    if (!D) { box.innerHTML = `<p class="note">The map appears once the order books have loaded.</p>`; return; }
+    const W = Math.max(280, Math.round(box.clientWidth || 340));
+    const { svg } = lqSvg(D, W);
+    const age = D.bookT ? Math.round((Date.now() - D.bookT) / 60e3) : null;
+    $('#lqsum').innerHTML = lqSummary(D);
+    const outV = D.levels.filter(l => !(l.p > D.lo && l.p < D.hi));
+    const ex = $('#lqout');
+    if (ex) { ex.hidden = !outV.length; ex.innerHTML = outV.length ? `<span class="lq-sw c"></span><span>Holders’ average cost is ${outV.every(l => l.p >= D.hi) ? 'above' : outV.every(l => l.p <= D.lo) ? 'below' : 'outside'} this view: ${outV.map(l => `${esc(l.name)} <b>${fpd(l.p)}</b> <span class="faint">${lqPct(l.p, D.P)}</span>`).join(' · ')} — <button type="button" class="linkbtn" data-lqv="wide">show Full</button></span>` : ''; }
+    box.innerHTML = svg;
+    const inf = $('#lqinfo');
+    if (inf) { inf.innerHTML = LQ.sel != null ? lqInfo(D, LQ.sel) : `<span class="faint">Tap a row for its numbers.</span>`; }
+    const src = $('#lqsrc');
+    if (src) src.textContent = `Order books: ${D.exs.join(', ') || '—'}${D.live ? (age != null && age <= 1 ? ' · live' : age != null ? ` · ${age} min ago` : '') : ' · from the last report'}. Traded: Kraken ${LQ_DAYS} days.${D.cov.b && D.cov.b > D.lo * 1.01 ? ` The books are only known down to ${fp(D.cov.b)}.` : ''}`;
+    LQ.D = D;
+    // fresh books and 4-hour candles when the map is shown
+    if (!LQ.fetching && !S.archived && Date.now() - LQ.at > 60e3 && !(D.live && age != null && age <= 1)) {
+      LQ.fetching = true; LQ.at = Date.now();
+      Promise.all([obFetch().catch(() => { }), chInstant('4h') ? null : chOhlc('4h').catch(() => { })]).finally(() => { LQ.fetching = false; if (S.tab === 'charts') lqDraw(); });
+    }
+  }
+  function lqPick(e) {
+    const r = e.target.closest && e.target.closest('[data-lqi]'); if (!r || !LQ.D) return;
+    const i = +r.dataset.lqi;
+    LQ.sel = LQ.sel === i ? null : i;
+    lqDraw();
+  }
+  document.addEventListener('click', e => { if (e.target.closest && e.target.closest('#lqbox [data-lqi]')) lqPick(e); });
+  document.addEventListener('keydown', e => {
+    if (!e.target.closest || !e.target.closest('#lqbox') || !LQ.D || (e.key !== 'ArrowUp' && e.key !== 'ArrowDown' && e.key !== 'Escape')) return;
+    e.preventDefault();
+    const N = LQ.D.bins.length, at = LQ.sel != null ? LQ.sel : LQ.D.bins.findIndex(x => x.b > LQ.D.P);
+    LQ.sel = e.key === 'Escape' ? null : Math.max(0, Math.min(N - 1, at + (e.key === 'ArrowUp' ? 1 : -1)));
+    lqDraw(); const b = $('#lqbox'); if (b) b.focus();
+  });
+  // the price line follows the live price, at most every few seconds
+  function lqSoon() { if (S.tab !== 'charts' || !$('#lqbox') || lqSoon.t) return; lqSoon.t = setTimeout(() => { lqSoon.t = 0; if (S.tab === 'charts') lqDraw(); }, 4000); }
   // ---------- Charts tab ----------
   function chStatsHtml() {
     const s = V(); if (!s) return '';
@@ -5799,6 +6246,15 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
           <div class="chstats" id="chstats"></div>
           <details class="tvmore"><summary>What the indicators say</summary><div class="tv-read" id="tvread"></div></details>
         </section>
+        <section class="group lqsec" aria-label="Liquidity map">
+          <div class="ch-head"><div><h3>Liquidity map</h3><span class="note">big orders waiting · where DOG traded · what holders paid</span></div><span class="seg" role="group" aria-label="Price range" id="lq-v">${segB('lqv', 'near', '±30%', !LQ.wide)}${segB('lqv', 'wide', 'Full', LQ.wide)}</span></div>
+          <div class="lq-wrap"><div class="lq-main"><p class="lq-out" id="lqout" hidden></p><div class="lqbox" id="lqbox" tabindex="0"></div><div class="lq-info" id="lqinfo" aria-live="polite"></div></div>
+          <div class="lq-side"><div id="lqsum"></div>
+          <div class="lq-leg"><span><i class="lq-sw b"></i>Buy orders</span><span><i class="lq-sw a"></i>Sell orders</span><span><i class="lq-sw t"></i>Traded (Kraken)</span><span><i class="lq-sw c"></i>Holders’ average cost</span></div>
+          <p class="note" id="lqsrc"></p>
+          <details class="tvmore"><summary>What this means</summary><div class="tv-read"><p><b>Orders waiting</b> are limit orders sitting in the order books of the exchanges right now, added up across exchanges in steps of $0.00001. A big buy wall below the price can slow a fall; a big sell wall above can slow a rise — but an order can be pulled at any moment, so a wall is not a promise.</p><p><b>Traded</b> shows at which prices DOG actually changed hands on Kraken over the last ${LQ_DAYS} days: busy zones are prices many traders remember.</p><p><b>Holders’ average cost</b>: “All DOG” is the average price at which every coin last moved (DOG DATA’s realized price); “Top wallets” is the average buy price of the biggest non-exchange wallets, airdropped coins left out. When the price is below it, most holders are at a loss.</p><p>This is information, not advice.</p></div></details>
+          </div></div>
+        </section>
         <div class="cols2">
           <div class="col">
             <section class="group" id="fngc-sec" aria-label="Fear and greed"></section>
@@ -5820,7 +6276,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   }
   function chDrawAll() {
     if (!$('#chroot')) { renderCharts(); return; }
-    chDrawTV(); crDraw(); mmDraw();
+    chDrawTV(); crDraw(); mmDraw(); lqDraw();
     chLoop();
   }
   function chLoop() {
@@ -5840,6 +6296,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const b = e.target.closest('button'); if (!b) return;
     const d = b.dataset;
     if (d.chtf) { CH.tf = d.chtf; if (CH.tv) CH.tv.pin = null; store.set('chTf', CH.tf); $$('#ch-tf button').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.chtf === CH.tf))); chDrawTV(); return; }
+    if (d.lqv) { LQ.wide = d.lqv === 'wide'; LQ.sel = null; store.set('lqWide', LQ.wide); $$('#lq-v button').forEach(x => x.setAttribute('aria-pressed', String((x.dataset.lqv === 'wide') === LQ.wide))); lqDraw(); return; }
     if (d.chind) { CH.ind[d.chind] = !CH.ind[d.chind]; store.set('chInd', CH.ind); b.setAttribute('aria-pressed', String(!!CH.ind[d.chind])); chDrawTV(); return; }
     if (d.crlast !== undefined && CH.cr && CH.cr.unpin) { CH.cr.unpin(); return; }
     if (d.mmp) { MM.p = d.mmp; MM.pin = null; store.set('mmP', MM.p); mmDraw(); return; }
@@ -6335,14 +6792,15 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
         <li><b>The day, step by step</b> — the ▶ button in “The last 24 hours”. Tap the right side for the next slide, the left side for the previous one; hold your finger down to pause. <b>Swipe up or down to close.</b></li>
         <li><b>Bottom cards</b> close with a swipe down on the top handle, or a tap outside the card. A card opened from another card has a <b>‹</b> arrow to go back.</li>
         <li><b>Bottom menu</b>: tap a section — or press the menu and slide your finger along it: the highlight follows your finger, and the section under it opens when you let go.</li>
-        <li><b>Price chart on Home</b> works like in exchange apps: slide your finger left or right across it — the top shows that candle’s date and price, what 1 million DOG cost and the market cap at that moment, plus the change from then to now (on Android the phone gives a light tick on every candle). The whole width of the screen counts: put your finger left of the candles for the first one, right of them for the latest. You can also press and hold. Let go and the live price is back at once, so a stray touch never leaves an old price on top. Slide up or down to scroll the page as usual. Two fingers move the history and zoom in or out.</li></ul></div>
+        <li><b>Price chart on Home</b> works like a touchpad: slide one finger left or right to scroll through the history — a quick flick keeps it gliding. Earlier candles load by themselves as you reach the edge: daily and 4-hour candles go back to DOG’s first trading day in April 2024. The round <b>»</b> button brings you back to the latest candle.</li>
+        <li><b>Press and hold</b> on the chart to read a candle: the top shows its date and price, what 1 million DOG cost and the market cap at that moment, plus the change from then to now (on Android the phone gives a light tick on every candle). Keep holding and slide to move between candles; the whole width counts — left of the candles for the first one, right of them for the latest. Let go and the live price is back at once. Two fingers zoom in or out. Slide up or down to scroll the page as usual.</li></ul></div>
       <div><h3>Home</h3><p>At the top is <b>Fear &amp; Greed</b>: two indices of the whole crypto market (alternative.me and CoinMarketCap) and our own DOG index. The number sits right in the gauge: 0 = fear, 100 = greed. Tap one for what goes into it and its history next to the price; the dots on the chart are the index’s turning points — tap one to see its day. Tap the <b>Fear &amp; Greed</b> heading for all three on one chart, from 30 days to all time: slide your finger to see all three numbers on any day. Each index has its own colour: alternative.me turquoise, CoinMarketCap blue, DOG apricot — its number sits in a ball of that colour. Tap an index’s card to bring its line forward (the others fade, and its low and high get labels); the dots are each index’s low and high for the period — tap a dot, or a low or a high in the table below, to see that day on the chart.</p>
         <p style="margin-top:8px">Below it: the DOG price in US dollars, what <b>1 million DOG</b> costs, the market cap and a chart of trades on Kraken. The 15m, 1h, 4h, 1d and 1w buttons set how much time one candle covers — 15 minutes, an hour, 4 hours, a day or a week; weekly candles show the whole history since trading began in April 2024, and the line under the chart says what span it shows. The two icons next to them switch between candles (with trading volume) and a simple line.</p>
         <p style="margin-top:8px">Then four tiles: who is stronger near the price (buyers or sellers), how many wallets hold 10M+ DOG (and how many were added or dropped since the date shown), how much DOG sits on exchanges and what share of coins is in profit. Tap a tile for its breakdown. Right under the tiles is the C2 Blockchain row; further down: the last 24 hours, exchange order books and DOG among meme coins.</p></div>
       <div><h3>Order book</h3><p>An order book is a list of orders on an exchange: who is ready to buy or sell DOG and at what price. The Order book section works like an exchange: real prices, asks on top, bids below.</p>
         <ul><li><b>Price step</b> (the 0.00001 ▾ button) — like “Order Book Depth” on an exchange: orders are grouped into 0.0000001 / 0.000001 / 0.00001 / 0.0001 steps.</li><li><b>View</b>: column, two sides (bids left, asks right) or a table by exchange; amounts in DOG or dollars.</li><li><b>Exchange</b>: all combined or any one. While the section is open, Kraken, Gate, MEXC and BingX stream every change live (the book redraws about once a second); CoinW and DigiFinex refresh every 10 seconds.</li><li><b>The combined book</b> has one price — the midpoint of Kraken and Gate — with all bids below it and all asks above it. Prices differ a little between exchanges, so a few nearby orders that overlap another exchange’s price are left out here (the note under the book says how much); they are in that exchange’s own book. DigiFinex copies Gate’s order book, so it isn’t added a second time.</li><li><b>Tap a row</b> for details: which exchanges, exact prices, and how much would need to be bought or sold for the price to reach that level.</li><li><b>Wall</b> (amount in bold) — a single order of 5M+ DOG. Walls often hold the price, but can be pulled at any moment.</li><li><b>Balance near the price</b> — a small row next to the book: how many times bids outweigh asks within 2, 5, 10 and 25% of the price. Tap it for the breakdown in dollars, the nearest big orders and the gap between the best prices.</li><li><b>Large orders</b> — the biggest orders of 5M+ DOG; <b>changes over 24 hours</b> — which large orders appeared, were pulled or moved; <b>the feed</b> — what changes while the site is open.</li><li><b>Exchanges</b> — a list with spreads and orders within 10%; tap an exchange for its depth, large orders and an “Open order book” button.</li><li><b>Trades</b> — the latest trades on Kraken, Gate, MEXC and BingX, and who bought or sold at market more often over the hour.</li></ul></div>
       <div><h3>Companies holding DOG</h3><p>Public companies that keep DOG in their treasury. Right now that’s C2 Blockchain (USA): the row on Home, right under the tiles, shows its holdings and how many months ago it last reported; tap it for every purchase report with links. The company’s coins are held at Kraken, so it has no separate wallet in the top 100.</p></div>
-      <div><h3>Charts</h3><p>Charts that work like on an exchange (TradingView): drag to scroll, pinch to zoom, tap a candle or a day to see its values. The TradingView mark on a chart opens the full DOG/USD chart on TradingView.</p><ul><li><b>DOG price</b> — Kraken candles for 15 minutes, 1 hour, 4 hours, 1 day or 1 week, with volume. Below the candles run the RSI and MACD curves; moving averages and Bollinger Bands can be switched on. Under the chart, a plain-language reading of what the indicators show.</li><li><b>Fear &amp; Greed</b> — the three indices as rows and their shared 90-day chart: slide your finger to see all three on any day. Tap a row for the breakdown with turning points; tap the chart or the heading for the full history of all three.</li><li><b>DOG and meme coins</b> — DOG next to 11 large meme coins on different chains over 7, 30, 90 days or a year: every coin’s price change on one scale. Tap a line to highlight that coin next to DOG; the list below shows each coin’s change, market cap and how closely it moves with DOG. Prices are cross-checked between Gate, MEXC and Kraken.</li><li><b>DOG and bitcoin</b> — since DOG’s launch in April 2024: how both have grown (log scale), how closely their daily moves are linked (correlation over 30 and 90 days), beta, and how many satoshis 1 DOG costs.</li></ul><p>Indicators describe past moves and don’t predict the future.</p></div>
+      <div><h3>Charts</h3><p>Charts that work like on an exchange (TradingView): drag to scroll, pinch to zoom, tap a candle or a day to see its values. The TradingView mark on a chart opens the full DOG/USD chart on TradingView.</p><ul><li><b>DOG price</b> — Kraken candles for 15 minutes, 1 hour, 4 hours, 1 day or 1 week, with volume. Drag into the past and earlier candles load as you go; Kraken keeps the last 720 candles, the older ones come from Gate (DOG/USDT, the legend then says “Gate”). Daily and 4-hour candles reach back to April 2024. Below the candles run the RSI and MACD curves; moving averages and Bollinger Bands can be switched on. Under the chart, a plain-language reading of what the indicators show.</li><li><b>Liquidity map</b> — one price ladder: the buy orders (below the price) and sell orders (above) waiting in the order books of all exchanges together, how much DOG traded at each price over the last 120 days, and the average price holders paid for their DOG. Tap a row for its numbers; “Full” widens the view to include the holders’ average cost. Big orders can be pulled at any moment — a wall is not a promise.</li><li><b>Fear &amp; Greed</b> — the three indices as rows and their shared 90-day chart: slide your finger to see all three on any day. Tap a row for the breakdown with turning points; tap the chart or the heading for the full history of all three.</li><li><b>DOG and meme coins</b> — DOG next to 11 large meme coins on different chains over 7, 30, 90 days or a year: every coin’s price change on one scale. Tap a line to highlight that coin next to DOG; the list below shows each coin’s change, market cap and how closely it moves with DOG. Prices are cross-checked between Gate, MEXC and Kraken.</li><li><b>DOG and bitcoin</b> — since DOG’s launch in April 2024: how both have grown (log scale), how closely their daily moves are linked (correlation over 30 and 90 days), beta, and how many satoshis 1 DOG costs.</li></ul><p>Indicators describe past moves and don’t predict the future.</p></div>
       <div><h3>Wallets</h3><p>At the top, four tiles — <b>holders</b>, <b>top 100</b>, <b>wallets with 10M+ DOG</b> and <b>DOG on exchanges</b>; each opens its own breakdown: changes over a day, week and month, who holds how much, transfers to and from exchanges. Below: the “Who holds how much” ring with three views (by rank, by wallet size and by owner type; tap a row for details), the 10M+ wallets card with a chart of their number, DOG in exchange wallets, coin age and what changed among large wallets. At the bottom, the hundred largest DOG wallets: the small line next to each wallet is its balance day by day, the dollar value is shown under the balance; above the list — how the top 100’s share changed over a day, week and month.</p>
         <p style="margin-top:8px"><b>Avg buy</b> under a wallet’s description is the average price (per DOG) at which the wallet bought or was topped up after the airdrop: each deposit is valued at that day’s exchange price. Airdropped coins were free, so they’re left out of the average and their share is shown separately (“airdrop 40%”). The percentage shows how today’s price compares. Tap a wallet to see its balance, change, a larger chart, the average-cost details and an address you can copy. Exchange wallets have no average cost — they hold many customers’ coins.</p>
         <p style="margin-top:8px"><b>Fresh balances.</b> Four times a day the balances of the top 100 are read straight from the Bitcoin blockchain (the rune index on ordinals.com, with the Xverse wallet index as a second source), so the list stays current even when DOG DATA’s list lags behind. The holder count and labels come from DOG DATA.</p></div>
@@ -7143,7 +7601,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     if (tg && (tg.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(tg.tagName))) return;
     if ((e.key === 'r' || e.key === 'R' || e.key === 'к' || e.key === 'К') && $('#story').hidden) { e.preventDefault(); openUpd(true); }
   });
-  try { if (/[?&]debug=1\b/.test(location.search)) window.__dm = { S, UP, buildLive, runUpdate, softRender }; } catch (e) { }
+  try { if (/[?&]debug=1\b/.test(location.search)) window.__dm = { S, UP, buildLive, runUpdate, softRender, CH, CH_OLD, hc: () => HC, hg: () => HG }; } catch (e) { }
 
   function renderAll() {
     const a = $('#archive');
@@ -7302,7 +7760,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     }, () => { S.newsLoaded = true; renderNews(); });
     db.file('wallets.json', d => { if (d.b) { S.wh = d; if (V()) renderWallets(); } });
     db.file('costbasis.json', d => { if (d.w) { S.cb = d; if (V()) renderWallets(); } });
-    db.file('prices.json', d => { if (d.d) { S.px = d; const st = $('#chstats'); if (st) st.innerHTML = chStatsHtml(); if (V() && S.htf === '1w') drawPrice(true); if (V() && S.tab === 'charts') { if (CH.tf === '1w') chDrawTV(); crDraw(); } } });
+    db.file('prices.json', d => { if (d.d) { S.px = d; const st = $('#chstats'); if (st) st.innerHTML = chStatsHtml(); if (V() && S.htf === '1w') drawPrice(true); else if (V() && S.htf === '1d') heroGrow(); if (V() && S.tab === 'charts') { if (CH.tf === '1w') chDrawTV(); else if (CH.tf === '1d') chGrow(); crDraw(); } } });
     db.file('btc.json', d => { if (d.d) { S.btcd = d; if (V() && S.tab === 'charts') crDraw(); } });
     db.file('fng.json', d => { if (d.dog || d.market) { S.fng = d; paintFng(); } });
     db.file('memes.json', d => { if (d.coins) { S.memes = d; if (V() && S.tab === 'charts') mmDraw(); } });
