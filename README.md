@@ -4,14 +4,14 @@
 live price and full-history chart, an exchange-style order book across 7 exchanges (real prices, 0.0000001–0.0001 grouping,
 live updates, trades, depth, a plain “who’s stronger near the price” readout), TradingView-style charts (candles from 15 minutes to 1 week with RSI and MACD
 panes, DOG vs bitcoin since launch), the top 100 wallets with daily balances and average cost, how DOG is held,
-C2 Blockchain holdings and news — in plain words. English by default, Russian in the “⋯” menu (or `?lang=ru`).
+C2 Blockchain holdings and news — in plain words. The site is in English.
 A full report is built 4 times a day by GitHub Actions (wallet balances straight from the blockchain) and checked in a real browser
 before it goes live; on top of it, every time the site opens or you tap **Update**, the page pulls fresh order books, holders and
 the price chart and checks itself. The site opens instantly from the last saved copy and refreshes in the background.
 
 Неофициальный монитор токена **DOG•GO•TO•THE•MOON** (руна Bitcoin 840000:3): цена и график, стаканы 7 бирж, графики как на бирже
 (свечи от 15 минут до недели, RSI, MACD, связь с биткоином), топ-100 кошельков, «как держат DOG», запасы C2 Blockchain и новости — простыми словами.
-Язык — английский по умолчанию, русский — в меню «⋯» или по ссылке `?lang=ru`.
+Сайт только на английском (с 17.11.2026); русская версия — в ветке `design-v10-ru`, русские строки остались в коде (`T(ru, en)`).
 
 ## Оформление (v5, 16.11.2026)
 - **Цвета варианта A «Тихая ночь»** — графит (`#0E1118`) и мягкий абрикос только там, где DOG; рост — шалфей, падение — приглушённый коралл,
@@ -103,6 +103,20 @@ the price chart and checks itself. The site opens instantly from the last saved 
 - Исправлено: подпись над «DOG и биткоин» (общие стили с подписью свечей) вылезала за экран телефона — страница
   расширялась, и нажатия по графикам ниже попадали мимо. selfcheck теперь меряет вылезание по ширине самого экрана и
   проверяет, что нажатие на график мем-монет показывает день.
+
+## v11 (17.11.2026, поверх v10)
+- **Только английский.** Переключателя языка нет (ни кнопки RU в шапке, ни строки «Язык» в меню, ни переключателя в меню
+  слева на iPad); старые ссылки `?lang=ru` открывают английскую версию, адрес — без `?lang`. Русские строки остались в коде
+  (`T(ru, en)`, `LANG = 'en'`), русская версия сайта целиком — ветка `design-v10-ru`. Утреннее сообщение владельцу
+  (`tools/daily.py`) по-прежнему по-русски.
+- **График на «Главном»: отпустили палец — сразу живая цена.** Ведёте пальцем или зажали его на месте (0,26 с) — вверху
+  дата и цена свечи под пальцем; отпустили — снова живая цена; короткое нажатие цену не меняет. Закрепления свечи и кнопки
+  «Сейчас» на «Главном» больше нет (на «Графиках» нажатие на свечу по-прежнему закрепляет её). Мышью: увели — живая цена.
+- **Щелчок на свечах:** на Android — вибрация на каждой свече. На iPhone сайт этого не может: Safari даёт сайтам щелчок
+  только на нажатие, во время ведения пальцем — нет (так устроен iOS). Как у CoinMarketCap — только в приложении из
+  App Store (обёртка сайта с нативным щелчком `UISelectionFeedbackGenerator`).
+- selfcheck: «палец на графике — дата и цена свечи, отпустили — живая цена», «сайт только на английском»
+  (вместо «русская версия открывается»).
 
 ## Адрес dog-monitor.github.io
 16.11.2026 репозиторий перенесён из `Allexst63/dog-monitor` в организацию `dog-monitor` под именем `dog-monitor.github.io`

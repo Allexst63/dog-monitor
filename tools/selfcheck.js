@@ -80,24 +80,7 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
       const cand = await wait(() => document.querySelector('#p-overview [data-hmode="candles"][aria-pressed="true"]') && !!document.querySelector('#pchart canvas'), 8000);
       add(h.tf === 5 && h.md === 2 && line && cand && /\d/.test(h.m1) && /\d/.test(h.cap) && h.rays === 'none', `Главная: интервалы свечей (${h.tf}), «свечи / линия» переключаются, 1 млн DOG ${h.m1.trim()}, капитализация ${h.cap.trim()}`, `Home: candle intervals (${h.tf}), candles/line toggle works, 1M DOG ${h.m1.trim()}, market cap ${h.cap.trim()}`, JSON.stringify({ line, cand, rays: h.rays }));
     }
-    {
-      await page.evaluate(() => { const e = document.querySelector('#pchart'); if (e) e.scrollIntoView({ block: 'center' }); });
-      await page.waitForTimeout(400);
-      const b = await page.locator('#pchart').boundingBox();
-      let r = null;
-      if (b) {
-        await page.touchscreen.tap(b.x + b.width * 0.35, b.y + b.height * 0.45);
-        await page.waitForTimeout(500);
-        r = await page.evaluate(() => ({ lab: document.querySelector('#hlabel').textContent, now: !document.querySelector('#hnow').hidden, leg: (document.querySelector('#hleg') || {}).textContent || '' }));
-        await page.evaluate(() => { const n = document.querySelector('#hnow'); if (n) n.click(); });
-        await page.waitForTimeout(300);
-        r.back = await page.evaluate(() => document.querySelector('#hlabel').textContent + '|' + document.querySelector('#hnow').hidden);
-      }
-      await page.evaluate(() => window.scrollTo(0, 0));
-      add(!!r && /^(с|since) /.test(r.lab) && r.now && /(Макс|H) \d/.test(r.leg) && /^(за сутки|24h)\|true$/.test(r.back), 'Главная: нажатие на свечу закрепляет её цену, «Сейчас» возвращает текущую', 'Home: tapping a candle pins its price, “Now” returns to the current one', r ? `${r.lab}; ${r.leg.slice(0, 60)}` : 'графика нет');
-    }
-    // первый экран (v9): индексы, цена и график целиком — значок TradingView виден над нижним меню; ведение пальцем
-    // наискосок по графику — страница стоит, карточка цены не меняет высоту, вверху — дата и цена свечи
+    // первый экран: индексы, цена и весь график — значок TradingView виден над нижним меню
     {
       await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(300);
       const fit = await page.evaluate(() => {
@@ -107,22 +90,29 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
         return { h: Math.round(c.height), vh: innerHeight, logo: Math.round(l.bottom), tab: Math.round(t.top), fng: f ? Math.round(f.getBoundingClientRect().top) : -1 };
       });
       add(!!fit && fit.logo > 0 && fit.logo <= fit.tab && fit.h >= 0.3 * fit.vh && fit.fng >= 0, `Главная: первый экран — индексы, цена и весь график (${fit ? fit.h : '—'} px), значок TradingView над нижним меню`, `Home: the first screen shows the indices, the price and the whole chart (${fit ? fit.h : '—'} px), TradingView mark above the bottom menu`, JSON.stringify(fit));
+    }
+    // палец на графике (ведение наискосок): страница стоит, карточка цены не прыгает, вверху дата и цена свечи;
+    // отпустили — сразу снова живая цена; короткое нажатие цену не меняет
+    {
       let g = null;
       const b = await page.locator('#pchart').boundingBox();
       if (b) {
         const cdp = await ctx.newCDPSession(page);
         const tch = (type, pts) => cdp.send('Input.dispatchTouchEvent', { type, touchPoints: pts.map((p, i) => ({ x: p[0], y: p[1], id: i })) });
-        const h0 = await page.evaluate(() => [Math.round(scrollY), document.querySelector('.hero-head').getBoundingClientRect().height]);
+        const h0 = await page.evaluate(() => [Math.round(scrollY), document.querySelector('.hero-head').getBoundingClientRect().height, document.querySelector('#hlabel').textContent]);
         const x0 = b.x + b.width * 0.25, y0 = b.y + b.height * 0.4, hs = [];
         await tch('touchStart', [[x0, y0]]);
         for (let k = 1; k <= 10; k++) { await tch('touchMove', [[x0 + b.width * 0.04 * k, y0 + b.width * 0.034 * k]]); await page.waitForTimeout(20); hs.push(await page.evaluate(() => document.querySelector('.hero-head').getBoundingClientRect().height)); }
+        g = await page.evaluate(() => ({ sy: Math.round(scrollY), lab: document.querySelector('#hlabel').textContent, when: (document.querySelector('#hwhen') || {}).textContent || '', leg: (document.querySelector('#hleg') || {}).textContent || '' }));
         await tch('touchEnd', []); await page.waitForTimeout(300);
-        g = await page.evaluate(() => ({ sy: Math.round(scrollY), lab: document.querySelector('#hlabel').textContent, when: (document.querySelector('#hwhen') || {}).textContent || '' }));
-        g.sy0 = h0[0]; g.jump = Math.round(Math.max(...hs.map(h => Math.abs(h - h0[1]))) * 10) / 10;
-        await page.evaluate(() => { const n = document.querySelector('#hnow'); if (n) n.click(); }); await page.waitForTimeout(300);
+        g.after = await page.evaluate(() => document.querySelector('#hlabel').textContent + '|' + ((document.querySelector('#hwhen') || {}).textContent || ''));
+        await page.touchscreen.tap(b.x + b.width * 0.35, b.y + b.height * 0.45); await page.waitForTimeout(400);
+        g.tap = await page.evaluate(() => document.querySelector('#hlabel').textContent);
+        g.sy0 = h0[0]; g.lab0 = h0[2]; g.jump = Math.round(Math.max(...hs.map(h => Math.abs(h - h0[1]))) * 10) / 10;
         await cdp.detach().catch(() => { });
       }
-      add(!!g && g.sy === g.sy0 && g.jump < 0.5 && /^(с|since) /.test(g.lab) && !!g.when && !/^DOG/.test(g.when), 'Главная: ведение пальцем наискосок по графику — страница стоит, карточка цены не прыгает, вверху дата и цена свечи', 'Home: a slanted finger slide over the chart keeps the page still and the price card steady, with the candle’s date and price on top', g ? `${g.when}; ${g.lab}; прокрутка ${g.sy - g.sy0}, сдвиг ${g.jump}` : 'графика нет');
+      await page.evaluate(() => window.scrollTo(0, 0));
+      add(!!g && g.sy === g.sy0 && g.jump < 0.5 && /^(с|since) /.test(g.lab) && !!g.when && !/^DOG/.test(g.when) && /(Макс|H) \d/.test(g.leg) && g.after.split('|')[0] === g.lab0 && /^DOG/.test(g.after.split('|')[1]) && g.tap === g.lab0, 'Главная: палец на графике — вверху дата и цена свечи, страница стоит, карточка не прыгает; отпустили — снова живая цена', 'Home: a finger on the chart shows that candle’s date and price, the page stays still and the card steady; let go and the live price is back', g ? `${g.when}; ${g.lab} → ${g.after}; нажатие: ${g.tap}; прокрутка ${g.sy - g.sy0}, сдвиг ${g.jump}` : 'графика нет');
     }
     const st = await page.evaluate(() => ({ c: document.querySelector('#status').className, t: document.querySelector('#status-t').textContent }));
     add(/\d\d:\d\d/.test(st.t), `Статус в шапке показывает время данных («${st.t.trim().slice(0, 40)}»)`, `Header status shows the data time (“${st.t.trim().slice(0, 40)}”)`);
@@ -353,11 +343,11 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
     }
     await page.setViewportSize({ width: 390, height: 844 });
 
-    // 6. русская версия
+    // 6. только английский: и старая ссылка ?lang=ru открывает английскую версию, кириллицы на странице нет
     await page.goto(base + '?nosw=1&lang=ru#overview', { waitUntil: 'load', timeout: 45000 });
-    const ru = await wait(() => /DOG Монитор/.test(document.title) && !!document.querySelector('#hprice') && /[А-Яа-я]/.test(document.querySelector('#p-overview').textContent), 25000);
-    add(ru, 'Русская версия открывается', 'The Russian version opens');
-    await shot('8-home-ru');
+    const enOnly = await wait(() => !!document.querySelector('#hprice') && /\d/.test(document.querySelector('#hprice').textContent) && !/[А-Яа-яЁё]/.test(document.body.innerText) && !/[?&]lang=/.test(location.search) && !document.querySelector('[data-lang]'), 25000);
+    add(enOnly, 'Сайт только на английском: старая ссылка ?lang=ru открывает английскую версию', 'English only: the old ?lang=ru link opens the English site');
+    await shot('8-home-lang');
   } catch (e) {
     add(false, 'Проверка в браузере прервалась', 'The browser check was interrupted', e && e.message);
   }

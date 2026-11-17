@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>DOG Monitor — live DOG•GO•TO•THE•MOON tracker</title>
 <meta name="description" content="Live tracker for DOG•GO•TO•THE•MOON, the Bitcoin rune: price and charts, order books from 7 exchanges in one view, three Fear &amp; Greed indices, DOG against the top meme coins, the top 100 and every 10M+ DOG wallet, coins in profit and loss. Data cross-checked between sources, full report 4 times a day. Unofficial; English and Russian.">
-<link rel="alternate" hreflang="en" href="https://dog-monitor.github.io/?lang=en">
-<link rel="alternate" hreflang="ru" href="https://dog-monitor.github.io/?lang=ru">
-<link rel="alternate" hreflang="x-default" href="https://dog-monitor.github.io/">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F2EFE9">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0E1118">
 <meta name="color-scheme" content="light dark">
@@ -22,7 +19,6 @@
 <meta name="apple-mobile-web-app-title" content="DOG Monitor">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="ru_RU">
 <meta property="og:title" content="DOG Monitor">
 <meta property="og:description" content="Live DOG tracker: price, one order book from 7 exchanges, three Fear &amp; Greed indices, DOG vs the top meme coins and every 10M+ wallet. Cross-checked, 4× a day. Free, no ads.">
 <meta property="og:url" content="https://dog-monitor.github.io/">
@@ -1788,9 +1784,8 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       <button type="button" class="brand" data-go="overview" aria-label="DOG Monitor — Home"><span class="wordmark" translate="no"><span class="wm-t">dog monitor</span><img class="wm-moon" src="icons/moon.svg" alt="" width="20" height="20" decoding="async"></span></button>
       <h1 class="sect" id="sect">Home</h1>
       <button type="button" class="status" id="status" aria-label="Data status and update"><span class="dot"></span><span id="status-t">Connecting…</span></button>
-      <button type="button" class="langbtn" id="langbtn" data-lang="ru" aria-label="Русский язык">RU</button>
       <button type="button" class="iconbtn upd" id="updnow" data-updnow aria-label="Update data" title="Update"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 12a8.5 8.5 0 1 1-8.5-8.5c2.38 0 4.66.95 6.37 2.6L20.5 8M20.5 3.5V8H16"/></svg></button>
-      <button type="button" class="iconbtn menu" id="menu" aria-label="More: update, language, history, guide, data checks"><svg class="ico" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01" stroke-width="3"/></svg></button>
+      <button type="button" class="iconbtn menu" id="menu" aria-label="More: update, appearance, history, guide, data checks"><svg class="ico" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01" stroke-width="3"/></svg></button>
     </header>
     <div class="content">
       <div class="archive" id="archive" hidden><span id="archive-text"></span><button type="button" id="archive-back">Back to current data</button></div>
@@ -1839,33 +1834,18 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
   const esc = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  // ---------- язык: английский по умолчанию, русский — в настройках (меню «⋯» или ?lang=ru) ----------
-  // язык: ссылка всегда открывает английскую версию; русский — в настройках (меню «⋯»), выбор держится,
-  // пока открыта вкладка/сессия; постоянная русская ссылка — ?lang=ru
-  const LANG = (() => {
-    let l = null;
-    try { localStorage.removeItem('dogmon.lang'); } catch (e) { }      // старое «вечное» запоминание языка больше не используем
-    try { const q = new URLSearchParams(location.search).get('lang'); if (q === 'ru' || q === 'en') l = q; } catch (e) { }
-    if (!l) { try { l = sessionStorage.getItem('dogmon.lang'); } catch (e) { } }
-    return l === 'ru' ? 'ru' : 'en';
-  })();
+  // ---------- язык: с 17.11.2026 сайт только на английском ----------
+  // Русские строки остались в коде (T(ru, en)) и в истории репозитория (ветка design-v10-ru) — вернуть русский можно,
+  // но на сайте его нет: ни переключателя, ни ?lang=ru (старые ссылки открывают английскую версию, адрес — без ?lang)
+  const LANG = 'en';
+  try { localStorage.removeItem('dogmon.lang'); sessionStorage.removeItem('dogmon.lang'); } catch (e) { }
+  try { const u = new URL(location.href); if (u.searchParams.has('lang')) { u.searchParams.delete('lang'); history.replaceState(null, '', u.pathname + u.search + u.hash); } } catch (e) { }
   const EN = LANG === 'en', RU = !EN;
   const T = (ru, en) => EN ? en : ru;
   const LOC = EN ? 'en-GB' : 'ru-RU';
   const MLN = EN ? 'M' : '\u00a0млн', MLRD = EN ? 'B' : '\u00a0млрд';
   // множественное число: P(k, 'кошелёк', 'кошелька', 'кошельков', 'wallet', 'wallets')
   const P = (k, o, f, m, e1, e2) => EN ? (Math.abs(k) === 1 ? e1 : e2) : plural(k, o, f, m);
-  // смена языка: страница всегда перезагружается (раньше при адресе с #вкладкой location.replace менял только якорь — кнопка «не работала»)
-  function setLang(l) {
-    let kept = false;
-    try { sessionStorage.setItem('dogmon.lang', l); kept = sessionStorage.getItem('dogmon.lang') === l; } catch (e) { }
-    try {
-      const u = new URL(location.href);
-      if (kept) u.searchParams.delete('lang'); else u.searchParams.set('lang', l);   // без sessionStorage язык держится в адресе
-      history.replaceState(null, '', u.pathname + u.search + u.hash);
-    } catch (e) { }
-    location.reload();
-  }
   document.documentElement.lang = LANG;
   if (RU) {
     try {
@@ -2315,7 +2295,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       el.className = ((h != null && h > 26) || s.fresh === false ? 'status warn' : 'status ok') + (UP.run ? ' sync' : '');
       t.innerHTML = `${T('Сводка', 'Updated')} ${esc(tl(s.ts))}<span class="long">, ${esc(sameDay(d, new Date()) ? ago(s.ts) : dml(s.ts))}${s.fresh === false ? T(', часть данных устарела', ', some data is stale') : ''}</span>`;
     }
-    if (rf) rf.innerHTML = `<span>${u ? T('Онлайн-данные', 'Live data') + ' — ' + esc(when(u.ts)) : esc(KIND_TITLE[s.kind] || T('Сводка', 'Report')) + ' — ' + esc(when(s.ts))}.</span><span>${T('Пока страница открыта, данные обновляются сами каждые 2 минуты; полная сводка — 4 раза в день.', 'While the page is open, data refreshes itself every 2 minutes; a full report is built 4 times a day.')}</span><span class="rf-btns"><button type="button" class="btn sm" data-upd ${loud ? 'disabled' : ''}>${ico('refresh', UP.run ? 'spin' : '')}<span>${T('Обновить', 'Update')}</span></button><button type="button" class="btn sm" data-more>${ico('sliders')}<span>${T('Настройки', 'Settings')}</span></button></span>${langSwitch()}`;
+    if (rf) rf.innerHTML = `<span>${u ? T('Онлайн-данные', 'Live data') + ' — ' + esc(when(u.ts)) : esc(KIND_TITLE[s.kind] || T('Сводка', 'Report')) + ' — ' + esc(when(s.ts))}.</span><span>${T('Пока страница открыта, данные обновляются сами каждые 2 минуты; полная сводка — 4 раза в день.', 'While the page is open, data refreshes itself every 2 minutes; a full report is built 4 times a day.')}</span><span class="rf-btns"><button type="button" class="btn sm" data-upd ${loud ? 'disabled' : ''}>${ico('refresh', UP.run ? 'spin' : '')}<span>${T('Обновить', 'Update')}</span></button><button type="button" class="btn sm" data-more>${ico('sliders')}<span>${T('Настройки', 'Settings')}</span></button></span>`;
   }
 
   // ---------- лист снизу ----------
@@ -2406,10 +2386,6 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     if (e.key !== 'Escape') return;
     if (!$('#story').hidden) closeStory(0); else closeSheet();
   });
-  function langSwitch() {
-    return `<div class="langsw" role="group" aria-label="Language / Язык"><button type="button" data-lang="en" aria-pressed="${String(EN)}">English</button><button type="button" data-lang="ru" aria-pressed="${String(RU)}">Русский</button></div>`;
-  }
-  document.addEventListener('click', e => { const b = e.target.closest('[data-lang]'); if (b && b.dataset.lang !== LANG) setLang(b.dataset.lang); });
   function copyBtn(text) { return `<button type="button" class="btn sm" data-copy="${esc(text)}">${ico('copy')}<span>${T('Скопировать', 'Copy')}</span></button>`; }
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-copy]');
@@ -2660,7 +2636,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     return candles ? { top: Math.min(0.3, (wide ? 34 : 50) / h), bottom: 0.2 } : { top: Math.min(0.2, 24 / h), bottom: 0.08 };
   };
   // мышью (компьютер) — как на «Графиках»: тянете — листаете историю, наводите — перекрестие; пальцем — см. heroTouch ниже:
-  // ведёте — цена свечи под пальцем, нажатие закрепляет свечу, двумя пальцами — сдвиг и масштаб
+  // ведёте или зажали — цена свечи под пальцем, отпустили — живая цена, двумя пальцами — сдвиг и масштаб
   function drawLW(el, R, key) {
     const mode = S.chartMode !== 'line' ? 'candles' : 'line';
     // тот же интервал и вид (новая свеча, новые данные) — сохраняем видимый участок и закреплённую свечу
@@ -2711,7 +2687,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     HC = { chart, main, vol, el, key, rows: R.rows, tf: R.tf, intra, Tm, wide, mode, n: R.n, pin: null, moveAt: 0, at: new Map(R.rows.map((r, k) => [Tm(r), k])) };
     if (keep && keep.pinT != null) { const k = R.rows.findIndex(r => r[0] === keep.pinT); if (k >= 0 && k < R.rows.length - 1) HC.pin = k; }
     HC.fit = () => { try { chart.priceScale('right').applyOptions({ scaleMargins: hlegMargins(el, candles, wide) }); } catch (e) { } };
-    // мышь: наведение показывает свечу, нажатие закрепляет. Пальцем эти события не приходят (жесты пальцем — heroTouch)
+    // мышь: наведение показывает свечу, увели мышь с графика — снова живая цена. Пальцем эти события не приходят (heroTouch)
     chart.subscribeCrosshairMove(param => {
       if (!HC || HC.chart !== chart || HG.on) return;
       // библиотека сама переставляет перекрестие при сдвиге и масштабе (без мыши) — это не выбор свечи
@@ -2720,13 +2696,6 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       const k = HC.at.get(param.time); if (k == null) return;
       HC.moveAt = Date.now();
       heroAt(k);
-    });
-    // нажатие на свечу закрепляет её (вверху — её цена); на ту же или на последнюю — снова «сейчас»
-    chart.subscribeClick(param => {
-      if (!HC || HC.chart !== chart || !param || param.time == null || Date.now() - HG.touchAt < 900) return;
-      const k = HC.at.get(param.time); if (k == null) return;
-      HC.pin = HC.pin === k || k === HC.rows.length - 1 ? null : k;
-      heroPin(true);
     });
     try { chart.timeScale().subscribeVisibleLogicalRangeChange(hwhatSync); } catch (e) { }
     hwhatSync();
@@ -2779,14 +2748,15 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     } catch (e) { }
   }
   // ---------- график на «Главном» пальцем — как в приложениях бирж ----------
-  // Ведёте влево-вправо — вверху цена свечи под пальцем, на каждой новой свече — лёгкий щелчок. Полоса графика — во всю
-  // ширину экрана: левее свечей — первая видимая свеча, правее (над шкалой цен и у края экрана) — последняя.
-  // Отпустили — свеча остаётся («Сейчас» — назад). Ведёте вверх-вниз — страница листается как обычно (жест считается
-  // горизонтальным, если он не круче ~50°). Нажатие — закрепить свечу (на ту же или на последнюю — снова «сейчас»).
+  // Ведёте влево-вправо (или зажали палец на месте) — вверху цена свечи под пальцем, на каждой новой свече — лёгкий
+  // щелчок (Android). Полоса графика — во всю ширину экрана: левее свечей — первая видимая свеча, правее (над шкалой цен и
+  // у края экрана) — последняя. Отпустили — сразу снова живая цена (случайное нажатие не оставляет старую цену вверху).
+  // Ведёте вверх-вниз — страница листается как обычно (жест горизонтальный, если не круче ~50°).
   // Двумя пальцами — сдвинуть историю и приблизить / отдалить.
-  const HG = { g: null, on: false, touchAt: 0 };
+  const HG = { g: null, on: false, touchAt: 0, hold: 0 };
   (function heroTouch() {
-    const SLOP = 6, K = 1.2;
+    const SLOP = 6, K = 1.2, HOLD = 260;
+    const noHold = () => { clearTimeout(HG.hold); HG.hold = 0; };
     const zone = t => {
       if (S.tab !== 'overview' || !HC || !HC.el || !HC.el.isConnected) return false;
       const r = HC.el.getBoundingClientRect(); if (!r.width) return false;
@@ -2821,6 +2791,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       show(k, t.clientY);
     };
     const pinchStart = e => {
+      noHold();
       const a = e.touches[0], b = e.touches[1], ts = HC.chart.timeScale(), r = HC.el.getBoundingClientRect();
       let lr = null; try { lr = ts.getVisibleLogicalRange(); } catch (er) { }
       if (!lr) { HG.g = null; return; }
@@ -2845,13 +2816,16 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
         if (g.mode !== 'pinch' && HC) pinchStart(e);
         e.stopPropagation(); return;
       }
-      HG.g = null; HG.on = false;
+      HG.g = null; HG.on = false; noHold();
       if (e.touches.length !== 1 || !$('#sheet').hidden || !$('#story').hidden) return;
       const t = e.touches[0];
       if (e.target.closest && e.target.closest('a, button, input, select, textarea, label, #tabbar, .topbar, .archive, #story, .sheet-wrap')) return;
       if (!zone(t)) return;
       HG.g = { id: t.identifier, x0: t.clientX, y0: t.clientY, mode: null, k: null };
       HG.touchAt = Date.now();
+      // зажали палец и держите на месте — тоже цена свечи под пальцем (с этого момента страница под пальцем не листается)
+      const g0 = HG.g;
+      HG.hold = setTimeout(() => { HG.hold = 0; if (HG.g === g0 && g0.mode == null && HC) { g0.mode = 'h'; HG.on = true; scrub({ clientX: g0.x0, clientY: g0.y0 }); } }, HOLD);
       if (HC.el.contains(e.target)) e.stopPropagation();          // библиотека графика этот жест не получает
     }, { capture: true, passive: true });
     document.addEventListener('touchmove', e => {
@@ -2862,6 +2836,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       if (g.mode == null) {
         const dx = Math.abs(t.clientX - g.x0), dy = Math.abs(t.clientY - g.y0);
         if (dx + dy < SLOP) { e.stopPropagation(); return; }
+        noHold();
         if (dy > K * dx) { HG.g = null; return; }                    // вверх-вниз — это страница
         g.mode = 'h'; HG.on = true;
       }
@@ -2873,17 +2848,12 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       if (g.mode === 'pinch') { e.stopPropagation(); if (e.cancelable) e.preventDefault(); if (!e.touches.length) { HG.g = null; HG.touchAt = Date.now(); } return; }
       let t = null; for (const x of e.changedTouches) if (x.identifier === g.id) t = x;
       if (!t) return;
-      HG.g = null; HG.on = false; HG.touchAt = Date.now();
+      HG.g = null; HG.on = false; HG.touchAt = Date.now(); noHold();
       e.stopPropagation();
       if (!HC) return;
       if (e.type === 'touchend' && e.cancelable) e.preventDefault();   // без «мышиных» событий и щелчка следом
-      // отпустили — свеча остаётся (на последней — «сейчас»). На iPhone щелчок возможен только сейчас — на отпускание
-      if (g.mode === 'h') { heroPin(HC.pin == null); if (HAP.ios) haptic(); return; }
-      if (g.mode == null && e.type === 'touchend') {
-        const k = idxAt(t.clientX);
-        HC.pin = HC.pin === k || k === HC.rows.length - 1 ? null : k;
-        heroPin(true); haptic();
-      }
+      // отпустили — сразу живая цена (короткое нажатие ничего не меняет)
+      if (g.mode === 'h') { HC.pin = null; heroPin(true); }
     };
     document.addEventListener('touchend', end, { capture: true, passive: false });
     document.addEventListener('touchcancel', end, { capture: true, passive: false });
@@ -3445,7 +3415,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const hero = `<section class="hero" aria-label="${T('Цена DOG', 'DOG price')}">
         <div class="hero-head">
           <div class="hero-main">
-            <div class="hero-pair"><span class="hwhen" id="hwhen">${T('DOG · цена в долларах', 'DOG · price in US dollars')}</span><span class="live" id="hlive" hidden><i></i>${T('онлайн', 'live')}</span><button type="button" class="hnow" id="hnow" hidden>${ico('refresh')}${T('Сейчас', 'Now')}</button></div>
+            <div class="hero-pair"><span class="hwhen" id="hwhen">${T('DOG · цена в долларах', 'DOG · price in US dollars')}</span><span class="live" id="hlive" hidden><i></i>${T('онлайн', 'live')}</span></div>
             <div class="hero-row"><div class="hero-price tnum${EN ? ' en' : ''}" id="hprice">${fp(p0)}${RU ? '<small>$</small>' : ''}</div><div class="hero-chg"><span class="pill ${dir(c0)}" id="hpill">${pillTxt(c0)}</span><span id="hlabel">${T('за сутки', '24h')}</span></div></div>
           </div>
           ${heroStats(p0)}
@@ -4257,7 +4227,6 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     openSheet(T('Ещё', 'More'), `<div class="group flush rows" style="background:var(--surface-2)">
       ${row('data-upd' + (loud ? ' disabled' : ''), ico('refresh', UP.run ? 'spin' : ''), T('Обновить сейчас', 'Update now'), u ? T('данные на ', 'data as of ') + esc(tl(u.ts)) + T(', проверено ', ', checked ') + u.okN + '/' + u.n : T('свежие стаканы и переводы + самопроверка', 'fresh order books and transfers + self-check'), 'acc')}
     </div>
-    <div class="setting"><span class="set-t">${ico('globe')}<b>${T('Язык', 'Language')}</b></span>${langSwitch()}</div>
     <div class="setting"><span class="set-t">${ico('moon')}<b>${T('Оформление', 'Appearance')}</b></span>${themeSwitch()}</div>
     <div class="group flush rows" style="background:var(--surface-2)">
       ${installRowHtml()}
@@ -6893,12 +6862,12 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   // ---------- СПРАВКА ----------
   const HELP_EN = `<div class="group help">
       <h2>How to use this page</h2>
-      <p>This page collects data on the DOG token (DOG•GO•TO•THE•MOON) from seven exchanges and from the Bitcoin blockchain on its own. There’s nothing to set up: sections are at the bottom of the screen on a phone and on the left on an iPad or a computer. Almost everything can be tapped: tiles, rows, indices and exchanges open their details. The site always opens in English; to switch to Russian use the “⋯” menu (top right) or the RU button — or open the site with ?lang=ru.</p>
+      <p>This page collects data on the DOG token (DOG•GO•TO•THE•MOON) from seven exchanges and from the Bitcoin blockchain on its own. There’s nothing to set up: sections are at the bottom of the screen on a phone and on the left on an iPad or a computer. Almost everything can be tapped: tiles, rows, indices and exchanges open their details.</p>
       <div><h3>Gestures</h3><ul>
         <li><b>The day, step by step</b> — the ▶ button in “The last 24 hours”. Tap the right side for the next slide, the left side for the previous one; hold your finger down to pause. <b>Swipe up or down to close.</b></li>
         <li><b>Bottom cards</b> close with a swipe down on the top handle, or a tap outside the card. A card opened from another card has a <b>‹</b> arrow to go back.</li>
         <li><b>Bottom menu</b>: tap a section — or press the menu and slide your finger along it: the highlight follows your finger, and the section under it opens when you let go.</li>
-        <li><b>Price chart on Home</b> works like in exchange apps: slide your finger left or right across it — the top shows that candle’s date and price, what 1 million DOG cost and the market cap at that moment, plus the change from then to now (on Android the phone gives a light tick on every candle). The whole width of the screen counts: put your finger left of the candles for the first one, right of them for the latest. Let go and the candle stays; tap a candle to pin it. Slide up or down to scroll the page as usual. Two fingers move the history and zoom in or out. The <b>Now</b> button returns to the current price.</li></ul></div>
+        <li><b>Price chart on Home</b> works like in exchange apps: slide your finger left or right across it — the top shows that candle’s date and price, what 1 million DOG cost and the market cap at that moment, plus the change from then to now (on Android the phone gives a light tick on every candle). The whole width of the screen counts: put your finger left of the candles for the first one, right of them for the latest. You can also press and hold. Let go and the live price is back at once, so a stray touch never leaves an old price on top. Slide up or down to scroll the page as usual. Two fingers move the history and zoom in or out.</li></ul></div>
       <div><h3>Home</h3><p>At the top is <b>Fear &amp; Greed</b>: two indices of the whole crypto market (alternative.me and CoinMarketCap) and our own DOG index. The number sits right in the gauge: 0 = fear, 100 = greed. Tap one for what goes into it and its history next to the price; the dots on the chart are the index’s turning points — tap one to see its day. Tap the <b>Fear &amp; Greed</b> heading for all three on one chart, from 30 days to all time: slide your finger to see all three numbers on any day. Each index has its own colour: alternative.me turquoise, CoinMarketCap blue, DOG apricot — its number sits in a ball of that colour. Tap an index’s card to bring its line forward (the others fade, and its low and high get labels); the dots are each index’s low and high for the period — tap a dot, or a low or a high in the table below, to see that day on the chart.</p>
         <p style="margin-top:8px">Below it: the DOG price in US dollars, what <b>1 million DOG</b> costs, the market cap and a chart of trades on Kraken. The 15m, 1h, 4h, 1d and 1w buttons set how much time one candle covers — 15 minutes, an hour, 4 hours, a day or a week; weekly candles show the whole history since trading began in April 2024, and the line under the chart says what span it shows. The two icons next to them switch between candles (with trading volume) and a simple line.</p>
         <p style="margin-top:8px">Then four tiles: who is stronger near the price (buyers or sellers), how many wallets hold 10M+ DOG (and how many were added or dropped since the date shown), how much DOG sits on exchanges and what share of coins is in profit. Tap a tile for its breakdown. Right under the tiles is the C2 Blockchain row; further down: the last 24 hours, exchange order books and DOG among meme coins.</p></div>
@@ -6918,7 +6887,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
         <p><b>Method.</b> The price is the median of the mid-prices of the Kraken, Gate, MEXC and BingX order books (on a live update — of Kraken and Gate). Market cap = price × 100B DOG. The combined order book adds up all exchanges at the chosen step (0.0000001–0.0001); Gate shares its nearest 100 levels exactly and deeper ones in 0.00001 steps; MEXC (nearest 20 levels) and BingX (100 levels) stream live — if that connection fails, they show the latest report and stay out of the live combined book; an exchange whose price differs from the others by more than 3% is left out. A wall is a level of 5M DOG or more. Indicators use Kraken candles: RSI 14 (Wilder), MACD 12/26/9 as a percentage of the price, Bollinger Bands 20/2, simple moving averages 20/50/200. The link to bitcoin is the Pearson correlation of daily log returns; beta is how much DOG moves on average per 1% move in bitcoin (90 days).</p>
         <p><b>Wallet owners.</b> Exchanges and services are labelled using DOG DATA tags, exchange disclosures and flow analysis. A label is an estimate, not a confirmed owner.</p>
         <p><b>Chart</b> built with <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener">Lightweight Charts™ by TradingView</a>.</p>
-        <p><b>This site</b> is an unofficial project, not affiliated with the DOG team, any exchange or C2 Blockchain, and it is not investment advice. It uses no cookies and no analytics; view settings (tab, chart period, language) are stored only in your browser. For fresh data, your browser requests public data directly from Kraken, Gate, DigiFinex, CoinW, MEXC and BingX, Coinbase and DOG DATA. The Inter font (SIL OFL) and the chart library are hosted on the site itself (jsDelivr is only a fallback for the library).</p>
+        <p><b>This site</b> is an unofficial project, not affiliated with the DOG team, any exchange or C2 Blockchain, and it is not investment advice. It uses no cookies and no analytics; view settings (tab, chart period, theme) are stored only in your browser. For fresh data, your browser requests public data directly from Kraken, Gate, DigiFinex, CoinW, MEXC and BingX, Coinbase and DOG DATA. The Inter font (SIL OFL) and the chart library are hosted on the site itself (jsDelivr is only a fallback for the library).</p>
         <p><b>Times</b> on the page are in <span id="tzname">your local time</span>.</p>
       </div></div>`;
   function renderHelp() {
@@ -6937,7 +6906,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
         <li><b>Итог дня по шагам</b> — кнопка ▶ в блоке «Главное за сутки». Касание справа — следующий слайд, слева — предыдущий, удерживайте палец, чтобы остановить. <b>Свайп вверх или вниз закрывает.</b></li>
         <li><b>Карточки снизу</b> закрываются свайпом вниз за верхнюю полоску или касанием мимо карточки. У карточки, открытой из другой карточки, есть стрелка <b>‹</b> — назад.</li>
         <li><b>Нижнее меню</b>: нажмите на раздел — или зажмите меню и ведите пальцем: плашка поедет за пальцем, а раздел под ней откроется, когда отпустите.</li>
-        <li><b>График цены на главной</b> — как в приложениях бирж: ведите пальцем влево-вправо — вверху появятся дата и цена свечи под пальцем, сколько стоил 1 млн DOG и капитализация в тот момент и на сколько цена изменилась с тех пор (на Android телефон слегка щёлкает на каждой свече). Работает вся ширина экрана: левее свечей — первая, правее — последняя. Отпустите — свеча останется; нажатие на свечу закрепляет её. Вверх-вниз страница листается как обычно. Двумя пальцами — сдвинуть историю и приблизить или отдалить. Кнопка <b>«Сейчас»</b> возвращает текущую цену.</li></ul></div>
+        <li><b>График цены на главной</b> — как в приложениях бирж: ведите пальцем влево-вправо — вверху появятся дата и цена свечи под пальцем, сколько стоил 1 млн DOG и капитализация в тот момент и на сколько цена изменилась с тех пор (на Android телефон слегка щёлкает на каждой свече). Работает вся ширина экрана: левее свечей — первая, правее — последняя. Можно и зажать палец. Отпустите — сразу снова живая цена: случайное нажатие не оставляет вверху старую цену. Вверх-вниз страница листается как обычно. Двумя пальцами — сдвинуть историю и приблизить или отдалить.</li></ul></div>
       <div><h3>Главная</h3><p>Вверху — <b>страх и жадность</b>: два индекса всего крипторынка (alternative.me и CoinMarketCap) и наш индекс DOG. Число — прямо в дуге: 0 — страх, 100 — жадность. Нажмите на любой — откроется, из чего он складывается, и его история рядом с ценой; точки на графике — развороты индекса, нажмите на точку — увидите её день. Нажмите на заголовок <b>«Страх и жадность»</b> — откроются все три на одном графике, от 30 дней до всей истории: ведите пальцем — увидите все три числа в любой день. У каждого индекса свой цвет: alternative.me — бирюзовый, CoinMarketCap — синий, DOG — абрикосовый; его число — в шарике этого цвета. Нажмите на карточку индекса — его линия станет яркой, остальные побледнеют, а у минимума и максимума появятся числа; точки на графике — минимум и максимум каждого за период: нажмите на точку или на минимум и максимум в таблице ниже — на графике покажется этот день.</p>
         <p style="margin-top:8px">Под ним — цена DOG в долларах, сколько стоит <b>1 млн DOG</b>, капитализация и график по сделкам на Kraken. Кнопки 15м, 1ч, 4ч, 1д и 1н выбирают, сколько времени в одной свече: 15 минут, час, 4 часа, день или неделя. Недельные свечи показывают всю историю с начала торгов в апреле 2024 года, а какой отрезок виден сейчас — написано под графиком. Два значка рядом переключают вид: свечи с объёмом торгов или простая линия.</p>
         <p style="margin-top:8px">Ниже четыре плитки: кто сильнее у цены — покупатели или продавцы, сколько кошельков держат от 10 млн DOG (и сколько их прибавилось или убавилось с указанной даты), сколько DOG лежит на биржах и какая доля монет в прибыли. Нажмите на плитку — откроется разбор. Сразу под плитками — строка C2 Blockchain, дальше — главное за сутки, стаканы бирж и DOG среди мем-монет.</p></div>
