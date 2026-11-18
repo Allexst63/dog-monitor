@@ -1974,19 +1974,21 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
       const c = kids[k], ch = txt[k];
       if (c._d == null) { if (c.getAttribute('data-c') !== ch) c.setAttribute('data-c', ch); continue; }
       const d = +ch; if (d === c._d) continue;
-      const s = c.firstChild;
-      s.style.transition = 'none'; c._i = 10 + c._d; s.style.transform = rollTr(c._i);
-      c._i += up ? (d - c._d + 10) % 10 : -((c._d - d + 10) % 10); c._d = d;
-      c.classList.remove('hu', 'hd'); go.push(c);
+      // a digit still rolling from the last change continues from where it is (no jump)
+      let from = 10 + c._d;
+      if (c._fly) { const s = c.firstChild, h = s.offsetHeight / 30; if (h > 0) { const y = new DOMMatrix(getComputedStyle(s).transform).m42; if (isFinite(y)) from = -y / h; } }
+      go.push([c, from, (10 + c._d) + (up ? (d - c._d + 10) % 10 : -((c._d - d + 10) % 10)), d]);
     }
     if (!go.length) return;
+    for (const [c, from] of go) { const s = c.firstChild; s.style.transition = 'none'; s.style.transform = rollTr(from); c.classList.remove('hu', 'hd'); }
     void r.offsetWidth;                              // one style flush for all digits, then they roll together
-    for (const c of go) {
+    for (const [c, , to, d] of go) {
       const s = c.firstChild;
-      s.style.transition = ''; s.style.transform = rollTr(c._i);
+      c._i = to; c._d = d; c._fly = true;
+      s.style.transition = ''; s.style.transform = rollTr(to);
       if (!o.quiet) { c.classList.add(up ? 'hu' : 'hd'); clearTimeout(c._t1); c._t1 = setTimeout(() => c.classList.remove('hu', 'hd'), 260); }
       clearTimeout(c._t2);
-      c._t2 = setTimeout(() => { s.style.transition = 'none'; c._i = 10 + c._d; s.style.transform = rollTr(c._i); void s.offsetWidth; s.style.transition = ''; }, 1000);
+      c._t2 = setTimeout(() => { c._fly = false; s.style.transition = 'none'; c._i = 10 + c._d; s.style.transform = rollTr(c._i); void s.offsetWidth; s.style.transition = ''; }, 1000);
     }
   }
 
