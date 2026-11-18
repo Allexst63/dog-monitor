@@ -433,6 +433,13 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
         for (const r of kr) { const d = day(+r[0]); if (d >= today || (P.kraken_from && d < P.kraken_from) || !P.d[d]) continue; n++; const dv = Math.abs(P.d[d][3] / +r[4] - 1); if (dv <= 0.001) same++; if (dv > worst) { worst = dv; wd = d; } }
         out.k = { n, same, worst, wd };
       }
+      // до 27.06.2025 закрытия в prices.json — с Gate (DOG/USDT): [время, объём в USDT, закрытие, максимум, минимум, открытие, …]
+      const G = await get('https://api.gateio.ws/api/v4/spot/candlesticks?currency_pair=DOG_USDT&interval=1d&limit=1000');
+      if (Array.isArray(G) && P && P.d && P.kraken_from) {
+        let n = 0, same = 0, worst = 0, wd = '';
+        for (const r of G) { const d = day(+r[0]); if (d >= P.kraken_from || !P.d[d] || (P.s && P.s[d] && P.s[d] !== 'g')) continue; n++; const dv = Math.abs(P.d[d][3] / +r[2] - 1); if (dv <= 0.001) same++; if (dv > worst) { worst = dv; wd = d; } }
+        out.g = { n, same, worst, wd };
+      }
       const A = await get('https://api.alternative.me/fng/?limit=0');
       if (A && Array.isArray(A.data) && F && F.market && F.market.hist) {
         const m = new Map(F.market.hist); let n = 0, same = 0; const bad = [];
@@ -450,6 +457,8 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
     const pc = x => (x * 100).toFixed(2).replace('.', ',') + '%';
     if (v.k) add(v.k.n >= 30 && v.k.same === v.k.n, `Цены DOG в истории как у Kraken: ${v.k.same} из ${v.k.n} дней (наибольшее расхождение ${pc(v.k.worst)})`, `DOG prices in the history match Kraken: ${v.k.same} of ${v.k.n} days (largest gap ${(v.k.worst * 100).toFixed(2)}%)`, v.k.wd);
     else add(true, 'Цены DOG: сверка с Kraken пропущена — Kraken не ответил', 'DOG prices: the Kraken comparison was skipped — Kraken did not answer');
+    if (v.g) add(v.g.n >= 30 && v.g.same === v.g.n, `Цены DOG до 27.06.2025 как у Gate: ${v.g.same} из ${v.g.n} дней (наибольшее расхождение ${pc(v.g.worst)})`, `DOG prices before 27 Jun 2025 match Gate: ${v.g.same} of ${v.g.n} days (largest gap ${(v.g.worst * 100).toFixed(2)}%)`, v.g.wd);
+    else add(true, 'Цены DOG до 27.06.2025: сверка с Gate пропущена — Gate не ответил', 'DOG prices before 27 Jun 2025: the Gate comparison was skipped — Gate did not answer');
     if (v.a) add(v.a.n >= 300 && v.a.same === v.a.n, `alternative.me: история индекса как у источника — ${v.a.same} из ${v.a.n} дней`, `alternative.me: the index history matches the source — ${v.a.same} of ${v.a.n} days`, v.a.bad.join('; '));
     else add(true, 'alternative.me: сверка пропущена — источник не ответил', 'alternative.me: comparison skipped — the source did not answer');
     if (v.c) add(v.c.n >= 30 && v.c.same === v.c.n, `Цены биткоина в истории как у Coinbase: ${v.c.same} из ${v.c.n} дней`, `Bitcoin prices in the history match Coinbase: ${v.c.same} of ${v.c.n} days`, pc(v.c.worst));
