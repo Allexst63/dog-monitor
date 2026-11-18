@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>DOG Monitor — live DOG•GO•TO•THE•MOON tracker</title>
-<meta name="description" content="Live tracker for DOG•GO•TO•THE•MOON, the Bitcoin rune: price and charts, order books from 7 exchanges in one view, three Fear &amp; Greed indices, DOG against the top meme coins, the top 100 and every 10M+ DOG wallet, coins in profit and loss. Data cross-checked between sources, full report 4 times a day. Unofficial; English and Russian.">
+<meta name="description" content="Live tracker for DOG•GO•TO•THE•MOON, the Bitcoin rune: price and charts, order books from 7 exchanges in one view, three Fear &amp; Greed indices, DOG against the top meme coins, the top 100 and every 10M+ DOG wallet, coins in profit and loss. Data cross-checked between sources, full report 4 times a day. Unofficial.">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F2EFE9">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0E1118">
 <meta name="color-scheme" content="light dark">
@@ -49,9 +49,9 @@
 @font-face{font-family:"Inter Display";src:url("fonts/inter-display-700.woff") format("woff");font-weight:650 800;font-style:normal;font-display:swap}
 @font-face{font-family:"DM Mark";src:url("fonts/inter-mark.woff") format("woff");font-weight:700;font-style:italic;font-display:block}
 :root{
-  --bg:#F2EFE9; --bg-glow:rgba(184,118,63,.06); --surface:#FCFBF8; --surface-2:#F5F2EC; --surface-3:#E9E4DB;
+  --bg:#F2EFE9; --bg-glow:rgba(192,117,55,.06); --surface:#FCFBF8; --surface-2:#F5F2EC; --surface-3:#E9E4DB;
   --ink:#17191F; --ink-2:#555A65; --ink-3:#8B8E97; --line:#E1DBD0; --line-2:#ECE7DF; --edge:rgba(23,25,31,.05);
-  --dog:#B8763F; --dog-ink:#9A5C2A; --dog-soft:rgba(184,118,63,.12); --dog-glow:rgba(184,118,63,.10);
+  --dog:#C07537; --dog-ink:#9A5C2A; --dog-soft:rgba(192,117,55,.12); --dog-glow:rgba(192,117,55,.10);
   --cream:#23262D; --on-cream:#F7F4EE;
   --accent:var(--dog); --accent-ink:var(--dog-ink); --accent-soft:var(--dog-soft); --on-accent:#FFFFFF;
   --bid:#14A06F; --ask:#DE3F48; --bid-soft:rgba(20,160,111,.14); --ask-soft:rgba(222,63,72,.12);
@@ -60,7 +60,7 @@
   --t-sage:#E2F0E7; --t-peach:#F7E8D9; --t-slate:#E3EAF5; --t-sand:#F1EADD;
   --k1:#3D7BD6; --k2:#D9822F; --k3:#14A06F; --k4:#B8902F; --k5:#C2607E; --k8:#B8763F; --k7:#6676A0; --k6:#14A06F; --k-pr:#8E929C; --k-un:#6B707B;
   --k-peach:#DDB48E; --k-ink:#3B3F48;
-  --mc-dog:var(--dog); --mc-sel:#3D7BD6; --mc-oth:rgba(110,114,126,.42); --f3m:#149483; --moon-glow:drop-shadow(0 1px 1.5px rgba(120,70,30,.3));
+  --mc-dog:var(--f3d); --mc-sel:#3D7BD6; --mc-oth:rgba(110,114,126,.42); --f3m:#53794D; --moon-glow:drop-shadow(0 1px 1.5px rgba(120,70,30,.3));
   --o1:#DE3F48; --o2:#D9963E; --o3:#86AE4E; --o4:#14A06F;
   --hero-a:#FFFFFF; --hero-b:#F4F1EB; --ray:transparent; --card-ink:var(--ink); --card-ink-2:var(--ink-2); --card-line:var(--line);
   --space-0:#F7F2EA; --space-1:#FFFFFF; --space-2:#FFFFFF;
@@ -68,7 +68,7 @@
   --fz1:#D9393E; --fz2:#E07A20; --fz3:#D6AC24; --fz4:#84B52F; --fz5:#1FA466;
   --hero-panel:#F8F4EC; --hero-edge:rgba(120,92,52,.085); --hero-line:rgba(120,92,52,.11);
   --c2-bg:#FFFFFF; --c2-ink:#47707A; --c2-edge:rgba(23,25,31,.10); --c2-img:url(icons/c2-lion-light.png);
-  --f3c:#5277C7; --f3d:#C56B23;
+  --f3c:#4656A3; --f3d:#D27322;
   --shadow-card:0 1px 0 rgba(23,25,31,.03),0 10px 30px -22px rgba(23,25,31,.35);
   --shadow-hero:0 18px 40px -26px rgba(23,25,31,.45);
   --shadow-pop:0 28px 70px -24px rgba(23,25,31,.45);
@@ -80,9 +80,9 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#0E1118; --bg-glow:rgba(210,149,95,.055); --surface:#151922; --surface-2:#1A1F29; --surface-3:#242A36;
+    --bg:#0E1118; --bg-glow:rgba(222,149,87,.055); --surface:#151922; --surface-2:#1A1F29; --surface-3:#242A36;
     --ink:#EFEEEB; --ink-2:#A7ABB5; --ink-3:#727785; --line:#262C38; --line-2:#1D222C; --edge:rgba(255,255,255,.035);
-    --dog:#D2955F; --dog-ink:#E6B78F; --dog-soft:rgba(210,149,95,.14); --dog-glow:rgba(210,149,95,.16);
+    --dog:#DE9557; --dog-ink:#E6B78F; --dog-soft:rgba(222,149,87,.14); --dog-glow:rgba(222,149,87,.16);
     --cream:#EBDDC9; --on-cream:#18150F; --on-accent:#1A140E;
     --bid:#26B37F; --ask:#E8505B; --bid-soft:rgba(38,179,127,.19); --ask-soft:rgba(232,80,91,.17);
     --bid-strong:rgba(38,179,127,.42); --ask-strong:rgba(232,80,91,.38); --bid-faint:rgba(38,179,127,.07); --ask-faint:rgba(232,80,91,.06);
@@ -90,14 +90,14 @@
     --t-sage:#13241D; --t-peach:#271C14; --t-slate:#141D2D; --t-sand:#211E18;
     --k1:#6EA6F2; --k2:#F2A35F; --k3:#26B37F; --k4:#D9B060; --k5:#E58FA9; --k8:#D2955F; --k7:#9AA6C2; --k6:#26B37F; --k-pr:#878C98; --k-un:#A3A7B1;
     --k-peach:#EACBA8; --k-ink:#3A404C;
-    --mc-sel:#6EA6F2; --mc-oth:rgba(135,140,152,.4); --f3m:#19AB91; --moon-glow:drop-shadow(0 0 6px rgba(242,180,122,.45));
+    --mc-sel:#6EA6F2; --mc-oth:rgba(135,140,152,.4); --f3m:#77A170; --moon-glow:drop-shadow(0 0 6px rgba(242,180,122,.45));
     --o1:#E8505B; --o2:#E9A85E; --o3:#A9C76A; --o4:#26B37F;
     --hero-a:#1B2234; --hero-b:#121723; --ray:transparent;
     --space-0:#141821; --space-1:#1A1F2A; --space-2:#1F2531;
     --fz1:#E54348; --fz2:#EA832A; --fz3:#E6BC33; --fz4:#93C63A; --fz5:#2BB677;
     --hero-panel:rgba(6,9,15,.28); --hero-edge:rgba(255,255,255,.05); --hero-line:rgba(255,255,255,.07);
     --c2-bg:#16212B; --c2-ink:#93BCC6; --c2-edge:rgba(147,188,198,.2); --c2-img:url(icons/c2-lion-dark.png);
-    --f3c:#7191DD; --f3d:#D07C33;
+    --f3c:#6E81CB; --f3d:#EE9144;
     --shadow-card:0 1px 0 rgba(255,255,255,.02) inset,0 12px 32px -24px rgba(0,0,0,.9);
     --shadow-hero:0 22px 50px -28px rgba(0,0,0,.95);
     --shadow-pop:0 30px 80px -20px rgba(0,0,0,.85);
@@ -105,9 +105,9 @@
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0E1118; --bg-glow:rgba(210,149,95,.055); --surface:#151922; --surface-2:#1A1F29; --surface-3:#242A36;
+  --bg:#0E1118; --bg-glow:rgba(222,149,87,.055); --surface:#151922; --surface-2:#1A1F29; --surface-3:#242A36;
   --ink:#EFEEEB; --ink-2:#A7ABB5; --ink-3:#727785; --line:#262C38; --line-2:#1D222C; --edge:rgba(255,255,255,.035);
-  --dog:#D2955F; --dog-ink:#E6B78F; --dog-soft:rgba(210,149,95,.14); --dog-glow:rgba(210,149,95,.16);
+  --dog:#DE9557; --dog-ink:#E6B78F; --dog-soft:rgba(222,149,87,.14); --dog-glow:rgba(222,149,87,.16);
   --cream:#EBDDC9; --on-cream:#18150F; --on-accent:#1A140E;
   --bid:#26B37F; --ask:#E8505B; --bid-soft:rgba(38,179,127,.19); --ask-soft:rgba(232,80,91,.17);
   --bid-strong:rgba(38,179,127,.42); --ask-strong:rgba(232,80,91,.38); --bid-faint:rgba(38,179,127,.07); --ask-faint:rgba(232,80,91,.06);
@@ -115,14 +115,14 @@
   --t-sage:#13241D; --t-peach:#271C14; --t-slate:#141D2D; --t-sand:#211E18;
   --k1:#6EA6F2; --k2:#F2A35F; --k3:#26B37F; --k4:#D9B060; --k5:#E58FA9; --k8:#D2955F; --k7:#9AA6C2; --k6:#26B37F; --k-pr:#878C98; --k-un:#A3A7B1;
   --k-peach:#EACBA8; --k-ink:#3A404C;
-  --mc-sel:#6EA6F2; --mc-oth:rgba(135,140,152,.4); --f3m:#19AB91; --moon-glow:drop-shadow(0 0 6px rgba(242,180,122,.45));
+  --mc-sel:#6EA6F2; --mc-oth:rgba(135,140,152,.4); --f3m:#77A170; --moon-glow:drop-shadow(0 0 6px rgba(242,180,122,.45));
   --o1:#E8505B; --o2:#E9A85E; --o3:#A9C76A; --o4:#26B37F;
   --hero-a:#1B2234; --hero-b:#121723; --ray:transparent;
   --space-0:#141821; --space-1:#1A1F2A; --space-2:#1F2531;
   --fz1:#E54348; --fz2:#EA832A; --fz3:#E6BC33; --fz4:#93C63A; --fz5:#2BB677;
   --hero-panel:rgba(6,9,15,.28); --hero-edge:rgba(255,255,255,.05); --hero-line:rgba(255,255,255,.07);
   --c2-bg:#16212B; --c2-ink:#93BCC6; --c2-edge:rgba(147,188,198,.2); --c2-img:url(icons/c2-lion-dark.png);
-  --f3c:#7191DD; --f3d:#D07C33;
+  --f3c:#6E81CB; --f3d:#EE9144;
   --shadow-card:0 1px 0 rgba(255,255,255,.02) inset,0 12px 32px -24px rgba(0,0,0,.9);
   --shadow-hero:0 22px 50px -28px rgba(0,0,0,.95);
   --shadow-pop:0 30px 80px -20px rgba(0,0,0,.85);
@@ -1646,7 +1646,8 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
 .h-memes .mmini .mr b{grid-area:n;min-width:0;font-size:12.5px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .h-memes .mmini .mr .v{grid-area:v;text-align:left;font-family:var(--display);font-size:16px;font-weight:650;letter-spacing:-.01em;margin-top:1px}
 .h-memes .mmini .mr svg{grid-area:s;width:100%;height:26px;margin-top:3px;overflow:visible}
-.h-memes .mmini .mr.dog{background:linear-gradient(160deg,var(--dog-soft),var(--surface-2) 85%);border-color:color-mix(in srgb,var(--dog) 42%,var(--line-2))}
+.h-memes .mmini .mr.dog{background:linear-gradient(160deg,color-mix(in srgb,var(--mc-dog) 16%,var(--surface-2)),var(--surface-2) 85%);border-color:color-mix(in srgb,var(--mc-dog) 58%,var(--line-2))}
+.h-memes .mmini .mr.dog .mk{width:11px}
 .h-memes .mmini .mr.dog + .mr{border-top-color:var(--line-2)}
 .intro .h-memes .mr{animation:tileIn .55s cubic-bezier(.2,.8,.2,1) both}
 .intro .h-memes .mr:nth-child(2){animation-delay:.04s} .intro .h-memes .mr:nth-child(3){animation-delay:.08s}
@@ -1667,14 +1668,15 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
 .mm-read .r1 .bt{grid-area:b;display:flex;gap:6px;align-items:center;justify-content:flex-end;height:24px}
 .mm-read .tv-last.off{visibility:hidden}
 @media (min-width:560px){.mm-read .r1{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"d v b";min-height:26px}}
-.f3s-c{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"b n" "z z";align-items:center;column-gap:8px;row-gap:5px;padding:8px 9px 8px}
-.f3s-ball{grid-area:b;position:relative;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;box-sizing:border-box;border:2px solid var(--sc);background:radial-gradient(circle at 34% 28%,color-mix(in srgb,var(--sc) 34%,transparent),color-mix(in srgb,var(--sc) 12%,transparent) 72%);color:var(--sc);font-family:var(--display);font-size:19px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1;transition:background .2s,color .2s,transform .2s}
-.f3s-c .nm{grid-area:n;display:flex;align-items:center;gap:0;font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.f3s-c .zn{grid-area:z;font-size:11.5px;font-weight:600;line-height:1.2}
-.f3s-c.on{border-color:var(--sc);box-shadow:inset 0 0 0 1px var(--sc)}
-.f3s-c.on .f3s-ball{background:var(--sc);color:var(--surface);transform:scale(1.04)}
+/* index cards (v13): no ball — the number large, a dot of the index colour by the name, a strip of it on the left */
+.f3s-c{display:flex;flex-direction:column;align-items:flex-start;gap:1px;min-width:0;padding:8px 10px 9px 12px;border:1px solid var(--line-2);border-left:3px solid var(--sc);border-radius:14px;background:var(--surface-2)}
+.f3s-c .nm{display:flex;align-items:center;gap:6px;max-width:100%;font-size:12.5px;font-weight:600;line-height:1.3;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.f3s-c .nm .dt{flex:none;width:7px;height:7px;border-radius:50%;background:var(--sc)}
+.f3s-c .f3s-n{margin-top:2px;font-family:var(--display);font-size:26px;font-weight:650;line-height:1.08;letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums}
+.f3s-c .zn{max-width:100%;font-size:11.5px;font-weight:600;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.f3s-c.on{border-color:var(--sc);background:color-mix(in srgb,var(--sc) 11%,var(--surface-2));box-shadow:none}
 .f3s-c.dim{opacity:.5}
-@media (min-width:700px){.f3s-c{grid-template-areas:"b n" "b z";row-gap:1px;column-gap:12px;padding:10px 12px}.f3s-ball{width:50px;height:50px;font-size:21px}.f3s-c .nm{align-self:end}.f3s-c .zn{align-self:start;font-size:12px}}
+@media (min-width:700px){.f3s-c{padding:10px 14px 11px 15px}.f3s-c .nm{font-size:13px}.f3s-c .f3s-n{font-size:28px}.f3s-c .zn{font-size:12px}}
 .f3s-p{width:12px;height:12px;margin:-6px 0 0 -6px;box-shadow:0 0 0 2px var(--surface)}
 .f3s-p::before{left:-16px;top:-16px;right:-16px;bottom:-16px}
 .f3s-p.on{transform:scale(1.35);box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--ink)}
@@ -1706,39 +1708,6 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
 .ch-more[hidden]{display:none}
 .ch-more .spinner{width:11px;height:11px;border-width:1.5px}
 #tvchart > .ch-more{top:120px}
-/* liquidity map (Charts) */
-.lq-wrap{display:flex;flex-direction:column;gap:10px}
-@media (min-width:900px){.lq-wrap{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:18px;align-items:start}}
-.lqbox{position:relative;touch-action:pan-y;-webkit-user-select:none;user-select:none;outline:none;border-radius:10px}
-.lqbox:focus-visible{box-shadow:0 0 0 2px var(--k1)}
-.lqbox svg{display:block;width:100%;height:auto;overflow:visible}
-.lqbox .lq-b{fill:var(--bid)} .lqbox .lq-a{fill:var(--ask)}
-.lqbox .lq-t{fill:var(--ink-3);opacity:.42}
-.lqbox .lq-grid{stroke:var(--line-2);stroke-width:1}
-.lqbox .lq-ax{font-size:10.5px;fill:var(--ink-3);font-variant-numeric:tabular-nums}
-.lqbox .lq-h{font-size:11px;font-weight:600;fill:var(--ink-3)}
-.lqbox .lq-v,.lqbox .lq-side,.lqbox .lq-zt{paint-order:stroke;stroke:var(--surface);stroke-width:3px;stroke-linejoin:round}
-.lqbox .lq-v{font-size:10.5px;font-weight:600;fill:var(--ink-2);font-variant-numeric:tabular-nums}
-.lqbox .lq-side{font-size:10px;fill:var(--ink-3)}
-.lqbox .lq-now{stroke:var(--ink);stroke-width:1.5}
-.lqbox .lq-nowb{fill:var(--ink)} .lqbox .lq-nowt{font-size:10.5px;font-weight:650;fill:var(--surface);font-variant-numeric:tabular-nums}
-.lqbox .lq-zone{fill:var(--k1);opacity:.13} .lqbox .lq-zl{stroke:var(--k1);stroke-width:1.5}
-.lqbox .lq-zt{font-size:10.5px;font-weight:600;fill:var(--ink-2)}
-.lqbox .lq-chip rect{fill:var(--surface-3);stroke:var(--k1);stroke-width:1} .lqbox .lq-chip text{font-size:10.5px;font-weight:600;fill:var(--ink-2)}
-.lqbox .lq-hit{fill:transparent;cursor:pointer}
-.lqbox .lq-selr{fill:var(--ink);opacity:.07}
-.lq-info{min-height:52px;font-size:12.5px;line-height:1.5;color:var(--ink-2);padding:6px 8px;border-radius:10px;background:color-mix(in srgb,var(--ink) 4%,transparent)}
-.lq-info b{color:var(--ink)} .lq-info .up{color:var(--up)} .lq-info .down{color:var(--down)}
-.lq-sum{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px;font-size:13px;line-height:1.45;color:var(--ink-2)}
-.lq-sum li{display:flex;gap:8px;align-items:flex-start} .lq-sum b{color:var(--ink)}
-.lq-sw{display:inline-block;flex:none;width:10px;height:10px;border-radius:3px;margin-top:4px;background:var(--ink-3)}
-.lq-sw.b{background:var(--bid)} .lq-sw.a{background:var(--ask)} .lq-sw.t{background:color-mix(in srgb,var(--ink-3) 50%,transparent)} .lq-sw.c{background:color-mix(in srgb,var(--k1) 35%,transparent);box-shadow:inset 0 0 0 1.5px var(--k1)} .lq-sw.n{background:var(--ink-3)}
-.lq-leg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--ink-3);margin-top:10px}
-.lq-leg span{display:inline-flex;align-items:center;gap:6px} .lq-leg .lq-sw{margin-top:0}
-.lqsec .ch-head .note{display:block;margin-top:2px}
-.lq-out{display:flex;gap:8px;align-items:flex-start;margin:0 0 8px;font-size:12.5px;line-height:1.45;color:var(--ink-2)}
-.lq-out[hidden]{display:none} .lq-out b{color:var(--ink)} .lq-out .lq-sw{margin-top:4px}
-.linkbtn{border:0;background:none;padding:0;font:inherit;font-weight:600;color:var(--k1);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
 </style>
 </head>
 <body>
@@ -3252,7 +3221,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
         try { HC.main.update(S.chartMode !== 'line' ? { time: HC.Tm(r), open: r[1], high: r[2], low: r[3], close: r[4] } : { time: HC.Tm(r), value: r[4] }); } catch (e) { }
       }
     }
-    chLive(); lqSoon();
+    chLive();
     const st = $('#chstats'); if (st && S.tab === 'charts') st.innerHTML = chStatsHtml();
 
     try { document.title = fpd(lp) + ' · ' + 'DOG Monitor'; } catch (e) { }
@@ -3754,7 +3723,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       const lo = Math.min(...pts.map(p => p[1])), hi = Math.max(...pts.map(p => p[1])), W = 96, H = 26;
       const X = i => (i - r.i0) / Math.max(1, r.i1 - r.i0) * W, Y = l => 2 + (1 - (l - lo) / ((hi - lo) || 1)) * (H - 5);
       const d = pts.map((p, j) => `${j ? 'L' : 'M'}${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join(''), col = mmCol(r.id);
-      return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><path d="${d}L${X(pts[pts.length - 1][0]).toFixed(1)},${H}L${X(pts[0][0]).toFixed(1)},${H}Z" fill="${col}" fill-opacity=".12" stroke="none"/><path d="${d}" fill="none" stroke="${col}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>`;
+      return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><path d="${d}L${X(pts[pts.length - 1][0]).toFixed(1)},${H}L${X(pts[0][0]).toFixed(1)},${H}Z" fill="${col}" fill-opacity="${r.id === 'dog' ? '.17' : '.12'}" stroke="none"/><path d="${d}" fill="none" stroke="${col}" stroke-width="${r.id === 'dog' ? 1.9 : 1.5}" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>`;
     };
     const place = rows[k] ? k + 1 : null;
     return `<section class="group" aria-label="DOG and meme coins">
@@ -5740,7 +5709,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   // ---------- DOG and meme coins (data/memes.json, tools/memes.py): change since the start of the period ----------
   const MM_P = [['7', '7D'], ['30', '30D'], ['90', '90D'], ['365', '1Y']];
   const MM = { p: String(store.get('mmP', '90')), sel: store.get('mmSel', 'doge'), lock: !!store.get('mmLock', false), pin: null, hov: null, F: null };
-  const MM_COL = { dog: 'var(--mc-dog)', doge: '#E8C547', shib: '#EF4E78', pepe: '#3FB653', pengu: '#4FB8F0', spx: '#B3C1D9', trump: '#E0453E', bonk: '#FFB86B', floki: '#25B3A2', wif: '#EE94BF', fartcoin: '#99CF3C', brett: '#5B8FF0' };
+  const MM_COL = { dog: 'var(--mc-dog)', doge: '#E8C547', shib: '#EF4E78', pepe: '#3FB653', pengu: '#4FB8F0', spx: '#B3C1D9', trump: '#E0453E', bonk: '#CCB174', floki: '#25B3A2', wif: '#EE94BF', fartcoin: '#99CF3C', brett: '#5B8FF0' };
   const mmCol = id => MM_COL[id] || 'var(--mc-sel)';
   if (!MM_P.some(x => x[0] === MM.p)) MM.p = '90';
   const mmPct = x => x == null || !isFinite(x) ? '—' : sg(x * 100, Math.abs(x) >= 0.995 ? 0 : 1) + '%';
@@ -5861,173 +5830,6 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   document.addEventListener('pointerout', e => { if (e.pointerType === 'mouse' && e.target.id === 'mmplot' && !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('#mmplot'))) mmShow(); });
   window.addEventListener('resize', () => { if (S.tab === 'charts' && MM.F) { mmPlot(); mmShow(); } });
 
-  // ---------- liquidity map: big orders waiting in the books, where DOG traded, where holders bought ----------
-  // One price axis (log). Left: buy and sell orders of all exchanges combined (DOG per $0.00001 step; the price line splits them).
-  // Middle: how much DOG traded at each price over the last 120 days (Kraken 4-hour candles). Band: the average price holders paid.
-  const LQ = { wide: !!store.get('lqWide', false), sel: null, fetching: false, at: 0 };
-  const LQ_STEP = 1e-5, LQ_NEAR = 0.30, LQ_DAYS = 120;
-  function lqLevels(s) {
-    const h = (s && s.health) || {}, out = [];
-    const hc = holdersCost();
-    if (h.rp > 0) out.push({ k: 'all', p: h.rp, name: 'All DOG', note: 'the average price at which every coin last changed hands' });
-    if (hc && hc.buy > 0) out.push({ k: 'top', p: hc.buy, name: `Top ${hc.k} wallets`, note: 'average buy price of the biggest wallets, exchanges and airdropped coins left out' });
-    return out;
-  }
-  function lqData() {
-    const s = V(); if (!s) return null;
-    let set, ag;
-    try { set = obSet(s, LQ_STEP, 'all'); ag = obAgg(set.keys, s, LQ_STEP); } catch (e) { return null; }
-    const mid = ag.ref || set.mid || curPrice(); if (!mid) return null;
-    const P = curPrice() || mid;
-    const levels = lqLevels(s);
-    let lo = mid * (1 - LQ_NEAR), hi = mid * (1 + LQ_NEAR);
-    if (LQ.wide) for (const l of levels) { lo = Math.min(lo, l.p / 1.12); hi = Math.max(hi, l.p * 1.12); }
-    // display bins: the order-book step near the price, log-spaced when the view is wide
-    const bins = [];
-    if (!LQ.wide) for (let k = Math.floor(lo / LQ_STEP); k * LQ_STEP < hi; k++) bins.push({ a: k * LQ_STEP, b: (k + 1) * LQ_STEP });
-    else { const N = 64, r = Math.pow(hi / lo, 1 / N); for (let i = 0; i < N; i++) bins.push({ a: lo * Math.pow(r, i), b: lo * Math.pow(r, i + 1) }); }
-    for (const x of bins) Object.assign(x, { bq: 0, aq: 0, bv: 0, av: 0, by: {}, tq: 0, big: null });
-    lo = bins[0].a; hi = bins[bins.length - 1].b;
-    const binOf = p => { if (p < lo || p >= hi) return null; if (!LQ.wide) return bins[Math.min(bins.length - 1, Math.floor((p - lo) / LQ_STEP + 1e-9))]; return bins[Math.min(bins.length - 1, Math.floor(Math.log(p / lo) / Math.log(hi / lo) * bins.length))]; };
-    const put = (side, r, at) => {
-      const x = binOf(at); if (!x) return;
-      if (side === 'b') { x.bq += r.q; x.bv += r.v; } else { x.aq += r.q; x.av += r.v; }
-      for (const [k, q] of Object.entries(r.by || {})) if (q > 0) x.by[k] = (x.by[k] || 0) + q;
-      if (r.big > (x.big ? x.big.q : 0)) x.big = { q: r.big, k: r.bigBy, p: r.bigP, side };
-    };
-    for (const r of ag.b) if (r.q > 0) put('b', r, r.p + LQ_STEP / 2);
-    for (const r of ag.a) if (r.q > 0) put('a', r, r.p - LQ_STEP / 2);
-    // traded volume by price: each 4-hour candle's volume spread evenly over its low–high range
-    const c4 = chInstant('4h'), t0 = Date.now() / 1000 - LQ_DAYS * 86400;
-    let traded = false;
-    for (const r of c4 || []) {
-      if (r[0] < t0 || !(r[5] > 0) || r[6]) continue;
-      const a = Math.max(r[3], lo), b = Math.min(r[2], hi); if (!(b >= a)) continue;
-      traded = true;
-      if (r[2] - r[3] < 1e-12) { const x = binOf(r[4]); if (x) x.tq += r[5]; continue; }
-      for (const x of bins) { if (x.b <= r[3] || x.a >= r[2]) continue; x.tq += r[5] * (Math.min(x.b, r[2]) - Math.max(x.a, r[3])) / (r[2] - r[3]); }
-    }
-    const cov = { b: ag.cov.b > 0 ? ag.cov.b : null, a: isFinite(ag.cov.a) ? ag.cov.a : null };
-    const exs = set.keys.map(k => EXN[k] || k);
-    return { s, P, mid, lo, hi, bins, levels, traded, cov, exs, live: set.live, bookT: Math.max(0, ...set.keys.map(k => { const x = obSrc(k, s, LQ_STEP); return x ? x.ft || 0 : 0; })) };
-  }
-  const lqPct = (p, P) => { const v = (p / P - 1) * 100; return Math.abs(v) >= 100 ? '×' + n(p / P, 1) : sg(v, Math.abs(v) < 10 ? 1 : 0) + '%'; };
-  function lqSummary(D) {
-    const bb = D.bins.filter(x => x.bq > 0 && x.b <= D.mid * 1.0001).sort((x, y) => y.bq - x.bq)[0];
-    const ba = D.bins.filter(x => x.aq > 0 && x.a >= D.mid * 0.9999).sort((x, y) => y.aq - x.aq)[0];
-    const near = f => D.bins.reduce((t, x) => { if (x.a >= D.mid * (1 - f) && x.b <= D.mid * 1.0001) t.b += x.bv; if (x.b <= D.mid * (1 + f) && x.a >= D.mid * 0.9999) t.a += x.av; return t; }, { b: 0, a: 0 });
-    const t = near(0.10), h = D.s.health || {}, lv = D.levels;
-    const where = x => { const k = Object.entries(x.by).sort((p, q) => q[1] - p[1])[0]; return k ? ` on ${EXN[k[0]] || k[0]}` : ''; };
-    const out = [];
-    if (bb) out.push(`<li><span class="lq-sw b"></span><span>Biggest buy wall: <b>${qf(bb.bq)} DOG</b> at ${fpd(bb.a)}–${fp(bb.b)} (${lqPct((bb.a + bb.b) / 2, D.P)})${where(bb)}.</span></li>`);
-    if (ba) out.push(`<li><span class="lq-sw a"></span><span>Biggest sell wall: <b>${qf(ba.aq)} DOG</b> at ${fpd(ba.a)}–${fp(ba.b)} (${lqPct((ba.a + ba.b) / 2, D.P)})${where(ba)}.</span></li>`);
-    if (t.b || t.a) out.push(`<li><span class="lq-sw n"></span><span>Within 10% of the price, buyers have <b>${usdC(t.b)}</b> waiting and sellers <b>${usdC(t.a)}</b>${t.b && t.a ? ` — ${t.b >= t.a ? 'more on the buy side' : 'more on the sell side'} (×${n(Math.max(t.b, t.a) / Math.max(1, Math.min(t.b, t.a)), 1)})` : ''}.</span></li>`);
-    const all = lv.find(l => l.k === 'all') || lv[0];
-    if (all) out.push(`<li><span class="lq-sw c"></span><span>Holders paid <b>${fpd(all.p)}</b> per DOG on average — ${all.p > D.P ? `${n(all.p / D.P, 1)}× today’s price` : `${n((1 - all.p / D.P) * 100, 0)}% below today’s price`}${h.profit != null ? `; <b>${n(h.profit, 0)}%</b> of all DOG is worth more now than when it last moved` : ''}.</span></li>`);
-    return `<ul class="lq-sum">${out.join('')}</ul>`;
-  }
-  function lqSvg(D, W) {
-    const H = Math.max(300, Math.min(520, D.bins.length * (W < 520 ? 7.5 : 9) + 30)), top = 22, bot = 8, ph = H - top - bot;
-    const axW = 64, gap = 12, W2 = Math.round((W - axW) * 0.26), W1 = W - axW - gap - W2 - 6, x2 = W1 + gap;
-    const lyHi = Math.log(D.hi), lyLo = Math.log(D.lo), Y = p => top + (lyHi - Math.log(p)) / (lyHi - lyLo) * ph;
-    const maxQ = Math.max(1, ...D.bins.map(x => Math.max(x.bq, x.aq))), maxT = Math.max(1, ...D.bins.map(x => x.tq));
-    const LBL = 40, bl = q => q >= maxQ * 0.004 ? Math.max(1.5, q / maxQ * (W1 - LBL)) : 0, tl = q => q >= maxT * 0.004 ? Math.max(1.5, q / maxT * W2) : 0;
-    const rr = (x, y, w, h, r, cls) => { if (w <= 0 || h <= 0) return ''; r = Math.min(r, h / 2, w); return `<path class="${cls}" d="M${x},${y}h${(w - r).toFixed(1)}a${r},${r} 0 0 1 ${r},${r}v${(h - 2 * r).toFixed(1)}a${r},${r} 0 0 1 -${r},${r}h-${(w - r).toFixed(1)}z"/>`; };
-    let g = '', lab = '';
-    // grid + price ticks
-    const nice = (() => { const span = D.hi - D.lo, raw = span / 6, m = Math.pow(10, Math.floor(Math.log10(raw))), st = [1, 2, 2.5, 5, 10].map(k => k * m).find(k => k >= raw) || raw; const t = []; for (let v = Math.ceil(D.lo / st) * st; v <= D.hi; v += st) t.push(+v.toPrecision(6)); return t; })();
-    const pyy = Y(D.P);
-    for (const v of nice) { const y = Y(v); if (y < top + 6 || y > H - bot - 4 || Math.abs(y - pyy) < 14) continue; g += `<line class="lq-grid" x1="0" x2="${W - axW + 4}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}"/>`; lab += `<text class="lq-ax" x="${W - axW + 8}" y="${(y + 4).toFixed(1)}">${fp(v)}</text>`; }
-    // holders' average cost: a band between the two averages (or a line), edge chips when outside the view
-    const lv = D.levels, inV = lv.filter(l => l.p > D.lo && l.p < D.hi), outV = lv.filter(l => !(l.p > D.lo && l.p < D.hi));
-    if (inV.length) {
-      const a = Math.min(...inV.map(l => l.p)), b = Math.max(...inV.map(l => l.p)), ya = Y(a), yb = Y(b);
-      const y0 = Math.min(ya, yb) - (Math.abs(ya - yb) < 6 ? 3 : 0), y1 = Math.max(ya, yb) + (Math.abs(ya - yb) < 6 ? 3 : 0);
-      g += `<rect class="lq-zone" x="0" y="${y0.toFixed(1)}" width="${W - axW + 4}" height="${(y1 - y0).toFixed(1)}"/>`;
-      inV.forEach(l => { g += `<line class="lq-zl" x1="0" x2="${W - axW + 4}" y1="${Y(l.p).toFixed(1)}" y2="${Y(l.p).toFixed(1)}"/>`; });
-      const ly = y0 - 5 < top + 10 ? y1 + 13 : y0 - 5;
-      lab += `<text class="lq-zt" x="4" y="${ly.toFixed(1)}">Holders’ average cost ${inV.map(l => l.p).sort((p, q) => p - q).map(fpd).join(' – ')}</text>`;
-    }
-    // bars
-    let hit = '';
-    D.bins.forEach((x, i) => {
-      const y0 = Y(x.b), y1 = Y(x.a), hgt = y1 - y0, th = Math.min(24, Math.max(1, hgt - 2)), yc = y0 + (hgt - th) / 2;
-      const pm = Y(D.mid), split = x.bq > 0 && x.aq > 0 && pm > y0 && pm < y1;
-      if (split) { g += rr(0, y0 + 1, bl(x.aq), Math.max(1, pm - y0 - 1.5), 2, 'lq-a') + rr(0, pm + 0.5, bl(x.bq), Math.max(1, y1 - pm - 1.5), 2, 'lq-b'); }
-      else { if (x.bq > 0) g += rr(0, yc, bl(x.bq), th, Math.min(4, th / 2), 'lq-b'); if (x.aq > 0) g += rr(0, yc, bl(x.aq), th, Math.min(4, th / 2), 'lq-a'); }
-      if (x.tq > 0) g += rr(x2, yc, tl(x.tq), th, Math.min(3, th / 2), 'lq-t');
-      hit += `<rect class="lq-hit" data-lqi="${i}" x="0" y="${y0.toFixed(1)}" width="${W - axW}" height="${Math.max(1, hgt).toFixed(1)}"/>`;
-    });
-    // amounts on the two biggest walls of each side
-    const tops = side => D.bins.map((x, i) => [i, side === 'b' ? x.bq : x.aq]).filter(e => e[1] >= maxQ * 0.12).sort((p, q) => q[1] - p[1]).slice(0, 2);
-    const pm0 = Y(D.mid);
-    for (const side of ['b', 'a']) for (const [i, q] of tops(side)) {
-      const x = D.bins[i], y0 = Y(x.b), y1 = Y(x.a), split = x.bq > 0 && x.aq > 0 && pm0 > y0 && pm0 < y1;
-      const yc = split ? (side === 'a' ? Math.min(pm0 - 8.5, (y0 + pm0) / 2) : Math.max(pm0 + 9.5, (pm0 + y1) / 2)) : (y0 + y1) / 2;
-      lab += `<text class="lq-v" x="${(bl(q) + 4).toFixed(1)}" y="${(yc + 3.5).toFixed(1)}">${qf(q)}</text>`;
-    }
-    // the price now
-    const py = Y(D.P);
-    g += `<line class="lq-now" x1="0" x2="${W - axW + 2}" y1="${py.toFixed(1)}" y2="${py.toFixed(1)}"/>`;
-    lab += `<rect class="lq-nowb" x="${W - axW + 2}" y="${(py - 9).toFixed(1)}" width="${axW - 2}" height="18" rx="4"/><text class="lq-nowt" x="${W - axW / 2 + 1}" y="${(py + 4).toFixed(1)}" text-anchor="middle">${fp(D.P)}</text>`;
-    lab += `<text class="lq-side" x="${W1}" y="${(py - 6).toFixed(1)}" text-anchor="end">sell orders ↑</text><text class="lq-side" x="${W1}" y="${(py + 14).toFixed(1)}" text-anchor="end">buy orders ↓</text>`;
-    // column titles
-    lab += `<text class="lq-h" x="0" y="12">Orders waiting (DOG)</text><text class="lq-h" x="${x2}" y="12">Traded · ${LQ_DAYS} days</text>`;
-    const sel = LQ.sel != null && D.bins[LQ.sel] ? (() => { const x = D.bins[LQ.sel]; return `<rect class="lq-selr" x="0" y="${Y(x.b).toFixed(1)}" width="${W - axW + 4}" height="${(Y(x.a) - Y(x.b)).toFixed(1)}"/>`; })() : '';
-    return { H, svg: `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${esc(lqAria(D))}">${sel}${g}${lab}${hit}</svg>` };
-  }
-  function lqAria(D) {
-    const bb = D.bins.reduce((m, x) => x.bq > (m ? m.bq : 0) ? x : m, null), ba = D.bins.reduce((m, x) => x.aq > (m ? m.aq : 0) ? x : m, null);
-    return `Liquidity map. Price now ${fp(D.P)}.` + (bb ? ` Biggest buy orders ${qf(bb.bq)} DOG near ${fp(bb.a)}.` : '') + (ba ? ` Biggest sell orders ${qf(ba.aq)} DOG near ${fp(ba.a)}.` : '') + D.levels.map(l => ` ${l.name} average cost ${fp(l.p)}.`).join('');
-  }
-  function lqInfo(D, i) {
-    const x = D.bins[i]; if (!x) return '';
-    const by = Object.entries(x.by).filter(e => e[1] >= 1).sort((p, q) => q[1] - p[1]).map(([k, q]) => `${esc(EXN[k] || k)} ${qf(q)}`).join(' · ');
-    const parts = [];
-    if (x.bq > 0) parts.push(`<b class="up">${qf(x.bq)} DOG</b> to buy (${usdC(x.bv)})`);
-    if (x.aq > 0) parts.push(`<b class="down">${qf(x.aq)} DOG</b> to sell (${usdC(x.av)})`);
-    if (!parts.length) parts.push('no orders in the books here');
-    return `<b>${fpd(x.a)} – ${fp(x.b)}</b> <span class="faint">${lqPct((x.a + x.b) / 2, D.P)}</span><br>${parts.join(' · ')}${by ? `<br><span class="faint">${by}</span>` : ''}${x.tq > 0 ? `<br>Traded here over ${LQ_DAYS} days: <b>${qf(x.tq)} DOG</b> on Kraken` : ''}`;
-  }
-  function lqDraw() {
-    const box = $('#lqbox'); if (!box) return;
-    const D = lqData();
-    if (!D) { box.innerHTML = `<p class="note">The map appears once the order books have loaded.</p>`; return; }
-    const W = Math.max(280, Math.round(box.clientWidth || 340));
-    const { svg } = lqSvg(D, W);
-    const age = D.bookT ? Math.round((Date.now() - D.bookT) / 60e3) : null;
-    $('#lqsum').innerHTML = lqSummary(D);
-    const outV = D.levels.filter(l => !(l.p > D.lo && l.p < D.hi));
-    const ex = $('#lqout');
-    if (ex) { ex.hidden = !outV.length; ex.innerHTML = outV.length ? `<span class="lq-sw c"></span><span>Holders’ average cost is ${outV.every(l => l.p >= D.hi) ? 'above' : outV.every(l => l.p <= D.lo) ? 'below' : 'outside'} this view: ${outV.map(l => `${esc(l.name)} <b>${fpd(l.p)}</b> <span class="faint">${lqPct(l.p, D.P)}</span>`).join(' · ')} — <button type="button" class="linkbtn" data-lqv="wide">show Full</button></span>` : ''; }
-    box.innerHTML = svg;
-    const inf = $('#lqinfo');
-    if (inf) { inf.innerHTML = LQ.sel != null ? lqInfo(D, LQ.sel) : `<span class="faint">Tap a row for its numbers.</span>`; }
-    const src = $('#lqsrc');
-    if (src) src.textContent = `Order books: ${D.exs.join(', ') || '—'}${D.live ? (age != null && age <= 1 ? ' · live' : age != null ? ` · ${age} min ago` : '') : ' · from the last report'}. Traded: Kraken ${LQ_DAYS} days.${D.cov.b && D.cov.b > D.lo * 1.01 ? ` The books are only known down to ${fp(D.cov.b)}.` : ''}`;
-    LQ.D = D;
-    // fresh books and 4-hour candles when the map is shown
-    if (!LQ.fetching && !S.archived && Date.now() - LQ.at > 60e3 && !(D.live && age != null && age <= 1)) {
-      LQ.fetching = true; LQ.at = Date.now();
-      Promise.all([obFetch().catch(() => { }), chInstant('4h') ? null : chOhlc('4h').catch(() => { })]).finally(() => { LQ.fetching = false; if (S.tab === 'charts') lqDraw(); });
-    }
-  }
-  function lqPick(e) {
-    const r = e.target.closest && e.target.closest('[data-lqi]'); if (!r || !LQ.D) return;
-    const i = +r.dataset.lqi;
-    LQ.sel = LQ.sel === i ? null : i;
-    lqDraw();
-  }
-  document.addEventListener('click', e => { if (e.target.closest && e.target.closest('#lqbox [data-lqi]')) lqPick(e); });
-  document.addEventListener('keydown', e => {
-    if (!e.target.closest || !e.target.closest('#lqbox') || !LQ.D || (e.key !== 'ArrowUp' && e.key !== 'ArrowDown' && e.key !== 'Escape')) return;
-    e.preventDefault();
-    const N = LQ.D.bins.length, at = LQ.sel != null ? LQ.sel : LQ.D.bins.findIndex(x => x.b > LQ.D.P);
-    LQ.sel = e.key === 'Escape' ? null : Math.max(0, Math.min(N - 1, at + (e.key === 'ArrowUp' ? 1 : -1)));
-    lqDraw(); const b = $('#lqbox'); if (b) b.focus();
-  });
-  // the price line follows the live price, at most every few seconds
-  function lqSoon() { if (S.tab !== 'charts' || !$('#lqbox') || lqSoon.t) return; lqSoon.t = setTimeout(() => { lqSoon.t = 0; if (S.tab === 'charts') lqDraw(); }, 4000); }
   // ---------- Charts tab ----------
   function chStatsHtml() {
     const s = V(); if (!s) return '';
@@ -6132,7 +5934,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const D = F3S.D; if (!D) return '';
     const n1 = D.days.length - 1, last = i == null || i >= n1; if (last) i = n1;
     const day = D.days[i], today = day === new Date().toISOString().slice(0, 10);
-    const col = ([k, nm, c, sc]) => { const v = D[k][i], on = F3S.focus === k; return `<button type="button" class="f3s-c${on ? ' on' : ''}${F3S.focus && !on ? ' dim' : ''}" data-f3focus="${k}" aria-pressed="${on}" aria-label="${nm}: ${v == null ? 'no data' : v + ' — ' + esc(fngName(v, sc))}" style="--sc:${c}"><span class="nm">${nm}</span><span class="f3s-ball" aria-hidden="true">${v == null ? '—' : v}</span><span class="zn"${v == null ? '' : ` style="color:${fngCol(v, sc)}"`}>${v == null ? 'no data' : esc(fngName(v, sc))}</span></button>`; };
+    const col = ([k, nm, c, sc]) => { const v = D[k][i], on = F3S.focus === k; return `<button type="button" class="f3s-c${on ? ' on' : ''}${F3S.focus && !on ? ' dim' : ''}" data-f3focus="${k}" aria-pressed="${on}" aria-label="${nm}: ${v == null ? 'no data' : v + ' — ' + esc(fngName(v, sc))}" style="--sc:${c}"><span class="nm"><i class="dt" aria-hidden="true"></i>${nm}</span><b class="f3s-n" aria-hidden="true">${v == null ? '—' : v}</b><span class="zn"${v == null ? '' : ` style="color:${fngCol(v, sc)}"`}>${v == null ? 'no data' : esc(fngName(v, sc))}</span></button>`; };
     const hint = F3S.focus ? 'tap the card again for all three' : 'slide along · tap an index';
     return `<div class="f3s-d"><b>${last && today ? 'Today' : esc(fngDmy(day))}</b>${last && !F3S.focus ? `<span>${hint}</span>` : `<button type="button" class="f3s-now" data-f3now>${ico('refresh')}Today</button>`}</div><div class="f3s-cols">${F3K.map(col).join('')}</div>`;
   }
@@ -6246,15 +6048,6 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
           <div class="chstats" id="chstats"></div>
           <details class="tvmore"><summary>What the indicators say</summary><div class="tv-read" id="tvread"></div></details>
         </section>
-        <section class="group lqsec" aria-label="Liquidity map">
-          <div class="ch-head"><div><h3>Liquidity map</h3><span class="note">big orders waiting · where DOG traded · what holders paid</span></div><span class="seg" role="group" aria-label="Price range" id="lq-v">${segB('lqv', 'near', '±30%', !LQ.wide)}${segB('lqv', 'wide', 'Full', LQ.wide)}</span></div>
-          <div class="lq-wrap"><div class="lq-main"><p class="lq-out" id="lqout" hidden></p><div class="lqbox" id="lqbox" tabindex="0"></div><div class="lq-info" id="lqinfo" aria-live="polite"></div></div>
-          <div class="lq-side"><div id="lqsum"></div>
-          <div class="lq-leg"><span><i class="lq-sw b"></i>Buy orders</span><span><i class="lq-sw a"></i>Sell orders</span><span><i class="lq-sw t"></i>Traded (Kraken)</span><span><i class="lq-sw c"></i>Holders’ average cost</span></div>
-          <p class="note" id="lqsrc"></p>
-          <details class="tvmore"><summary>What this means</summary><div class="tv-read"><p><b>Orders waiting</b> are limit orders sitting in the order books of the exchanges right now, added up across exchanges in steps of $0.00001. A big buy wall below the price can slow a fall; a big sell wall above can slow a rise — but an order can be pulled at any moment, so a wall is not a promise.</p><p><b>Traded</b> shows at which prices DOG actually changed hands on Kraken over the last ${LQ_DAYS} days: busy zones are prices many traders remember.</p><p><b>Holders’ average cost</b>: “All DOG” is the average price at which every coin last moved (DOG DATA’s realized price); “Top wallets” is the average buy price of the biggest non-exchange wallets, airdropped coins left out. When the price is below it, most holders are at a loss.</p><p>This is information, not advice.</p></div></details>
-          </div></div>
-        </section>
         <div class="cols2">
           <div class="col">
             <section class="group" id="fngc-sec" aria-label="Fear and greed"></section>
@@ -6276,7 +6069,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   }
   function chDrawAll() {
     if (!$('#chroot')) { renderCharts(); return; }
-    chDrawTV(); crDraw(); mmDraw(); lqDraw();
+    chDrawTV(); crDraw(); mmDraw();
     chLoop();
   }
   function chLoop() {
@@ -6296,7 +6089,6 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const b = e.target.closest('button'); if (!b) return;
     const d = b.dataset;
     if (d.chtf) { CH.tf = d.chtf; if (CH.tv) CH.tv.pin = null; store.set('chTf', CH.tf); $$('#ch-tf button').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.chtf === CH.tf))); chDrawTV(); return; }
-    if (d.lqv) { LQ.wide = d.lqv === 'wide'; LQ.sel = null; store.set('lqWide', LQ.wide); $$('#lq-v button').forEach(x => x.setAttribute('aria-pressed', String((x.dataset.lqv === 'wide') === LQ.wide))); lqDraw(); return; }
     if (d.chind) { CH.ind[d.chind] = !CH.ind[d.chind]; store.set('chInd', CH.ind); b.setAttribute('aria-pressed', String(!!CH.ind[d.chind])); chDrawTV(); return; }
     if (d.crlast !== undefined && CH.cr && CH.cr.unpin) { CH.cr.unpin(); return; }
     if (d.mmp) { MM.p = d.mmp; MM.pin = null; store.set('mmP', MM.p); mmDraw(); return; }
@@ -6800,7 +6592,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       <div><h3>Order book</h3><p>An order book is a list of orders on an exchange: who is ready to buy or sell DOG and at what price. The Order book section works like an exchange: real prices, asks on top, bids below.</p>
         <ul><li><b>Price step</b> (the 0.00001 ▾ button) — like “Order Book Depth” on an exchange: orders are grouped into 0.0000001 / 0.000001 / 0.00001 / 0.0001 steps.</li><li><b>View</b>: column, two sides (bids left, asks right) or a table by exchange; amounts in DOG or dollars.</li><li><b>Exchange</b>: all combined or any one. While the section is open, Kraken, Gate, MEXC and BingX stream every change live (the book redraws about once a second); CoinW and DigiFinex refresh every 10 seconds.</li><li><b>The combined book</b> has one price — the midpoint of Kraken and Gate — with all bids below it and all asks above it. Prices differ a little between exchanges, so a few nearby orders that overlap another exchange’s price are left out here (the note under the book says how much); they are in that exchange’s own book. DigiFinex copies Gate’s order book, so it isn’t added a second time.</li><li><b>Tap a row</b> for details: which exchanges, exact prices, and how much would need to be bought or sold for the price to reach that level.</li><li><b>Wall</b> (amount in bold) — a single order of 5M+ DOG. Walls often hold the price, but can be pulled at any moment.</li><li><b>Balance near the price</b> — a small row next to the book: how many times bids outweigh asks within 2, 5, 10 and 25% of the price. Tap it for the breakdown in dollars, the nearest big orders and the gap between the best prices.</li><li><b>Large orders</b> — the biggest orders of 5M+ DOG; <b>changes over 24 hours</b> — which large orders appeared, were pulled or moved; <b>the feed</b> — what changes while the site is open.</li><li><b>Exchanges</b> — a list with spreads and orders within 10%; tap an exchange for its depth, large orders and an “Open order book” button.</li><li><b>Trades</b> — the latest trades on Kraken, Gate, MEXC and BingX, and who bought or sold at market more often over the hour.</li></ul></div>
       <div><h3>Companies holding DOG</h3><p>Public companies that keep DOG in their treasury. Right now that’s C2 Blockchain (USA): the row on Home, right under the tiles, shows its holdings and how many months ago it last reported; tap it for every purchase report with links. The company’s coins are held at Kraken, so it has no separate wallet in the top 100.</p></div>
-      <div><h3>Charts</h3><p>Charts that work like on an exchange (TradingView): drag to scroll, pinch to zoom, tap a candle or a day to see its values. The TradingView mark on a chart opens the full DOG/USD chart on TradingView.</p><ul><li><b>DOG price</b> — Kraken candles for 15 minutes, 1 hour, 4 hours, 1 day or 1 week, with volume. Drag into the past and earlier candles load as you go; Kraken keeps the last 720 candles, the older ones come from Gate (DOG/USDT, the legend then says “Gate”). Daily and 4-hour candles reach back to April 2024. Below the candles run the RSI and MACD curves; moving averages and Bollinger Bands can be switched on. Under the chart, a plain-language reading of what the indicators show.</li><li><b>Liquidity map</b> — one price ladder: the buy orders (below the price) and sell orders (above) waiting in the order books of all exchanges together, how much DOG traded at each price over the last 120 days, and the average price holders paid for their DOG. Tap a row for its numbers; “Full” widens the view to include the holders’ average cost. Big orders can be pulled at any moment — a wall is not a promise.</li><li><b>Fear &amp; Greed</b> — the three indices as rows and their shared 90-day chart: slide your finger to see all three on any day. Tap a row for the breakdown with turning points; tap the chart or the heading for the full history of all three.</li><li><b>DOG and meme coins</b> — DOG next to 11 large meme coins on different chains over 7, 30, 90 days or a year: every coin’s price change on one scale. Tap a line to highlight that coin next to DOG; the list below shows each coin’s change, market cap and how closely it moves with DOG. Prices are cross-checked between Gate, MEXC and Kraken.</li><li><b>DOG and bitcoin</b> — since DOG’s launch in April 2024: how both have grown (log scale), how closely their daily moves are linked (correlation over 30 and 90 days), beta, and how many satoshis 1 DOG costs.</li></ul><p>Indicators describe past moves and don’t predict the future.</p></div>
+      <div><h3>Charts</h3><p>Charts that work like on an exchange (TradingView): drag to scroll, pinch to zoom, tap a candle or a day to see its values. The TradingView mark on a chart opens the full DOG/USD chart on TradingView.</p><ul><li><b>DOG price</b> — Kraken candles for 15 minutes, 1 hour, 4 hours, 1 day or 1 week, with volume. Drag into the past and earlier candles load as you go; Kraken keeps the last 720 candles, the older ones come from Gate (DOG/USDT, the legend then says “Gate”). Daily and 4-hour candles reach back to April 2024. Below the candles run the RSI and MACD curves; moving averages and Bollinger Bands can be switched on. Under the chart, a plain-language reading of what the indicators show.</li><li><b>Fear &amp; Greed</b> — the three indices as rows and their shared 90-day chart: slide your finger to see all three on any day. Tap a row for the breakdown with turning points; tap the chart or the heading for the full history of all three.</li><li><b>DOG and meme coins</b> — DOG next to 11 large meme coins on different chains over 7, 30, 90 days or a year: every coin’s price change on one scale. Tap a line to highlight that coin next to DOG; the list below shows each coin’s change, market cap and how closely it moves with DOG. Prices are cross-checked between Gate, MEXC and Kraken.</li><li><b>DOG and bitcoin</b> — since DOG’s launch in April 2024: how both have grown (log scale), how closely their daily moves are linked (correlation over 30 and 90 days), beta, and how many satoshis 1 DOG costs.</li></ul><p>Indicators describe past moves and don’t predict the future.</p></div>
       <div><h3>Wallets</h3><p>At the top, four tiles — <b>holders</b>, <b>top 100</b>, <b>wallets with 10M+ DOG</b> and <b>DOG on exchanges</b>; each opens its own breakdown: changes over a day, week and month, who holds how much, transfers to and from exchanges. Below: the “Who holds how much” ring with three views (by rank, by wallet size and by owner type; tap a row for details), the 10M+ wallets card with a chart of their number, DOG in exchange wallets, coin age and what changed among large wallets. At the bottom, the hundred largest DOG wallets: the small line next to each wallet is its balance day by day, the dollar value is shown under the balance; above the list — how the top 100’s share changed over a day, week and month.</p>
         <p style="margin-top:8px"><b>Avg buy</b> under a wallet’s description is the average price (per DOG) at which the wallet bought or was topped up after the airdrop: each deposit is valued at that day’s exchange price. Airdropped coins were free, so they’re left out of the average and their share is shown separately (“airdrop 40%”). The percentage shows how today’s price compares. Tap a wallet to see its balance, change, a larger chart, the average-cost details and an address you can copy. Exchange wallets have no average cost — they hold many customers’ coins.</p>
         <p style="margin-top:8px"><b>Fresh balances.</b> Four times a day the balances of the top 100 are read straight from the Bitcoin blockchain (the rune index on ordinals.com, with the Xverse wallet index as a second source), so the list stays current even when DOG DATA’s list lags behind. The holder count and labels come from DOG DATA.</p></div>

@@ -263,10 +263,14 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
           await page.touchscreen.tap(b.x + b.width * 0.3, b.y + b.height / 2); await page.waitForTimeout(900);
           sh = await page.evaluate(() => { const pl = document.querySelector('#sheet-body .f3s-plot'); if (!pl) return null; const r = pl.getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, h: r.height, paths: [...pl.querySelectorAll('path')].filter(p => (p.getAttribute('d') || '').length > 100).length, read: (document.querySelector('#sheet-body .f3s-read') || {}).textContent || '' }; });
           if (sh) {
-            sh.v9 = await page.evaluate(() => {
-              const c = getComputedStyle(document.documentElement).getPropertyValue('--f3c').trim(), m = c.match(/^#([0-9a-f]{6})$/i);
-              let blue = false; if (m) { const v = parseInt(m[1], 16), r = v >> 16, g = (v >> 8) & 255, b = v & 255; blue = b > 180 && b > r + 60 && b > g + 30; }
-              return { th: document.querySelectorAll('#sheet-body .f3s-t thead th').length, balls: document.querySelectorAll('#sheet-body .f3s-ball').length, c, blue };
+            sh.v13 = await page.evaluate(() => {
+              // цвета «Old money»: alt.me — шалфей (зелёный), CMC — индиго (синий), DOG — оранжевый; карточки без кружков — крупное число и цветная полоска слева
+              const hue = hex => { const m = /^#([0-9a-f]{6})$/i.exec(String(hex || '').trim()); if (!m) return null; const v = parseInt(m[1], 16), r = (v >> 16) / 255, g = ((v >> 8) & 255) / 255, b = (v & 255) / 255, mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn; if (!d) return null; let h = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h *= 60; return h < 0 ? h + 360 : h; };
+              const cs = getComputedStyle(document.documentElement), H = k => hue(cs.getPropertyValue(k)), hm = H('--f3m'), hc = H('--f3c'), hd = H('--f3d');
+              const cards = [...document.querySelectorAll('#sheet-body .f3s-c')];
+              const strip = cards.filter(c => { const st = getComputedStyle(c); return parseFloat(st.borderLeftWidth) >= 2 && st.borderLeftColor !== st.borderTopColor; }).length;
+              const nums = cards.filter(c => /^\d+$/.test(((c.querySelector('.f3s-n') || {}).textContent || '').trim())).length;
+              return { th: document.querySelectorAll('#sheet-body .f3s-t thead th').length, cards: cards.length, nums, strip, balls: document.querySelectorAll('#sheet-body .f3s-ball').length, hm: Math.round(hm), hc: Math.round(hc), hd: Math.round(hd), pal: hm >= 85 && hm <= 150 && hc >= 215 && hc <= 250 && hd >= 15 && hd <= 40 };
             });
             await page.touchscreen.tap(sh.x + sh.w * 0.6, sh.y + sh.h / 2); await page.waitForTimeout(300);
             read = await page.evaluate(() => (document.querySelector('#sheet-body .f3s-read') || {}).textContent || '');
@@ -278,24 +282,10 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
         }
       }
       add(f.rows === 3 && f.paths >= 2 && !!sh && sh.h >= 180 && sh.paths >= 3 && /DOG\s*\d/.test(read) && !/^(Сегодня|Today)/.test(read.trim()) && !!sh.min && sh.min.dot === 1 && sh.min.fx, `Графики: «Страх и жадность» — три строки и общий график; нажатие открывает историю трёх индексов, там нажатие показывает день, а нажатие на минимум — его точку`, `Charts: Fear & Greed — three rows and a shared chart; a tap opens the history of all three, where a tap shows that day and tapping a low shows its dot`, `${f.rows} строки, ${f.paths} линии; ${sh ? `лист ${Math.round(sh.h)} px, ${sh.paths} линии; ` : 'листа нет; '}${read.replace(/\s+/g, ' ').slice(0, 60)}`);
-      { const v = sh && sh.v9; add(!!v && v.th === 4 && v.balls === 3 && v.blue, '«Страх и жадность — история»: CoinMarketCap — синий, числа индексов — в шариках цвета линии, колонки «В среднем» нет', 'Fear & Greed history: CoinMarketCap in blue, index numbers in balls of their line colour, no “Average” column', JSON.stringify(v || null)); }
+      { const v = sh && sh.v13; add(!!v && v.th === 4 && v.cards === 3 && v.nums === 3 && v.strip === 3 && v.balls === 0 && v.pal, '«Страх и жадность — история»: цвета «Old money» (alt.me — шалфей, CMC — индиго, DOG — оранжевый), карточки без кружков — крупное число и цветная полоска слева, колонки «В среднем» нет', 'Fear & Greed history: “Old money” colours (alt.me sage, CMC indigo, DOG orange), cards without balls: a large number and a coloured strip on the left, no “Average” column', JSON.stringify(v || null)); }
     }
-    // карта ликвидности: заявки бирж (покупки ниже цены, продажи выше), линия цены, сводка словами; нажатие на строку — её цифры
-    {
-      await wait(() => !!document.querySelector('#lqbox svg'), 15000);
-      const lq = await page.evaluate(() => {
-        const b = document.querySelector('#lqbox'); if (!b) return null;
-        return { bid: b.querySelectorAll('.lq-b').length, ask: b.querySelectorAll('.lq-a').length, now: !!b.querySelector('.lq-now'), sum: (document.querySelector('#lqsum') || {}).textContent || '', rows: b.querySelectorAll('[data-lqi]').length };
-      });
-      let info = '';
-      if (lq && lq.rows) {
-        const row = page.locator('#lqbox [data-lqi]').nth(Math.floor(lq.rows * 0.7));
-        await row.scrollIntoViewIfNeeded().catch(() => { }); await page.waitForTimeout(200);
-        const r = await row.boundingBox();
-        if (r) { await page.touchscreen.tap(r.x + 40, r.y + r.height / 2); await page.waitForTimeout(300); info = await page.evaluate(() => (document.querySelector('#lqinfo') || {}).textContent || ''); }
-      }
-      add(!!lq && lq.bid > 3 && lq.ask > 3 && lq.now && /buy wall/i.test(lq.sum) && /\$0\.\d/.test(info), 'Графики: карта ликвидности — крупные заявки на покупку и продажу, цена, средняя цена держателей; нажатие на строку показывает её цифры', 'Charts: liquidity map — big buy and sell orders, the price, holders’ average cost; tapping a row shows its numbers', lq ? `покупки ${lq.bid}, продажи ${lq.ask}; ${info.slice(0, 60)}` : 'карты нет');
-    }
+    // карта ликвидности убрана 18.11.2026 (v13)
+    add(await page.evaluate(() => !document.querySelector('#lqbox, .lqsec')), 'Графики: карты ликвидности нет (убрана)', 'Charts: no liquidity map (removed)');
     add(await page.evaluate(() => !document.querySelector('#p-charts .tv-wait')), 'Графики: ничего не «зависло» на загрузке', 'Charts: nothing is stuck loading');
     add(await noOverflow(), 'Графики: ничего не вылезает за экран телефона', 'Charts: nothing overflows the phone screen');
 
