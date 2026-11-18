@@ -58,7 +58,7 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
   const wait = (fn, ms, arg) => page.waitForFunction(fn, arg, { timeout: ms }).then(() => true, () => false);
 
   try {
-    await page.goto(base + '?nosw=1#overview', { waitUntil: 'load', timeout: 45000 });
+    await page.goto(base + '?nosw=1&nostat=1#overview', { waitUntil: 'load', timeout: 45000 });
     // 1. главная
     const gotPrice = await wait(() => { const p = document.querySelector('#hprice'); return !!p && /\d/.test(p.textContent); }, 25000);
     const price = gotPrice ? await page.evaluate(() => document.querySelector('#hprice').textContent.trim()) : '';
@@ -415,13 +415,13 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
     await page.setViewportSize({ width: 390, height: 844 });
 
     // 6. только английский: и старая ссылка ?lang=ru открывает английскую версию, кириллицы на странице нет
-    await page.goto(base + '?nosw=1&lang=ru#overview', { waitUntil: 'load', timeout: 45000 });
+    await page.goto(base + '?nosw=1&nostat=1&lang=ru#overview', { waitUntil: 'load', timeout: 45000 });
     const enOnly = await wait(() => !!document.querySelector('#hprice') && /\d/.test(document.querySelector('#hprice').textContent) && !/[А-Яа-яЁё]/.test(document.body.innerText) && !/[?&]lang=/.test(location.search) && !document.querySelector('[data-lang]'), 25000);
     add(enOnly, 'Сайт только на английском: старая ссылка ?lang=ru открывает английскую версию', 'English only: the old ?lang=ru link opens the English site');
     await shot('8-home-lang');
 
     // 7. вся история дневных свечей: data/prices.json (с 25.04.2024) стоит перед свечами Kraken — и на «Главной», и на «Графиках»
-    await page.goto(base + '?nosw=1&debug=1#overview', { waitUntil: 'load', timeout: 45000 });
+    await page.goto(base + '?nosw=1&nostat=1&debug=1#overview', { waitUntil: 'load', timeout: 45000 });
     await wait(() => !!document.querySelector('#pchart canvas'), 25000);
     await page.evaluate(() => { const b = document.querySelector('[data-htf="1d"]'); if (b) b.click(); });
     const deep = await wait(() => { try { const HC = window.__dm.hc(); return HC && HC.tf === '1d' && HC.rows.length > 800 && HC.rows[0][0] < Date.UTC(2024, 4, 1) / 1000; } catch (e) { return false; } }, 20000);

@@ -1784,7 +1784,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       <footer class="site-foot" id="sitefoot">
         <p><b>DOG Monitor</b> is an unofficial information project. It is not affiliated with the DOG•GO•TO•THE•MOON team, any exchange or C2 Blockchain.</p>
         <p>For information only, not investment advice. Crypto prices are highly volatile.</p>
-        <p>Data: <a href="https://www.dogdata.xyz" target="_blank" rel="noopener">DOG DATA</a>, public APIs of Kraken, Gate, MEXC, BingX, DigiFinex and CoinW, on-chain balances (ordinals.com, Xverse), C2 Blockchain press releases, fear &amp; greed indices by alternative.me and CoinMarketCap, meme coin market caps by CoinGecko. Chart: <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener">TradingView Lightweight Charts™</a>. No cookies, no analytics.</p>
+        <p>Data: <a href="https://www.dogdata.xyz" target="_blank" rel="noopener">DOG DATA</a>, public APIs of Kraken, Gate, MEXC, BingX, DigiFinex and CoinW, on-chain balances (ordinals.com, Xverse), C2 Blockchain press releases, fear &amp; greed indices by alternative.me and CoinMarketCap, meme coin market caps by CoinGecko. Chart: <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener">TradingView Lightweight Charts™</a>. <span id="privnote">No cookies, no analytics.</span></p>
       </footer>
     </div>
   </div>
@@ -7555,6 +7555,33 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     return `<div class="langsw" role="group" aria-label="Appearance">${THEMES.map(([k, l]) => `<button type="button" data-theme-set="${k}" aria-pressed="${String(cur === k)}">${l}</button>`).join('')}</div>`;
   }
   document.addEventListener('click', e => { const b = e.target.closest('[data-theme-set]'); if (b) setTheme(b.dataset.themeSet); });
+
+  // ---------- visit counts: Umami Cloud — no cookies, nothing personal. Off while UMAMI_ID is empty ----------
+  // When on: visitors per day, who is on the site right now (Realtime) and which buttons people press (the list below).
+  // Only on the public site (github.io), never in the tests (?nostat=1) or in a copy of the page.
+  const UMAMI_ID = '';
+  const statOn = !!UMAMI_ID && /(^|\.)github\.io$/.test(location.hostname) && !/[?&]nostat=1\b/.test(location.search);
+  const track = (name, data) => { try { if (statOn && window.umami && typeof window.umami.track === 'function') window.umami.track(name, data); } catch (e) { } };
+  if (statOn) {
+    const sc = document.createElement('script');
+    sc.defer = true; sc.src = 'https://cloud.umami.is/script.js';
+    sc.setAttribute('data-website-id', UMAMI_ID); sc.setAttribute('data-domains', location.hostname);
+    document.head.appendChild(sc);
+    const pn = document.getElementById('privnote'); if (pn) pn.textContent = 'No cookies. Visits are counted anonymously (Umami), nothing personal is stored.';
+  }
+  const TRACK = [
+    ['[data-tab]', 'tab', 'tab'], ['[data-htf]', 'candles', 'htf'], ['[data-hmode]', 'chart type', 'hmode'],
+    ['[data-hmp]', 'memes period', 'hmp'], ['[data-mmgo]', 'meme card', 'mmgo'], ['[data-f3per]', 'fear-greed period', 'f3per'],
+    ['[data-f3focus]', 'fear-greed index', 'f3focus'], ['[data-f3go]', 'open on charts', 'f3go'], ['[data-fturn]', 'fear-greed turn', null],
+    ['[data-info]', 'info', 'info'], ['[data-obex]', 'order book exchange', 'obex'], ['[data-ob]', 'order book level', null],
+    ['[data-theme-set]', 'theme', 'themeSet'], ['[data-share]', 'share', null], ['[data-copy]', 'copy', null],
+    ['#briefmore', 'whats new: more', null], ['.playbtn', 'the day step by step', null], ['[data-go]', 'go', 'go'],
+  ];
+  if (statOn) document.addEventListener('click', e => {
+    const a = e.target.closest('a[href]');
+    if (a) { try { const u = new URL(a.href, location.href); if (u.host && u.host !== location.host) track('link', { to: u.host }); } catch (x) { } }
+    for (const [sel, name, key] of TRACK) { const b = e.target.closest(sel); if (b) { track(name, key ? { v: String(b.dataset[key] || '') } : undefined); break; } }
+  }, true);
 
   const siteUrl = () => location.origin + location.pathname + ('') + (S.tab && S.tab !== 'overview' ? '#' + S.tab : '');
   document.addEventListener('click', e => {

@@ -11,10 +11,10 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'full — полная сводка; feed — только кандидаты в новости; wallets — только средние цены кошельков'
+        description: 'full — полная сводка; feed — только кандидаты в новости; wallets — только средние цены кошельков; page — только страница из закрытого исходника'
         default: full
         type: choice
-        options: [full, feed, wallets]
+        options: [full, feed, wallets, page]
 
 permissions:
   contents: write
@@ -42,8 +42,29 @@ jobs:
           if [ "${NAME,,}" = "$HOST" ]; then URL="https://$HOST/"; else URL="https://$HOST/$NAME/"; fi
           echo "SITE_URL=$URL" >> "$GITHUB_ENV"; echo "Сайт: $URL"
 
+      # Закрытая часть — приватный репозиторий dog-monitor/engine: формула индекса DOG (tools/mood.py) и читаемый
+      # исходник страницы (src/index.html). Ключ только на чтение — секрет ENGINE_KEY. Код движка лежит в папке .engine
+      # лишь на время запуска: в репозиторий она не попадает (.gitignore и явный список в git add), ошибки его скриптов
+      # пишутся одной строкой без кода (tools/quiet.py) — логи публичного репозитория видны всем.
+      - name: Закрытая часть — есть ли ключ
+        id: ek
+        env:
+          K: ${{ secrets.ENGINE_KEY }}
+        run: if [ -n "$K" ]; then echo "on=1" >> "$GITHUB_OUTPUT"; echo "ключ есть"; else echo "ключа ENGINE_KEY нет — без закрытой части"; fi
+
+      - name: Закрытая часть (движок)
+        if: ${{ steps.ek.outputs.on == '1' && github.event.inputs.mode != 'feed' }}
+        continue-on-error: true      # нет доступа — сводка идёт дальше, на сайте прошлый индекс DOG и прежняя страница
+        uses: actions/checkout@v4
+        with:
+          repository: dog-monitor/engine
+          ssh-key: ${{ secrets.ENGINE_KEY }}
+          path: .engine
+          fetch-depth: 1
+          persist-credentials: false
+
       - name: Сбор данных и расчёт сводки
-        if: ${{ github.event.inputs.mode != 'feed' && github.event.inputs.mode != 'wallets' }}
+        if: ${{ github.event.inputs.mode != 'feed' && github.event.inputs.mode != 'wallets' && github.event.inputs.mode != 'page' }}
         env:
           DOGMON: ${{ runner.temp }}/dogmon
           # утро — утренняя сводка, база — плановая сводка в течение дня, запрос — запуск вручную
@@ -51,35 +72,53 @@ jobs:
         run: python3 tools/daily.py run .
 
       - name: Средняя цена DOG у кошельков топ-100, история цены DOG и биткоина
-        if: ${{ github.event.inputs.mode != 'feed' }}
+        if: ${{ github.event.inputs.mode != 'feed' && github.event.inputs.mode != 'page' }}
         continue-on-error: true      # не мешает сводке: при ошибке остаётся прошлый расчёт
         timeout-minutes: 12
         run: python3 tools/costbasis.py .
 
-      - name: Страх и жадность (весь рынок — alternative.me и CoinMarketCap, DOG — свой расчёт)
-        if: ${{ github.event.inputs.mode != 'feed' }}
+      - name: Страх и жадность (весь рынок — alternative.me и CoinMarketCap, DOG — свой расчёт, закрытый)
+        if: ${{ github.event.inputs.mode != 'feed' && github.event.inputs.mode != 'page' }}
         continue-on-error: true      # при ошибке на сайте остаётся прошлый расчёт
         timeout-minutes: 3
-        run: python3 tools/mood.py .
+        run: |
+          if [ -f .engine/tools/mood.py ]; then PYTHONPATH=tools python3 tools/quiet.py .engine/tools/mood.py .
+          elif [ -f tools/mood.py ]; then python3 tools/mood.py .
+          else echo "::warning::закрытой части нет — индекс DOG не пересчитан (на сайте прошлый расчёт)"; exit 1; fi
 
       - name: DOG и мем-монеты (дневные цены Gate, MEXC и Kraken со сверкой между биржами, капитализация — CoinGecko)
-        if: ${{ github.event.inputs.mode != 'feed' }}
+        if: ${{ github.event.inputs.mode != 'feed' && github.event.inputs.mode != 'page' }}
         continue-on-error: true      # при ошибке на сайте остаётся прошлый ряд
         timeout-minutes: 4
         run: python3 tools/memes.py .
 
       - name: Кошельки от 10 млн DOG (весь список DOG DATA, кто пришёл и ушёл, сверка балансов с блокчейном)
-        if: ${{ github.event.inputs.mode != 'feed' && github.event.inputs.mode != 'wallets' }}
+        if: ${{ github.event.inputs.mode != 'feed' && github.event.inputs.mode != 'wallets' && github.event.inputs.mode != 'page' }}
         continue-on-error: true      # при ошибке на сайте остаётся прошлый расчёт
         timeout-minutes: 8
         run: python3 tools/whales.py .
 
       - name: Кандидаты в новости (Google News)
-        if: ${{ github.event.inputs.mode != 'wallets' }}
+        if: ${{ github.event.inputs.mode != 'wallets' && github.event.inputs.mode != 'page' }}
         continue-on-error: true
         env:
           X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
         run: python3 tools/newsfeed.py data/feed.json 7
+
+      # страница собирается из закрытого исходника: скрипты и стили сжаты (tools/build.js), разметка та же
+      - name: Страница из закрытого исходника (сжатая)
+        id: page
+        if: ${{ github.event.inputs.mode != 'feed' }}
+        continue-on-error: true      # не вышло — остаётся прежняя страница
+        timeout-minutes: 4
+        run: |
+          if [ ! -f .engine/src/index.html ]; then echo "исходника страницы нет — страница прежняя"; exit 0; fi
+          mkdir -p "$RUNNER_TEMP/esb" && cd "$RUNNER_TEMP/esb"
+          npm init -y >/dev/null 2>&1
+          npm i --no-audit --no-fund esbuild@0.28.2 >/dev/null 2>&1
+          cd "$GITHUB_WORKSPACE"
+          NODE_PATH="$RUNNER_TEMP/esb/node_modules" node tools/build.js .engine/src/index.html "$RUNNER_TEMP/index.html"
+          cp "$RUNNER_TEMP/index.html" index.html
 
       - name: Автопроверка сайта в браузере (со свежими данными, до выкладки)
         id: selfcheck
@@ -96,12 +135,17 @@ jobs:
       - name: Выкладка на сайт
         run: |
           python3 tools/siteurl.py .
+          # новая страница выкладывается, только если автопроверка прошла; иначе остаётся прежняя (данные идут как обычно)
+          if [ "${{ steps.selfcheck.outcome }}" = failure ] && ! git diff --quiet -- index.html; then
+            echo "::warning::автопроверка не прошла — новая страница не выкладывается, остаётся прежняя"; git checkout -- index.html
+          fi
           git config user.name "DOG Monitor bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data index.html classic/index.html
           if git diff --cached --quiet; then echo "нет изменений"; exit 0; fi
           ID=$(python3 -c "import json;print(json.load(open('data/version.json'))['id'])")
-          git commit -m "Сводка $ID (авто, ${{ github.event.inputs.mode || 'full' }})"
+          MODE="${{ github.event.inputs.mode || 'full' }}"
+          if [ "$MODE" = page ]; then git commit -m "Страница из закрытого исходника (авто)"; else git commit -m "Сводка $ID (авто, $MODE)"; fi
           for i in 1 2 3 4 5; do
             git push origin HEAD:main && exit 0
             git fetch --depth=20 origin main
@@ -124,7 +168,7 @@ jobs:
           exit 1
 
       - name: Проверка выкладки (живой сайт отдаёт новую сводку)
-        if: ${{ github.event.inputs.mode != 'feed' && github.event.inputs.mode != 'wallets' }}
+        if: ${{ github.event.inputs.mode != 'feed' && github.event.inputs.mode != 'wallets' && github.event.inputs.mode != 'page' }}
         timeout-minutes: 12
         run: python3 tools/livecheck.py . "$SITE_URL"
 
@@ -135,7 +179,7 @@ jobs:
           exit 1
 
       - name: Сырые ответы источников (для проверки)
-        if: ${{ always() && github.event.inputs.mode != 'feed' && github.event.inputs.mode != 'wallets' }}
+        if: ${{ always() && github.event.inputs.mode != 'feed' && github.event.inputs.mode != 'wallets' && github.event.inputs.mode != 'page' }}
         uses: actions/upload-artifact@v4
         with:
           name: raw-${{ github.run_id }}
