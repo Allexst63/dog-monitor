@@ -68,7 +68,7 @@
   --fz1:#D9393E; --fz2:#E07A20; --fz3:#D6AC24; --fz4:#84B52F; --fz5:#1FA466;
   --hero-panel:#F8F4EC; --hero-edge:rgba(120,92,52,.085); --hero-line:rgba(120,92,52,.11);
   --c2-bg:#FFFFFF; --c2-ink:#47707A; --c2-edge:rgba(23,25,31,.10); --c2-img:url(icons/c2-lion-light.png);
-  --f3c:#4656A3; --f3d:#D27322;
+  --f3c:#4656A3; --f3d:#D27322; --f3lw:1.25px; --f3lwf:2px; --ficw:1.6px; --dogc-t:7%;
   --shadow-card:0 1px 0 rgba(23,25,31,.03),0 10px 30px -22px rgba(23,25,31,.35);
   --shadow-hero:0 18px 40px -26px rgba(23,25,31,.45);
   --shadow-pop:0 28px 70px -24px rgba(23,25,31,.45);
@@ -90,14 +90,14 @@
     --t-sage:#13241D; --t-peach:#271C14; --t-slate:#141D2D; --t-sand:#211E18;
     --k1:#6EA6F2; --k2:#F2A35F; --k3:#26B37F; --k4:#D9B060; --k5:#E58FA9; --k8:#D2955F; --k7:#9AA6C2; --k6:#26B37F; --k-pr:#878C98; --k-un:#A3A7B1;
     --k-peach:#EACBA8; --k-ink:#3A404C;
-    --mc-sel:#6EA6F2; --mc-oth:rgba(135,140,152,.4); --f3m:#77A170; --moon-glow:drop-shadow(0 0 6px rgba(242,180,122,.45));
+    --mc-sel:#6EA6F2; --mc-oth:rgba(135,140,152,.4); --f3m:#A9CC8C; --moon-glow:drop-shadow(0 0 6px rgba(242,180,122,.45));
     --o1:#E8505B; --o2:#E9A85E; --o3:#A9C76A; --o4:#26B37F;
     --hero-a:#1B2234; --hero-b:#121723; --ray:transparent;
     --space-0:#141821; --space-1:#1A1F2A; --space-2:#1F2531;
     --fz1:#E54348; --fz2:#EA832A; --fz3:#E6BC33; --fz4:#93C63A; --fz5:#2BB677;
     --hero-panel:rgba(6,9,15,.28); --hero-edge:rgba(255,255,255,.05); --hero-line:rgba(255,255,255,.07);
     --c2-bg:#16212B; --c2-ink:#93BCC6; --c2-edge:rgba(147,188,198,.2); --c2-img:url(icons/c2-lion-dark.png);
-    --f3c:#6E81CB; --f3d:#EE9144;
+    --f3c:#87ACE4; --f3d:#EE9144; --f3lw:1.05px; --f3lwf:1.6px; --ficw:1.35px; --dogc-t:9%;
     --shadow-card:0 1px 0 rgba(255,255,255,.02) inset,0 12px 32px -24px rgba(0,0,0,.9);
     --shadow-hero:0 22px 50px -28px rgba(0,0,0,.95);
     --shadow-pop:0 30px 80px -20px rgba(0,0,0,.85);
@@ -115,14 +115,14 @@
   --t-sage:#13241D; --t-peach:#271C14; --t-slate:#141D2D; --t-sand:#211E18;
   --k1:#6EA6F2; --k2:#F2A35F; --k3:#26B37F; --k4:#D9B060; --k5:#E58FA9; --k8:#D2955F; --k7:#9AA6C2; --k6:#26B37F; --k-pr:#878C98; --k-un:#A3A7B1;
   --k-peach:#EACBA8; --k-ink:#3A404C;
-  --mc-sel:#6EA6F2; --mc-oth:rgba(135,140,152,.4); --f3m:#77A170; --moon-glow:drop-shadow(0 0 6px rgba(242,180,122,.45));
+  --mc-sel:#6EA6F2; --mc-oth:rgba(135,140,152,.4); --f3m:#A9CC8C; --moon-glow:drop-shadow(0 0 6px rgba(242,180,122,.45));
   --o1:#E8505B; --o2:#E9A85E; --o3:#A9C76A; --o4:#26B37F;
   --hero-a:#1B2234; --hero-b:#121723; --ray:transparent;
   --space-0:#141821; --space-1:#1A1F2A; --space-2:#1F2531;
   --fz1:#E54348; --fz2:#EA832A; --fz3:#E6BC33; --fz4:#93C63A; --fz5:#2BB677;
   --hero-panel:rgba(6,9,15,.28); --hero-edge:rgba(255,255,255,.05); --hero-line:rgba(255,255,255,.07);
   --c2-bg:#16212B; --c2-ink:#93BCC6; --c2-edge:rgba(147,188,198,.2); --c2-img:url(icons/c2-lion-dark.png);
-  --f3c:#6E81CB; --f3d:#EE9144;
+  --f3c:#87ACE4; --f3d:#EE9144; --f3lw:1.05px; --f3lwf:1.6px; --ficw:1.35px; --dogc-t:9%;
   --shadow-card:0 1px 0 rgba(255,255,255,.02) inset,0 12px 32px -24px rgba(0,0,0,.9);
   --shadow-hero:0 22px 50px -28px rgba(0,0,0,.95);
   --shadow-pop:0 30px 80px -20px rgba(0,0,0,.85);
@@ -631,27 +631,6 @@ b.accent{color:var(--dog-ink)}
 .tvmore[open] summary::after{transform:rotate(-135deg);margin-top:3px}
 .tvmore .tv-read{padding-top:8px}
 .crbox{display:flex;flex-direction:column;gap:12px}
-.fngc{display:flex;flex-direction:column;gap:2px}
-.fngr{display:grid;grid-template-columns:58px minmax(0,1fr) auto;gap:2px 12px;align-items:center;width:100%;border:0;border-bottom:1px solid var(--line-2);background:none;padding:9px 0;color:inherit;font:inherit;text-align:left;cursor:pointer}
-.fngr:last-of-type{border-bottom:0}
-.fngr .gauge{width:58px;height:auto;display:block}
-.fngr .gauge .gn{display:none}
-.fngr .t{min-width:0}
-.fngr .t b{display:block;font-weight:600;font-size:14.5px}
-.fngr .t span{display:block;font-size:12px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.fngr .v{text-align:right}
-.fngr .v b{display:block;font-family:var(--display);font-size:26px;font-weight:600;letter-spacing:-.02em;line-height:1.05;font-variant-numeric:tabular-nums}
-.fngr .v span{display:block;font-size:11.5px;font-weight:500}
-.fng3c{margin-top:8px;padding-top:10px;border-top:1px solid var(--line-2)}
-.fng3c .hd{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--ink-3);margin-bottom:6px}
-.fng3c .hd b{color:var(--ink-2);font-weight:600}
-.f3-plot{position:relative;height:150px;touch-action:pan-y;cursor:crosshair;-webkit-user-select:none;user-select:none}
-.f3-plot svg{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:visible}
-.f3-x{position:absolute;top:0;bottom:0;width:1px;margin-left:-.5px;background:var(--ink-2);opacity:.45;pointer-events:none;display:none}
-.f3-read{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px;font-size:12.5px;min-height:20px;color:var(--ink-2);font-variant-numeric:tabular-nums}
-.f3-read b{font-weight:600;color:var(--ink)}
-.f3-read .mk{width:12px;margin-right:5px}
-.f3-ax{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink-3);margin-top:4px}
 .mmbox{display:flex;flex-direction:column;gap:10px}
 .mm-read{display:flex;flex-direction:column;gap:2px;min-height:40px;font-size:13.5px}
 .mm-read .r1{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 14px}
@@ -1646,8 +1625,8 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
 .h-memes .mmini .mr b{grid-area:n;min-width:0;font-size:12.5px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .h-memes .mmini .mr .v{grid-area:v;text-align:left;font-family:var(--display);font-size:16px;font-weight:650;letter-spacing:-.01em;margin-top:1px}
 .h-memes .mmini .mr svg{grid-area:s;width:100%;height:26px;margin-top:3px;overflow:visible}
-.h-memes .mmini .mr.dog{background:linear-gradient(160deg,color-mix(in srgb,var(--mc-dog) 16%,var(--surface-2)),var(--surface-2) 85%);border-color:color-mix(in srgb,var(--mc-dog) 58%,var(--line-2))}
-.h-memes .mmini .mr.dog .mk{width:11px}
+.h-memes .mmini .mr.dog{background:linear-gradient(160deg,color-mix(in srgb,var(--mc-dog) var(--dogc-t,7%),var(--surface-2)),var(--surface-2) 70%);border-color:color-mix(in srgb,var(--mc-dog) 34%,var(--line-2))}
+@media (min-resolution:2dppx){.h-memes .mmini .mr.dog{border-width:.5px}}
 .h-memes .mmini .mr.dog + .mr{border-top-color:var(--line-2)}
 .intro .h-memes .mr{animation:tileIn .55s cubic-bezier(.2,.8,.2,1) both}
 .intro .h-memes .mr:nth-child(2){animation-delay:.04s} .intro .h-memes .mr:nth-child(3){animation-delay:.08s}
@@ -1708,6 +1687,59 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
 .ch-more[hidden]{display:none}
 .ch-more .spinner{width:11px;height:11px;border-width:1.5px}
 #tvchart > .ch-more{top:120px}
+/* ===== v14 (18.11.2026) ===== */
+/* segmented switch with a sliding thumb (Home meme coins, fear & greed periods) */
+.seg.slide{position:relative;display:inline-grid;grid-auto-flow:column;grid-auto-columns:1fr;isolation:isolate}
+.seg.slide button{position:relative;z-index:1;background:transparent!important;min-width:42px;text-align:center;transition:color .25s ease}
+.seg.slide .seg-th{position:absolute;z-index:0;top:3px;bottom:3px;left:3px;width:calc((100% - 6px - (var(--n) - 1) * 2px) / var(--n));border-radius:999px;background:var(--surface-3);box-shadow:0 1px 2px rgba(23,25,31,.07);transform:translateX(calc(var(--i) * (100% + 2px)));transition:transform .45s cubic-bezier(.22,1,.36,1);pointer-events:none}
+/* Home → DOG and meme coins: period switch in the heading; cards re-rank smoothly */
+.h-memes .hmm > .sec-head{flex-wrap:nowrap;align-items:center;gap:10px}
+.hmm-t{min-width:0}
+.hmm-t h3{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hmm-t p{margin:1px 0 0;font-size:12px;color:var(--ink-3)}
+.hmm .seg{flex:none}
+.hmm .seg button{padding:4px 9px;font-size:12px}
+.h-memes .mmini{position:relative}
+.h-memes .mmini .mr .v{transition:color .3s ease}
+/* fear & greed lines: thinner in the dark theme (light lines on navy look bolder) */
+.f3s-l{stroke-width:var(--f3lw,1.25px)}
+.f3s-g.fx-m .f3s-l[data-k="m"],.f3s-g.fx-c .f3s-l[data-k="c"],.f3s-g.fx-d .f3s-l[data-k="d"]{stroke-width:var(--f3lwf,2px)}
+.fic-plot path[data-li]{stroke-width:var(--ficw,1.6px)}
+/* one index chosen: its price in a pane below — same days, own scale */
+.f3s-pp{grid-column:1;display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .45s cubic-bezier(.22,1,.36,1),opacity .3s ease}
+.f3s-pp.on{grid-template-rows:1fr;opacity:1}
+.f3s-ppi{min-height:0;overflow:hidden}
+.f3s-pph{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-top:10px;padding-top:8px;border-top:1px solid var(--line-2);font-size:11.5px;color:var(--ink-3);white-space:nowrap}
+.f3s-pph .t{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--ink-2)}
+.f3s-pph .t i{width:12px;height:2px;border-radius:2px;background:var(--ink-2)}
+.f3s-pph .r{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.f3s-pph b{font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.f3s-pplot{position:relative;height:88px;margin-top:6px;touch-action:pan-y;cursor:crosshair;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.f3s-pplot svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.f3s-x2{position:absolute;top:0;bottom:0;width:1px;margin-left:-.5px;background:var(--ink-2);opacity:0;pointer-events:none;transition:opacity .15s}
+.f3s-x2.on{opacity:.55}
+.f3s-pm{position:absolute;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:var(--ink);box-shadow:0 0 0 2px var(--surface);pointer-events:none;z-index:2}
+.f3s-pm[hidden]{display:none}
+.f3s-pe{position:absolute;width:5px;height:5px;margin:-2.5px 0 0 -2.5px;border-radius:50%;background:var(--ink-3);box-shadow:0 0 0 1.5px var(--surface);pointer-events:none}
+@media (min-width:700px){.f3s-pplot{height:104px}}
+.f3s-d{justify-content:flex-start}
+.f3s-d > .f3s-pxv{display:inline-flex;align-items:center;gap:6px;margin-left:12px;font-size:13px;color:var(--ink-2);white-space:nowrap}
+.f3s-pxv i{width:12px;height:2px;border-radius:2px;background:var(--ink-2)}
+.f3s-pxv b{font-weight:650;color:var(--ink);font-variant-numeric:tabular-nums}
+.f3s-pxv .nw{font-size:11.5px;color:var(--ink-3)}
+.f3s-d > span:not(.f3s-pxv),.f3s-d > .f3s-now{margin-left:auto}
+/* Charts tab: the history of all three right on the tab */
+#fngc-sec .ch-head{margin-bottom:10px}
+#fngc-sec > .note{margin-top:12px}
+.f3s-lh{margin:14px 0 6px;font-size:15px}
+.f3-go{margin-top:10px}
+@media (max-width:379px){
+  .h-memes .hmm .hmm-t h3{font-size:15px}
+  .hmm .seg.slide button{min-width:36px;padding:4px 7px;font-size:11.5px}
+  .f3s-c{padding:8px 7px 8px 10px}
+  .f3s-c .zn{font-size:11px}
+  .f3s-pph .w{display:none}
+}
 </style>
 </head>
 <body>
@@ -2199,7 +2231,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     document.body.style.overflow = '';
     clearTimeout(closeSheet.t);
     SHN.cur = null; SHN.stack = []; sheetNavSync();
-    const fin = () => { w.hidden = true; sheetReset(); };
+    const fin = () => { w.hidden = true; sheetReset(); if (F3S.dirty) { F3S.dirty = false; paintFngCharts(true); } };
     if (now === true || RM) fin();
     else {
       const sh = SH(), bg = SHBG(), phone = isPhone();
@@ -3307,7 +3339,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   function refreshHomeParts() {
     const s = V(); if (!s || !$('#p-overview .home')) return;
     const tb = $('#tre-box'); if (tb) tb.innerHTML = treasuryHtml();
-    const mb = $('#mm-box'); if (mb) mb.innerHTML = memesMiniHtml();
+    hmPaint();
   }
   // ---------- fear & greed: whole market (alternative.me, CoinMarketCap) and DOG (own index, tools/mood.py → data/fng.json) ----------
   const FNG_A = [26, 47, 55, 76, 101], FNG_C = [20, 40, 60, 80, 101];
@@ -3449,6 +3481,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       ${fngKv(m.v, FNG_A, m.prev)}
       <h3>The index and bitcoin</h3>
       ${fngMktChart('m', hist, FNG_A)}
+      ${f3GoBtn('m')}
       <h3>What goes into it</h3>
       <ul class="plain"><li><b>25%</b> — how wildly bitcoin’s price swings and how deep its drops are;</li><li><b>25%</b> — market volume and buying momentum;</li><li><b>15%</b> — social media activity;</li><li><b>15%</b> — surveys (currently paused);</li><li><b>10%</b> — bitcoin’s share of the market;</li><li><b>10%</b> — Google search trends.</li></ul>
       ${FNG_SCALE(FNG_A)}
@@ -3460,6 +3493,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       ${fngKv(c.v, FNG_C, c.prev)}
       <h3>The index and bitcoin</h3>
       ${fngMktChart('c', c.hist, FNG_C)}
+      ${f3GoBtn('c')}
       <h3>What goes into it</h3>
       <ul class="plain"><li>price momentum of the 10 largest coins (stablecoins excluded);</li><li>expected swings of bitcoin and ether priced into options (Volmex volatility indices);</li><li>options: bets on a fall versus bets on a rise (put/call ratio) for bitcoin and ether;</li><li>market composition: the stablecoin supply relative to bitcoin’s market cap;</li><li>CoinMarketCap’s own data: searches and user engagement.</li></ul>
       ${c.yhi && c.ylo ? `<p class="note">Past year: high ${c.yhi[0]} (${esc(fngDay(c.yhi[1]))}), low ${c.ylo[0]} (${esc(fngDay(c.ylo[1]))}).</p>` : ''}
@@ -3595,6 +3629,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       <p class="note">“Now” uses the current price and moves during the day. At 00:00 UTC the day closes: its value is recomputed from the closing price and never changes after that — that’s how “yesterday” and the whole history below are made.</p>
       <h3>How the index behaved before</h3>
       ${long}
+      ${f3GoBtn('d')}
       ${athTxt}
       ${turnsTxt}
       ${turnsTxt ? `<p class="note">Dots mark the index’s turns: a peak or a low followed by a move of at least ${FNG_TURN} points. The highest readings came at price peaks and the lowest at the bottoms: the index shows when the market around DOG is running on emotion. This is history, not a forecast.</p>` : ''}
@@ -3707,29 +3742,134 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
         <button type="button" class="tre-row" data-info="tre" aria-label="${esc(it.name)}: all DOG purchase reports"><span class="tre-logo${c2 ? ' c2' : ''}" aria-hidden="true">${c2 ? '' : esc(ini)}</span><span class="t"><b>${esc(it.name)}</b><span>holds DOG${age ? ' · ' + esc(age) : ''}</span></span><span class="v"><b>${mdog(last[1] / 1e6)}</b><span>${mid ? '≈ ' + usd(last[1] * mid) : 'DOG'}</span></span></button>
       </section>`;
   }
-  function memesMiniHtml() {
-    const M = S.memes; if (!M || !M.days || !M.coins || M.days.length < 30) return '';
-    const L = M.days.length - 1, P = Math.min(90, L), b = L - P;
+  // ---------- Home → DOG and meme coins: six cards for 7, 30 or 90 days. A new period re-ranks the 12 coins; the cards glide
+  // to their new places (FLIP), the numbers count to the new change, the mini charts reshape — no flash, no jump. ----------
+  const HM_P = [['7', '7D'], ['30', '30D'], ['90', '90D']];
+  const HM = { p: '90', key: '', busy: 0, tok: 0 };
+  { const p0 = String(store.get('hmmP', '90')); if (HM_P.some(x => x[0] === p0)) HM.p = p0; }
+  const HM_N = 96, HM_W = 96, HM_H = 26;
+  // monotone cubic (Fritsch–Carlson): a smooth line through the daily closes that never overshoots them
+  function monoSpline(xs, ys) {
+    const n = xs.length; if (n < 2) return () => ys[0] || 0;
+    const d = [], m = new Array(n);
+    for (let i = 0; i < n - 1; i++) d.push((ys[i + 1] - ys[i]) / ((xs[i + 1] - xs[i]) || 1));
+    m[0] = d[0]; m[n - 1] = d[n - 2];
+    for (let i = 1; i < n - 1; i++) m[i] = d[i - 1] * d[i] <= 0 ? 0 : (d[i - 1] + d[i]) / 2;
+    for (let i = 0; i < n - 1; i++) {
+      if (d[i] === 0) { m[i] = 0; m[i + 1] = 0; continue; }
+      const a = m[i] / d[i], b = m[i + 1] / d[i], q = a * a + b * b;
+      if (q > 9) { const t = 3 / Math.sqrt(q); m[i] = t * a * d[i]; m[i + 1] = t * b * d[i]; }
+    }
+    let j = 0;
+    return x => {
+      if (x < xs[j]) j = 0;
+      while (j < n - 2 && x > xs[j + 1]) j++;
+      const h = (xs[j + 1] - xs[j]) || 1, t = Math.max(0, Math.min(1, (x - xs[j]) / h)), t2 = t * t, t3 = t2 * t;
+      return (2 * t3 - 3 * t2 + 1) * ys[j] + (t3 - 2 * t2 + t) * h * m[j] + (-2 * t3 + 3 * t2) * ys[j + 1] + (t3 - t2) * h * m[j + 1];
+    };
+  }
+  // the mini chart as HM_N points from 0 (its low) to 1 (its high), log prices
+  function hmSpark(r) {
+    const xs = [], ys = [];
+    for (let i = r.i0; i <= r.i1; i++) if (r.v[i] > 0) { xs.push(i); ys.push(Math.log(r.v[i])); }
+    const lo = Math.min(...ys), hi = Math.max(...ys), span = (hi - lo) || 1, f = monoSpline(xs, ys), out = [];
+    for (let t = 0; t < HM_N; t++) out.push(Math.max(0, Math.min(1, (f(xs[0] + (xs[xs.length - 1] - xs[0]) * t / (HM_N - 1)) - lo) / span)));
+    return out;
+  }
+  function hmData(P) {
+    const M = S.memes; if (!M || !M.days || !M.coins || M.days.length < 30) return null;
+    const L = M.days.length - 1, p = Math.min(+P, L), b = L - p, need = Math.min(20, p - 2);
     const rows = M.coins.map(c => {
       const v = (c.c || []).slice(b), i0 = v.findIndex(x => x > 0);
       let i1 = v.length - 1; while (i1 > 0 && !(v[i1] > 0)) i1--;
-      if (i0 < 0 || i1 - i0 < 20) return null;
+      if (i0 < 0 || i1 - i0 < need) return null;
       return { id: c.id, sym: c.sym || c.id.toUpperCase(), v, i0, i1, chg: v[i1] / v[i0] - 1 };
     }).filter(Boolean).sort((x, y) => y.chg - x.chg);
-    const k = rows.findIndex(r => r.id === 'dog'); if (k < 0) return '';
+    const k = rows.findIndex(r => r.id === 'dog'); if (k < 0) return null;
     const show = k < 6 ? rows.slice(0, 6) : rows.slice(0, 5).concat([rows[k]]);
-    const sp = r => {
-      const pts = []; for (let i = r.i0; i <= r.i1; i++) if (r.v[i] > 0) pts.push([i, Math.log(r.v[i])]);
-      const lo = Math.min(...pts.map(p => p[1])), hi = Math.max(...pts.map(p => p[1])), W = 96, H = 26;
-      const X = i => (i - r.i0) / Math.max(1, r.i1 - r.i0) * W, Y = l => 2 + (1 - (l - lo) / ((hi - lo) || 1)) * (H - 5);
-      const d = pts.map((p, j) => `${j ? 'L' : 'M'}${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join(''), col = mmCol(r.id);
-      return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><path d="${d}L${X(pts[pts.length - 1][0]).toFixed(1)},${H}L${X(pts[0][0]).toFixed(1)},${H}Z" fill="${col}" fill-opacity="${r.id === 'dog' ? '.17' : '.12'}" stroke="none"/><path d="${d}" fill="none" stroke="${col}" stroke-width="${r.id === 'dog' ? 1.9 : 1.5}" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>`;
-    };
-    const place = rows[k] ? k + 1 : null;
-    return `<section class="group" aria-label="DOG and meme coins">
-        <div class="sec-head c"><h3>DOG and meme coins</h3><p>90 days · DOG #${place} of ${rows.length}</p></div>
-        <div class="mmini">${show.map(r => `<button type="button" class="mr${r.id === 'dog' ? ' dog' : ''}" data-go="charts" data-mmgo="${esc(r.id)}" aria-label="${esc(r.sym)}: rank ${rows.indexOf(r) + 1}, ${mmPct(r.chg)} in 90 days"><span class="i">${rows.indexOf(r) + 1}</span><span class="mk" style="background:${mmCol(r.id)}"></span><b>${esc(r.sym)}</b>${sp(r)}<span class="v ${r.chg >= 0 ? 'up' : 'down'}">${mmPct(r.chg)}</span></button>`).join('')}</div>
+    show.forEach(r => { r.rank = rows.indexOf(r) + 1; r.sp = hmSpark(r); });
+    return { P: p, rows, show, place: k + 1, n: rows.length };
+  }
+  const hmKey = R => HM.p + '|' + R.n + '|' + R.show.map(r => r.id + ':' + r.chg.toFixed(5)).join(',');
+  const hmX = t => (t / (HM_N - 1) * HM_W).toFixed(2), hmY = y => (2 + (1 - y) * (HM_H - 5)).toFixed(2);
+  const hmLine = sp => sp.map((y, t) => `${t ? 'L' : 'M'}${hmX(t)},${hmY(y)}`).join('');
+  const hmArea = sp => `${hmLine(sp)}L${HM_W},${HM_H}L0,${HM_H}Z`;
+  const hmAria = r => `${r.sym}: rank ${r.rank}, ${mmPct(r.chg)} in ${HM.p} days`;
+  function hmCard(r) {
+    const col = mmCol(r.id), dog = r.id === 'dog';
+    return `<button type="button" class="mr${dog ? ' dog' : ''}" data-id="${esc(r.id)}" data-go="charts" data-mmgo="${esc(r.id)}" aria-label="${esc(hmAria(r))}"><span class="i">${r.rank}</span><span class="mk" style="background:${col}"></span><b>${esc(r.sym)}</b><svg viewBox="0 0 ${HM_W} ${HM_H}" preserveAspectRatio="none" aria-hidden="true"><path class="sa" d="${hmArea(r.sp)}" fill="${col}" fill-opacity="${dog ? '.14' : '.12'}" stroke="none"/><path class="sl" d="${hmLine(r.sp)}" fill="none" stroke="${col}" stroke-width="${dog ? 1.7 : 1.5}" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg><span class="v ${r.chg >= 0 ? 'up' : 'down'}">${mmPct(r.chg)}</span></button>`;
+  }
+  function memesMiniHtml() {
+    const R = hmData(HM.p); if (!R) { HM.key = ''; return ''; }
+    HM.key = hmKey(R);
+    return `<section class="group hmm" aria-label="DOG and meme coins">
+        <div class="sec-head c"><div class="hmm-t"><h3>DOG and meme coins</h3><p id="hmm-sub">DOG #${R.place} of ${R.n}</p></div><span class="seg slide" role="group" aria-label="Period" id="hmm-p" style="--i:${HM_P.findIndex(x => x[0] === HM.p)};--n:${HM_P.length}"><i class="seg-th" aria-hidden="true"></i>${HM_P.map(([k, t]) => segB('hmp', k, t, HM.p === k)).join('')}</span></div>
+        <div class="mmini" id="hmm-grid">${R.show.map(hmCard).join('')}</div>
       </section>`;
+  }
+  // refreshes leave the block alone unless the numbers changed — and never in the middle of a switch
+  function hmPaint() {
+    const box = $('#mm-box'); if (!box || Date.now() < HM.busy) return;
+    const R = hmData(HM.p);
+    if (!R) { if (box.innerHTML) box.innerHTML = ''; HM.key = ''; return; }
+    if ($('#hmm-grid', box) && hmKey(R) === HM.key) return;
+    box.innerHTML = memesMiniHtml();
+  }
+  function hmSwitch(P) {
+    if (P === HM.p || !HM_P.some(x => x[0] === P)) return;
+    const R = hmData(P); if (!R) return;
+    const was = HM.p; HM.p = P; store.set('hmmP', P); haptic();
+    const seg = $('#hmm-p'), grid = $('#hmm-grid'), sub = $('#hmm-sub');
+    if (seg) { seg.style.setProperty('--i', HM_P.findIndex(x => x[0] === P)); seg.querySelectorAll('[data-hmp]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.hmp === P))); }
+    if (!grid || RM) { const box = $('#mm-box'); if (box) box.innerHTML = memesMiniHtml(); return; }
+    HM.key = hmKey(R);
+    const tok = ++HM.tok, T = 700, old = hmData(was), from = new Map(old ? old.show.map(r => [r.id, r]) : []);
+    HM.busy = Date.now() + T + 500;
+    // FIRST: where every card is right now (a card still gliding from the last tap is measured mid-flight)
+    grid.querySelectorAll('.mr.out').forEach(x => x.remove());
+    const gr = grid.getBoundingClientRect();
+    const cur = new Map([...grid.querySelectorAll('.mr')].map(el => [el.dataset.id, { el, r: el.getBoundingClientRect() }]));
+    cur.forEach(({ el }) => el.getAnimations().forEach(a => a.cancel()));
+    const keep = [], enter = [];
+    const nodes = R.show.map((r, j) => {
+      const o = cur.get(r.id);
+      if (o) { cur.delete(r.id); keep.push([o.el, o.r, r, j]); return o.el; }
+      const t = document.createElement('template'); t.innerHTML = hmCard(r);
+      const el = t.content.firstElementChild; enter.push([el, j]); return el;
+    });
+    // cards that drop out stay where they were and fade away
+    cur.forEach(({ el, r }) => {
+      el.classList.add('out'); el.removeAttribute('data-go'); el.removeAttribute('data-mmgo'); el.tabIndex = -1; el.setAttribute('aria-hidden', 'true');
+      Object.assign(el.style, { position: 'absolute', left: (r.left - gr.left) + 'px', top: (r.top - gr.top) + 'px', width: r.width + 'px', height: r.height + 'px', margin: '0', pointerEvents: 'none' });
+      el.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(.92)' }], { duration: 260, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' }).onfinish = () => el.remove();
+    });
+    nodes.forEach(el => grid.appendChild(el));
+    // LAST → INVERT → PLAY: each card slides from its old place to the new one
+    keep.forEach(([el, r0, r, j]) => {
+      const r1 = el.getBoundingClientRect(), dx = r0.left - r1.left, dy = r0.top - r1.top;
+      if (Math.abs(dx) > .5 || Math.abs(dy) > .5) el.animate([{ transform: `translate(${dx}px,${dy}px)` }, { transform: 'none' }], { duration: T, easing: 'cubic-bezier(.22,1,.36,1)', delay: j * 18 });
+      hmMorph(el, r, from.get(r.id), tok, T);
+    });
+    enter.forEach(([el, j]) => el.animate([{ opacity: 0, transform: 'translateY(10px) scale(.94)' }, { opacity: 1, transform: 'none' }], { duration: 520, delay: 160 + j * 28, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'backwards' }));
+    if (sub) { sub.textContent = `DOG #${R.place} of ${R.n}`; sub.animate([{ opacity: .15 }, { opacity: 1 }], { duration: 420, easing: 'ease-out' }); }
+  }
+  // a staying card: the change counts to the new number, the mini chart reshapes, the rank updates
+  function hmMorph(el, r, o, tok, T) {
+    const v = el.querySelector('.v'), sl = el.querySelector('.sl'), sa = el.querySelector('.sa'), ri = el.querySelector('.i');
+    const c0 = el._chg != null ? el._chg : o ? o.chg : r.chg, s0 = el._sp || (o && o.sp) || r.sp, s1 = r.sp, c1 = r.chg;
+    if (ri) ri.textContent = r.rank;
+    el.setAttribute('aria-label', hmAria(r));
+    const t0 = performance.now(), io = k => k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2, eo = k => 1 - Math.pow(1 - k, 3);
+    const step = now => {
+      if (tok !== HM.tok || !el.isConnected) return;
+      const k = Math.min(1, (now - t0) / T), e = io(k), x = c0 + (c1 - c0) * eo(k);
+      const sp = s0.map((y, i) => y + (s1[i] - y) * e);
+      el._sp = sp; el._chg = x;
+      v.textContent = mmPct(k < 1 ? x : c1); v.className = 'v ' + ((k < 1 ? x : c1) >= 0 ? 'up' : 'down');
+      sl.setAttribute('d', hmLine(sp)); sa.setAttribute('d', hmArea(sp));
+      if (k < 1) requestAnimationFrame(step); else { el._sp = s1; el._chg = c1; }
+    };
+    requestAnimationFrame(step);
   }
   function treSheet() {
     const it = treItem(); if (!it) return false;
@@ -3914,7 +4054,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     if (!back) { if (prev && prev !== k) SHN.stack.push(prev); else if (!prev) SHN.stack = []; }
     SHN.cur = k;
     sheetNavSync();
-    if (k === 'fng_all') f3sAfterOpen(arg);
+    if (k === 'fng_all') f3sRestore(arg);
   }
   function sheetNavSync() { const b = $('#sheet-back'); if (b) b.hidden = !SHN.stack.length; }
   document.addEventListener('click', e => { const b = e.target.closest('[data-info]'); if (b) { e.preventDefault(); openInfo(b.dataset.info); } });
@@ -3944,6 +4084,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     requestAnimationFrame(step);
   }
   $('#p-overview').addEventListener('click', e => {
+    const hp = e.target.closest('[data-hmp]'); if (hp) { hmSwitch(hp.dataset.hmp); return; }
     const p = e.target.closest('[data-htf]');
     if (p) { S.htf = p.dataset.htf; store.set('htf', S.htf); $$('[data-htf]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.htf === S.htf))); const w = $('#hwhat'); if (w) w.textContent = HTF_WHAT[S.htf]; if (HC) HC.pin = null; resetHero(); drawPrice(true); return; }
     if (e.target.closest('#hnow')) { if (HC) { HC.pin = null; heroPin(true); drawPrice(true); } resetHero(); return; }
@@ -5838,76 +5979,35 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     if (S.px && S.px.d) for (const [d, v] of Object.entries(S.px.d)) { const h = v && v[1]; if (h > 0 && (rec == null || h > rec)) { rec = h; rd = d; } }
     return `<div><span class="l">All-time high</span><b>${rec ? fpd(rec) : '—'}</b></div><div><span class="l">From the high</span><b class="${rec ? (p >= rec ? 'up' : 'down') : ''}">${rec ? sg((p / rec - 1) * 100, 1) + '%' : '—'}</b></div><div><span class="l">Market cap</span><b>${usd(p * SUPPLY)}</b></div>` + (rd ? `<span class="sr">high ${esc(dml(dOf(rd)))}</span>` : '');
   }
-  function fngChartsHtml() {
-    const m = fngMarket(), c = fngCmc(), d0 = (S.fng || {}).dog, dl = fngNow(), d = dl ? Object.assign({}, d0, { v: dl.v }) : d0;
-    if (!m && !c && !(d && d.v != null)) return '';
-    const row = (key, v, sc, name, src, prev) => {
-      const na = v == null, nm = na ? 'no data' : fngName(v, sc), y = !na && prev && prev.d1 != null ? ` · yesterday ${prev.d1}` : '';
-      return `<button type="button" class="fngr" data-info="${key}" aria-label="${esc(name)}, ${esc(src)}: ${na ? esc(nm) : Math.round(v) + ' — ' + esc(nm)}">${gaugeSvg(v, sc)}<span class="t"><b>${esc(name)}</b><span><i class="mk" style="background:${FNG_LC[key]};width:10px;margin-right:5px"></i>${esc(src)}</span></span><span class="v"><b${na ? '' : ` style="color:${fngCol(v, sc)}"`}>${esc(nm)}</b><span>${esc(y.replace(/^ · /, ''))}</span></span></button>`;
-    };
-    const mk = 'Crypto market';
-    return `<button type="button" class="ch-head ch-hbtn" data-info="fng_all" aria-label="Fear and greed: history of all three indices"><h3>Fear &amp; Greed</h3><span class="note">0 fear · 100 greed</span>${ico('chev')}</button>
-      <div class="fngc">${row('fng_m', m ? m.v : null, FNG_A, mk, 'alternative.me', m && m.prev)}${row('fng_c', c ? c.v : null, FNG_C, mk, 'CoinMarketCap', c && c.prev)}${row('fng_d', d && d.v != null ? d.v : null, FNG_A, 'DOG', 'our index', d && d.prev)}</div>
-      ${fng3Html()}`;
-  }
-  const F3 = { D: null, pin: null };
-  function fng3Data() {
-    const f = S.fng || {}, dl = fngNow(), H = k => new Map(((f[k] || {}).hist || []).map(x => [x[0], x[1]]));
-    const dH = H('dog'), mH = H('market'), cH = H('cmc');
-    if (dl && dl.day) dH.set(dl.day, dl.v);
-    const days = [...dH.keys()].sort().slice(-90);
-    if (days.length < 10) return null;
-    const g = (M, x) => M.has(x) ? M.get(x) : null;
-    return { days, d: days.map(x => g(dH, x)), m: days.map(x => g(mH, x)), c: days.map(x => g(cH, x)) };
-  }
-  function fng3Html() {
-    const D = fng3Data(); F3.D = D; F3.pin = null; if (!D) return '';
-    const W = 1000, H = 150, n1 = D.days.length - 1, X = i => i / n1 * W, Y = v => 6 + (1 - v / 100) * (H - 12);
-    const path = arr => { let s = '', pen = false; arr.forEach((v, i) => { if (v == null) { pen = false; return; } s += (pen ? 'L' : 'M') + X(i).toFixed(1) + ',' + Y(v).toFixed(1); pen = true; }); return s; };
-    let pk = -1; D.d.forEach((v, i) => { if (v != null && (pk < 0 || v > D.d[pk])) pk = i; });
-    const grid = [25, 50, 75].map(v => `<line x1="0" x2="${W}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="var(--line)" stroke-width="1" stroke-dasharray="${v === 50 ? '0' : '3 6'}" vector-effect="non-scaling-stroke"/>`).join('');
-    const zones = `<rect x="0" width="${W}" y="${Y(100).toFixed(1)}" height="${(Y(75) - Y(100)).toFixed(1)}" fill="var(--fz5)" opacity=".085"/><rect x="0" width="${W}" y="${Y(25).toFixed(1)}" height="${(Y(0) - Y(25)).toFixed(1)}" fill="var(--fz1)" opacity=".085"/>`;
-    return `<div class="fng3c">
-        <div class="hd"><span><i class="mk" style="background:var(--f3m)"></i>alt.me <i class="mk" style="background:var(--f3c);margin-left:8px"></i>CMC <i class="mk" style="background:var(--f3d);margin-left:8px"></i>DOG</span>${pk >= 0 ? `<span>DOG peak <b>${D.d[pk]}</b> · ${esc(fngDay(D.days[pk]))}</span>` : ''}</div>
-        <div class="f3-read" id="f3read"></div>
-        <div class="f3-plot" id="f3plot" role="img" aria-label="The three fear and greed indices over 90 days"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${zones}${grid}<path d="${path(D.c)}" fill="none" stroke="var(--f3c)" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/><path d="${path(D.m)}" fill="none" stroke="var(--f3m)" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/><path d="${path(D.d)}" fill="none" stroke="var(--f3d)" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg><div class="f3-x" id="f3x"></div></div>
-        <div class="f3-ax"><span>${esc(fngDay(D.days[0]))}</span><span>${esc(fngDay(D.days[Math.floor(n1 / 2)]))}</span><span>${esc(fngDay(D.days[n1]))}</span></div>
-        <button type="button" class="f3-more" data-info="fng_all">History of all three<span>since 2024</span>${ico('chev')}</button>
-      </div>`;
-  }
-  function fng3Read(i) {
-    const D = F3.D, el = $('#f3read'); if (!D || !el) return;
-    const last = i == null; i = last ? D.days.length - 1 : i;
-    const v = (lab, x, col) => `<span><i class="mk" style="background:${col}"></i>${lab} <b>${x == null ? '—' : x}</b></span>`;
-    el.innerHTML = `<span>${last ? 'Today' : esc(fngDay(D.days[i]))}</span>${v('alt.me', D.m[i], 'var(--f3m)')}${v('CMC', D.c[i], 'var(--f3c)')}${v('DOG', D.d[i], 'var(--f3d)')}`;
-    const x = $('#f3x'); if (x) { x.style.display = last ? 'none' : 'block'; x.style.left = (i / Math.max(1, D.days.length - 1) * 100).toFixed(2) + '%'; }
-  }
-  function fng3Bind() {
-    const el = $('#f3plot'); if (!el || el._b) { fng3Read(F3.pin); return; }
-    el._b = true;
-    const at = cx => { const D = F3.D; if (!D) return null; const r = el.getBoundingClientRect(); return Math.max(0, Math.min(D.days.length - 1, Math.round((cx - r.left) / r.width * (D.days.length - 1)))); };
-    let down = null;
-    el.addEventListener('pointerdown', e => { down = { x: e.clientX, moved: false, i: at(e.clientX) }; });
-    el.addEventListener('pointermove', e => {
-      if (!down && e.pointerType !== 'mouse') return;
-      if (down && !down.moved && Math.abs(e.clientX - down.x) < 7) return;
-      if (down) down.moved = true;
-      const i = at(e.clientX); if (i != null) { if (down) F3.pin = i; fng3Read(i); }
-    });
-    el.addEventListener('pointerup', () => {
-      const d = down; down = null;
-      if (d && !d.moved && F3.D && d.i != null) openInfo('fng_all', false, F3.D.days[d.i]);
-    });
-    el.addEventListener('pointercancel', () => { down = null; });
-    el.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') fng3Read(F3.pin); });
-    fng3Read(null);
-  }
-  function paintFngCharts() { const b = $('#fngc-sec'); if (!b) return; b.innerHTML = fngChartsHtml(); fng3Bind(); }
-  // ---------- Fear & greed history: three indexes on one chart, 30 days to all time ----------
-  const F3S = { per: store.get('f3per', '90'), pin: null, D: null, drag: null, focus: null };
+  // ---------- Fear & greed: the history of all three indices. Lives right on the Charts tab (#f3s-in) and in a sheet from Home (#f3s-sh),
+  // one state for both. Tap an index — it alone, with its price in a pane below (bitcoin for the market indices, DOG for ours). ----------
+  const F3S = { per: store.get('f3per', '90'), pin: null, D: null, drag: null, focus: null, pp: null, dirty: false };
   const F3P = [['30', '30D'], ['90', '90D'], ['365', '1Y'], ['all', 'All']];
   const F3K = [['m', 'alt.me', 'var(--f3m)', FNG_A], ['c', 'CMC', 'var(--f3c)', FNG_C], ['d', 'DOG', 'var(--f3d)', FNG_A]];
-  const F3W = 1000, F3H = 300, F3Y = v => 10 + (1 - v / 100) * (F3H - 20);
+  const F3W = 1000, F3H = 300, F3Y = v => 10 + (1 - v / 100) * (F3H - 20), F3PH = 100;
+  const f3sR = () => { const s = $('#f3s-sh'); return s && !$('#sheet').hidden ? s : $('#f3s-in'); };
+  const f3sLinks = () => {
+    const lk = (k, nm, sub) => `<button type="button" class="row" data-info="fng_${k}"><span class="t"><b>${nm}</b><span>${sub}</span></span>${ico('chev')}</button>`;
+    return `<div class="group flush rows f3s-links">${lk('m', 'alternative.me', 'whole crypto market · what goes into it, turning points')}${lk('c', 'CoinMarketCap', 'whole crypto market · what goes into it, turning points')}${lk('d', 'DOG — our index', 'what drives it today, history since 2024')}</div>`;
+  };
+  const F3_NOTE = `<p class="note">All three run from 0 to 100: the lower the number, the stronger the fear. alternative.me and CoinMarketCap describe the whole crypto market; DOG is our own index for DOG: its price, bitcoin and market mood. The red band at the bottom is extreme fear (below 25), the green band at the top is extreme greed (75 and up). Tap an index to see it alone with its price below — bitcoin for the two market indices, DOG for ours; tap it again for all three. This is a history of mood, not a forecast.</p>`;
+  function fngChartsHtml() {
+    return `<div class="ch-head"><h3>Fear &amp; Greed</h3><span class="note">0 fear · 100 greed</span></div>
+      <div id="f3s-in" class="f3s-box">${f3sBody()}</div>
+      ${F3_NOTE}
+      <h3 class="f3s-lh">Each index in detail</h3>
+      ${f3sLinks()}`;
+  }
+  const f3sKey = () => { const f = S.fng || {}, dl = fngNow(), m = fngMarket(); return [f.updated, F3S.per, F3S.focus, dl ? dl.v + '@' + dl.day : '', m ? m.v : '', (S.px || {}).updated || '', (S.btcd || {}).updated || ''].join('|'); };
+  function paintFngCharts(force) {
+    const b = $('#fngc-sec'); if (!b) return;
+    if ((!force && F3S.drag) || ($('#f3s-sh') && !$('#sheet').hidden)) return;   // a finger or the sheet owns the chart right now
+    const key = f3sKey();
+    if (!force && b.dataset.k === key && $('#f3s-in', b)) return;
+    const day = F3S.D && F3S.pin != null ? F3S.D.days[F3S.pin] : null;
+    b.innerHTML = fngChartsHtml(); b.dataset.k = key;
+    f3sRestore(day);
+  }
   function f3sData(per) {
     const f = S.fng || {}, dl = fngNow(), mk = a => new Map((a || []).map(x => [x[0], x[1]]));
     const M = { m: mk([...(((f.market || {}).hist) || []), ...((S.fngM || {}).hist || [])]), c: mk((f.cmc || {}).hist), d: mk((f.dog || {}).hist) };
@@ -5930,26 +6030,52 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   }
   const f3Date = ds => F3S.per === '365' || F3S.per === 'all' ? fngDmy(ds) : fngDay(ds);
   const f3Ax = ds => { if (F3S.per !== '365' && F3S.per !== 'all') return fngDay(ds); const d = new Date(String(ds) + 'T12:00:00Z'); return FU_M.format(d).replace('.', '') + ' ' + d.getUTCFullYear(); };
+  // the price under the chosen index, day by day: DOG for our index (day close; today — the live price), bitcoin for the market indices
+  function f3sPx(D, k) {
+    D._px = D._px || {};
+    if (D._px[k]) return D._px[k];
+    const dog = k === 'd', today = new Date().toISOString().slice(0, 10);
+    const map = dog ? pxMap((S.px || {}).d) : btcNowMap();
+    if (dog) { const L = fngNow(), lp = (L && L.day === today && L.price > 0 ? L.price : null) || livePrice(); if (lp > 0) map[today] = lp; }
+    return (D._px[k] = { v: D.days.map(x => map[x] > 0 ? map[x] : null), name: dog ? 'DOG' : 'BTC', label: dog ? 'DOG price' : 'Bitcoin price', fmt: dog ? fpd : btcFmt });
+  }
   function f3sRead(i) {
     const D = F3S.D; if (!D) return '';
     const n1 = D.days.length - 1, last = i == null || i >= n1; if (last) i = n1;
-    const day = D.days[i], today = day === new Date().toISOString().slice(0, 10);
-    const col = ([k, nm, c, sc]) => { const v = D[k][i], on = F3S.focus === k; return `<button type="button" class="f3s-c${on ? ' on' : ''}${F3S.focus && !on ? ' dim' : ''}" data-f3focus="${k}" aria-pressed="${on}" aria-label="${nm}: ${v == null ? 'no data' : v + ' — ' + esc(fngName(v, sc))}" style="--sc:${c}"><span class="nm"><i class="dt" aria-hidden="true"></i>${nm}</span><b class="f3s-n" aria-hidden="true">${v == null ? '—' : v}</b><span class="zn"${v == null ? '' : ` style="color:${fngCol(v, sc)}"`}>${v == null ? 'no data' : esc(fngName(v, sc))}</span></button>`; };
-    const hint = F3S.focus ? 'tap the card again for all three' : 'slide along · tap an index';
-    return `<div class="f3s-d"><b>${last && today ? 'Today' : esc(fngDmy(day))}</b>${last && !F3S.focus ? `<span>${hint}</span>` : `<button type="button" class="f3s-now" data-f3now>${ico('refresh')}Today</button>`}</div><div class="f3s-cols">${F3K.map(col).join('')}</div>`;
+    const day = D.days[i], today = day === new Date().toISOString().slice(0, 10), fk = F3S.focus;
+    const col = ([k, nm, c, sc]) => { const v = D[k][i], on = fk === k; return `<button type="button" class="f3s-c${on ? ' on' : ''}${fk && !on ? ' dim' : ''}" data-f3focus="${k}" aria-pressed="${on}" aria-label="${nm}: ${v == null ? 'no data' : v + ' — ' + esc(fngName(v, sc))}${on ? '. Tap again for all three' : ''}" style="--sc:${c}"><span class="nm"><i class="dt" aria-hidden="true"></i>${nm}</span><b class="f3s-n" aria-hidden="true">${v == null ? '—' : v}</b><span class="zn"${v == null ? '' : ` style="color:${fngCol(v, sc)}"`}>${v == null ? 'no data' : esc(fngName(v, sc))}</span></button>`; };
+    const P = fk ? f3sPx(D, fk) : null, pv = P ? P.v[i] : null;
+    const px = P ? `<span class="f3s-pxv"><i aria-hidden="true"></i>${P.name}${last && today ? '' : ' close'}<b>${pv ? esc(P.fmt(pv)) : '—'}</b>${last && today && pv ? '<span class="nw">now</span>' : ''}</span>` : '';
+    const right = !last ? `<button type="button" class="f3s-now" data-f3now>${ico('refresh')}Today</button>` : fk ? '' : `<span>slide along · tap an index</span>`;
+    return `<div class="f3s-d"><b>${last && today ? 'Today' : esc(fngDmy(day))}</b>${px}${right}</div><div class="f3s-cols">${F3K.map(col).join('')}</div>`;
   }
+  // price pane under the index chart: the same days, log scale, its own axis (never two scales on one chart)
+  function f3sPaneIn(D, k) {
+    const P = f3sPx(D, k), n1 = D.days.length - 1, X = i => i / Math.max(1, n1) * F3W;
+    const L = P.v.map(v => v > 0 ? Math.log(v) : null), ok = L.filter(x => x != null);
+    if (ok.length < 2) { F3S.pp = null; return ''; }
+    let lo = Math.min(...ok), hi = Math.max(...ok); const pad = (hi - lo) * 0.1 || 0.02; lo -= pad; hi += pad;
+    const Y = l => 4 + (1 - (l - lo) / (hi - lo)) * (F3PH - 8), pc = (v, t) => (v / t * 100).toFixed(3) + '%';
+    let d = '', pen = false, i0 = -1, i1 = -1, iH = -1, iL = -1;
+    L.forEach((l, i) => { if (l == null) { pen = false; return; } d += (pen ? 'L' : 'M') + X(i).toFixed(1) + ',' + Y(l).toFixed(1); pen = true; if (i0 < 0) i0 = i; i1 = i; if (iH < 0 || l > L[iH]) iH = i; if (iL < 0 || l < L[iL]) iL = i; });
+    F3S.pp = { L, Y };
+    const ex = (i, w) => `<i class="f3s-pe" style="left:${pc(X(i), F3W)};top:${pc(Y(L[i]), F3PH)}" title="${w} close ${esc(P.fmt(P.v[i]))} · ${esc(f3Date(D.days[i]))}"></i>`;
+    return `<div class="f3s-pph"><span class="t"><i aria-hidden="true"></i>${esc(P.label)}</span><span class="r"><span class="w">day closes </span><b>${esc(P.fmt(P.v[iL]))}</b> – <b>${esc(P.fmt(P.v[iH]))}</b></span></div>
+      <div class="f3s-pplot" role="img" aria-label="${esc(P.label)} over the same ${D.days.length} days, log scale: day closes from ${esc(P.fmt(P.v[iL]))} to ${esc(P.fmt(P.v[iH]))}"><svg viewBox="0 0 ${F3W} ${F3PH}" preserveAspectRatio="none" aria-hidden="true"><path d="${d}L${X(i1).toFixed(1)},${F3PH}L${X(i0).toFixed(1)},${F3PH}Z" fill="var(--ink-2)" opacity=".07"/><path class="f3s-pl" d="${d}" fill="none" stroke="var(--ink-2)" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>${ex(iH, 'high')}${ex(iL, 'low')}<i class="f3s-x2"></i><i class="f3s-pm"></i></div>`;
+  }
+  const f3sPane = D => { const k = F3S.focus, inner = k ? f3sPaneIn(D, k) : ''; if (!inner) F3S.pp = null; return `<div class="f3s-pp${inner ? ' on' : ''}" data-k="${inner ? k : ''}"><div class="f3s-ppi">${inner}</div></div>`; };
   function f3sPlot(D) {
     const n1 = D.days.length - 1, X = i => i / Math.max(1, n1) * F3W, pc = (v, t) => (v / t * 100).toFixed(3) + '%';
     const path = arr => { let p = '', pen = false; arr.forEach((v, i) => { if (v == null) { pen = false; return; } p += (pen ? 'L' : 'M') + X(i).toFixed(1) + ',' + F3Y(v).toFixed(1); pen = true; }); return p; };
     const band = (lo, hi, col) => `<rect x="0" width="${F3W}" y="${F3Y(hi).toFixed(1)}" height="${(F3Y(lo) - F3Y(hi)).toFixed(1)}" fill="${col}" opacity=".085"/>`;
     const grid = [25, 50, 75].map(v => `<line x1="0" x2="${F3W}" y1="${F3Y(v).toFixed(1)}" y2="${F3Y(v).toFixed(1)}" stroke="var(--line)" stroke-width="1" stroke-dasharray="${v === 50 ? '0' : '3 6'}" vector-effect="non-scaling-stroke"/>`).join('');
-    const ln = (k, col, w) => `<path class="f3s-l" data-k="${k}" d="${path(D[k])}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>`;
+    const ln = (k, col) => `<path class="f3s-l" data-k="${k}" d="${path(D[k])}" fill="none" stroke="${col}" stroke-width="1.25" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>`;
     const dots = F3K.map(([k, nm, c]) => { const e = D.ext[k]; return !e ? '' : [['lo', 'low'], ['hi', 'high']].map(([w, wt]) => { const i = e[w], v = D[k][i]; return `<i class="f3s-p" data-k="${k}" data-w="${w}" data-i="${i}" style="left:${pc(X(i), F3W)};top:${pc(F3Y(v), F3H)};background:${c}" title="${nm}: ${wt} ${v} · ${esc(f3Date(D.days[i]))}"><b>${v}</b></i>`; }).join(''); }).join('');
     const tdots = F3K.map(([k, nm, c]) => ((D.turns || {})[k] || []).map(([i, w]) => { const v = D[k][i]; return `<i class="f3s-p tp" data-k="${k}" data-w="${w === 'p' ? 'hi' : 'lo'}" data-i="${i}" style="left:${pc(X(i), F3W)};top:${pc(F3Y(v), F3H)};background:${c}" title="${nm}: ${w === 'p' ? 'peak' : 'low'} ${v} · ${esc(f3Date(D.days[i]))}"><b>${v}</b></i>`; }).join('')).join('');
     const yl = [100, 75, 50, 25, 0].map(v => `<span style="top:${(F3Y(v) / F3H * 100).toFixed(2)}%">${v}</span>`).join('');
     const xi = n1 < 6 ? [0, n1] : [0, Math.round(n1 / 3), Math.round(2 * n1 / 3), n1];
     const xl = xi.map((i, j) => `<span class="${j === 0 ? 'l' : j === xi.length - 1 ? 'r' : ''}" style="left:${(i / Math.max(1, n1) * 100).toFixed(2)}%">${esc(f3Ax(D.days[i]))}</span>`).join('');
-    return `<div class="f3s-g${F3S.focus ? ' fx fx-' + F3S.focus : ''}"><div class="f3s-plot" role="img" aria-label="The three fear and greed indices: ${D.days.length} days"><svg viewBox="0 0 ${F3W} ${F3H}" preserveAspectRatio="none" aria-hidden="true">${band(75, 100, 'var(--fz5)')}${band(0, 25, 'var(--fz1)')}${grid}${ln('c', 'var(--f3c)', 1.25)}${ln('m', 'var(--f3m)', 1.25)}${ln('d', 'var(--f3d)', 1.25)}</svg><i class="f3s-x"></i>${tdots}${dots}${F3K.map(([k, , c]) => `<i class="f3s-m" data-k="${k}" style="background:${c}"></i>`).join('')}</div><div class="f3s-y" aria-hidden="true">${yl}</div><div class="f3s-xl" aria-hidden="true">${xl}</div></div>`;
+    return `<div class="f3s-g${F3S.focus ? ' fx fx-' + F3S.focus : ''}"><div class="f3s-plot" role="img" aria-label="The three fear and greed indices: ${D.days.length} days"><svg viewBox="0 0 ${F3W} ${F3H}" preserveAspectRatio="none" aria-hidden="true">${band(75, 100, 'var(--fz5)')}${band(0, 25, 'var(--fz1)')}${grid}${ln('c', 'var(--f3c)')}${ln('m', 'var(--f3m)')}${ln('d', 'var(--f3d)')}</svg><i class="f3s-x"></i>${tdots}${dots}${F3K.map(([k, , c]) => `<i class="f3s-m" data-k="${k}" style="background:${c}"></i>`).join('')}</div><div class="f3s-y" aria-hidden="true">${yl}</div>${f3sPane(D)}<div class="f3s-xl" aria-hidden="true">${xl}</div></div>`;
   }
   function f3sStats(D) {
     const row = ([k, nm, c, sc]) => {
@@ -5962,48 +6088,78 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       <p class="note f3s-tn">Tap a number or a dot to see that day on the chart.${F3S.per === '365' || F3S.per === 'all' ? ' Small dots are the turns: peaks and lows after which the index moved 35 points or more (DOG’s are shown right away; tap an index card to see its turns with numbers).' : ''}</p>`;
   }
   function f3sBody() {
+    if (!F3P.some(p => p[0] === F3S.per)) F3S.per = '90';
     const D = f3sData(F3S.per); F3S.D = D; F3S.pin = null;
     if (!D) return `<p class="note">No index history yet.</p>`;
     return `<div class="f3s-read" aria-live="polite">${f3sRead(null)}</div>
-      <div class="seg f3s-per" role="group" aria-label="Period">${F3P.map(([k, t]) => segB('f3per', k, t, F3S.per === k)).join('')}</div>
-      ${f3sPlot(D)}
-      ${f3sStats(D)}`;
+      <div class="seg slide f3s-per" role="group" aria-label="Period" style="--i:${F3P.findIndex(p => p[0] === F3S.per)};--n:${F3P.length}"><i class="seg-th" aria-hidden="true"></i>${F3P.map(([k, t]) => segB('f3per', k, t, F3S.per === k)).join('')}</div>
+      <div class="f3s-gw">${f3sPlot(D)}</div>
+      <div class="f3s-st">${f3sStats(D)}</div>`;
   }
   function fngAllSheet() {
-    if (!F3P.some(p => p[0] === F3S.per)) F3S.per = '90';
-    F3S.focus = null;
-    const lk = (k, nm, sub) => `<button type="button" class="row" data-info="fng_${k}"><span class="t"><b>${nm}</b><span>${sub}</span></span>${ico('chev')}</button>`;
-    return ['Fear & Greed', `<div id="f3s">${f3sBody()}</div>
-      <p class="note">All three run from 0 to 100: the lower the number, the stronger the fear. alternative.me and CoinMarketCap describe the whole crypto market; DOG is our own index for DOG: its price, bitcoin and market mood. The red band at the bottom is extreme fear (below 25), the green band at the top is extreme greed (75 and up). This is a history of mood, not a forecast.</p>
+    F3S.focus = null; F3S.dirty = true;
+    return ['Fear & Greed', `<div id="f3s-sh" class="f3s-box">${f3sBody()}</div>
+      ${F3_NOTE}
       <h3>Each index in detail</h3>
-      <div class="group flush rows f3s-links">${lk('m', 'alternative.me', 'whole crypto market · what goes into it, turning points')}${lk('c', 'CoinMarketCap', 'whole crypto market · what goes into it, turning points')}${lk('d', 'DOG — our index', 'what drives it today, history since 2024')}</div>`];
+      ${f3sLinks()}`];
+  }
+  // a new period: the switch slides, the chart and the table are redrawn in place
+  function f3sPer(p) {
+    if (!F3P.some(x => x[0] === p)) return;
+    F3S.per = p; store.set('f3per', p);
+    const box = f3sR(); if (!box) return;
+    const D = f3sData(p), seg = box.querySelector('.f3s-per'), gw = box.querySelector('.f3s-gw'), st = box.querySelector('.f3s-st');
+    if (!D || !seg || !gw || !st) { box.innerHTML = f3sBody(); f3sSet(null, false); return; }
+    F3S.D = D; F3S.pin = null;
+    seg.style.setProperty('--i', F3P.findIndex(x => x[0] === p));
+    seg.querySelectorAll('[data-f3per]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.f3per === p)));
+    gw.innerHTML = f3sPlot(D); st.innerHTML = f3sStats(D);
+    f3sSet(null, false);
+    if (!RM) gw.animate([{ opacity: .3 }, { opacity: 1 }], { duration: 300, easing: 'cubic-bezier(.22,1,.36,1)' });
+    if (box.id === 'f3s-in') { const b = $('#fngc-sec'); if (b) b.dataset.k = f3sKey(); }
   }
   function f3sSet(i, line) {
-    const D = F3S.D, box = $('#f3s'); if (!D || !box) return;
+    const D = F3S.D, box = f3sR(); if (!D || !box) return;
     const n1 = D.days.length - 1; i = Math.max(0, Math.min(n1, i == null ? n1 : i));
     const x = (i / Math.max(1, n1) * 100).toFixed(3) + '%';
-    const xl = box.querySelector('.f3s-x'); if (xl) { xl.style.left = x; xl.classList.toggle('on', !!line); }
+    box.querySelectorAll('.f3s-x, .f3s-x2').forEach(xl => { xl.style.left = x; xl.classList.toggle('on', !!line); });
     box.querySelectorAll('.f3s-m').forEach(m => { const v = D[m.dataset.k][i]; m.hidden = v == null; if (v != null) { m.style.left = x; m.style.top = (F3Y(v) / F3H * 100).toFixed(2) + '%'; } });
+    const pm = box.querySelector('.f3s-pp.on .f3s-pm'), P = F3S.pp;
+    if (pm) { const l = P ? P.L[i] : null; pm.hidden = l == null; if (l != null) { pm.style.left = x; pm.style.top = (P.Y(l) / F3PH * 100).toFixed(2) + '%'; } }
     box.querySelectorAll('.f3s-p').forEach(p => p.classList.toggle('on', !!line && +p.dataset.i === i && (!F3S.focus || p.dataset.k === F3S.focus)));
     box.querySelectorAll('.f3s-v').forEach(b => b.setAttribute('aria-pressed', String(!!line && +b.dataset.f3i === i && (!F3S.focus || b.dataset.f3k === F3S.focus))));
     const rd = box.querySelector('.f3s-read'); if (rd) rd.innerHTML = f3sRead(line ? i : null);
   }
+  // one index alone: the others fade, its price pane opens below (or changes to the new asset); tapped again — all three, the pane closes
   function f3sFocus(k) {
     F3S.focus = k || null;
-    const g = $('#f3s .f3s-g'); if (g) g.className = 'f3s-g' + (F3S.focus ? ' fx fx-' + F3S.focus : '');
+    const box = f3sR(); if (!box) return;
+    const g = box.querySelector('.f3s-g'); if (g) g.className = 'f3s-g' + (F3S.focus ? ' fx fx-' + F3S.focus : '');
+    const pp = box.querySelector('.f3s-pp'), D = F3S.D;
+    if (pp && D) {
+      const ppi = pp.querySelector('.f3s-ppi');
+      if (F3S.focus) {
+        const open = pp.classList.contains('on'), inner = f3sPaneIn(D, F3S.focus);
+        ppi.innerHTML = inner; pp.dataset.k = inner ? F3S.focus : '';
+        if (!inner) pp.classList.remove('on');
+        else if (open) { if (!RM) ppi.animate([{ opacity: .2 }, { opacity: 1 }], { duration: 320, easing: 'cubic-bezier(.22,1,.36,1)' }); }
+        else { void pp.offsetWidth; pp.classList.add('on'); }
+      } else { pp.classList.remove('on'); F3S.pp = null; }
+    }
     f3sSet(F3S.pin, F3S.pin != null);
+    if (box.id === 'f3s-in') { const b = $('#fngc-sec'); if (b) b.dataset.k = f3sKey(); }
   }
   function f3sShow(k, i) {
     F3S.pin = i; f3sFocus(k);
-    const pl = $('#f3s .f3s-plot'); if (!pl) return;
+    const box = f3sR(), pl = box && box.querySelector('.f3s-plot'); if (!pl) return;
     const r = pl.getBoundingClientRect(), sb = pl.closest('.sheet-body');
     const top = sb ? sb.getBoundingClientRect().top : 0;
     if (r.top < top + 8 || r.bottom > innerHeight - 8) pl.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'center' });
   }
-  function f3sAfterOpen(day) {
+  function f3sRestore(day) {
     const D = F3S.D; if (!D) return;
     const k = day ? D.days.indexOf(day) : -1;
-    if (k >= 0 && k < D.days.length - 1) { F3S.pin = k; f3sSet(k, true); } else f3sSet(null, false);
+    if (k >= 0 && k < D.days.length - 1) { F3S.pin = k; f3sSet(k, true); } else { F3S.pin = null; f3sSet(null, false); }
   }
   const f3sAt = (pl, e) => { const D = F3S.D, r = pl.getBoundingClientRect(); return D && r.width ? Math.round(Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * (D.days.length - 1)) : 0; };
   document.addEventListener('pointerdown', e => {
@@ -6018,7 +6174,8 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const d = F3S.down;
     if (d && d.dot && !F3S.drag && Math.abs(e.clientX - d.x) > 8) F3S.drag = d.pl;
     if (F3S.drag) { const i = f3sAt(F3S.drag, e); if (i !== F3S.pin) { F3S.pin = i; f3sSet(i, true); } return; }
-    const pl = e.pointerType === 'mouse' && e.target.closest && e.target.closest('.f3s-plot'); if (pl && F3S.pin == null) f3sSet(f3sAt(pl, e), true);
+    const g = e.pointerType === 'mouse' && e.target.closest && e.target.closest('.f3s-g'), pl = g && g.querySelector('.f3s-plot');
+    if (pl && F3S.pin == null) f3sSet(f3sAt(pl, e), true);
   });
   document.addEventListener('pointerup', () => {
     const d = F3S.down; F3S.down = null;
@@ -6026,15 +6183,24 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     F3S.drag = null;
   });
   document.addEventListener('pointercancel', () => { F3S.drag = null; F3S.down = null; });
-  document.addEventListener('pointerout', e => { const pl = e.pointerType === 'mouse' && e.target.closest && e.target.closest('.f3s-plot'); if (pl && F3S.pin == null && !(e.relatedTarget && pl.contains(e.relatedTarget))) f3sSet(null, false); });
+  document.addEventListener('pointerout', e => { const g = e.pointerType === 'mouse' && e.target.closest && e.target.closest('.f3s-g'); if (g && F3S.pin == null && !(e.relatedTarget && g.contains(e.relatedTarget))) f3sSet(null, false); });
   document.addEventListener('click', e => {
     if (!e.target.closest) return;
-    const p = e.target.closest('[data-f3per]');
-    if (p) { F3S.per = p.dataset.f3per; store.set('f3per', F3S.per); const b = $('#f3s'); if (b) { b.innerHTML = f3sBody(); f3sSet(null, false); } return; }
-    if (e.target.closest('[data-f3now]')) { F3S.pin = null; f3sFocus(null); return; }
-    const fc = e.target.closest('[data-f3focus]'); if (fc) { f3sFocus(F3S.focus === fc.dataset.f3focus ? null : fc.dataset.f3focus); return; }
+    const p = e.target.closest('[data-f3per]'); if (p) { f3sPer(p.dataset.f3per); return; }
+    if (e.target.closest('[data-f3now]')) { F3S.pin = null; f3sSet(null, false); return; }
+    const fc = e.target.closest('[data-f3focus]'); if (fc) { f3sFocus(F3S.focus === fc.dataset.f3focus ? null : fc.dataset.f3focus); haptic(); return; }
     const v = e.target.closest('[data-f3k]'); if (v) f3sShow(v.dataset.f3k, +v.dataset.f3i);
   });
+  // “Open on Charts” in an index sheet: the Charts tab, that index alone with its price
+  const f3GoBtn = k => `<button type="button" class="f3-more f3-go" data-go="charts" data-f3go="${k}">Open on Charts<span>with the ${k === 'd' ? 'DOG' : 'bitcoin'} price · 30D to All</span>${ico('chev')}</button>`;
+  document.addEventListener('click', e => {
+    const b = e.target.closest && e.target.closest('[data-f3go]'); if (!b) return;
+    F3S.focus = b.dataset.f3go; F3S.pin = null;
+    setTimeout(() => {
+      paintFngCharts(true);
+      const t = $('#fngc-sec'); if (t) window.scrollTo({ top: Math.max(0, t.getBoundingClientRect().top + window.scrollY - 76), behavior: RM ? 'auto' : 'smooth' });
+    }, 350);
+  }, true);
   function renderCharts(soft) {
     const el = $('#p-charts'); if (!el) return;
     const s = V();
@@ -6064,7 +6230,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const IND = [['ma', 'Averages'], ['bb', 'Bollinger'], ['rsi', 'RSI'], ['macd', 'MACD']];
     $('#ch-ind').innerHTML = IND.map(([k, t]) => `<button type="button" class="chip" data-chind="${k}" aria-pressed="${String(!!CH.ind[k])}">${esc(t)}</button>`).join('');
     const st = $('#chstats'); if (st) st.innerHTML = chStatsHtml();
-    if (!soft || !$('#fngc-sec .fngc')) paintFngCharts();
+    paintFngCharts();
     if (S.tab === 'charts' && !(soft && CH.tv)) chDrawAll();
   }
   function chDrawAll() {
@@ -6106,6 +6272,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-mmgo]'); if (!b) return;
     const id = b.dataset.mmgo;
+    if (b.closest('#hmm-grid') && MM_P.some(x => x[0] === HM.p)) { MM.p = HM.p; MM.pin = null; store.set('mmP', MM.p); }
     if (id && id !== 'dog') { MM.sel = id; MM.lock = true; MM.pin = null; store.set('mmSel', id); store.set('mmLock', true); }
     setTimeout(() => { const t = $('#mmsec'); if (t) window.scrollTo({ top: Math.max(0, t.getBoundingClientRect().top + window.scrollY - 76), behavior: RM ? 'auto' : 'smooth' }); }, 350);
   }, true);
@@ -7184,7 +7351,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const put = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
     setStatus();
     put('tiles-box', tilesHtml(s)); put('sum-box', summaryHtml(s)); put('ex-box', exchangesHtml(s));
-    put('tre-box', treasuryHtml()); put('mm-box', memesMiniHtml());
+    put('tre-box', treasuryHtml()); hmPaint();
     if (!livePrice()) { const cap = $('#hcap'); if (cap) cap.textContent = 'market cap ≈ ' + usd(((s.price || {}).cap || 0) * 1e6); }
     refreshChart();
     const hp = $('#hprice'), was = hp && hp.firstChild ? hp.firstChild.nodeValue : null;
@@ -7555,7 +7722,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     db.file('prices.json', d => { if (d.d) { S.px = d; const st = $('#chstats'); if (st) st.innerHTML = chStatsHtml(); if (V() && S.htf === '1w') drawPrice(true); else if (V() && S.htf === '1d') heroGrow(); if (V() && S.tab === 'charts') { if (CH.tf === '1w') chDrawTV(); else if (CH.tf === '1d') chGrow(); crDraw(); } } });
     db.file('btc.json', d => { if (d.d) { S.btcd = d; if (V() && S.tab === 'charts') crDraw(); } });
     db.file('fng.json', d => { if (d.dog || d.market) { S.fng = d; paintFng(); } });
-    db.file('memes.json', d => { if (d.coins) { S.memes = d; if (V() && S.tab === 'charts') mmDraw(); } });
+    db.file('memes.json', d => { if (d.coins) { S.memes = d; if (V()) hmPaint(); if (V() && S.tab === 'charts') mmDraw(); } });
     db.file('whales.json', d => { if (d.n) { S.wl = d; if (V()) renderWallets(); } });
     db.file('ddhist.json', d => { if (d.d) S.dd = d; });
     fngLive();

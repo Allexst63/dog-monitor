@@ -131,6 +131,29 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
     const st = await page.evaluate(() => ({ c: document.querySelector('#status').className, t: document.querySelector('#status-t').textContent }));
     add(/\d\d:\d\d/.test(st.t), `Статус в шапке показывает время данных («${st.t.trim().slice(0, 40)}»)`, `Header status shows the data time (“${st.t.trim().slice(0, 40)}”)`);
     add(await noOverflow(), 'Главная: ничего не вылезает за экран телефона', 'Home: nothing overflows the phone screen');
+    // «DOG и мем-монеты» на «Главном»: 7D / 30D / 90D — монеты заново выстраиваются по изменению, карточки плавно едут на новые места
+    {
+      await page.evaluate(() => { const e = document.querySelector('#mm-box'); if (e) e.scrollIntoView({ block: 'center' }); }); await page.waitForTimeout(250);
+      const r = await page.evaluate(async () => {
+        const seg = document.querySelector('#hmm-p'); if (!seg) return null;
+        const before = [...document.querySelectorAll('#hmm-grid .mr')].map(e => e.dataset.id).join(',');
+        const b7 = seg.querySelector('[data-hmp="7"]'); if (!b7) return null;
+        b7.click();
+        await new Promise(x => setTimeout(x, 90));
+        const moving = [...document.querySelectorAll('#hmm-grid .mr')].filter(e => e.getAnimations().length).length;
+        await new Promise(x => setTimeout(x, 1300));
+        const cards = [...document.querySelectorAll('#hmm-grid .mr')];
+        const pct = t => parseFloat(String(t).replace('−', '-').replace('+', '').replace('%', ''));
+        const vals = cards.map(e => pct(e.querySelector('.v').textContent)), ids = cards.map(e => e.dataset.id);
+        const dogLast = ids.indexOf('dog') === 5;
+        const sorted = vals.slice(0, dogLast ? 5 : 6).every((v, i, a) => i === 0 || a[i - 1] >= v);
+        const res = { before, after: ids.join(','), n: cards.length, out: document.querySelectorAll('#hmm-grid .mr.out').length, moving, sorted, dog: ids.includes('dog'), sub: (document.querySelector('#hmm-sub') || {}).textContent || '', on: (seg.querySelector('[aria-pressed="true"]') || {}).dataset?.hmp };
+        const b90 = seg.querySelector('[data-hmp="90"]'); if (b90) b90.click();
+        await new Promise(x => setTimeout(x, 1200));
+        return res;
+      });
+      add(!!r && r.n === 6 && r.out === 0 && r.dog && r.sorted && r.on === '7' && r.moving > 0 && /^DOG #\d+ of \d+$/.test(r.sub.trim()), 'Главная: «DOG и мем-монеты» — 7D / 30D / 90D; монеты выстраиваются по изменению за период, карточки плавно меняются местами', 'Home: “DOG and meme coins” — 7D / 30D / 90D; coins re-rank by the period’s change, cards glide to their new places', r ? `${r.after}; ${r.sub}; в движении ${r.moving}` : 'переключателя нет');
+    }
     await shot('1-home');
     // «Страх и жадность»: в каждом разборе — график индекса с ценой (DOG или биткоин), не сплющен и отвечает на нажатие
     for (const [key, nm] of [['fng_m', 'alternative.me'], ['fng_c', 'CoinMarketCap'], ['fng_d', 'DOG']]) {
@@ -253,36 +276,53 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
       } else add(false, 'Графики: «DOG и мем-монеты» нарисован и отвечает на нажатие', 'Charts: “DOG and meme coins” is drawn and responds to taps', 'линий или списка нет');
       await shot('5-charts-memes');
     }
+    // «Страх и жадность» прямо на «Графиках»: три линии и периоды; нажатие показывает день, минимум в таблице — его точку;
+    // нажатие на индекс — он один и под ним цена (DOG — у индекса DOG, биткоин — у индексов рынка), повторное — снова все три
     {
-      const f = await page.evaluate(() => ({ rows: document.querySelectorAll('#fngc-sec .fngr').length, paths: [...document.querySelectorAll('#f3plot path')].filter(p => (p.getAttribute('d') || '').length > 100).length }));
-      let read = '', sh = null;
-      if (f.paths >= 2) {
-        await page.evaluate(() => { const e = document.querySelector('#f3plot'); if (e) e.scrollIntoView({ block: 'center' }); }); await page.waitForTimeout(300);
-        const b = await page.locator('#f3plot').boundingBox();
-        if (b) {
-          await page.touchscreen.tap(b.x + b.width * 0.3, b.y + b.height / 2); await page.waitForTimeout(900);
-          sh = await page.evaluate(() => { const pl = document.querySelector('#sheet-body .f3s-plot'); if (!pl) return null; const r = pl.getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, h: r.height, paths: [...pl.querySelectorAll('path')].filter(p => (p.getAttribute('d') || '').length > 100).length, read: (document.querySelector('#sheet-body .f3s-read') || {}).textContent || '' }; });
-          if (sh) {
-            sh.v13 = await page.evaluate(() => {
-              // цвета «Old money»: alt.me — шалфей (зелёный), CMC — индиго (синий), DOG — оранжевый; карточки без кружков — крупное число и цветная полоска слева
-              const hue = hex => { const m = /^#([0-9a-f]{6})$/i.exec(String(hex || '').trim()); if (!m) return null; const v = parseInt(m[1], 16), r = (v >> 16) / 255, g = ((v >> 8) & 255) / 255, b = (v & 255) / 255, mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn; if (!d) return null; let h = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h *= 60; return h < 0 ? h + 360 : h; };
-              const cs = getComputedStyle(document.documentElement), H = k => hue(cs.getPropertyValue(k)), hm = H('--f3m'), hc = H('--f3c'), hd = H('--f3d');
-              const cards = [...document.querySelectorAll('#sheet-body .f3s-c')];
-              const strip = cards.filter(c => { const st = getComputedStyle(c); return parseFloat(st.borderLeftWidth) >= 2 && st.borderLeftColor !== st.borderTopColor; }).length;
-              const nums = cards.filter(c => /^\d+$/.test(((c.querySelector('.f3s-n') || {}).textContent || '').trim())).length;
-              return { th: document.querySelectorAll('#sheet-body .f3s-t thead th').length, cards: cards.length, nums, strip, balls: document.querySelectorAll('#sheet-body .f3s-ball').length, hm: Math.round(hm), hc: Math.round(hc), hd: Math.round(hd), pal: hm >= 85 && hm <= 150 && hc >= 215 && hc <= 250 && hd >= 15 && hd <= 40 };
-            });
-            await page.touchscreen.tap(sh.x + sh.w * 0.6, sh.y + sh.h / 2); await page.waitForTimeout(300);
-            read = await page.evaluate(() => (document.querySelector('#sheet-body .f3s-read') || {}).textContent || '');
-            // минимум в таблице: нажатие показывает этот день на графике — точка выделена, индекс выбран
-            await page.evaluate(() => { const v = document.querySelector('#sheet-body .f3s-v'); if (v) v.click(); }); await page.waitForTimeout(500);
-            sh.min = await page.evaluate(() => { const v = document.querySelector('#sheet-body .f3s-v'); const d = v ? (v.querySelector('span') || {}).textContent : ''; return { dot: document.querySelectorAll('#sheet-body .f3s-p.on').length, fx: /\bfx-/.test((document.querySelector('#sheet-body .f3s-g') || {}).className || ''), same: !!d && ((document.querySelector('#sheet-body .f3s-d b') || {}).textContent || '').trim() !== '' }; });
-          }
-          await page.evaluate(() => { const c = document.querySelector('#sheet [data-close]'); if (c) c.click(); }); await page.waitForTimeout(450);
+      await page.evaluate(() => { const e = document.querySelector('#f3s-in .f3s-plot'); if (e) e.scrollIntoView({ block: 'center' }); }); await page.waitForTimeout(350);
+      const f = await page.evaluate(() => ({ paths: [...document.querySelectorAll('#f3s-in .f3s-plot path')].filter(p => (p.getAttribute('d') || '').length > 100).length, cards: document.querySelectorAll('#f3s-in .f3s-c').length, per: document.querySelectorAll('#f3s-in [data-f3per]').length }));
+      let read = '', min = null, px = null, three = null, look = null;
+      const b = await page.locator('#f3s-in .f3s-plot').boundingBox().catch(() => null);
+      if (f.paths >= 3 && b) {
+        await page.touchscreen.tap(b.x + b.width * 0.6, b.y + b.height / 2); await page.waitForTimeout(300);
+        read = await page.evaluate(() => (document.querySelector('#f3s-in .f3s-read') || {}).textContent || '');
+        await page.evaluate(() => { const v = document.querySelector('#f3s-in .f3s-v'); if (v) v.click(); }); await page.waitForTimeout(500);
+        min = await page.evaluate(() => ({ dot: document.querySelectorAll('#f3s-in .f3s-p.on').length, fx: /\bfx-/.test((document.querySelector('#f3s-in .f3s-g') || {}).className || '') }));
+        px = {};
+        for (const k of ['d', 'm']) {
+          await page.evaluate(k2 => { const c = document.querySelector(`#f3s-in [data-f3focus="${k2}"]`); if (c && c.getAttribute('aria-pressed') !== 'true') c.click(); }, k);
+          await page.waitForTimeout(700);
+          px[k] = await page.evaluate(() => { const pp = document.querySelector('#f3s-in .f3s-pp.on'), r = pp ? pp.getBoundingClientRect() : null; return { on: !!pp, h: r ? Math.round(r.height) : 0, line: !!(pp && [...pp.querySelectorAll('path')].some(p => (p.getAttribute('d') || '').length > 100)), lab: pp ? ((pp.querySelector('.f3s-pph') || {}).textContent || '') : '', read: (document.querySelector('#f3s-in .f3s-read') || {}).textContent || '' }; });
         }
+        await shot('5-charts-fng');
+        await page.evaluate(() => { const c = document.querySelector('#f3s-in [data-f3focus="m"]'); if (c) c.click(); }); await page.waitForTimeout(700);
+        three = await page.evaluate(() => ({ off: !document.querySelector('#f3s-in .f3s-pp.on'), fx: /\bfx-/.test((document.querySelector('#f3s-in .f3s-g') || {}).className || '') }));
+        // «Old money»: alt.me — шалфей, CMC — индиго, DOG — оранжевый; карточки без кружков — крупное число и цветная полоска слева
+        look = await page.evaluate(() => {
+          const hue = hex => { const m = /^#([0-9a-f]{6})$/i.exec(String(hex || '').trim()); if (!m) return null; const v = parseInt(m[1], 16), r = (v >> 16) / 255, g = ((v >> 8) & 255) / 255, b = (v & 255) / 255, mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn; if (!d) return null; let h = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h *= 60; return h < 0 ? h + 360 : h; };
+          const cs = getComputedStyle(document.documentElement), H = k => hue(cs.getPropertyValue(k)), hm = H('--f3m'), hc = H('--f3c'), hd = H('--f3d');
+          const cards = [...document.querySelectorAll('#f3s-in .f3s-c')];
+          const strip = cards.filter(c => { const st = getComputedStyle(c); return parseFloat(st.borderLeftWidth) >= 2 && st.borderLeftColor !== st.borderTopColor; }).length;
+          const nums = cards.filter(c => /^\d+$/.test(((c.querySelector('.f3s-n') || {}).textContent || '').trim())).length;
+          return { th: document.querySelectorAll('#f3s-in .f3s-t thead th').length, nums, strip, balls: document.querySelectorAll('.f3s-ball').length, hm: Math.round(hm), hc: Math.round(hc), hd: Math.round(hd), pal: hm >= 85 && hm <= 150 && hc >= 200 && hc <= 250 && hd >= 15 && hd <= 40 };
+        });
       }
-      add(f.rows === 3 && f.paths >= 2 && !!sh && sh.h >= 180 && sh.paths >= 3 && /DOG\s*\d/.test(read) && !/^(Сегодня|Today)/.test(read.trim()) && !!sh.min && sh.min.dot === 1 && sh.min.fx, `Графики: «Страх и жадность» — три строки и общий график; нажатие открывает историю трёх индексов, там нажатие показывает день, а нажатие на минимум — его точку`, `Charts: Fear & Greed — three rows and a shared chart; a tap opens the history of all three, where a tap shows that day and tapping a low shows its dot`, `${f.rows} строки, ${f.paths} линии; ${sh ? `лист ${Math.round(sh.h)} px, ${sh.paths} линии; ` : 'листа нет; '}${read.replace(/\s+/g, ' ').slice(0, 60)}`);
-      { const v = sh && sh.v13; add(!!v && v.th === 4 && v.cards === 3 && v.nums === 3 && v.strip === 3 && v.balls === 0 && v.pal, '«Страх и жадность — история»: цвета «Old money» (alt.me — шалфей, CMC — индиго, DOG — оранжевый), карточки без кружков — крупное число и цветная полоска слева, колонки «В среднем» нет', 'Fear & Greed history: “Old money” colours (alt.me sage, CMC indigo, DOG orange), cards without balls: a large number and a coloured strip on the left, no “Average” column', JSON.stringify(v || null)); }
+      add(f.paths >= 3 && f.cards === 3 && f.per === 4 && /DOG\s*\d/.test(read) && !/^\s*Today/.test(read) && !!min && min.dot === 1 && min.fx, 'Графики: «Страх и жадность» прямо на вкладке — три линии и периоды 30D–All; нажатие показывает день, минимум в таблице — его точку', 'Charts: Fear & Greed right on the tab — three lines and 30D–All; a tap shows that day, a low in the table shows its dot', `${f.paths} линии, ${f.cards} карточки; ${read.replace(/\s+/g, ' ').slice(0, 60)}`);
+      add(!!px && !!px.d && px.d.on && px.d.line && px.d.h >= 60 && /DOG price/.test(px.d.lab) && /DOG[^$]*\$0\.\d/.test(px.d.read) && !!px.m && px.m.on && /Bitcoin price/.test(px.m.lab) && /BTC[^$]*\$\d{2,3},\d{3}/.test(px.m.read) && !!three && three.off && !three.fx, 'Графики: нажатие на индекс — он один и под ним его цена (DOG — у индекса DOG, биткоин — у alternative.me); повторное — снова все три, без цены', 'Charts: tapping an index shows it alone with its price below (DOG for the DOG index, bitcoin for alternative.me); tapping again — all three, no price', px ? `${(px.d || {}).lab || '—'} | ${(px.m || {}).lab || '—'}`.replace(/\s+/g, ' ') : 'нет графика');
+      add(!!look && look.th === 4 && look.nums === 3 && look.strip === 3 && look.balls === 0 && look.pal, '«Страх и жадность»: цвета «Old money» (alt.me — фисташковый, CMC — индиго, DOG — оранжевый), карточки без кружков — крупное число и цветная полоска слева', 'Fear & Greed: “Old money” colours (alt.me pistachio, CMC indigo, DOG orange), cards without balls: a large number and a coloured strip on the left', JSON.stringify(look || null));
+      // «Главное» → разбор индекса DOG → «Open on Charts»: вкладка «Графики», индекс DOG один, под ним цена DOG; и лист «история трёх» с «Главного»
+      await tab('overview');
+      await page.evaluate(() => { const g = document.querySelector('#fng-box [data-info="fng_d"]'); if (g) g.click(); }); await page.waitForTimeout(900);
+      const hasGo = await page.evaluate(() => { const b = document.querySelector('#sheet [data-f3go="d"]'); if (b) { b.click(); return true; } return false; });
+      await page.waitForTimeout(1500);
+      const go = await page.evaluate(() => ({ tab: [...document.querySelectorAll('#view > .panel')].filter(p => !p.hidden).map(p => p.dataset.panel).join(','), sheet: !document.querySelector('#sheet').hidden, dog: (document.querySelector('#f3s-in [data-f3focus="d"]') || {}).getAttribute?.('aria-pressed'), pane: !!document.querySelector('#f3s-in .f3s-pp.on[data-k="d"]'), vis: (() => { const e = document.querySelector('#f3s-in .f3s-plot'); if (!e) return false; const r = e.getBoundingClientRect(); return r.bottom > 60 && r.top < innerHeight; })() }));
+      await page.evaluate(() => { const c = document.querySelector('#f3s-in [data-f3focus="d"]'); if (c && c.getAttribute('aria-pressed') === 'true') c.click(); }); await page.waitForTimeout(500);
+      await tab('overview');
+      await page.evaluate(() => { const h = document.querySelector('#fng-box [data-info="fng_all"]'); if (h) h.click(); }); await page.waitForTimeout(900);
+      const shs = await page.evaluate(() => ({ paths: [...document.querySelectorAll('#f3s-sh .f3s-plot path')].filter(p => (p.getAttribute('d') || '').length > 100).length }));
+      await page.evaluate(() => { const c = document.querySelector('#sheet [data-close]'); if (c) c.click(); }); await page.waitForTimeout(450);
+      add(hasGo && go.tab === 'charts' && !go.sheet && go.dog === 'true' && go.pane && go.vis && shs.paths >= 3, 'Разбор индекса → «Open on Charts»: открываются «Графики», индекс один и под ним его цена; с «Главного» история трёх индексов открывается листом', 'Index sheet → “Open on Charts”: the Charts tab opens with that index alone and its price below; from Home the history of all three opens as a sheet', JSON.stringify(go) + `; лист: ${shs.paths} линии`);
+      await tab('charts');
     }
     // карта ликвидности убрана 18.11.2026 (v13)
     add(await page.evaluate(() => !document.querySelector('#lqbox, .lqsec')), 'Графики: карты ликвидности нет (убрана)', 'Charts: no liquidity map (removed)');
@@ -379,9 +419,74 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
   } catch (e) {
     add(false, 'Проверка в браузере прервалась', 'The browser check was interrupted', e && e.message);
   }
+  // история цен и индексов — как у источников: закрытия DOG — как у Kraken, alternative.me — как в его API, биткоин — как у Coinbase.
+  // Сверяет сама страница, как у читателя; источник не ответил — пункт помечается «пропущено» (сверка в следующий раз).
+  {
+    const v = await page.evaluate(async () => {
+      const get = async (u, ms) => { const c = new AbortController(), t = setTimeout(() => c.abort(), ms || 15000); try { const r = await fetch(u, { signal: c.signal, cache: 'no-store' }); return r.ok ? await r.json() : null; } catch (e) { return null; } finally { clearTimeout(t); } };
+      const [P, B, F] = await Promise.all([get('data/prices.json'), get('data/btc.json'), get('data/fng.json')]);
+      const today = new Date().toISOString().slice(0, 10), day = sec => new Date(sec * 1000).toISOString().slice(0, 10), out = {};
+      const K = await get('https://api.kraken.com/0/public/OHLC?pair=DOGUSD&interval=1440');
+      const kr = K && K.result && Object.values(K.result).find(Array.isArray);
+      if (kr && P && P.d) {
+        let n = 0, same = 0, worst = 0, wd = '';
+        for (const r of kr) { const d = day(+r[0]); if (d >= today || (P.kraken_from && d < P.kraken_from) || !P.d[d]) continue; n++; const dv = Math.abs(P.d[d][3] / +r[4] - 1); if (dv <= 0.001) same++; if (dv > worst) { worst = dv; wd = d; } }
+        out.k = { n, same, worst, wd };
+      }
+      const A = await get('https://api.alternative.me/fng/?limit=0');
+      if (A && Array.isArray(A.data) && F && F.market && F.market.hist) {
+        const m = new Map(F.market.hist); let n = 0, same = 0; const bad = [];
+        for (const x of A.data) { const d = day(+x.timestamp); if (d >= today || !m.has(d)) continue; n++; if (+x.value === m.get(d)) same++; else if (bad.length < 3) bad.push(`${d} ${m.get(d)}/${x.value}`); }
+        out.a = { n, same, bad };
+      }
+      const C = await get('https://api.exchange.coinbase.com/products/BTC-USD/candles?granularity=86400');
+      if (Array.isArray(C) && B && B.d) {
+        let n = 0, same = 0, worst = 0;
+        for (const r of C) { const d = day(+r[0]); if (d >= today || !(B.d[d] > 0)) continue; n++; const dv = Math.abs(B.d[d] / +r[4] - 1); if (dv <= 0.001) same++; if (dv > worst) worst = dv; }
+        out.c = { n, same, worst };
+      }
+      return out;
+    }).catch(() => ({}));
+    const pc = x => (x * 100).toFixed(2).replace('.', ',') + '%';
+    if (v.k) add(v.k.n >= 30 && v.k.same === v.k.n, `Цены DOG в истории как у Kraken: ${v.k.same} из ${v.k.n} дней (наибольшее расхождение ${pc(v.k.worst)})`, `DOG prices in the history match Kraken: ${v.k.same} of ${v.k.n} days (largest gap ${(v.k.worst * 100).toFixed(2)}%)`, v.k.wd);
+    else add(true, 'Цены DOG: сверка с Kraken пропущена — Kraken не ответил', 'DOG prices: the Kraken comparison was skipped — Kraken did not answer');
+    if (v.a) add(v.a.n >= 300 && v.a.same === v.a.n, `alternative.me: история индекса как у источника — ${v.a.same} из ${v.a.n} дней`, `alternative.me: the index history matches the source — ${v.a.same} of ${v.a.n} days`, v.a.bad.join('; '));
+    else add(true, 'alternative.me: сверка пропущена — источник не ответил', 'alternative.me: comparison skipped — the source did not answer');
+    if (v.c) add(v.c.n >= 30 && v.c.same === v.c.n, `Цены биткоина в истории как у Coinbase: ${v.c.same} из ${v.c.n} дней`, `Bitcoin prices in the history match Coinbase: ${v.c.same} of ${v.c.n} days`, pc(v.c.worst));
+    else add(true, 'Биткоин: сверка с Coinbase пропущена — Coinbase не ответил', 'Bitcoin: the Coinbase comparison was skipped — Coinbase did not answer');
+  }
   add(!errs.length, 'Страница работает без ошибок скрипта', 'The page runs without script errors', errs.slice(0, 2).join(' | '));
   await browser.close();
   if (srv) srv.close();
+
+  // индекс DOG: формула страницы (dogLive из index.html) пересчитывает каждый прошлый день — должно совпасть с сервером (tools/mood.py)
+  try {
+    const html = fs.readFileSync(path.join(SITE, 'index.html'), 'utf8');
+    const a = html.indexOf('  const thF = (x, sc) =>'), b = html.indexOf('  let fngLast = { v: null, t: 0 }');
+    if (a < 0 || b < a) throw new Error('формула не найдена в index.html');
+    const J = f => JSON.parse(fs.readFileSync(path.join(SITE, 'data', f), 'utf8'));
+    const px = J('prices.json').d, btc = J('btc.json').d, F = J('fng.json');
+    const alt = new Map(F.market.hist), cmc = new Map(F.cmc.hist);
+    let DAY = null;
+    const RD = Date;
+    class FD extends RD { constructor(...x) { if (x.length) super(...x); else super(DAY + 'T23:00:00Z'); } static now() { return new RD(DAY + 'T23:00:00Z').getTime(); } }
+    const env = {};
+    const calc = new Function('env', 'Date', `let S, livePrice, fngMarket, fngCmc; ${html.slice(a, b)}; return () => { S = env.S; livePrice = env.lp; fngMarket = env.fm; fngCmc = env.fc; return dogLive(); };`)(env, FD);
+    const pk = Object.keys(px).sort(), bk = Object.keys(btc).sort();
+    let n = 0, same = 0; const bad = [];
+    for (const [d, val] of F.dog.hist) {
+      if (d === F.dog.day) continue;          // сегодня — по живой цене, его сверяет пункт «Индекс DOG одинаковый…»
+      DAY = d;
+      const pd = {}; for (const k of pk) { if (k > d) break; pd[k] = px[k]; }
+      const bd = {}; for (const k of bk) { if (k > d) break; bd[k] = btc[k]; }
+      env.S = { fng: { dog: { ver: 4 } }, px: { d: pd }, btcd: { d: bd }, archived: false, cur: {} };
+      env.lp = () => px[d] && px[d][3]; env.fm = () => alt.has(d) ? { v: alt.get(d) } : null; env.fc = () => cmc.has(d) ? { v: cmc.get(d) } : null;
+      const r = calc(); n++;
+      if (r && r.v === val) same++; else if (bad.length < 3) bad.push(`${d}: ${val} / ${r && r.v}`);
+    }
+    const tu = F.dog.turns || [], tp = tu.filter(t => px[t[0]] && Math.abs(px[t[0]][3] - t[3]) < 1e-12).length;
+    add(n > 300 && same === n && tp === tu.length, `Индекс DOG: формула страницы пересчитала всю историю — как у сервера в ${same} из ${n} дней; цена у разворотов — закрытие дня (${tp} из ${tu.length})`, `DOG index: the page’s formula recomputed the whole history — matches the server on ${same} of ${n} days; turn prices are day closes (${tp} of ${tu.length})`, bad.join('; '));
+  } catch (e) { add(false, 'Индекс DOG: пересчёт истории не удался', 'DOG index: recomputing the history failed', e.message); }
 
   // свежесть данных в файлах (то, что уйдёт на сайт)
   let live = null;
