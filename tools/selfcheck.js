@@ -427,6 +427,54 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
     const deep = await wait(() => { try { const HC = window.__dm.hc(); return HC && HC.tf === '1d' && HC.rows.length > 800 && HC.rows[0][0] < Date.UTC(2024, 4, 1) / 1000; } catch (e) { return false; } }, 20000);
     const dh = await page.evaluate(() => { try { const HC = window.__dm.hc(); return HC.rows.length + ' свечей с ' + new Date(HC.rows[0][0] * 1000).toISOString().slice(0, 10); } catch (e) { return '—'; } });
     add(deep, 'Главная: дневные свечи — вся история DOG с апреля 2024, листается пальцем', 'Home: daily candles cover all of DOG’s history since April 2024', dh);
+
+    // 8. цифры «барабаном» (v18): живое изменение — крутятся только изменившиеся цифры (цена на «Главном», индекс, цена в стакане);
+    // палец на графике — число сразу; переключатели — фон выбранного скользит; «Big orders from» — мелкие заявки бледнеют
+    {
+      const r = await page.evaluate(async () => {
+        const D = window.__dm, out = {}, fr = () => new Promise(x => requestAnimationFrame(() => requestAnimationFrame(x))), sl = ms => new Promise(x => setTimeout(x, ms));
+        try {
+          const hp = document.querySelector('#hprice'), t0 = hp.textContent, p0 = parseFloat(t0);
+          D.setHero(p0 * 1.0021, -1.2, '24h', false); await fr();
+          const mv = hp.querySelectorAll('dm-c.hu, dm-c.hd').length, ch = [...t0].filter((c, k) => c !== hp.textContent[k]).length;
+          await sl(1100);
+          const rest = [...hp.querySelectorAll('dm-c')].every((c, k) => c.getAttribute('data-c') != null || (m => m && +m[1] % 10 === +hp.textContent[k])(/\* -(\d+)\)/.exec(c.firstChild.style.transform)));
+          D.setHero(p0 * 0.8, 3, 'since then', true, 'test');
+          const scrub = !hp.querySelector('dm-c.hu, dm-c.hd') && [...hp.querySelectorAll('dm-s')].every(x => !x.getAnimations().length);
+          D.setHero(p0, -1.2, '24h', false);
+          out.hero = mv > 0 && mv === ch && rest && scrub && hp.textContent === t0;
+          const S = D.S, m = S.fngM || (S.fng || {}).market;
+          if (m && m.v != null) {
+            const g = () => document.querySelector('#fng-box [data-info="fng_m"]'), v0 = g().querySelector('.gnum').textContent, nv = m.v >= 97 ? m.v - 3 : m.v + 3;
+            S.fngM = Object.assign({}, m, { v: nv, ts: (m.ts || 0) + 1, t: Date.now() }); D.paintFng(); await fr();
+            out.fng = !!g().querySelector('.gnum dm-roll') && g().querySelector('.gnum').textContent === String(nv) && g().querySelector('svg circle').getAnimations().length > 0;
+            S.fngM = m; D.paintFng(); out.fngTxt = v0 + ' → ' + nv;
+          } else out.fng = null;
+          const pr = document.querySelector('#p-overview .periods'), th = pr && pr.querySelector(':scope > .pth'), b4 = pr && pr.querySelector('[data-htf="4h"]');
+          if (th && b4) { b4.click(); await sl(80); const midX = new DOMMatrix(getComputedStyle(th).transform).m41; await sl(750); const endX = new DOMMatrix(getComputedStyle(th).transform).m41; out.slide = Math.abs(endX - b4.offsetLeft) < 1.5 && Math.abs(midX - endX) > 2 && getComputedStyle(b4).backgroundColor === 'rgba(0, 0, 0, 0)'; pr.querySelector('[data-htf="1d"]').click(); } else out.slide = false;
+          const st = document.querySelector('#sum-box .stp-th');
+          if (st) {
+            st.dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true })); await sl(80);
+            const rows = [...document.querySelectorAll('#sum-box .ev[data-q]')];
+            out.stp = st.getAttribute('aria-valuetext') === '100M DOG' && rows.length > 0 && rows.every(x => x.classList.contains('dim') === (+x.dataset.q < 100));
+            st.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }));
+            out.stp = out.stp && [...document.querySelectorAll('#sum-box .ev[data-q]')].every(x => !x.classList.contains('dim'));
+          } else out.stp = document.querySelectorAll('#sum-box .ev[data-q]').length ? false : null;
+        } catch (e) { out.err = String(e && e.message || e); }
+        return out;
+      });
+      await tab('books');
+      const ob = await wait(() => !!document.querySelector('#obmidp'), 15000) && await page.evaluate(async () => {
+        const mp = document.querySelector('#obmidp'), real = mp.dataset.v, dg = (real.split('.')[1] || '').length;
+        mp.dataset.v = (parseFloat(real) * 0.997).toFixed(dg); window.__dm.obPaint();
+        await new Promise(x => requestAnimationFrame(x));
+        const m2 = document.querySelector('#obmidp');
+        return !!m2.querySelector('dm-roll') && m2.textContent === m2.dataset.v && m2.querySelectorAll('dm-c.hu').length > 0;
+      }).catch(() => false);
+      await tab('overview');
+      add(r.hero && r.fng !== false && ob, `Цифры «барабаном»: цена на «Главном», индекс (${r.fngTxt || '—'}) и цена в стакане — крутятся только изменившиеся цифры; палец на графике — число сразу`, 'Rolling digits: the Home price, an index and the order book price roll only the digits that changed; finger on the chart — set at once', r.err || JSON.stringify(Object.assign({}, r, { ob })));
+      add(r.slide && r.stp !== false, `Переключатели: фон выбранного скользит (свечи 15m–1w); «Big orders from» — ступенчатый ползунок${r.stp === null ? ' (в сводке нет заявок — ползунка нет)' : ', мелкие заявки бледнеют'}`, 'Switches: the selected background slides; “Big orders from” stepped slider fades smaller orders', JSON.stringify(r));
+    }
   } catch (e) {
     add(false, 'Проверка в браузере прервалась', 'The browser check was interrupted', e && e.message);
   }

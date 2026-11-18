@@ -1752,6 +1752,53 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   .f3s-c{padding:8px 7px 8px 10px}
   .f3s-c .zn{font-size:11px}
 }
+
+/* ---------- v18: rolling digits («барабан»), sliding switches, stepped slider ---------- */
+/* digits: own tags (dm-*), so no site rule for span / b / i reaches them; the digit strip is drawn by CSS, the real number
+   stays in a hidden .sr next to it. Row height = the line height of the number itself (set by script) — nothing moves. */
+dm-roll{display:inline-flex;align-items:flex-start;height:var(--lh,1.2em);line-height:var(--lh,1.2em);vertical-align:top;white-space:nowrap;font:inherit;letter-spacing:inherit}
+dm-c{display:inline-block;height:var(--lh,1.2em);overflow:hidden;-webkit-mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent);transition:color var(--rt,1.1s) ease .12s}
+dm-c[data-c]::before{content:attr(data-c)}
+dm-s{display:block;white-space:pre;line-height:var(--lh,1.2em);transition:transform var(--rd,.8s) cubic-bezier(.16,1,.3,1)}
+dm-s::before{content:"0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A 0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A 0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9"}
+dm-c.hu{color:var(--up);transition:color .12s ease}
+dm-c.hd{color:var(--down);transition:color .12s ease}
+.ob-mid dm-roll{--rd:.62s;--rt:.45s}
+
+/* switches: the selected option's background glides to the new one with a small spring */
+.slid{position:relative;isolation:isolate}
+.slid > button{position:relative;z-index:1}
+.slid > button[aria-pressed="true"]{background:transparent!important;box-shadow:none!important}
+.slid > .pth{position:absolute;z-index:0;left:0;top:0;width:var(--tw,0);height:var(--th,0);transform:translate(var(--tx,0),var(--ty,0));border-radius:999px;background:var(--surface-3);pointer-events:none;
+  transition:transform .5s cubic-bezier(.3,1.25,.45,1),width .5s cubic-bezier(.3,1.25,.45,1)}
+.slid > .pth.go{animation:pthsquash .5s cubic-bezier(.3,.7,.4,1)}
+@keyframes pthsquash{0%{scale:1 1}35%{scale:1.08 .9}100%{scale:1 1}}
+.langsw.slid > .pth{background:var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.seg.slide .seg-th{transition:transform .5s cubic-bezier(.3,1.25,.45,1)}
+
+/* stepped slider: «big orders from …» in The last 24 hours */
+.stp{margin:2px 0 8px;user-select:none;-webkit-user-select:none}
+.stp-h{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;color:var(--ink-2);margin-bottom:6px}
+.stp-h b{font-weight:650;color:var(--ink);font-variant-numeric:tabular-nums}
+.stp-t{position:relative;height:30px;margin:0 11px;touch-action:none;cursor:pointer}
+.stp-t::before{content:"";position:absolute;left:-11px;right:-11px;top:50%;height:4px;margin-top:-2px;border-radius:99px;background:color-mix(in srgb,var(--ink) 9%,transparent)}
+.stp-f{position:absolute;left:-11px;top:50%;height:4px;margin-top:-2px;border-radius:99px;width:calc(var(--p) * 100% + 11px);background:linear-gradient(90deg,color-mix(in srgb,var(--dog) 55%,transparent),var(--dog))}
+.stp-k{position:absolute;top:50%;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:color-mix(in srgb,var(--ink) 22%,transparent);transition:background .3s,transform .3s}
+.stp-k.lit{background:var(--on-accent);transform:scale(.8)}
+.stp-th{position:absolute;top:50%;left:calc(var(--p) * 100%);width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:var(--surface);outline:none;
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--ink) 10%,transparent),0 2px 6px -1px rgba(0,0,0,.25),0 0 0 4px var(--dog-soft)}
+.stp-th::after{content:"";position:absolute;inset:6px;border-radius:50%;background:var(--dog)}
+.stp-th:focus-visible{box-shadow:0 0 0 2px var(--dog),0 2px 6px -1px rgba(0,0,0,.25)}
+.stp.snap .stp-th{transition:left .42s cubic-bezier(.34,1.45,.55,1)}
+.stp.snap .stp-f{transition:width .42s cubic-bezier(.34,1.45,.55,1)}
+.stp-th.bump{animation:thbump .32s cubic-bezier(.3,.7,.4,1)}
+@keyframes thbump{0%{scale:1}40%{scale:1.18}100%{scale:1}}
+.stp-l{position:relative;height:16px;margin:2px 11px 0;font-size:11.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.stp-l span{position:absolute;top:0;transform:translateX(-50%);white-space:nowrap;transition:color .25s}
+.stp-l span.on{color:var(--ink);font-weight:650}
+.ev.dim{opacity:.34}
+.events .ev{transition:opacity .35s ease}
+@media (prefers-reduced-motion:reduce){dm-s,dm-c,.slid > .pth,.stp.snap .stp-th,.stp.snap .stp-f{transition:none!important}.slid > .pth.go,.stp-th.bump{animation:none}}
 </style>
 </head>
 <body>
@@ -1881,6 +1928,115 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   };
   const ico = (k, cls = '') => `<svg class="ico ${cls}" viewBox="0 0 24 24" aria-hidden="true"><path d="${ICON[k] || ''}"/></svg>`;
   const RM = (() => { try { return matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } })();
+
+  // ---------- rolling digits («барабан»): a number that changes by itself (live price, the DOG index, the order book price)
+  // rolls only the digits that changed — up when it grows, down when it falls — with a short green or red glow.
+  // The digit strip is drawn by CSS (dm-* tags), the real number sits in a hidden .sr next to it: screen readers, copying and
+  // the self-check read textContent as before. Finger on a chart, reduced motion or a hidden tab — set at once. ----------
+  const rollTr = i => `translateY(calc(var(--lh) * ${-i}))`;
+  const rollNum = s => parseFloat(String(s).replace('−', '-').replace(/[^\d.-]/g, ''));
+  function rollLh(host) {
+    const cs = getComputedStyle(host), fs = parseFloat(cs.fontSize) || 16;
+    const lh = cs.lineHeight === 'normal' ? 1.2 * fs : parseFloat(cs.lineHeight);
+    return (lh > 0 ? lh / fs : 1.2).toFixed(3) + 'em';
+  }
+  function rollBuild(r, txt) {
+    r.textContent = '';
+    for (const ch of txt) {
+      const c = document.createElement('dm-c');
+      if (ch >= '0' && ch <= '9') { const s = document.createElement('dm-s'); c._d = +ch; c._i = 10 + c._d; s.style.transform = rollTr(c._i); c.appendChild(s); }
+      else c.setAttribute('data-c', ch);
+      r.appendChild(c);
+    }
+    r._v = txt;
+  }
+  // o: { dir: 1 | -1 (else by the numbers), instant, quiet (no glow), from (start from this text) }
+  function rollSet(host, txt, o) {
+    if (!host) return;
+    txt = String(txt); o = o || {};
+    let r = host._roll;
+    if (!r || r.parentNode !== host) {
+      const sr = document.createElement('span'); sr.className = 'sr'; sr.textContent = txt;
+      r = document.createElement('dm-roll'); r.setAttribute('aria-hidden', 'true');
+      host.textContent = ''; host.append(sr, r); r.style.setProperty('--lh', rollLh(host));
+      host._roll = r; host._rsr = sr;
+      rollBuild(r, o.from != null ? String(o.from) : txt);
+      if (o.from == null || String(o.from) === txt) return;
+    }
+    if (host._rsr.textContent !== txt) host._rsr.textContent = txt;
+    const old = r._v; if (old === txt) return;
+    const shape = s => s.replace(/\d/g, '0');
+    if (o.instant || RM || document.hidden || shape(old) !== shape(txt)) { rollBuild(r, txt); return; }
+    r._v = txt;
+    const up = o.dir ? o.dir > 0 : !(rollNum(txt) < rollNum(old)), go = [];
+    const kids = r.children;
+    for (let k = 0; k < kids.length; k++) {
+      const c = kids[k], ch = txt[k];
+      if (c._d == null) { if (c.getAttribute('data-c') !== ch) c.setAttribute('data-c', ch); continue; }
+      const d = +ch; if (d === c._d) continue;
+      const s = c.firstChild;
+      s.style.transition = 'none'; c._i = 10 + c._d; s.style.transform = rollTr(c._i);
+      c._i += up ? (d - c._d + 10) % 10 : -((c._d - d + 10) % 10); c._d = d;
+      c.classList.remove('hu', 'hd'); go.push(c);
+    }
+    if (!go.length) return;
+    void r.offsetWidth;                              // one style flush for all digits, then they roll together
+    for (const c of go) {
+      const s = c.firstChild;
+      s.style.transition = ''; s.style.transform = rollTr(c._i);
+      if (!o.quiet) { c.classList.add(up ? 'hu' : 'hd'); clearTimeout(c._t1); c._t1 = setTimeout(() => c.classList.remove('hu', 'hd'), 260); }
+      clearTimeout(c._t2);
+      c._t2 = setTimeout(() => { s.style.transition = 'none'; c._i = 10 + c._d; s.style.transform = rollTr(c._i); void s.offsetWidth; s.style.transition = ''; }, 1000);
+    }
+  }
+
+  // ---------- switches: the selected option's background glides to the new one (a small spring). One thumb per group of
+  // buttons with aria-pressed; groups drawn anew keep the thumb's last place, so it glides from there too. ----------
+  const SLG = '.periods, .hmodes, .langsw, .seg:not(.slide)';
+  const slLast = new Map();
+  const slKey = g => g.id || (((g.closest('[id]') || {}).id || '') + '|' + (g.getAttribute('aria-label') || g.className));
+  function slPlace(g, anim) {
+    const bs = [...g.children].filter(b => b.tagName === 'BUTTON');
+    const i = bs.findIndex(b => b.getAttribute('aria-pressed') === 'true');
+    let th = g.querySelector(':scope > .pth');
+    if (bs.length < 2 || i < 0) { if (th) th.style.opacity = '0'; return; }
+    const b = bs[i];
+    if (!b.offsetWidth) return;                      // hidden for now — placed when it shows
+    if (!th) {
+      th = document.createElement('i'); th.className = 'pth'; th.setAttribute('aria-hidden', 'true');
+      th.style.borderRadius = getComputedStyle(b).borderRadius; g.prepend(th); g.classList.add('slid');
+    }
+    th.style.opacity = '';
+    const pos = { x: b.offsetLeft, y: b.offsetTop, w: b.offsetWidth, h: b.offsetHeight, i }, k = slKey(g), was = slLast.get(k);
+    const put = q => { th.style.setProperty('--tx', q.x + 'px'); th.style.setProperty('--ty', q.y + 'px'); th.style.setProperty('--tw', q.w + 'px'); th.style.setProperty('--th', q.h + 'px'); };
+    const moved = anim && !RM && was && was.i !== i && th._at !== i;
+    th.style.transition = 'none';
+    put(moved && th._at == null ? was : th._at != null && moved ? th._pos : pos);
+    void th.offsetWidth;
+    th.style.transition = '';
+    if (moved) { put(pos); th.classList.remove('go'); void th.offsetWidth; th.classList.add('go'); }
+    th._at = i; th._pos = pos; slLast.set(k, pos);
+  }
+  function slScan(root, anim) { if (root.matches && root.matches(SLG)) slPlace(root, anim); if (root.querySelectorAll) root.querySelectorAll(SLG).forEach(g => slPlace(g, anim)); }
+  const slMo = new MutationObserver(ms => {
+    const todo = new Map();
+    for (const m of ms) {
+      if (m.type === 'attributes') {
+        if (m.attributeName === 'aria-pressed') { const g = m.target.parentElement; if (g && g.matches(SLG)) todo.set(g, true); }
+        else if (m.attributeName === 'hidden' && !m.target.hidden) slScan(m.target, false);
+        continue;
+      }
+      for (const nd of m.addedNodes) if (nd.nodeType === 1 && !(nd.classList && nd.classList.contains('pth'))) {
+        if (nd.matches(SLG)) todo.set(nd, true); else if (nd.querySelector(SLG)) nd.querySelectorAll(SLG).forEach(g => todo.set(g, true));
+        else { const g = nd.parentElement && nd.parentElement.closest(SLG); if (g) todo.set(g, true); }
+      }
+    }
+    todo.forEach((a, g) => { if (g.isConnected) slPlace(g, a); });
+  });
+  slMo.observe(document.documentElement, { subtree: true, childList: true, attributes: true, attributeFilter: ['aria-pressed', 'hidden'] });
+  let slRz = 0;
+  addEventListener('resize', () => { clearTimeout(slRz); slRz = setTimeout(() => slScan(document.body, false), 120); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => slScan(document.body, false));
 
   const store = {
     get(k, d) { try { const v = localStorage.getItem('dogmon.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
@@ -2413,12 +2569,16 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   const HTF_KIND = { '15m': '15-minute candles', '1h': 'hourly candles', '4h': '4-hour candles', '1d': 'daily candles', '1w': 'weekly candles' };
   const nowPx = () => { const s = V(); return livePrice() || ((s || {}).price || {}).mid || null; };
   const chg24 = () => { const lc = liveChg(); if (lc != null) return lc; const s = V(); return s && s.price && s.price.chg24 != null ? s.price.chg24 : null; };
+  // the live price rolls («барабан»); with a finger on the chart (and right after it) the numbers are set at once
+  let heroScr = false, heroPx = null;
   function setHero(price, chg, label, scrub, when) {
     const p = $('#hprice'), pill = $('#hpill'), lab = $('#hlabel');
-    if (p && p.firstChild && price != null) p.firstChild.nodeValue = fp(price);
-    const m = $('#h1m'); if (m && price != null) m.textContent = m1usd(price);
-    const c2 = $('#hcap2'); if (c2 && price != null) c2.textContent = capS(price * SUPPLY);
-    if (pill) { pill.className = 'pill ' + dir(chg); pill.textContent = pillTxt(chg); }
+    const inst = !!scrub || heroScr, ro = { instant: inst, dir: !inst && price != null && heroPx != null ? Math.sign(price - heroPx) : 0 };
+    heroScr = !!scrub; if (!scrub && price != null) heroPx = price;
+    if (p && price != null) rollSet(p, fp(price), ro);
+    const m = $('#h1m'); if (m && price != null) rollSet(m, m1usd(price), ro);
+    const c2 = $('#hcap2'); if (c2 && price != null) rollSet(c2, capS(price * SUPPLY), ro);
+    if (pill) { pill.className = 'pill ' + dir(chg); rollSet(pill, pillTxt(chg), ro); }
     if (lab) lab.textContent = label || '';
     const w = $('#hwhen'); if (w) w.textContent = when || 'DOG · price in US dollars';
     const h = $('#p-overview .hero'); if (h) h.classList.toggle('scrub', !!scrub);
@@ -3257,7 +3417,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     if (!lp) return;
     if (!$('#p-overview .hero.scrub')) resetHero();
     const el = $('#hprice');
-    if (el && prev != null && lp !== prev && !RM) { el.classList.remove('tick-up', 'tick-down'); void el.offsetWidth; el.classList.add(lp > prev ? 'tick-up' : 'tick-down'); }
+    if (el && prev != null && lp !== prev && !RM && !el._roll) { el.classList.remove('tick-up', 'tick-down'); void el.offsetWidth; el.classList.add(lp > prev ? 'tick-up' : 'tick-down'); }
     if (HC && HC.rows && HC.rows.length && typeof HC.main.update === 'function') {
       const r = HC.rows[HC.rows.length - 1], step = CH_TF[HC.tf][0] * 60, nt = Math.floor(Date.now() / 1000);
       if (nt >= r[0] + step) drawPrice(true);
@@ -3372,7 +3532,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       from = to;
     });
     const k = v == null ? null : P(v);
-    return `<span class="gauge" aria-hidden="true"><svg viewBox="0 0 100 57">${arcs}${k ? `<circle cx="${k[0]}" cy="${k[1]}" r="5" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/>` : ''}</svg><b class="gnum">${v == null ? '—' : Math.round(v)}</b></span>`;
+    return `<span class="gauge" aria-hidden="true"><svg viewBox="0 0 100 57">${arcs}${k ? `<circle cx="${k[0]}" cy="${k[1]}" r="5" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5" style="transform-origin:50px 50px;transform-box:view-box"/>` : ''}</svg><b class="gnum"${v == null ? '' : ` data-v="${Math.round(v)}"`}>${v == null ? '—' : Math.round(v)}</b></span>`;
   }
   function fngMarket() {
     const a = (S.fng || {}).market, b = S.fngM;
@@ -3433,7 +3593,22 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
         <div class="fng-3">${g('fng_m', m ? m.v : null, FNG_A, mk, 'alternative.me', m && m.prev)}${g('fng_c', c ? c.v : null, FNG_C, mk, 'CoinMarketCap', c && c.prev)}${g('fng_d', d && d.v != null ? d.v : null, FNG_A, 'DOG', 'our index', d && d.prev)}</div>
       </section>`;
   }
-  function paintFng() { const b = $('#fng-box'); if (b && !S.archived) b.innerHTML = fngHtml(); if (typeof paintFngCharts === 'function') paintFngCharts(); fitHomeChart(); }
+  // a changed index rolls to the new number, and its dot glides along the arc
+  function paintFng() {
+    const b = $('#fng-box');
+    if (b && !S.archived) {
+      const was = {};
+      $$('.fng-g', b).forEach(g => { const n2 = $('.gnum', g); if (n2 && n2.dataset.v != null) was[g.dataset.info] = n2.dataset.v; });
+      b.innerHTML = fngHtml();
+      if (!RM && !document.hidden) $$('.fng-g', b).forEach(g => {
+        const n2 = $('.gnum', g), v0 = was[g.dataset.info], v1 = n2 && n2.dataset.v;
+        if (v0 == null || v1 == null || v0 === v1) return;
+        rollSet(n2, v1, { from: v0, dir: +v1 > +v0 ? 1 : -1 });
+        const dot = $('svg circle', g); if (dot && dot.animate) dot.animate([{ transform: `rotate(${((+v0 - +v1) * 1.8).toFixed(2)}deg)` }, { transform: 'rotate(0deg)' }], { duration: 900, easing: 'cubic-bezier(.16,1,.3,1)' });
+      });
+    }
+    if (typeof paintFngCharts === 'function') paintFngCharts(); fitHomeChart();
+  }
   async function fngLive() {
     const c = store.get('fng.m', null);
     if (c && c.v != null && Date.now() - c.t < 3600e3 && Date.now() >= c.t) { S.fngM = c; paintFng(); return; }
@@ -3672,12 +3847,62 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     if (t.length < 4 && s.holders) t.push(tile('holders', 'Holders', n(s.holders), 'wallets with DOG', 'sand'));
     return t.length ? `<div class="tiles">${t.slice(0, 4).join('')}</div>` : '';
   }
-  const evHtml = e => `<div class="ev"><span class="ei ${e.c}">${ico(e.i)}</span><span>${e.h}${e.t ? `<small>${esc(e.t)}</small>` : ''}</span></div>`;
+  const evHtml = e => `<div class="ev${e.q != null && e.q < bigMin() ? ' dim' : ''}"${e.q != null ? ` data-q="${(+e.q).toFixed(2)}"` : ''}><span class="ei ${e.c}">${ico(e.i)}</span><span>${e.h}${e.t ? `<small>${esc(e.t)}</small>` : ''}</span></div>`;
+  // stepped slider «Big orders from …»: smaller orders fade (the list stays in place); the choice is remembered
+  const BIG_STEPS = [5, 10, 25, 50, 100];          // million DOG (the order sizes in the report are in millions)
+  const bigK = () => { const k = BIG_STEPS.indexOf(store.get('bigmin', 5)); return k < 0 ? 0 : k; };
+  const bigMin = () => BIG_STEPS[bigK()];
+  const bigLab = v => v + 'M';
+  function stpHtml(k) {
+    const N = BIG_STEPS.length, at = j => (j / (N - 1)).toFixed(4);
+    return `<div class="stp snap" style="--p:${at(k)}"><div class="stp-h"><span>Big orders from</span><b class="stp-v">${bigLab(BIG_STEPS[k])} DOG</b></div>
+        <div class="stp-t"><div class="stp-f"></div>${BIG_STEPS.map((_, j) => `<i class="stp-k${j <= k ? ' lit' : ''}" style="left:calc(${at(j)} * 100%)"></i>`).join('')}<div class="stp-th" role="slider" tabindex="0" aria-label="Big orders from" aria-valuemin="0" aria-valuemax="${N - 1}" aria-valuenow="${k}" aria-valuetext="${bigLab(BIG_STEPS[k])} DOG"></div></div>
+        <div class="stp-l" aria-hidden="true">${BIG_STEPS.map((v, j) => `<span${j === k ? ' class="on"' : ''} style="left:calc(${at(j)} * 100%)">${bigLab(v)}</span>`).join('')}</div>
+      </div>`;
+  }
+  function stpPaint(st, p, k) {
+    const N = BIG_STEPS.length;
+    st.style.setProperty('--p', p.toFixed(4));
+    st.querySelectorAll('.stp-k').forEach((x, j) => x.classList.toggle('lit', j / (N - 1) <= p + 1e-3));
+    st.querySelectorAll('.stp-l span').forEach((x, j) => x.classList.toggle('on', j === k));
+    const v = st.querySelector('.stp-v'); if (v) v.textContent = bigLab(BIG_STEPS[k]) + ' DOG';
+    const th = st.querySelector('.stp-th'); if (th) { th.setAttribute('aria-valuenow', k); th.setAttribute('aria-valuetext', bigLab(BIG_STEPS[k]) + ' DOG'); }
+  }
+  function stpSet(st, k) {
+    const N = BIG_STEPS.length, ch = k !== bigK();
+    store.set('bigmin', BIG_STEPS[k]);
+    st.classList.add('snap'); stpPaint(st, k / (N - 1), k);
+    if (ch) { const th = st.querySelector('.stp-th'); if (th && !RM) { th.classList.remove('bump'); void th.offsetWidth; th.classList.add('bump'); } }
+    const min = BIG_STEPS[k];
+    $$('.events .ev[data-q]').forEach(r => r.classList.toggle('dim', +r.dataset.q < min));
+  }
+  {
+    let drag = null;
+    const nearK = (t, x) => { const r = t.getBoundingClientRect(), N = BIG_STEPS.length, p = Math.max(0, Math.min(1, (x - r.left) / (r.width || 1))); return { p, k: Math.round(p * (N - 1)) }; };
+    document.addEventListener('pointerdown', e => {
+      const t = e.target.closest('.stp-t'); if (!t) return;
+      const st = t.closest('.stp'); drag = { t, st, id: e.pointerId };
+      try { t.setPointerCapture(e.pointerId); } catch (x) { }
+      const q = nearK(t, e.clientX); st.classList.remove('snap'); stpPaint(st, q.p, q.k);
+      e.preventDefault();
+    });
+    document.addEventListener('pointermove', e => { if (!drag || e.pointerId !== drag.id) return; const q = nearK(drag.t, e.clientX); stpPaint(drag.st, q.p, q.k); });
+    const up = e => { if (!drag || e.pointerId !== drag.id) return; const q = nearK(drag.t, e.clientX); stpSet(drag.st, q.k); drag = null; };
+    document.addEventListener('pointerup', up); document.addEventListener('pointercancel', up);
+    document.addEventListener('keydown', e => {
+      const th = e.target.closest && e.target.closest('.stp-th'); if (!th) return;
+      const k = bigK(), N = BIG_STEPS.length;
+      const nk = e.key === 'ArrowRight' || e.key === 'ArrowUp' ? Math.min(N - 1, k + 1) : e.key === 'ArrowLeft' || e.key === 'ArrowDown' ? Math.max(0, k - 1) : e.key === 'Home' ? 0 : e.key === 'End' ? N - 1 : null;
+      if (nk == null) return;
+      e.preventDefault(); stpSet(th.closest('.stp'), nk);
+    });
+  }
   function summaryHtml(s) {
     const pl = prevLabel(s), ev = events(s), bt = briefOf(s);
     const more = !!bt || ev.length > 4;
     return `<section class="group sum" aria-label="The last 24 hours">
         <div class="sec-head sum-head"><h3>The last 24 hours</h3><p>${pl ? 'since ' + esc(pl) : esc(when(s.ts))}</p><button type="button" class="playbtn" data-si="0" aria-label="The day, step by step" title="The day, step by step"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button></div>
+        ${ev.some(e => e.q != null) ? stpHtml(bigK()) : ''}
         ${ev.length ? `<div class="events">${ev.slice(0, 4).map(evHtml).join('')}</div>` : `<p class="note">No notable changes.</p>`}
         ${more ? `<button type="button" class="more" id="briefmore">More</button>` : ''}
       </section>`;
@@ -3891,7 +4116,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   }
   function events(s) {
     const ev = [];
-    for (const w of (s.wallsDelta || []).slice(0, 6)) ev.push({ i: 'wall', c: w.k === 'новая' ? 'o' : '', h: esc(wallText(w)) });
+    for (const w of (s.wallsDelta || []).slice(0, 6)) ev.push({ i: 'wall', c: w.k === 'новая' ? 'o' : '', h: esc(wallText(w)), q: w.k === 'снята' || w.k === 'переставлена' ? w.q0 : Math.max(w.q0 || 0, w.q1 || 0) });   // q — million DOG
     const mv = s.movers || {};
     for (const x of (mv.up || []).slice(0, 3)) ev.push({ i: 'up', c: 'b', h: `${esc(whoTxt(x.n, x.k, x.r))} added <b>${mdog(x.d)} DOG</b>` });
     for (const x of (mv.down || []).slice(0, 3)) ev.push({ i: 'down', c: 'a', h: `${esc(whoTxt(x.n, x.k, x.r))} sent out <b>${mdog(Math.abs(x.d))} DOG</b>` });
@@ -4065,23 +4290,14 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const shell = $('#shell');
     if (!introPlayed) {
       introPlayed = true;
-      if (!RM) { shell.classList.add('intro'); setTimeout(() => shell.classList.remove('intro'), 2000); countUp(el, mid * 0.94, mid, 900); }
+      // first screen: the price rolls into place (digits only, no colour)
+      if (!RM) { shell.classList.add('intro'); setTimeout(() => shell.classList.remove('intro'), 2000); if (el && mid) rollSet(el, fp(mid), { from: fp(mid * 0.94), dir: 1, quiet: true }); }
       S.lastPrice = mid;
+      if (mid) heroPx = heroPx || mid;
       return;
     }
-    if (S.lastPrice != null && mid != null && mid !== S.lastPrice && !RM) { countUp(el, S.lastPrice, mid, 700); el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1300); }
+    if (el && S.lastPrice != null && mid != null && mid !== S.lastPrice && !RM && !livePrice()) rollSet(el, fp(mid), { from: fp(S.lastPrice), dir: mid > S.lastPrice ? 1 : -1 });
     S.lastPrice = mid;
-  }
-  function countUp(el, from, to, dur) {
-    if (!el || from == null || to == null) return;
-    const t0 = performance.now();
-    const step = now => {
-      if (!el.isConnected || $('#p-overview .hero.scrub') || livePrice()) return;
-      const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
-      el.firstChild.nodeValue = fp(from + (to - from) * e);
-      if (k < 1) requestAnimationFrame(step); else el.firstChild.nodeValue = fp(to);
-    };
-    requestAnimationFrame(step);
   }
   $('#p-overview').addEventListener('click', e => {
     const hp = e.target.closest('[data-hmp]'); if (hp) { hmSwitch(hp.dataset.hmp); return; }
@@ -4743,7 +4959,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const midP = ref.last || ref.mid;
     const chg = !S.archived && liveChg() != null ? liveChg() : (s.price || {}).chg24;
     const spr = ref.bid && ref.ask && ref.ask >= ref.bid ? (ref.ask - ref.bid) / ((ref.ask + ref.bid) / 2) * 100 : null;
-    const midRow = `<div class="ob-mid"><b class="${dir(chg)}" id="obmidp">${fp(midP)}</b><span class="pill ${dir(chg)}">${pillTxt(chg)}</span><span class="s">${spr != null ? 'spread ' + n(spr, 2) + '%' : ''}</span></div>`;
+    const midRow = `<div class="ob-mid"><b class="${dir(chg)}" id="obmidp" data-v="${esc(fp(midP))}">${fp(midP)}</b><span class="pill ${dir(chg)}" id="obmidc" data-v="${esc(pillTxt(chg))}">${pillTxt(chg)}</span><span class="s">${spr != null ? 'spread ' + n(spr, 2) + '%' : ''}</span></div>`;
     const unitH = usdU ? 'Value, $' : 'Amount, DOG';
     const tip = r => r.big >= OB_WALL ? ` title="${esc('Wall')}: ${esc(EXN[r.bigBy] || '')} ${qf(r.big)}"` : '';
     const lvs = A.concat(B).map(val).filter(x => x > 0).sort((x, y) => x - y);
@@ -5221,8 +5437,13 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     c = c || obCtx();
     const card = $('#obcard'); if (!c || !card) return;
     const sc = $('.scroll', card), sl = sc ? sc.scrollLeft : 0;
+    const mp0 = $('#obmidp', card), mc0 = $('#obmidc', card), was = [mp0 && mp0.dataset.v, mc0 && mc0.dataset.v];
     card.innerHTML = obCardHtml(c);
     if (sl) { const n2 = $('.scroll', card); if (n2) n2.scrollLeft = sl; }
+    // the price in the middle rolls from the last one («барабан»), the 24h change next to it too
+    const mp = $('#obmidp', card), mc = $('#obmidc', card), dv = mp && was[0] ? Math.sign(rollNum(mp.dataset.v) - rollNum(was[0])) : 0;
+    if (mp && was[0] && was[0] !== mp.dataset.v) rollSet(mp, mp.dataset.v, { from: was[0], dir: dv });
+    if (mc && was[1] && was[1] !== mc.dataset.v) rollSet(mc, mc.dataset.v, { from: was[1], dir: dv });
     OB.painted = Date.now();
   }
   function obSoon() {
@@ -7365,7 +7586,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     put('tre-box', treasuryHtml()); hmPaint();
     if (!livePrice()) { const cap = $('#hcap'); if (cap) cap.textContent = 'market cap ≈ ' + usd(((s.price || {}).cap || 0) * 1e6); }
     refreshChart();
-    const hp = $('#hprice'), was = hp && hp.firstChild ? hp.firstChild.nodeValue : null;
+    const hp = $('#hprice'), was = hp && !hp._roll && hp.firstChild ? hp.firstChild.nodeValue : null;
     if (!$('#p-overview .hero.scrub')) resetHero();
     if (hp && hp.firstChild && was != null && hp.firstChild.nodeValue !== was && !RM && !livePrice()) {
       const up = parseFloat(String(hp.firstChild.nodeValue).replace(',', '.')) > parseFloat(String(was).replace(',', '.'));
@@ -7598,7 +7819,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     if (tg && (tg.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(tg.tagName))) return;
     if ((e.key === 'r' || e.key === 'R' || e.key === 'к' || e.key === 'К') && $('#story').hidden) { e.preventDefault(); openUpd(true); }
   });
-  try { if (/[?&]debug=1\b/.test(location.search)) window.__dm = { S, UP, buildLive, runUpdate, softRender, CH, CH_OLD, hc: () => HC, hg: () => HG }; } catch (e) { }
+  try { if (/[?&]debug=1\b/.test(location.search)) window.__dm = { S, UP, buildLive, runUpdate, softRender, CH, CH_OLD, hc: () => HC, hg: () => HG, rollSet, setHero, paintFng, obPaint }; } catch (e) { }
 
   function renderAll() {
     const a = $('#archive');
