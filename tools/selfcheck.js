@@ -410,6 +410,23 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
         if (!r.rail || r.bar || !r.sel) bad.push(k + ': меню');
       }
       add(!bad.length, `${nm}: все вкладки помещаются, меню на месте`, `${en}: every tab fits, navigation in place`, bad.join('; '));
+      if (en === 'iPad') {
+        // меню слева: зажать и провести пальцем — подсветка идёт за пальцем, отпустили — открывается раздел под пальцем
+        await page.evaluate(() => { const b = document.querySelector('#railnav [data-tab="overview"]'); if (b) b.click(); }); await page.waitForTimeout(600);
+        const rd = await page.evaluate(async () => {
+          const l = document.querySelector('#railnav [role="tablist"]'), at = k => { const r = l.querySelector(`[data-tab="${k}"]`).getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; };
+          if (!l || !l.querySelector('.rn-ind')) return { ind: false };
+          const a = at('overview'), b = at('wallets'), ev = (t, x, y, el) => (el || l).dispatchEvent(new PointerEvent(t, { bubbles: true, pointerId: 41, pointerType: 'touch', isPrimary: true, clientX: x, clientY: y }));
+          ev('pointerdown', a[0], a[1], l.querySelector('[data-tab="overview"]'));
+          const ys = [];
+          for (let k = 1; k <= 8; k++) { ev('pointermove', a[0], a[1] + (b[1] - a[1]) * k / 8); ys.push(getComputedStyle(l.querySelector('.rn-ind')).translate); }
+          ev('pointerup', b[0], b[1]);
+          await new Promise(x => setTimeout(x, 700));
+          return { ind: true, moved: new Set(ys).size >= 5, tab: (document.querySelector('#railnav [aria-selected="true"]') || {}).dataset.tab };
+        });
+        add(rd.ind && rd.moved && rd.tab === 'wallets', 'iPad: меню слева — зажать и провести пальцем, подсветка идёт за пальцем, открывается раздел под пальцем', 'iPad: side menu — press and slide, the highlight follows, the section under the finger opens', JSON.stringify(rd));
+        await page.evaluate(() => { const b = document.querySelector('#railnav [data-tab="overview"]'); if (b) b.click(); }); await page.waitForTimeout(500);
+      }
       if (SHOTS) { await page.evaluate(() => { const b = document.querySelector('[data-tab="overview"]'); if (b) b.click(); }); await page.waitForTimeout(800); await shot('9-' + en.toLowerCase()); }
     }
     await page.setViewportSize({ width: 390, height: 844 });
@@ -474,6 +491,31 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
       await tab('overview');
       add(r.hero && r.fng !== false && ob, `Цифры «барабаном»: цена на «Главном», индекс (${r.fngTxt || '—'}) и цена в стакане — крутятся только изменившиеся цифры; палец на графике — число сразу`, 'Rolling digits: the Home price, an index and the order book price roll only the digits that changed; finger on the chart — set at once', r.err || JSON.stringify(Object.assign({}, r, { ob })));
       add(r.slide && r.stp !== false, `Переключатели: фон выбранного скользит (свечи 15m–1w); «Big orders from» — ступенчатый ползунок${r.stp === null ? ' (в сводке нет заявок — ползунка нет)' : ', мелкие заявки бледнеют'}`, 'Switches: the selected background slides; “Big orders from” stepped slider fades smaller orders', JSON.stringify(r));
+      // провести пальцем по переключателю: таблетка идёт за пальцем, отпустили — выбран вариант под пальцем (свечи и мем-монеты)
+      const sw = await page.evaluate(async () => {
+        const one = async (sel, from, to) => {
+          const g = document.querySelector(sel); if (!g || !g.querySelector(':scope > .pth')) return sel + ': нет';
+          const at = v => { const b = [...g.children].find(x => x.tagName === 'BUTTON' && x.textContent.trim() === v); const r = b.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; };
+          g.scrollIntoView({ block: 'center' }); await new Promise(x => setTimeout(x, 150));
+          const a = at(from), b = at(to), th = g.querySelector(':scope > .pth'), ev = (t, x, y, el) => (el || g).dispatchEvent(new PointerEvent(t, { bubbles: true, pointerId: 42, pointerType: 'touch', isPrimary: true, clientX: x, clientY: y }));
+          const start = [...g.children].find(x => x.tagName === 'BUTTON' && x.textContent.trim() === from);
+          if (start.getAttribute('aria-pressed') !== 'true') { start.click(); await new Promise(x => setTimeout(x, 700)); }
+          const g2 = document.querySelector(sel), th2 = g2.querySelector(':scope > .pth'), xs = [];
+          ev('pointerdown', a[0], a[1], [...g2.children].find(x => x.tagName === 'BUTTON' && x.textContent.trim() === from));
+          for (let k = 1; k <= 8; k++) { ev('pointermove', a[0] + (b[0] - a[0]) * k / 8, a[1], g2); xs.push(th2.style.getPropertyValue('--tx')); }
+          ev('pointerup', b[0], b[1], g2);
+          await new Promise(x => setTimeout(x, 700));
+          const g3 = document.querySelector(sel), p = g3.querySelector(':scope > button[aria-pressed="true"]');
+          return new Set(xs).size >= 6 && p && p.textContent.trim() === to ? 'ok' : sel + ': ' + (p && p.textContent.trim()) + ' / ' + new Set(xs).size;
+        };
+        const out = [await one('#p-overview .periods', '1d', '1h'), await one('#hmm-p', '90D', '30D')];
+        const back = [['#p-overview .periods', '1d'], ['#hmm-p', '90D']];
+        for (const [s2, v] of back) { const b = [...document.querySelector(s2).children].find(x => x.tagName === 'BUTTON' && x.textContent.trim() === v); if (b) b.click(); await new Promise(x => setTimeout(x, 500)); }
+        const hp = document.querySelector('#hprice').textContent, digits = (hp.replace(/^0\.0*/, '').match(/\d/g) || []).length;
+        return { sw: out, price: hp, digits, story: !!document.querySelector('#sum-box .playbtn, #sum-box [data-si]') };
+      });
+      add(sw.sw.every(x => x === 'ok'), 'Переключатели: провести пальцем — таблетка идёт за пальцем, отпустили — выбран вариант под пальцем (свечи 1d → 1h, мем-монеты 90D → 30D)', 'Switches: slide a finger — the pill follows, the option under the finger is chosen', sw.sw.join('; '));
+      add(sw.digits === 4 && !sw.story, `Главная: цена — все цифры (${sw.price}, 4 значащие), «историй» в «The last 24 hours» нет`, 'Home: the price keeps all 4 significant digits; no stories button in “The last 24 hours”', JSON.stringify(sw));
     }
   } catch (e) {
     add(false, 'Проверка в браузере прервалась', 'The browser check was interrupted', e && e.message);

@@ -1776,6 +1776,24 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
 @keyframes pthsquash{0%{scale:1 1}35%{scale:1.08 .9}100%{scale:1 1}}
 .langsw.slid > .pth{background:var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.12)}
 .seg.slide .seg-th{transition:transform .5s cubic-bezier(.3,1.25,.45,1)}
+.seg.slide.slid > .seg-th{display:none}
+/* finger on a switch: the pill lifts a little and follows the finger; the option under it lights up */
+.slid{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.slid.sl-drag{cursor:grabbing}
+.slid.sl-drag > .pth{transition:scale .2s ease,box-shadow .2s ease;scale:1.05;box-shadow:0 6px 16px -8px rgba(0,0,0,.45),0 0 0 .5px color-mix(in srgb,var(--ink) 12%,transparent)}
+.slid > button.hot{color:var(--ink)!important}
+/* side menu: one highlight that glides; pressed and dragged — it follows the finger */
+.rn{position:relative;isolation:isolate;touch-action:pan-x;-webkit-user-select:none;user-select:none}
+.rn > button.nav{position:relative;z-index:1}
+.rn.has-ind > button.nav[aria-selected="true"],.rn.has-ind > button.nav[aria-selected="true"]:hover{background:transparent}
+.rn > button.nav.hot{color:var(--ink)}
+.rn-ind{position:absolute;left:0;right:0;top:0;height:var(--th,0);translate:0 var(--ty,0);border-radius:14px;background:var(--dog-soft);pointer-events:none;z-index:0;opacity:0;
+  transition:translate .45s cubic-bezier(.3,1.25,.45,1),height .45s cubic-bezier(.3,1.25,.45,1),opacity .2s ease,scale .2s ease,background .2s ease}
+.rn.has-ind > .rn-ind{opacity:1}
+.rn.rn-still > .rn-ind{transition:none}
+.rn.rn-drag > .rn-ind{transition:scale .2s ease,background .2s ease,box-shadow .2s ease;scale:1.03;background:color-mix(in srgb,var(--dog) 24%,var(--surface));box-shadow:0 10px 24px -14px rgba(0,0,0,.5)}
+@media (min-width:1100px){.rn-ind{border-radius:12px}}
+@media (prefers-reduced-motion:reduce){.rn-ind{transition:none}}
 
 /* stepped slider: «big orders from …» in The last 24 hours */
 .stp{margin:2px 0 8px;user-select:none;-webkit-user-select:none}
@@ -1993,32 +2011,38 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     }
   }
 
-  // ---------- switches: the selected option's background glides to the new one (a small spring). One thumb per group of
-  // buttons with aria-pressed; groups drawn anew keep the thumb's last place, so it glides from there too. ----------
-  const SLG = '.periods, .hmodes, .langsw, .seg:not(.slide)';
+  // ---------- switches: the selected option's background is its own «pill» that glides to the new choice (a small spring).
+  // Press and slide along a switch — the pill follows the finger, the option under it lights up, let go — it is chosen
+  // (like the bottom menu). One pill per group of buttons with aria-pressed; a group drawn anew starts from the pill's last place. ----------
+  const SLG = '.periods, .hmodes, .langsw, .seg';
   const slLast = new Map();
-  const slKey = g => g.id || (((g.closest('[id]') || {}).id || '') + '|' + (g.getAttribute('aria-label') || g.className));
+  const slKey = g => g.id || (((g.closest('[id]') || {}).id || '') + '|' + (g.getAttribute('aria-label') || g.className.replace(/\s*\b(slid|sl-drag)\b/g, '')));
+  const slBtns = g => [...g.children].filter(b => b.tagName === 'BUTTON');
   function slPlace(g, anim) {
-    const bs = [...g.children].filter(b => b.tagName === 'BUTTON');
-    const i = bs.findIndex(b => b.getAttribute('aria-pressed') === 'true');
+    const bs = slBtns(g), i = bs.findIndex(b => b.getAttribute('aria-pressed') === 'true');
     let th = g.querySelector(':scope > .pth');
     if (bs.length < 2 || i < 0) { if (th) th.style.opacity = '0'; return; }
     const b = bs[i];
-    if (!b.offsetWidth) return;                      // hidden for now — placed when it shows
-    if (!th) {
+    if (!b.offsetWidth || g.classList.contains('sl-drag')) return;   // hidden for now (placed when it shows) or under a finger
+    const isNew = !th;
+    if (isNew) {
       th = document.createElement('i'); th.className = 'pth'; th.setAttribute('aria-hidden', 'true');
       th.style.borderRadius = getComputedStyle(b).borderRadius; g.prepend(th); g.classList.add('slid');
     }
     th.style.opacity = '';
+    g.style.touchAction = g.scrollWidth > g.clientWidth + 1 ? '' : 'pan-y';          // a switch that scrolls keeps its scrolling
     const pos = { x: b.offsetLeft, y: b.offsetTop, w: b.offsetWidth, h: b.offsetHeight, i }, k = slKey(g), was = slLast.get(k);
     const put = q => { th.style.setProperty('--tx', q.x + 'px'); th.style.setProperty('--ty', q.y + 'px'); th.style.setProperty('--tw', q.w + 'px'); th.style.setProperty('--th', q.h + 'px'); };
-    const moved = anim && !RM && was && was.i !== i && th._at !== i;
-    th.style.transition = 'none';
-    put(moved && th._at == null ? was : th._at != null && moved ? th._pos : pos);
-    void th.offsetWidth;
-    th.style.transition = '';
-    if (moved) { put(pos); th.classList.remove('go'); void th.offsetWidth; th.classList.add('go'); }
-    th._at = i; th._pos = pos; slLast.set(k, pos);
+    const squash = () => { th.classList.remove('go'); void th.offsetWidth; th.classList.add('go'); };
+    const same = q => q && Math.abs(q.x - pos.x) < .5 && Math.abs(q.w - pos.w) < .5 && Math.abs(q.y - pos.y) < .5 && Math.abs(q.h - pos.h) < .5;
+    if (anim && !RM && isNew && was && was.i !== i) {                  // drawn anew after a change: from where the old pill was
+      th.style.transition = 'none'; put(Object.assign({}, pos, was)); void th.offsetWidth; th.style.transition = ''; put(pos); squash();
+    } else if (anim && !RM && !isNew && (th._at !== i || th._free)) {   // chosen anew, or let go by a finger: glide from where it is
+      th.style.transition = ''; put(pos); if (th._at !== i) squash();
+    } else if (isNew || !anim || !same(th._pos)) {                      // first time, resize, or the layout changed
+      th.style.transition = 'none'; put(pos); void th.offsetWidth; th.style.transition = '';
+    }
+    th._at = i; th._free = false; th._pos = pos; slLast.set(k, pos);
   }
   function slScan(root, anim) { if (root.matches && root.matches(SLG)) slPlace(root, anim); if (root.querySelectorAll) root.querySelectorAll(SLG).forEach(g => slPlace(g, anim)); }
   const slMo = new MutationObserver(ms => {
@@ -2040,6 +2064,52 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
   let slRz = 0;
   addEventListener('resize', () => { clearTimeout(slRz); slRz = setTimeout(() => slScan(document.body, false), 120); });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => slScan(document.body, false));
+  {
+    let D = null, skip = 0, prog = false;
+    document.addEventListener('pointerdown', e => {
+      if (e.button > 0 || D || !e.isPrimary) return;
+      const g = e.target.closest && e.target.closest(SLG);
+      if (!g || !g.classList.contains('slid') || g.scrollWidth > g.clientWidth + 1) return;
+      const th = g.querySelector(':scope > .pth'), bs = slBtns(g);
+      if (th && bs.length > 1) D = { g, th, bs, id: e.pointerId, x0: e.clientX, y0: e.clientY, on: false, k: -1 };
+    }, true);
+    document.addEventListener('pointermove', e => {
+      if (!D || e.pointerId !== D.id) return;
+      const dx = e.clientX - D.x0, dy = e.clientY - D.y0;
+      if (!D.on) {
+        if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx)) { D = null; return; }      // a vertical swipe — the page scrolls
+        if (Math.abs(dx) < 6) return;
+        D.on = true;
+        D.c = D.bs.map(b => ({ l: b.offsetLeft, w: b.offsetWidth, m: b.offsetLeft + b.offsetWidth / 2 }));
+        D.ox = D.g.getBoundingClientRect().left + D.g.clientLeft - D.g.scrollLeft;
+        D.th.classList.remove('go'); D.g.classList.add('sl-drag');
+        try { D.g.setPointerCapture(e.pointerId); } catch (x) { }
+      }
+      const c = D.c, f = e.clientX - D.ox, m0 = c[0].m, mN = c[c.length - 1].m;
+      // the pill's centre follows the finger (a little give past the first and the last option); its width blends between options
+      const x = f < m0 ? m0 - Math.min(8, (m0 - f) * 0.25) : f > mN ? mN + Math.min(8, (f - mN) * 0.25) : f;
+      let j = 0; while (j < c.length - 2 && x > c[j + 1].m) j++;
+      const t = Math.max(0, Math.min(1, (x - c[j].m) / ((c[j + 1].m - c[j].m) || 1))), w = c[j].w + (c[j + 1].w - c[j].w) * t;
+      D.th.style.setProperty('--tx', (x - w / 2).toFixed(1) + 'px'); D.th.style.setProperty('--tw', w.toFixed(1) + 'px');
+      let k = 0, best = 1e9; c.forEach((q, i) => { const d = Math.abs(q.m - x); if (d < best) { best = d; k = i; } });
+      if (k !== D.k) { D.k = k; D.bs.forEach((b, i) => b.classList.toggle('hot', i === k)); }
+    }, true);
+    const end = e => {
+      if (!D || (e && e.pointerId !== D.id)) return;
+      const d = D; D = null;
+      if (!d.on) return;
+      skip = Date.now();
+      d.g.classList.remove('sl-drag'); d.bs.forEach(b => b.classList.remove('hot'));
+      const k = slKey(d.g), cur = d.bs.findIndex(b => b.getAttribute('aria-pressed') === 'true');
+      // the spring starts where the finger left the pill — also when the switch is drawn anew by the choice
+      slLast.set(k, Object.assign({}, slLast.get(k), { x: parseFloat(d.th.style.getPropertyValue('--tx')) || 0, w: parseFloat(d.th.style.getPropertyValue('--tw')) || 0, i: -1 }));
+      d.th._free = true;
+      if (e && e.type === 'pointerup' && d.k >= 0 && d.k !== cur) { prog = true; try { d.bs[d.k].click(); } finally { prog = false; } }
+      if (d.th.isConnected) slPlace(d.g, true);
+    };
+    document.addEventListener('pointerup', end, true); document.addEventListener('pointercancel', end, true);
+    document.addEventListener('click', e => { if (!prog && Date.now() - skip < 400 && e.target.closest && e.target.closest(SLG)) { e.stopPropagation(); e.preventDefault(); } }, true);
+  }
 
   const store = {
     get(k, d) { try { const v = localStorage.getItem('dogmon.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
@@ -2068,6 +2138,9 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
   }
   function fp(p) {
     if (p == null || isNaN(p)) return '—';
+    const a = Math.abs(+p);
+    // DOG's price: always 4 significant digits, trailing zeros kept (0.0006890, 0.001334) — the number never loses a digit
+    if (a > 0 && a < 0.01) { const t = (+p).toPrecision(4); if (!/e/i.test(t)) return t.replace('.', DEC); }
     let s = (+p).toFixed(7).replace(/0+$/, '');
     if ((s.split('.')[1] || '').length < 6) s = (+p).toFixed(6);
     return s.replace('.', DEC);
@@ -2342,6 +2415,58 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     addEventListener('resize', () => tbSync(false));
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => tbSync(false)).catch(() => { });
     requestAnimationFrame(() => tbSync(false));
+  })();
+  // side menu (iPad and computer): the highlight glides to the chosen section; press and slide along the menu — the highlight
+  // follows the finger, the section under it lights up, let go — it opens (like the bottom menu on the phone)
+  (function railDrag() {
+    const lists = $$('#railnav [role="tablist"]'); if (!lists.length) return;
+    const inds = lists.map(l => { const i = document.createElement('i'); i.className = 'rn-ind'; i.setAttribute('aria-hidden', 'true'); l.prepend(i); l.classList.add('rn'); return i; });
+    const btns = l => [...l.querySelectorAll('button[data-tab]')];
+    const cells = l => btns(l).map(b => ({ t: b.offsetTop, h: b.offsetHeight }));
+    const place = (ind, y, h) => { ind.style.setProperty('--ty', y.toFixed(1) + 'px'); ind.style.setProperty('--th', h.toFixed(1) + 'px'); };
+    const sync = anim => lists.forEach((l, n) => {
+      const ind = inds[n], bs = btns(l), i = bs.findIndex(b => b.getAttribute('aria-selected') === 'true');
+      if (i < 0 || !bs[i].offsetHeight) { l.classList.remove('has-ind'); return; }
+      const c = cells(l)[i], on = l.classList.contains('has-ind');
+      if (!anim || RM || !on) { l.classList.add('rn-still'); place(ind, c.t, c.h); void ind.offsetWidth; l.classList.remove('rn-still'); }
+      else place(ind, c.t, c.h);
+      l.classList.add('has-ind');
+    });
+    const was = tbSync.fn; tbSync.fn = anim => { if (was) was(anim); sync(anim); };
+    let D = null, skip = 0;
+    lists.forEach((l, n) => {
+      l.addEventListener('pointerdown', e => { if (e.button > 0 || D || !e.isPrimary) return; D = { l, ind: inds[n], id: e.pointerId, x0: e.clientX, y0: e.clientY, on: false, k: -1 }; });
+      l.addEventListener('pointermove', e => {
+        if (!D || D.l !== l || e.pointerId !== D.id) return;
+        const dy = e.clientY - D.y0;
+        if (!D.on) {
+          if (Math.abs(dy) < 8 || Math.abs(dy) < Math.abs(e.clientX - D.x0)) return;
+          D.on = true; D.c = cells(l); l.classList.add('rn-drag', 'has-ind');
+          try { l.setPointerCapture(e.pointerId); } catch (er) { }
+        }
+        const c = D.c, h = c[0].h, lo = c[0].t, hi = c[c.length - 1].t;
+        const want = e.clientY - l.getBoundingClientRect().top - h / 2;
+        const y = want < lo ? lo - Math.min(10, (lo - want) * 0.25) : want > hi ? hi + Math.min(10, (want - hi) * 0.25) : want;
+        place(D.ind, y, h);
+        let k = 0, best = 1e9; c.forEach((q, j) => { const d = Math.abs(q.t + q.h / 2 - (y + h / 2)); if (d < best) { best = d; k = j; } });
+        if (k !== D.k) { D.k = k; btns(l).forEach((b, j) => b.classList.toggle('hot', j === k)); }
+      });
+      const end = e => {
+        if (!D || D.l !== l || (e && e.pointerId !== D.id)) return;
+        const d = D; D = null;
+        l.classList.remove('rn-drag'); btns(l).forEach(b => b.classList.remove('hot'));
+        if (!d.on) return;
+        skip = Date.now();
+        const b = btns(l)[d.k];
+        if (b && b.dataset.tab !== S.tab && e && e.type === 'pointerup') { setTab(b.dataset.tab, true); window.scrollTo({ top: 0 }); closeSheet(); }
+        else sync(true);
+      };
+      l.addEventListener('pointerup', end); l.addEventListener('pointercancel', end);
+      l.addEventListener('lostpointercapture', e => { if (e.target === l) end(e); });
+      l.addEventListener('click', e => { if (Date.now() - skip < 400) { e.stopPropagation(); e.preventDefault(); } }, true);
+    });
+    addEventListener('resize', () => sync(false));
+    requestAnimationFrame(() => sync(false));
   })();
 
   // ---------- status ----------
@@ -3904,7 +4029,7 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     const pl = prevLabel(s), ev = events(s), bt = briefOf(s);
     const more = !!bt || ev.length > 4;
     return `<section class="group sum" aria-label="The last 24 hours">
-        <div class="sec-head sum-head"><h3>The last 24 hours</h3><p>${pl ? 'since ' + esc(pl) : esc(when(s.ts))}</p><button type="button" class="playbtn" data-si="0" aria-label="The day, step by step" title="The day, step by step"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg></button></div>
+        <div class="sec-head sum-head"><h3>The last 24 hours</h3><p>${pl ? 'since ' + esc(pl) : esc(when(s.ts))}</p></div>
         ${ev.some(e => e.q != null) ? stpHtml(bigK()) : ''}
         ${ev.length ? `<div class="events">${ev.slice(0, 4).map(evHtml).join('')}</div>` : `<p class="note">No notable changes.</p>`}
         ${more ? `<button type="button" class="more" id="briefmore">More</button>` : ''}
