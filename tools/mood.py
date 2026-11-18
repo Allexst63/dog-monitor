@@ -47,6 +47,7 @@ WEIGHTS = (('mkt', 30), ('btc', 15), ('mom', 25), ('vol', 20), ('rel', 10))
 VER = 4
 KEEP = 1100            # дней истории в файле: у DOG — вся история индекса (с 23.08.2024)
 FETCH_DAYS = 1100
+CURVE_N, CURVE_STEP = 48, 0.0125   # кривая «цена → индекс на сегодня»: 97 точек, шаг 1,25%
 TURN = 40              # разворот индекса DOG — смена направления не меньше чем на 40 пунктов
 
 
@@ -206,19 +207,22 @@ def th(x, scale):
     return 50 + 50 * math.tanh(x / scale)
 
 
-def dog_parts(px, btc):
-    """vol, mom и DOG/BTC за 30 дней — по дневным ценам закрытия DOG"""
+def dog_parts(px, btc, last_close=None, only_last=False):
+    """vol, mom и DOG/BTC за 30 дней — по дневным ценам закрытия DOG.
+    last_close — другая цена закрытия последнего дня (для кривой «цена → индекс на сегодня»), only_last — считать только его."""
     days = sorted(d for d in px if px[d] and px[d][3] > 0)
     c = [px[d][3] for d in days]
+    if last_close:
+        c[-1] = last_close
     n = len(c)
     ret = [None] + [math.log(c[i] / c[i - 1]) for i in range(1, n)]
     # «падения»: разброс только дней снижения за 30 дней (полудисперсия) — резкий рост мем-монеты не считаем страхом
     dvol = [None] * n
-    for i in range(30, n):
+    for i in range(max(30, n - 91) if only_last else 30, n):
         r = ret[i - 29:i + 1]
         dvol[i] = math.sqrt(sum(min(0.0, x) ** 2 for x in r) / len(r)) * math.sqrt(365)
     out = {}
-    for i in range(120, n):
+    for i in range(max(120, n - 1) if only_last else 120, n):
         base = [v for v in dvol[i - 90:i] if v]
         ratio = dvol[i] / (sum(base) / len(base)) if base and sum(base) > 0 else 1.0
         dd = 1 - c[i] / max(c[i - 89:i + 1])
@@ -252,19 +256,23 @@ def btc_parts(btc):
     return out
 
 
-def turns(series, th=TURN):
-    """развороты индекса (зигзаг): вершина жадности или дно страха, после которых индекс ушёл не меньше чем на th"""
+def turns(series, th=TURN, exact=None):
+    """развороты индекса (зигзаг): вершина жадности или дно страха, после которых индекс ушёл не меньше чем на th.
+    Если одно и то же (округлённое) значение было в несколько дней, вершина — день с наибольшим точным значением,
+    дно — с наименьшим; при полном совпадении — более поздний день (так же считает страница)."""
     days = sorted(series)
     out = []
     if len(days) < 2:
         return out
+    ex = exact or {}
+    key = lambda d: (series[d], ex.get(d, series[d]))
     hi = lo = days[0]
     mode = None
     for d in days[1:]:
         v = series[d]
-        if v >= series[hi]:
+        if key(d) >= key(hi):
             hi = d
-        if v <= series[lo]:
+        if key(d) <= key(lo):
             lo = d
         if mode in (None, 'up') and series[hi] - v >= th and (mode == 'up' or hi > lo):
             out.append([hi, series[hi], 'p'])
@@ -353,15 +361,30 @@ def main():
         print('MOOD: не хватает данных')
         return 0
 
+    # сегодняшний индекс как функция цены DOG: страница берёт число с этой кривой по живой цене — формулы в браузере нет.
+    # Цены — от −45% до +82% к цене последнего расчёта (шаг 1,25% в логарифме); рынок и биткоин — как сейчас.
+    base_px = px[last][3]
+    curve = {'day': last, 'pts': []}
+    for k in range(-CURVE_N, CURVE_N + 1):
+        P = float('%.6g' % (base_px * math.exp(k * CURVE_STEP)))
+        q = dog_parts(px, btc, last_close=P, only_last=True).get(last)
+        if not q:
+            continue
+        v = combine(dict(parts, mom=q['p']['mom'], vol=q['p']['vol'], rel=q['p']['rb']))
+        if v is not None:
+            curve['pts'].append([P, round(v, 2)])
+    at = next((v for P, v in curve['pts'] if abs(P / base_px - 1) < 1e-5), None)
+    print(f'MOOD кривая: {len(curve["pts"])} точек; в цене расчёта {at} (индекс {value:.2f})')
+
     # история: каждый день — по тем же частям; сегодня — текущие значения индексов рынка, раньше — дневные
-    series = {}
+    series, exact = {}, {}
     for d in sorted(dp)[-KEEP:]:
         p = {'mkt': mean([alt_h.get(d), cmc_h.get(d)]), 'btc': bp[d][0] if d in bp else None,
              'mom': dp[d]['p']['mom'], 'vol': dp[d]['p']['vol'], 'rel': dp[d]['p']['rb']}
         v = combine(p)
         if v is not None:
-            series[d] = round(v)
-    series[last] = round(value)
+            series[d], exact[d] = round(v), v
+    series[last], exact[last] = round(value), value
     since = min(series) if series else last
 
     out = {
@@ -369,12 +392,13 @@ def main():
         'market': mk,
         'cmc': cm,
         'dog': {'v': round(value), 'day': last, 'since': since, 'ver': VER,
-                'parts': [{'k': k, 'w': w, 'v': None if parts.get(k) is None else round(parts[k])} for k, w in WEIGHTS],
-                'facts': {k: (round(v, 4) if isinstance(v, float) else v) for k, v in facts.items() if v is not None},
+                'parts': [{'k': k, 'v': None if parts.get(k) is None else round(parts[k])} for k, _ in WEIGHTS],
+                'facts': {k: facts[k] for k in ('alt', 'cmc') if facts.get(k) is not None},
+                'now': curve,
                 'ctx': {k: (round(v, 4) if isinstance(v, float) else v) for k, v in ctx.items() if v is not None},
                 'prev': {'d1': series.get(shift(last, 1)), 'd7': series.get(shift(last, 7)), 'd30': series.get(shift(last, 30))},
-                'hist': [[d, series[d]] for d in sorted(series)],
-                'turns': [t + [px[t[0]][3]] for t in turns(series) if t[0] in px]},
+                'hist': [[d, series[d], round(exact[d], 2)] for d in sorted(series)],
+                'turns': [t + [px[t[0]][3]] for t in turns(series, exact=exact) if t[0] in px]},
         'cg': cg, 'ranks': ranks,
     }
     jdump(out, path)

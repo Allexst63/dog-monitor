@@ -313,9 +313,17 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
       // «Главное» → разбор индекса DOG → «Open on Charts»: вкладка «Графики», индекс DOG один, под ним цена DOG; и лист «история трёх» с «Главного»
       await tab('overview');
       await page.evaluate(() => { const g = document.querySelector('#fng-box [data-info="fng_d"]'); if (g) g.click(); }); await page.waitForTimeout(900);
+      // пик индекса DOG в листе (разворот с наибольшим значением) — запомним его день
+      const sheetPeak = await page.evaluate(() => { let best = null; document.querySelectorAll('#sheet [data-fturn]').forEach(b => { const k = (b.querySelector('.k') || {}).textContent || '', m = /peak\s*(\d+)/.exec(k); if (m && (!best || +m[1] > best.v)) best = { v: +m[1], d: ((b.querySelector('.d') || {}).textContent || '').trim() }; }); return best; });
       const hasGo = await page.evaluate(() => { const b = document.querySelector('#sheet [data-f3go="d"]'); if (b) { b.click(); return true; } return false; });
       await page.waitForTimeout(1500);
       const go = await page.evaluate(() => ({ tab: [...document.querySelectorAll('#view > .panel')].filter(p => !p.hidden).map(p => p.dataset.panel).join(','), sheet: !document.querySelector('#sheet').hidden, dog: (document.querySelector('#f3s-in [data-f3focus="d"]') || {}).getAttribute?.('aria-pressed'), pane: !!document.querySelector('#f3s-in .f3s-pp.on[data-k="d"]'), vis: (() => { const e = document.querySelector('#f3s-in .f3s-plot'); if (!e) return false; const r = e.getBoundingClientRect(); return r.bottom > 60 && r.top < innerHeight; })() }));
+      // тот же пик на «Графиках» за всё время: максимум DOG в таблице — тот же день, что в листе
+      await page.evaluate(() => { const b = document.querySelector('#f3s-in [data-f3per="all"]'); if (b) b.click(); }); await page.waitForTimeout(600);
+      go.high = await page.evaluate(() => { const b = [...document.querySelectorAll('#f3s-in .f3s-v[data-f3k="d"]')].pop(); return b ? { v: +((b.querySelector('b') || {}).textContent || 0), d: ((b.querySelector('span') || {}).textContent || '').trim() } : null; });
+      go.peakSame = !!go.high && (!sheetPeak || sheetPeak.v !== go.high.v || sheetPeak.d === go.high.d);
+      go.sheetPeak = sheetPeak;
+      await page.evaluate(() => { const b = document.querySelector('#f3s-in [data-f3per="90"]'); if (b) b.click(); }); await page.waitForTimeout(400);
       await page.evaluate(() => { const c = document.querySelector('#f3s-in [data-f3focus="d"]'); if (c && c.getAttribute('aria-pressed') === 'true') c.click(); }); await page.waitForTimeout(500);
       await tab('overview');
       await page.evaluate(() => { const g = document.querySelector('#fng-box [data-info="fng_m"]'); if (g) g.click(); }); await page.waitForTimeout(900);
@@ -324,7 +332,7 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
       await page.evaluate(() => { const h = document.querySelector('#fng-box [data-info="fng_all"]'); if (h) h.click(); }); await page.waitForTimeout(900);
       const shs = await page.evaluate(() => ({ paths: [...document.querySelectorAll('#f3s-sh .f3s-plot path')].filter(p => (p.getAttribute('d') || '').length > 100).length }));
       await page.evaluate(() => { const c = document.querySelector('#sheet [data-close]'); if (c) c.click(); }); await page.waitForTimeout(450);
-      add(hasGo && go.tab === 'charts' && !go.sheet && go.dog === 'true' && go.pane && go.vis && go.alt && shs.paths >= 3, 'Разбор индекса → «Open on Charts» (сразу под графиком у всех трёх): открываются «Графики», индекс один и под ним его цена; с «Главного» история трёх индексов открывается листом', 'Index sheet → “Open on Charts”: the Charts tab opens with that index alone and its price below; from Home the history of all three opens as a sheet', JSON.stringify(go) + `; лист: ${shs.paths} линии`);
+      add(hasGo && go.tab === 'charts' && !go.sheet && go.dog === 'true' && go.pane && go.vis && go.alt && go.peakSame && shs.paths >= 3, 'Разбор индекса → «Open on Charts» (сразу под графиком у всех трёх): открываются «Графики», индекс один и под ним его цена; пик DOG — тот же день, что в листе; с «Главного» история трёх индексов открывается листом', 'Index sheet → “Open on Charts”: the Charts tab opens with that index alone and its price below; from Home the history of all three opens as a sheet', JSON.stringify(go) + `; лист: ${shs.paths} линии`);
       await tab('charts');
     }
     // карта ликвидности убрана 18.11.2026 (v13)
@@ -471,34 +479,23 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
   await browser.close();
   if (srv) srv.close();
 
-  // индекс DOG: формула страницы (dogLive из index.html) пересчитывает каждый прошлый день — должно совпасть с сервером (tools/mood.py)
+  // индекс DOG: формулы на странице нет — сегодняшнее число страница берёт с кривой сервера «цена → индекс»; в цене расчёта кривая
+  // даёт ровно число сервера; у одинаковых (округлённых) значений пик — день с наибольшим точным значением, и разворот сервера — тот же день
   try {
     const html = fs.readFileSync(path.join(SITE, 'index.html'), 'utf8');
-    const a = html.indexOf('  const thF = (x, sc) =>'), b = html.indexOf('  let fngLast = { v: null, t: 0 }');
-    if (a < 0 || b < a) throw new Error('формула не найдена в index.html');
     const J = f => JSON.parse(fs.readFileSync(path.join(SITE, 'data', f), 'utf8'));
-    const px = J('prices.json').d, btc = J('btc.json').d, F = J('fng.json');
-    const alt = new Map(F.market.hist), cmc = new Map(F.cmc.hist);
-    let DAY = null;
-    const RD = Date;
-    class FD extends RD { constructor(...x) { if (x.length) super(...x); else super(DAY + 'T23:00:00Z'); } static now() { return new RD(DAY + 'T23:00:00Z').getTime(); } }
-    const env = {};
-    const calc = new Function('env', 'Date', `let S, livePrice, fngMarket, fngCmc; ${html.slice(a, b)}; return () => { S = env.S; livePrice = env.lp; fngMarket = env.fm; fngCmc = env.fc; return dogLive(); };`)(env, FD);
-    const pk = Object.keys(px).sort(), bk = Object.keys(btc).sort();
-    let n = 0, same = 0; const bad = [];
-    for (const [d, val] of F.dog.hist) {
-      if (d === F.dog.day) continue;          // сегодня — по живой цене, его сверяет пункт «Индекс DOG одинаковый…»
-      DAY = d;
-      const pd = {}; for (const k of pk) { if (k > d) break; pd[k] = px[k]; }
-      const bd = {}; for (const k of bk) { if (k > d) break; bd[k] = btc[k]; }
-      env.S = { fng: { dog: { ver: 4 } }, px: { d: pd }, btcd: { d: bd }, archived: false, cur: {} };
-      env.lp = () => px[d] && px[d][3]; env.fm = () => alt.has(d) ? { v: alt.get(d) } : null; env.fc = () => cmc.has(d) ? { v: cmc.get(d) } : null;
-      const r = calc(); n++;
-      if (r && r.v === val) same++; else if (bad.length < 3) bad.push(`${d}: ${val} / ${r && r.v}`);
-    }
-    const tu = F.dog.turns || [], tp = tu.filter(t => px[t[0]] && Math.abs(px[t[0]][3] - t[3]) < 1e-12).length;
-    add(n > 300 && same === n && tp === tu.length, `Индекс DOG: формула страницы пересчитала всю историю — как у сервера в ${same} из ${n} дней; цена у разворотов — закрытие дня (${tp} из ${tu.length})`, `DOG index: the page’s formula recomputed the whole history — matches the server on ${same} of ${n} days; turn prices are day closes (${tp} of ${tu.length})`, bad.join('; '));
-  } catch (e) { add(false, 'Индекс DOG: пересчёт истории не удался', 'DOG index: recomputing the history failed', e.message); }
+    const F = J('fng.json'), px = J('prices.json').d, d = F.dog || {}, H = d.hist || [];
+    const noFormula = !/Math\.tanh|thF\(|FNG_W\b/.test(html);
+    const C = d.now || {}, pts = C.pts || [], base = px[C.day] ? px[C.day][3] : null;
+    const at = base ? pts.find(q => Math.abs(q[0] / base - 1) < 1e-5) : null, last = H.find(x => x[0] === C.day);
+    const curveOk = pts.length > 50 && !!at && !!last && Math.abs(at[1] - (last.length > 2 ? last[2] : last[1])) < 0.05;
+    const exv = x => x.length > 2 ? x[2] : x[1];
+    let hi = null, lo = null;
+    for (const x of H) { if (!hi || x[1] > hi[1] || (x[1] === hi[1] && exv(x) >= exv(hi))) hi = x; if (!lo || x[1] < lo[1] || (x[1] === lo[1] && exv(x) <= exv(lo))) lo = x; }
+    const T = d.turns || [], twin = T.filter(t => (t[2] === 'p' && hi && t[1] === hi[1] && t[0] !== hi[0]) || (t[2] === 't' && lo && t[1] === lo[1] && t[0] !== lo[0]));
+    const tp = T.filter(t => px[t[0]] && Math.abs(px[t[0]][3] - t[3]) < 1e-12).length;
+    add(noFormula && curveOk && !twin.length && tp === T.length, `Индекс DOG: формулы на странице нет, сегодняшнее число — с кривой сервера (в цене расчёта ${at ? at[1] : '—'}); пик ${hi ? hi[1] + ' — ' + hi[0] : '—'} и дно ${lo ? lo[1] + ' — ' + lo[0] : '—'} — те же дни, что у разворотов; цена у разворотов — закрытие дня (${tp} из ${T.length})`, `DOG index: no formula in the page, today’s number comes off the server’s curve (${at ? at[1] : '—'} at the calculation price); the high ${hi ? hi[1] + ' — ' + hi[0] : '—'} and the low ${lo ? lo[1] + ' — ' + lo[0] : '—'} are the same days as the turns; turn prices are day closes (${tp} of ${T.length})`, twin.map(t => t[0] + ' ' + t[1]).join('; ') || (noFormula ? '' : 'формула найдена в index.html'));
+  } catch (e) { add(false, 'Индекс DOG: проверка кривой и разворотов не удалась', 'DOG index: checking the curve and the turns failed', e.message); }
 
   // свежесть данных в файлах (то, что уйдёт на сайт)
   let live = null;
