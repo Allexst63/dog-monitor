@@ -1712,7 +1712,6 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
 .f3s-pph{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-top:10px;padding-top:8px;border-top:1px solid var(--line-2);font-size:11.5px;color:var(--ink-3);white-space:nowrap}
 .f3s-pph .t{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--ink-2)}
 .f3s-pph .t i{width:12px;height:2px;border-radius:2px;background:var(--ink-2)}
-.f3s-pph .r{min-width:0;overflow:hidden;text-overflow:ellipsis}
 .f3s-pph b{font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .f3s-pplot{position:relative;height:88px;margin-top:6px;touch-action:pan-y;cursor:crosshair;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
 .f3s-pplot svg{position:absolute;inset:0;width:100%;height:100%;display:block}
@@ -1720,6 +1719,15 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
 .f3s-x2.on{opacity:.55}
 .f3s-pm{position:absolute;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;border-radius:50%;background:var(--ink);box-shadow:0 0 0 2px var(--surface);pointer-events:none;z-index:2}
 .f3s-pm[hidden]{display:none}
+.f3s-g.fx .f3s-p:not(.tp){opacity:0;pointer-events:none}
+.f3s-g.fx .f3s-m{opacity:0}
+.f3s-g.fx-m .f3s-p[data-k="m"]:not(.tp),.f3s-g.fx-c .f3s-p[data-k="c"]:not(.tp),.f3s-g.fx-d .f3s-p[data-k="d"]:not(.tp){opacity:1;pointer-events:auto}
+.f3s-g.fx-m .f3s-m[data-k="m"],.f3s-g.fx-c .f3s-m[data-k="c"],.f3s-g.fx-d .f3s-m[data-k="d"]{opacity:1}
+.f3s-pph{position:relative;min-height:18px}
+.f3s-pv{position:absolute;top:5px;display:inline-flex;align-items:baseline;gap:4px;padding:1px 7px;border-radius:7px;background:var(--surface-2);box-shadow:0 0 0 1px var(--line-2);font-size:12px;line-height:1.4;color:var(--ink-3);white-space:nowrap;pointer-events:none}
+.f3s-pv:empty{display:none}
+.f3s-pv b{font-weight:650;color:var(--ink);font-variant-numeric:tabular-nums}
+.f3s-pv span{font-size:11px}
 .f3s-pe{position:absolute;width:5px;height:5px;margin:-2.5px 0 0 -2.5px;border-radius:50%;background:var(--ink-3);box-shadow:0 0 0 1.5px var(--surface);pointer-events:none}
 @media (min-width:700px){.f3s-pplot{height:104px}}
 .f3s-d{justify-content:flex-start}
@@ -1733,12 +1741,16 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
 #fngc-sec > .note{margin-top:12px}
 .f3s-lh{margin:14px 0 6px;font-size:15px}
 .f3-go{margin-top:10px}
+.f3-go{white-space:nowrap}
+.f3-go span{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.f3-go .ico{color:var(--ink-2)}
+:root[data-theme="dark"] .f3-go{background:#212733;border-color:rgba(255,255,255,.09)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .f3-go{background:#212733;border-color:rgba(255,255,255,.09)}}
 @media (max-width:379px){
   .h-memes .hmm .hmm-t h3{font-size:15px}
   .hmm .seg.slide button{min-width:36px;padding:4px 7px;font-size:11.5px}
   .f3s-c{padding:8px 7px 8px 10px}
   .f3s-c .zn{font-size:11px}
-  .f3s-pph .w{display:none}
 }
 </style>
 </head>
@@ -2116,6 +2128,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const p = $('#p-' + t);
     if (changed && p && !RM) { p.classList.remove('enter'); void p.offsetWidth; p.classList.add('enter'); }
     drawCharts();
+    if (t === 'charts') requestAnimationFrame(() => { try { if (F3S.D) f3sSet(F3S.pin, F3S.pin != null); } catch (e) { } });   // the price label is placed by width — only now it is known
     if (changed && t === 'books' && $('#obroot')) obPaint();
     obLoop();
   }
@@ -3469,9 +3482,9 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
   }
   function fngMktChart(id, hist, sc) {
     const bm = btcNowMap(), tr = fngTurns(hist, FNG_TURN), ch = fngChart(id, hist, bm, 'BTC', sc, tr, btcFmt);
-    if (!ch) return fngSpark(hist, 90, sc);
+    if (!ch) return fngSpark(hist, 90, sc) + f3GoBtn(id);
     const bc = pxMap((S.btcd || {}).d);
-    return ch + fngTurnsList(id, tr, bc, 'BTC', sc, btcFmt)
+    return ch + f3GoBtn(id) + fngTurnsList(id, tr, bc, 'BTC', sc, btcFmt)
       + `<p class="note">Dots mark the index’s turns: a peak or a low followed by a move of at least ${FNG_TURN} points. This is history, not a forecast.</p>`;
   }
   function fngMarketSheet() {
@@ -3481,7 +3494,6 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       ${fngKv(m.v, FNG_A, m.prev)}
       <h3>The index and bitcoin</h3>
       ${fngMktChart('m', hist, FNG_A)}
-      ${f3GoBtn('m')}
       <h3>What goes into it</h3>
       <ul class="plain"><li><b>25%</b> — how wildly bitcoin’s price swings and how deep its drops are;</li><li><b>25%</b> — market volume and buying momentum;</li><li><b>15%</b> — social media activity;</li><li><b>15%</b> — surveys (currently paused);</li><li><b>10%</b> — bitcoin’s share of the market;</li><li><b>10%</b> — Google search trends.</li></ul>
       ${FNG_SCALE(FNG_A)}
@@ -3493,7 +3505,6 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
       ${fngKv(c.v, FNG_C, c.prev)}
       <h3>The index and bitcoin</h3>
       ${fngMktChart('c', c.hist, FNG_C)}
-      ${f3GoBtn('c')}
       <h3>What goes into it</h3>
       <ul class="plain"><li>price momentum of the 10 largest coins (stablecoins excluded);</li><li>expected swings of bitcoin and ether priced into options (Volmex volatility indices);</li><li>options: bets on a fall versus bets on a rise (put/call ratio) for bitcoin and ether;</li><li>market composition: the stablecoin supply relative to bitcoin’s market cap;</li><li>CoinMarketCap’s own data: searches and user engagement.</li></ul>
       ${c.yhi && c.ylo ? `<p class="note">Past year: high ${c.yhi[0]} (${esc(fngDay(c.yhi[1]))}), low ${c.ylo[0]} (${esc(fngDay(c.ylo[1]))}).</p>` : ''}
@@ -6024,7 +6035,8 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     if (per === '365' || per === 'all') for (const [k] of F3K) {
       const h = []; D[k].forEach((v, i) => { if (v != null) h.push([i, v]); });
       const e = D.ext[k];
-      D.turns[k] = fngTurns(h, 35).filter(t => !e || (t[0] !== e.lo && t[0] !== e.hi)).map(t => [t[0], t[2]]);
+      const gap = Math.max(2, Math.round(days.length / 16));   // ≈ a label's width: closer than that the two numbers would overlap
+      D.turns[k] = fngTurns(h, 35).filter(t => !e || (Math.abs(t[0] - e.lo) > gap && Math.abs(t[0] - e.hi) > gap)).map(t => [t[0], t[2]]);
     }
     return D;
   }
@@ -6060,7 +6072,7 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     L.forEach((l, i) => { if (l == null) { pen = false; return; } d += (pen ? 'L' : 'M') + X(i).toFixed(1) + ',' + Y(l).toFixed(1); pen = true; if (i0 < 0) i0 = i; i1 = i; if (iH < 0 || l > L[iH]) iH = i; if (iL < 0 || l < L[iL]) iL = i; });
     F3S.pp = { L, Y };
     const ex = (i, w) => `<i class="f3s-pe" style="left:${pc(X(i), F3W)};top:${pc(Y(L[i]), F3PH)}" title="${w} close ${esc(P.fmt(P.v[i]))} · ${esc(f3Date(D.days[i]))}"></i>`;
-    return `<div class="f3s-pph"><span class="t"><i aria-hidden="true"></i>${esc(P.label)}</span><span class="r"><span class="w">day closes </span><b>${esc(P.fmt(P.v[iL]))}</b> – <b>${esc(P.fmt(P.v[iH]))}</b></span></div>
+    return `<div class="f3s-pph"><span class="t"><i aria-hidden="true"></i>${esc(P.label)}</span><span class="f3s-pv" aria-hidden="true"></span></div>
       <div class="f3s-pplot" role="img" aria-label="${esc(P.label)} over the same ${D.days.length} days, log scale: day closes from ${esc(P.fmt(P.v[iL]))} to ${esc(P.fmt(P.v[iH]))}"><svg viewBox="0 0 ${F3W} ${F3PH}" preserveAspectRatio="none" aria-hidden="true"><path d="${d}L${X(i1).toFixed(1)},${F3PH}L${X(i0).toFixed(1)},${F3PH}Z" fill="var(--ink-2)" opacity=".07"/><path class="f3s-pl" d="${d}" fill="none" stroke="var(--ink-2)" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>${ex(iH, 'high')}${ex(iL, 'low')}<i class="f3s-x2"></i><i class="f3s-pm"></i></div>`;
   }
   const f3sPane = D => { const k = F3S.focus, inner = k ? f3sPaneIn(D, k) : ''; if (!inner) F3S.pp = null; return `<div class="f3s-pp${inner ? ' on' : ''}" data-k="${inner ? k : ''}"><div class="f3s-ppi">${inner}</div></div>`; };
@@ -6126,6 +6138,13 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     box.querySelectorAll('.f3s-m').forEach(m => { const v = D[m.dataset.k][i]; m.hidden = v == null; if (v != null) { m.style.left = x; m.style.top = (F3Y(v) / F3H * 100).toFixed(2) + '%'; } });
     const pm = box.querySelector('.f3s-pp.on .f3s-pm'), P = F3S.pp;
     if (pm) { const l = P ? P.L[i] : null; pm.hidden = l == null; if (l != null) { pm.style.left = x; pm.style.top = (P.Y(l) / F3PH * 100).toFixed(2) + '%'; } }
+    const pv = box.querySelector('.f3s-pp.on .f3s-pv');
+    if (pv) {
+      const A = F3S.focus ? f3sPx(D, F3S.focus) : null, v = A ? A.v[i] : null, hd = pv.parentNode, t = hd.querySelector('.t');
+      pv.innerHTML = v ? `<b>${esc(A.fmt(v))}</b>${D.days[i] === new Date().toISOString().slice(0, 10) ? '<span>now</span>' : ''}` : '';
+      const W = hd.clientWidth, w = pv.offsetWidth;
+      if (W && w) { const cx = i / Math.max(1, n1) * W, lo = (t ? t.offsetLeft + t.offsetWidth : 0) + 10; pv.style.left = Math.max(lo, Math.min(W - w, cx - w / 2)).toFixed(1) + 'px'; }
+    }
     box.querySelectorAll('.f3s-p').forEach(p => p.classList.toggle('on', !!line && +p.dataset.i === i && (!F3S.focus || p.dataset.k === F3S.focus)));
     box.querySelectorAll('.f3s-v').forEach(b => b.setAttribute('aria-pressed', String(!!line && +b.dataset.f3i === i && (!F3S.focus || b.dataset.f3k === F3S.focus))));
     const rd = box.querySelector('.f3s-read'); if (rd) rd.innerHTML = f3sRead(line ? i : null);
@@ -6191,8 +6210,9 @@ button.f3s-c{font:inherit;color:inherit;text-align:left;cursor:pointer;transitio
     const fc = e.target.closest('[data-f3focus]'); if (fc) { f3sFocus(F3S.focus === fc.dataset.f3focus ? null : fc.dataset.f3focus); haptic(); return; }
     const v = e.target.closest('[data-f3k]'); if (v) f3sShow(v.dataset.f3k, +v.dataset.f3i);
   });
+  window.addEventListener('resize', () => { if (F3S.D && F3S.focus) f3sSet(F3S.pin, F3S.pin != null); });
   // “Open on Charts” in an index sheet: the Charts tab, that index alone with its price
-  const f3GoBtn = k => `<button type="button" class="f3-more f3-go" data-go="charts" data-f3go="${k}">Open on Charts<span>with the ${k === 'd' ? 'DOG' : 'bitcoin'} price · 30D to All</span>${ico('chev')}</button>`;
+  const f3GoBtn = k => `<button type="button" class="f3-more f3-go" data-go="charts" data-f3go="${k}">Open on Charts<span>with ${k === 'd' ? 'DOG' : 'BTC'} price · 30D–All</span>${ico('chev')}</button>`;
   document.addEventListener('click', e => {
     const b = e.target.closest && e.target.closest('[data-f3go]'); if (!b) return;
     F3S.focus = b.dataset.f3go; F3S.pin = null;
