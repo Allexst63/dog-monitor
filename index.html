@@ -1770,6 +1770,7 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
 .slid > button{position:relative;z-index:1}
 .slid > button[aria-pressed="true"]{background:transparent!important;box-shadow:none!important}
 .slid > .pth{position:absolute;z-index:0;left:0;top:0;width:var(--tw,0);height:var(--th,0);transform:translate(var(--tx,0),var(--ty,0));border-radius:999px;background:var(--surface-3);pointer-events:none;
+  box-shadow:0 1px 2px rgba(23,25,31,.08),0 0 0 .5px color-mix(in srgb,var(--ink) 8%,transparent);
   transition:transform .5s cubic-bezier(.3,1.25,.45,1),width .5s cubic-bezier(.3,1.25,.45,1)}
 .slid > .pth.go{animation:pthsquash .5s cubic-bezier(.3,.7,.4,1)}
 @keyframes pthsquash{0%{scale:1 1}35%{scale:1.08 .9}100%{scale:1 1}}
