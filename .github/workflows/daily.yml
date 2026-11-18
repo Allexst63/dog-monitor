@@ -145,7 +145,9 @@ jobs:
           if git diff --cached --quiet; then echo "нет изменений"; exit 0; fi
           ID=$(python3 -c "import json;print(json.load(open('data/version.json'))['id'])")
           MODE="${{ github.event.inputs.mode || 'full' }}"
-          if [ "$MODE" = page ]; then git commit -m "Страница из закрытого исходника (авто)"; else git commit -m "Сводка $ID (авто, $MODE)"; fi
+          if [ "$MODE" != page ]; then git commit -m "Сводка $ID (авто, $MODE)"
+          elif git diff --cached --quiet -- index.html; then git commit -m "Автопроверка сайта (авто, page)"
+          else git commit -m "Страница из закрытого исходника (авто)"; fi
           for i in 1 2 3 4 5; do
             git push origin HEAD:main && exit 0
             git fetch --depth=20 origin main
