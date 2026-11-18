@@ -1782,6 +1782,14 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
 .slid.sl-drag{cursor:grabbing}
 .slid.sl-drag > .pth{transition:scale .2s ease,box-shadow .2s ease;scale:1.05;box-shadow:0 6px 16px -8px rgba(0,0,0,.45),0 0 0 .5px color-mix(in srgb,var(--ink) 12%,transparent)}
 .slid > button.hot{color:var(--ink)!important}
+/* a list of choices (price step): one highlight that glides; under a finger it lifts and follows */
+.vsw{position:relative;isolation:isolate;touch-action:none;-webkit-user-select:none;user-select:none}
+.vsw > button{position:relative;z-index:1}
+.vsw > .vth{position:absolute;left:5px;right:5px;top:0;height:calc(var(--th,0px) - 8px);translate:0 calc(var(--ty,0px) + 4px);border-radius:12px;background:var(--surface-3);pointer-events:none;z-index:0;opacity:0;
+  box-shadow:0 0 0 .5px color-mix(in srgb,var(--ink) 8%,transparent);transition:translate .45s cubic-bezier(.3,1.25,.45,1),height .45s cubic-bezier(.3,1.25,.45,1),opacity .2s ease,scale .2s ease,box-shadow .2s ease}
+.vsw.vsw-on > .vth{opacity:1}
+.vsw.v-drag > .vth{transition:scale .2s ease,box-shadow .2s ease;scale:1.02;box-shadow:0 8px 20px -12px rgba(0,0,0,.5),0 0 0 .5px color-mix(in srgb,var(--ink) 12%,transparent)}
+.vsw > button.hot b{color:var(--ink)}
 /* side menu: one highlight that glides; pressed and dragged — it follows the finger */
 .rn{position:relative;isolation:isolate;touch-action:pan-x;-webkit-user-select:none;user-select:none}
 .rn > button.nav{position:relative;z-index:1}
@@ -1930,6 +1938,7 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     check: 'M5 12.5 10 17 19 7', alert: 'M12 9v4m0 3.5h.01M10.3 3.9 2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z',
     copy: 'M9 9h10v11H9zM5 15V4h10', ext: 'M14 4h6v6m0-6-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5',
     moon: 'M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z',
+    screen: 'M4.5 5h15a1 1 0 0 1 1 1v9.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM9 20h6M12 16.5V20',
     search: 'M11 18.5a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15zm9.5 2-4.3-4.3',
     person: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-7 9a7 7 0 0 1 14 0',
     chev: 'M9 6l6 6-6 6', shield: 'M12 3 5 6v5c0 4.4 3 8.3 7 9.5 4-1.2 7-5.1 7-9.5V6z',
@@ -2109,6 +2118,65 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     };
     document.addEventListener('pointerup', end, true); document.addEventListener('pointercancel', end, true);
     document.addEventListener('click', e => { if (!prog && Date.now() - skip < 400 && e.target.closest && e.target.closest(SLG)) { e.stopPropagation(); e.preventDefault(); } }, true);
+  }
+  // ---------- a list of choices (the order book's price step): the chosen row has a highlight that glides to the new choice;
+  // press and slide up or down — it follows the finger, the row under it lights up, let go — that row is chosen ----------
+  function vswPlace(list, anim) {
+    const bs = [...list.children].filter(b => b.tagName === 'BUTTON'), i = bs.findIndex(b => b.getAttribute('aria-pressed') === 'true');
+    let th = list.querySelector(':scope > .vth');
+    if (i < 0 || !bs[i].offsetHeight) { if (th) th.style.opacity = '0'; return; }
+    const isNew = !th;
+    if (isNew) { th = document.createElement('i'); th.className = 'vth'; th.setAttribute('aria-hidden', 'true'); list.prepend(th); list.classList.add('vsw-on'); }
+    th.style.opacity = '';
+    const b = bs[i], inst = isNew || !anim || RM;
+    if (inst) th.style.transition = 'none';
+    th.style.setProperty('--ty', b.offsetTop + 'px'); th.style.setProperty('--th', b.offsetHeight + 'px');
+    if (inst) { void th.offsetWidth; th.style.transition = ''; }
+  }
+  function vswPick(list, b) {
+    [...list.children].filter(x => x.tagName === 'BUTTON').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    vswPlace(list, true);
+  }
+  new MutationObserver(ms => { for (const m of ms) for (const nd of m.addedNodes) if (nd.nodeType === 1 && !(nd.classList && nd.classList.contains('vth'))) (nd.matches('.vsw') ? [nd] : [...nd.querySelectorAll('.vsw')]).forEach(l => requestAnimationFrame(() => vswPlace(l, false))); })
+    .observe(document.documentElement, { subtree: true, childList: true });
+  {
+    let D = null, skip = 0, prog = false;
+    document.addEventListener('pointerdown', e => {
+      if (e.button > 0 || D || !e.isPrimary) return;
+      const l = e.target.closest && e.target.closest('.vsw'); if (!l || !l.querySelector(':scope > .vth')) return;
+      D = { l, th: l.querySelector(':scope > .vth'), bs: [...l.children].filter(b => b.tagName === 'BUTTON' && !b.disabled), id: e.pointerId, x0: e.clientX, y0: e.clientY, on: false, k: -1 };
+    }, true);
+    document.addEventListener('pointermove', e => {
+      if (!D || e.pointerId !== D.id) return;
+      const dy = e.clientY - D.y0;
+      if (!D.on) {
+        if (Math.abs(dy) < 6 || Math.abs(dy) < Math.abs(e.clientX - D.x0)) return;
+        D.on = true; D.c = D.bs.map(b => ({ t: b.offsetTop, h: b.offsetHeight, m: b.offsetTop + b.offsetHeight / 2 }));
+        D.oy = D.l.getBoundingClientRect().top + D.l.clientTop;
+        D.l.classList.add('v-drag');
+        try { D.l.setPointerCapture(e.pointerId); } catch (x) { }
+      }
+      if (!D.c.length) return;
+      const c = D.c, f = e.clientY - D.oy, m0 = c[0].m, mN = c[c.length - 1].m;
+      const y = f < m0 ? m0 - Math.min(8, (m0 - f) * 0.25) : f > mN ? mN + Math.min(8, (f - mN) * 0.25) : f;
+      let j = 0; while (j < c.length - 2 && y > c[j + 1].m) j++;
+      const a = c[j], b = c[Math.min(j + 1, c.length - 1)], t = Math.max(0, Math.min(1, (y - a.m) / ((b.m - a.m) || 1))), h = a.h + (b.h - a.h) * t;
+      D.th.style.setProperty('--ty', (y - h / 2).toFixed(1) + 'px'); D.th.style.setProperty('--th', h.toFixed(1) + 'px');
+      let k = 0, best = 1e9; c.forEach((q, i) => { const d = Math.abs(q.m - y); if (d < best) { best = d; k = i; } });
+      if (k !== D.k) { D.k = k; D.bs.forEach((x, i) => x.classList.toggle('hot', i === k)); }
+    }, true);
+    const end = e => {
+      if (!D || (e && e.pointerId !== D.id)) return;
+      const d = D; D = null;
+      if (!d.on) return;
+      skip = Date.now();
+      d.l.classList.remove('v-drag'); d.bs.forEach(b => b.classList.remove('hot'));
+      const b = d.bs[d.k];
+      if (e && e.type === 'pointerup' && b && b.getAttribute('aria-pressed') !== 'true') { prog = true; try { b.click(); } finally { prog = false; } }
+      else vswPlace(d.l, true);
+    };
+    document.addEventListener('pointerup', end, true); document.addEventListener('pointercancel', end, true);
+    document.addEventListener('click', e => { if (!prog && Date.now() - skip < 400 && e.target.closest && e.target.closest('.vsw')) { e.stopPropagation(); e.preventDefault(); } }, true);
   }
 
   const store = {
@@ -2362,6 +2430,7 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     drawCharts();
     if (t === 'charts') requestAnimationFrame(() => { try { if (F3S.D) f3sSet(F3S.pin, F3S.pin != null); } catch (e) { } });   // the price label is placed by width — only now it is known
     if (changed && t === 'books' && $('#obroot')) obPaint();
+    if (changed && t === 'wallets' && !S.tierShown) { S.tierShown = true; requestAnimationFrame(() => tierAnim($('#tiers-sec'), null)); }   // the ring «loads» the first time
     obLoop();
   }
   document.addEventListener('click', e => {
@@ -3535,7 +3604,7 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     return S.news.filter(it => (it.d || '') >= lim);
   }
 
-  // ---------- live price: Kraken WebSocket v2 (public site only) ----------
+  // ---------- live price: Kraken and Gate over WebSocket (public site only) ----------
   function livePrice() { return !S.archived && S.live && S.live.price ? S.live.price : null; }
   function liveChg() { return livePrice() && S.live.chg24 != null ? S.live.chg24 : null; }
   function applyLive(prev) {
@@ -3560,34 +3629,77 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     try { document.title = fpd(lp) + ' · ' + 'DOG Monitor'; } catch (e) { }
     fngTick();
   }
-  function startLive() {
-    if (!('WebSocket' in window)) return;
-    let ws = null, retry = 0, timer = null;
-    const open = () => {
-      clearTimeout(timer);
-      try { ws = new WebSocket('wss://ws.kraken.com/v2'); } catch (e) { ws = null; return; }
-      ws.onopen = () => { retry = 0; try { ws.send(JSON.stringify({ method: 'subscribe', params: { channel: 'ticker', symbol: ['DOG/USD'] } })); } catch (e) { } };
-      ws.onmessage = ev => {
-        let m;
-        try { m = JSON.parse(ev.data); } catch (e) { return; }
-        if (!m || m.channel !== 'ticker' || !Array.isArray(m.data)) return;
-        const d = m.data.find(x => x && x.symbol === 'DOG/USD');
-        if (!d) return;
-        const last = Number(d.last), base = ((S.cur || {}).price || {}).mid;
-        if (!isFinite(last) || last <= 0 || (base && Math.abs(last / base - 1) > 0.5)) return;
-        const prev = livePrice(), chg = Number(d.change_pct);
-        S.live = { price: last, chg24: isFinite(chg) && d.change_pct != null ? chg : null, ts: Date.now(), stale: false };
-        applyLive(prev);
-      };
-      ws.onclose = () => {
-        ws = null;
-        if (S.live) { S.live.stale = true; applyLive(null); }
-        if (retry < 8) timer = setTimeout(open, Math.min(30000, 2000 * Math.pow(2, retry++)));
-      };
-      ws.onerror = () => { try { ws && ws.close(); } catch (e) { } };
+  // The live price is the middle of the best bid and ask: Kraken DOG/USD and Gate DOG/USDT, averaged — the same price as the
+  // order book's «All exchanges» line — so it moves with the market even when nobody trades on Kraken for a while.
+  // Each connection is watched: no message for 15 s (Kraken: our ping every 10 s and its heartbeats; Gate: our ping every 10 s) —
+  // it reconnects at once; coming back to the page, back online or from the background — the same. The price reaches the page at
+  // most once a second, so every rolling digit finishes its roll.
+  const LV = { k: { bid: 0, ask: 0, last: 0, open: 0 }, g: { bid: 0, ask: 0 }, t: 0, timer: null, socks: {} };
+  function liveSock(url, onOpen, onMsg, ping) {
+    const L = { ws: null, retry: 0, timer: null, ping: null, alive: 0, open: null };
+    const later = () => { clearTimeout(L.timer); if (document.visibilityState === 'hidden') return; L.timer = setTimeout(() => L.open(), Math.min(30e3, 1000 * Math.pow(2, L.retry++))); };
+    L.open = () => {
+      clearTimeout(L.timer); clearInterval(L.ping);
+      const old = L.ws; L.ws = null;
+      if (old) { try { old.onclose = old.onmessage = old.onerror = null; old.close(); } catch (e) { } }
+      let ws; try { ws = new WebSocket(url); } catch (e) { later(); return; }
+      L.ws = ws; L.alive = Date.now();
+      ws.onopen = () => { L.retry = 0; L.alive = Date.now(); try { onOpen(ws); } catch (e) { } if (ping) L.ping = setInterval(() => { try { ws.send(ping()); } catch (e) { } }, 10e3); };
+      ws.onmessage = ev => { L.alive = Date.now(); onMsg(ev, ws); };
+      ws.onclose = () => { if (L.ws !== ws) return; L.ws = null; clearInterval(L.ping); later(); };
+      ws.onerror = () => { try { ws.close(); } catch (e) { } };
     };
-    open();
-    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && !ws) { retry = 0; open(); } });
+    // a dead or silent connection opens again (iOS keeps a socket «open» after the app slept, but nothing arrives)
+    L.check = () => { if (document.visibilityState === 'hidden') return; if (!L.ws || L.ws.readyState > 1 || Date.now() - L.alive > 15e3) L.open(); };
+    L.ok = () => !!L.ws && L.ws.readyState === 1 && Date.now() - L.alive < 20e3;
+    return L;
+  }
+  function liveMid() {
+    const m = [], K = LV.socks.k, G = LV.socks.g;
+    if (K && K.ok() && LV.k.bid > 0 && LV.k.ask >= LV.k.bid) m.push((LV.k.bid + LV.k.ask) / 2);
+    if (G && G.ok() && LV.g.bid > 0 && LV.g.ask >= LV.g.bid) m.push((LV.g.bid + LV.g.ask) / 2);
+    return m.length ? m.reduce((x, y) => x + y) / m.length : null;
+  }
+  function livePush() {
+    const p = liveMid(), base = ((S.cur || {}).price || {}).mid;
+    if (!(p > 0) || (base && Math.abs(p / base - 1) > 0.5)) return;
+    const prev = livePrice(), open = LV.k.open > 0 ? LV.k.open : null, km = LV.k.bid > 0 && LV.k.ask >= LV.k.bid ? (LV.k.bid + LV.k.ask) / 2 : null;
+    S.live = { price: p, chg24: open ? (p / open - 1) * 100 : (S.live && S.live.chg24 != null ? S.live.chg24 : null), ts: Date.now(), stale: false, last: LV.k.last || null, kmid: km };
+    applyLive(prev);
+  }
+  function liveSoon() {
+    const wait = 1000 - (Date.now() - LV.t);
+    if (wait <= 0) { LV.t = Date.now(); livePush(); return; }
+    if (!LV.timer) LV.timer = setTimeout(() => { LV.timer = null; LV.t = Date.now(); livePush(); }, wait);
+  }
+  function startLive() {
+    if (!('WebSocket' in window) || LV.socks.k) return;
+    let kTrig = true;                                   // Kraken: a message on every best bid/ask change (if it ever refuses — on trades)
+    const kSub = ws => ws.send(JSON.stringify({ method: 'subscribe', params: Object.assign({ channel: 'ticker', symbol: ['DOG/USD'] }, kTrig ? { event_trigger: 'bbo' } : {}) }));
+    LV.socks.k = liveSock('wss://ws.kraken.com/v2', kSub, (ev, ws) => {
+      let m; try { m = JSON.parse(ev.data); } catch (e) { return; }
+      if (m && m.method === 'subscribe' && m.success === false && kTrig) { kTrig = false; try { kSub(ws); } catch (e) { } return; }
+      if (!m || m.channel !== 'ticker' || !Array.isArray(m.data)) return;
+      const d = m.data.find(x => x && x.symbol === 'DOG/USD'); if (!d) return;
+      const bid = Number(d.bid), ask = Number(d.ask), last = Number(d.last), ch = Number(d.change);
+      if (bid > 0 && ask > 0) { LV.k.bid = bid; LV.k.ask = ask; }
+      if (last > 0) { LV.k.last = last; if (isFinite(ch) && last - ch > 0) LV.k.open = last - ch; }
+      liveSoon();
+    }, () => '{"method":"ping"}');
+    LV.socks.g = liveSock('wss://api.gateio.ws/ws/v4/', ws => ws.send(JSON.stringify({ time: Math.floor(Date.now() / 1000), channel: 'spot.book_ticker', event: 'subscribe', payload: ['DOG_USDT'] })), ev => {
+      let m; try { m = JSON.parse(ev.data); } catch (e) { return; }
+      if (!m || m.channel !== 'spot.book_ticker' || m.event !== 'update' || !m.result) return;
+      const b = Number(m.result.b), a = Number(m.result.a);
+      if (b > 0 && a > 0) { LV.g.bid = b; LV.g.ask = a; liveSoon(); }
+    }, () => JSON.stringify({ time: Math.floor(Date.now() / 1000), channel: 'spot.ping' }));
+    LV.socks.k.open(); LV.socks.g.open();
+    const check = () => { LV.socks.k.check(); LV.socks.g.check(); };
+    setInterval(() => {
+      check();
+      if (S.live && !S.live.stale && liveMid() == null) { S.live.stale = true; applyLive(null); }    // both silent — «live» goes away
+    }, 5e3);
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') check(); });
+    addEventListener('pageshow', check); addEventListener('online', check); addEventListener('focus', check);
   }
 
   // ---------- HOME ----------
@@ -4448,6 +4560,7 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
       ${row('data-upd' + (loud ? ' disabled' : ''), ico('refresh', UP.run ? 'spin' : ''), 'Update now', u ? 'data as of ' + esc(tl(u.ts)) + ', checked ' + u.okN + '/' + u.n : 'fresh order books and transfers + self-check', 'acc')}
     </div>
     <div class="setting"><span class="set-t">${ico('moon')}<b>Appearance</b></span>${themeSwitch()}</div>
+    ${'wakeLock' in navigator ? `<div class="setting"><span class="set-t">${ico('screen')}<b>Keep the screen on</b></span><div class="langsw" role="group" aria-label="Keep the screen on">${[['0', 'Off'], ['1', 'On']].map(([k, l]) => `<button type="button" data-awake="${k}" aria-pressed="${String(awakeOn() === (k === '1'))}">${l}</button>`).join('')}</div></div>` : ''}
     <div class="group flush rows" style="background:var(--surface-2)">
       ${installRowHtml()}
       ${row('data-share', ico('share'), 'Share link', esc(siteUrl().replace(/^https?:\/\//, '')))}
@@ -4950,7 +5063,7 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     return { b, a, cov, covBy, srcs, step, minor, ref, cut, bb: best.b || null, ba: isFinite(best.a) ? best.a : null };
   }
   function obRef(s, set, ag) {
-    const last = S.bx === 'kraken' && !S.archived && S.live && !S.live.stale ? livePrice() : null;
+    const last = S.bx === 'kraken' && !S.archived && S.live && !S.live.stale ? (S.live.kmid || null) : null;
     return { bid: ag.bb, ask: ag.ba, mid: ag.ref || set.mid, last: last && ag.bb && ag.ba && last >= ag.bb && last <= ag.ba ? last : null };
   }
   function obCtx() {
@@ -5376,10 +5489,10 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     const row = st => {
       const set = obSet(s, st), lost = S.bx === 'all' ? set.out.filter(o => o.why === 'coarse').map(o => EXN[o.k]) : [];
       const none = S.bx !== 'all' && !set.keys.length;
-      return `<button type="button" class="row stepr" data-obstep="${st}"${none ? ' disabled' : ''}><span class="t"><b class="tnum">${fpx(st, st)}</b><span>${none ? 'not available for this exchange' : lost.length ? 'without ' + esc(lost.join(', ')) : esc(st === 1e-7 ? 'every price separately' : st === 1e-4 ? 'big steps — shows depth' : 'orders grouped into steps')}</span></span><span class="v">${Math.abs(st - S.bstep) < st * 1e-6 ? ico('check') : ''}</span></button>`;
+      return `<button type="button" class="row stepr" data-obstep="${st}" aria-pressed="${String(Math.abs(st - S.bstep) < st * 1e-6)}"${none ? ' disabled' : ''}><span class="t"><b class="tnum">${fpx(st, st)}</b><span>${none ? 'not available for this exchange' : lost.length ? 'without ' + esc(lost.join(', ')) : esc(st === 1e-7 ? 'every price separately' : st === 1e-4 ? 'big steps — shows depth' : 'orders grouped into steps')}</span></span><span class="v">${Math.abs(st - S.bstep) < st * 1e-6 ? ico('check') : ''}</span></button>`;
     };
     openSheet('Price step', `<p>Orders are grouped into steps of the chosen size — like “Order Book Depth” on an exchange. A fine step shows every price near the market; a big step shows where large amounts sit.</p>
-      <div class="group flush rows" style="background:var(--surface-2)">${OB_STEPS.map(row).join('')}</div>
+      <div class="group flush rows vsw" style="background:var(--surface-2)">${OB_STEPS.map(row).join('')}</div>
       <p class="note">MEXC and BingX stream exact prices live; if that connection fails, their books come from the latest report, in steps from 0.00001.</p>`);
   }
 
@@ -5637,9 +5750,16 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     if (!b || b.disabled) return;
     const st = OB_STEPS.find(x => Math.abs(x - +b.dataset.obstep) < x * 1e-6);
     if (!st) return;
-    S.bstep = st; store.set('bstep', st); S.bmore = false;
-    closeSheet();
-    obPaint();
+    const go = () => { S.bstep = st; store.set('bstep', st); S.bmore = false; closeSheet(); obPaint(); };
+    const list = b.closest('.vsw');
+    if (list && !RM && b.getAttribute('aria-pressed') !== 'true') {
+      vswPick(list, b);
+      list.querySelectorAll('.stepr .v .ico').forEach(x => { x.style.transition = 'opacity .2s'; x.style.opacity = x.closest('.stepr') === b ? '1' : '0'; });
+      const v = b.querySelector('.v'); if (v && !v.querySelector('.ico')) { const o = list.querySelector('.stepr .v .ico'); if (o) { const c = o.cloneNode(true); c.style.opacity = '0'; v.appendChild(c); requestAnimationFrame(() => { c.style.transition = 'opacity .2s'; c.style.opacity = '1'; }); } }
+      setTimeout(go, 380);
+      return;
+    }
+    go();
   });
 
   // ---------- CHARTS: TradingView-style candles (RSI and MACD below), delta and correlation with bitcoin ----------
@@ -6770,6 +6890,48 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
       ${(() => { const hc = holdersCost(); if (!hc) return ''; const v = vsAvg(hc.buy); return `<div class="own-cost"><span class="t">Large holders bought and topped up at an average of <b>${fpd(hc.buy)}</b>${v ? ` — now <b class="${v.cls}">${v.txt}</b>` : ''}.</span><small>Another ${n(hc.free * 100, 0)}% of their coins came free from the airdrop and are left out. ${hc.k} top-100 wallets excluding exchanges.</small></div>`; })()}`;
   }
 
+  // a number counts to its new value (eases out, like a loading percentage); at the end — exactly the text the page wrote
+  function countTo(el, from, to, ms) {
+    if (!el) return;
+    const fin = el.textContent, num = rollNum(fin);
+    if (to == null) to = num;
+    if (RM || document.hidden || !isFinite(from) || !isFinite(to) || from === to) return;
+    const dec = ((fin.match(/[.,](\d+)/) || [])[1] || '').length, pre = (fin.match(/^[^\d−-]*/) || [''])[0], suf = (fin.match(/[^\d]*$/) || [''])[0];
+    const t0 = performance.now(), dur = ms || 900; el._ct = t0;
+    const put = v => { el.textContent = pre + n(v, dec) + suf; };
+    const f = now => {
+      if (el._ct !== t0 || !el.isConnected) return;
+      const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+      if (k < 1) { put(from + (to - from) * e); requestAnimationFrame(f); } else el.textContent = fin;
+    };
+    put(from); requestAnimationFrame(f);
+  }
+  // «Who holds how much»: what was on screen before a switch
+  function tierState(sec) {
+    const b = sec.querySelector('.tring .c b'), pr = sec.querySelector('.seg [aria-pressed="true"]'), t = sec.querySelector('.tlist [data-tier][aria-pressed="true"]');
+    return { mode: pr ? pr.dataset.tmode : null, sel: t ? +t.dataset.tier : null, v: b ? rollNum(b.textContent) : null };
+  }
+  // a new grouping: the ring draws itself clockwise and the numbers count up from zero, as if loading; another group in the same
+  // ring: its number counts from the last one, the chosen arc gets thicker smoothly
+  function tierAnim(sec, was) {
+    if (!sec || RM || document.hidden) return;
+    const now = tierState(sec), T = 950, ease = u => 1 - Math.pow(1 - u, 1 / 3);           // inverse of ease-out (cubic)
+    const center = sec.querySelector('.tring .c b');
+    if (!was || was.mode !== now.mode) {
+      const C = 2 * Math.PI * 50;
+      sec.querySelectorAll('.tring circle[data-tier]').forEach(c => {
+        const da = (c.getAttribute('stroke-dasharray') || '').split(/[ ,]+/).map(Number); if (da.length < 2 || !(da[0] > 0)) return;
+        const a = Math.max(0, -parseFloat(c.getAttribute('stroke-dashoffset') || 0)) / C, z = Math.min(1, a + da[0] / C), d0 = T * ease(a), d1 = T * ease(z);
+        try { c.animate([{ strokeDasharray: `0 ${C.toFixed(2)}` }, { strokeDasharray: `${da[0]} ${da[1]}` }], { duration: Math.max(60, d1 - d0), delay: d0, easing: 'linear', fill: 'backwards' }); } catch (e) { }
+      });
+      countTo(center, 0, null, T);
+      sec.querySelectorAll('.tlist .s').forEach(x => countTo(x, 0, null, T));
+    } else if (was.sel !== now.sel) {
+      if (was.v != null) countTo(center, was.v, null, 600);
+      const w = 7;
+      sec.querySelectorAll(`.tring circle[data-tier="${now.sel}"]`).forEach(c => { if (+c.getAttribute('stroke-width') > w) try { c.animate([{ strokeWidth: w }, { strokeWidth: w + 4 }], { duration: 260, easing: 'cubic-bezier(.3,.7,.4,1)' }); } catch (e) { } });
+    }
+  }
   function ring1(parts, sel) {
     const r = 50, w = 7, c = 2 * Math.PI * r, gap = 2; let off = 0;
     const segs = parts.map(([v, col], i) => {
@@ -7010,8 +7172,9 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     if (e.target.closest('#showall')) { S.showAll = true; renderWallets(); return; }
     const tm = e.target.closest('[data-tmode]'), tt = e.target.closest('[data-tier]');
     if (tm || tt) {
+      const sec0 = $('#tiers-sec'), was = sec0 ? tierState(sec0) : null;
       if (tm) { S.tierMode = tm.dataset.tmode; S.tierSel = null; } else S.tierSel = +tt.dataset.tier;
-      const sec = $('#tiers-sec'), s = V(); if (sec && s) sec.outerHTML = tiersHtml(s); return;
+      const sec = $('#tiers-sec'), s = V(); if (sec && s) { sec.outerHTML = tiersHtml(s); tierAnim($('#tiers-sec'), was); } return;
     }
     const w = e.target.closest('[data-wal]');
     if (w) walletSheet(w.dataset.wal);
@@ -7905,6 +8068,31 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
   }
   document.addEventListener('click', e => { const b = e.target.closest('[data-theme-set]'); if (b) setTheme(b.dataset.themeSet); });
 
+  // ---------- keep the screen on: on an iPad or a computer the page can stand on the table like a clock, the price live.
+  // On by default on big screens (side menu), off on phones; the choice is in More. The lock lasts while the page is on screen
+  // and comes back when it returns. ----------
+  const WL = { lock: null, busy: false };
+  const awakeOn = () => { const v = store.get('awake', null); if (v != null) return !!v; try { return matchMedia('(min-width:700px)').matches; } catch (e) { return false; } };
+  async function wakeSync() {
+    if (!('wakeLock' in navigator) || WL.busy) return;
+    const want = awakeOn() && document.visibilityState === 'visible' && !S.archived;
+    WL.busy = true;
+    try {
+      if (want && !WL.lock) { WL.lock = await navigator.wakeLock.request('screen'); WL.lock.addEventListener('release', () => { WL.lock = null; }); }
+      else if (!want && WL.lock) { const l = WL.lock; WL.lock = null; await l.release(); }
+    } catch (e) { WL.lock = null; }
+    WL.busy = false;
+  }
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') wakeSync(); });
+  addEventListener('pointerdown', () => { if (!WL.lock && awakeOn()) wakeSync(); }, { passive: true });   // some browsers want a tap first
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-awake]'); if (!b) return;
+    store.set('awake', b.dataset.awake === '1');
+    $$('[data-awake]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.awake === b.dataset.awake)));
+    wakeSync();
+  });
+  setTimeout(wakeSync, 0);
+
   // ---------- visit counts: Umami Cloud — no cookies, nothing personal. Off while UMAMI_ID is empty ----------
   // When on: visitors per day, who is on the site right now (Realtime) and which buttons people press (the list below).
   // Only on the public site (github.io), never in the tests (?nostat=1) or in a copy of the page.
@@ -7947,7 +8135,7 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     if (tg && (tg.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(tg.tagName))) return;
     if ((e.key === 'r' || e.key === 'R' || e.key === 'к' || e.key === 'К') && $('#story').hidden) { e.preventDefault(); openUpd(true); }
   });
-  try { if (/[?&]debug=1\b/.test(location.search)) window.__dm = { S, UP, buildLive, runUpdate, softRender, CH, CH_OLD, hc: () => HC, hg: () => HG, rollSet, setHero, paintFng, obPaint }; } catch (e) { }
+  try { if (/[?&]debug=1\b/.test(location.search)) window.__dm = { S, UP, buildLive, runUpdate, softRender, CH, CH_OLD, hc: () => HC, hg: () => HG, rollSet, setHero, paintFng, obPaint, live: () => ({ k: LV.socks.k ? LV.socks.k.ok() : false, g: LV.socks.g ? LV.socks.g.ok() : false, price: livePrice(), kq: LV.k, gq: LV.g }) }; } catch (e) { }
 
   function renderAll() {
     const a = $('#archive');

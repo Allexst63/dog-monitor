@@ -516,6 +516,52 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
       });
       add(sw.sw.every(x => x === 'ok'), 'Переключатели: провести пальцем — таблетка идёт за пальцем, отпустили — выбран вариант под пальцем (свечи 1d → 1h, мем-монеты 90D → 30D)', 'Switches: slide a finger — the pill follows, the option under the finger is chosen', sw.sw.join('; '));
       add(sw.digits === 4 && !sw.story, `Главная: цена — все цифры (${sw.price}, 4 значащие), «историй» в «The last 24 hours» нет`, 'Home: the price keeps all 4 significant digits; no stories button in “The last 24 hours”', JSON.stringify(sw));
+      // живая цена: середина лучших заявок Kraken и Gate по WebSocket, соединения под присмотром (в GitHub Actions — обязательно)
+      {
+        const ok = await wait(() => { try { const L = window.__dm.live(); return (L.k || L.g) && L.price > 0; } catch (e) { return false; } }, 25000);
+        const L = await page.evaluate(() => { try { const L = window.__dm.live(); return { k: L.k, g: L.g, p: L.price, hp: document.querySelector('#hprice').textContent, badge: !document.querySelector('#hlive').hidden }; } catch (e) { return {}; } });
+        const must = !!process.env.GITHUB_ACTIONS;
+        add(ok ? L.badge && Math.abs(parseFloat(L.hp) / L.p - 1) < 0.002 : !must, ok ? `Главная: живая цена — середина лучших заявок (${[L.k ? 'Kraken' : '', L.g ? 'Gate' : ''].filter(Boolean).join(' и ')} онлайн), на экране ${L.hp}` : 'Главная: живая цена — биржи отсюда недоступны (пропущено)', 'Home: the live price is the middle of the best bid and ask (Kraken and Gate online)', JSON.stringify(L));
+      }
+      // список «пальцем» (шаг цены в стакане), кольцо «Кто сколько держит» рисуется заново, настройка «не гасить экран»
+      {
+        await tab('books');
+        const st = await wait(() => !!document.querySelector('[data-obstepsheet]'), 10000) && await page.evaluate(async () => {
+          const sl = ms => new Promise(x => setTimeout(x, ms));
+          document.querySelector('[data-obstepsheet]').click(); await sl(600);
+          const l = document.querySelector('#sheet .vsw'); if (!l || !l.querySelector('.vth')) return 'нет списка';
+          const rows = [...l.querySelectorAll('.stepr')], cur = rows.findIndex(b => b.getAttribute('aria-pressed') === 'true'), to = cur > 0 ? cur - 1 : cur + 1;
+          const at = b => { const r = b.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; }, a = at(rows[cur]), z = at(rows[to]);
+          const ev = (t, x, y, el) => (el || l).dispatchEvent(new PointerEvent(t, { bubbles: true, pointerId: 43, pointerType: 'touch', isPrimary: true, clientX: x, clientY: y }));
+          ev('pointerdown', a[0], a[1], rows[cur]); const ys = [];
+          for (let k = 1; k <= 8; k++) { ev('pointermove', a[0], a[1] + (z[1] - a[1]) * k / 8); ys.push(l.querySelector('.vth').style.getPropertyValue('--ty')); }
+          ev('pointerup', z[0], z[1]); await sl(900);
+          const want = rows[to].dataset.obstep, now = (window.__dm.S.bstep || 0).toString(), ok = new Set(ys).size >= 6 && document.querySelector('#sheet').hidden && Math.abs(+now - +want) < +want * 1e-6;
+          if (!ok) return 'шаг ' + now + ' вместо ' + want + ' / ' + new Set(ys).size;
+          document.querySelector('[data-obstepsheet]').click(); await sl(600);
+          const back = [...document.querySelectorAll('#sheet .stepr')][cur]; if (back) back.click(); await sl(900);
+          return 'ok';
+        });
+        await tab('wallets');
+        const rg = await wait(() => !!document.querySelector('#tiers-sec .seg'), 10000) && await page.evaluate(async () => {
+          const sec = document.querySelector('#tiers-sec'); sec.scrollIntoView({ block: 'center' }); await new Promise(x => setTimeout(x, 1300));
+          const bs = [...sec.querySelectorAll('.seg > button')], cur = bs.findIndex(b => b.getAttribute('aria-pressed') === 'true'), nx = bs[(cur + 1) % bs.length];
+          nx.click(); await new Promise(x => setTimeout(x, 200));
+          const s2 = document.querySelector('#tiers-sec'), arcs = [...s2.querySelectorAll('.tring circle[data-tier]')].filter(c => c.getAnimations().length).length, mid = s2.querySelector('.tring .c b').textContent;
+          await new Promise(x => setTimeout(x, 1100));
+          const end = document.querySelector('#tiers-sec .tring .c b').textContent;
+          const back = [...document.querySelectorAll('#tiers-sec .seg > button')][cur]; if (back) back.click();
+          return { arcs, mid, end, ok: arcs > 0 && parseFloat(mid) < parseFloat(end) };
+        });
+        await tab('overview');
+        const aw = await page.evaluate(async () => {
+          if (!('wakeLock' in navigator)) return { skip: true };
+          const b = document.querySelector('#menu'); if (b) b.click(); await new Promise(x => setTimeout(x, 600));
+          const row = !!document.querySelector('#sheet [data-awake]'); const on = (document.querySelector('#sheet [data-awake][aria-pressed="true"]') || {}).textContent;
+          const c = document.querySelector('#sheet [data-close].iconbtn'); if (c) c.click(); await new Promise(x => setTimeout(x, 400)); return { row, on };
+        });
+        add(st === 'ok' && rg && rg.ok && (aw.skip || aw.row), `Стакан: шаг цены — вести пальцем по списку; кошельки: кольцо рисуется заново, проценты досчитываются (${rg ? rg.mid + ' → ' + rg.end : '—'}); «Keep the screen on» в «More»${aw.on ? ' (на телефоне — ' + aw.on + ')' : ''}`, 'Order book step list by finger; wallets ring redraws and counts up; Keep the screen on setting', JSON.stringify({ st, rg, aw }));
+      }
     }
   } catch (e) {
     add(false, 'Проверка в браузере прервалась', 'The browser check was interrupted', e && e.message);
