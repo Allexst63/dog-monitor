@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-18T23:04:20Z",
+ "updated": "2026-11-19T02:09:17Z",
  "items": [
   {
    "title": "Dog (Bitcoin) Price Today | Live DOG Price, Chart & Market Data - Binance",
@@ -11,20 +11,23 @@
    "ts": "2026-11-16T22:01Z"
   }
  ],
- "errors": [],
+ "errors": [
+  "bing \"DOG (Bitcoin)\": not well-formed (invalid token): line 1, column 41",
+  "bing Leonidas DOG bitcoin runes: not well-formed (invalid token): line 1, column 41"
+ ],
  "stat": [
   "google \"DOG•GO•TO•THE•MOON\": 14",
   "google \"DOG (Bitcoin)\": 18",
   "google \"C2 Blockchain\" DOG: 3",
   "google Leonidas DOG bitcoin runes: 10",
   "google \"$DOG\" bitcoin rune: 10",
-  "google Bitcoin runes DOG exchange listing: 9",
+  "google Bitcoin runes DOG exchange listing: 8",
   "bing \"DOG•GO•TO•THE•MOON\": 10",
-  "bing \"DOG (Bitcoin)\": 12",
-  "bing \"C2 Blockchain\" DOG: 7",
-  "bing Leonidas DOG bitcoin runes: 10",
-  "bing \"$DOG\" bitcoin rune: 10",
-  "bing Bitcoin runes DOG exchange listing: 12",
+  "bing \"DOG (Bitcoin)\": 0",
+  "bing \"C2 Blockchain\" DOG: 6",
+  "bing Leonidas DOG bitcoin runes: 0",
+  "bing \"$DOG\" bitcoin rune: 11",
+  "bing Bitcoin runes DOG exchange listing: 11",
   "X: нет ключа X_BEARER_TOKEN"
  ]
 }
