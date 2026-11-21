@@ -518,12 +518,12 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
       });
       add(sw.sw.every(x => x === 'ok'), 'Переключатели: провести пальцем — таблетка идёт за пальцем, отпустили — выбран вариант под пальцем (свечи 1d → 1h, мем-монеты 90D → 30D)', 'Switches: slide a finger — the pill follows, the option under the finger is chosen', sw.sw.join('; '));
       add(sw.digits === 4 && !sw.story, `Главная: цена — все цифры (${sw.price}, 4 значащие), «историй» в «The last 24 hours» нет`, 'Home: the price keeps all 4 significant digits; no stories button in “The last 24 hours”', JSON.stringify(sw));
-      // живая цена: середина лучших заявок Kraken и Gate по WebSocket, соединения под присмотром (в GitHub Actions — обязательно)
+      // живая цена (v21): середина лучших заявок Kraken и Gate — бо́льшая из двух, по WebSocket (в GitHub Actions — обязательно)
       {
         const ok = await wait(() => { try { const L = window.__dm.live(); return (L.k || L.g) && L.price > 0; } catch (e) { return false; } }, 25000);
         const L = await page.evaluate(() => { try { const L = window.__dm.live(); return { k: L.k, g: L.g, p: L.price, hp: document.querySelector('#hprice').textContent, badge: !document.querySelector('#hlive').hidden }; } catch (e) { return {}; } });
         const must = !!process.env.GITHUB_ACTIONS;
-        add(ok ? L.badge && Math.abs(parseFloat(L.hp) / L.p - 1) < 0.002 : !must, ok ? `Главная: живая цена — середина лучших заявок (${[L.k ? 'Kraken' : '', L.g ? 'Gate' : ''].filter(Boolean).join(' и ')} онлайн), на экране ${L.hp}` : 'Главная: живая цена — биржи отсюда недоступны (пропущено)', 'Home: the live price is the middle of the best bid and ask (Kraken and Gate online)', JSON.stringify(L));
+        add(ok ? L.badge && Math.abs(parseFloat(L.hp) / L.p - 1) < 0.002 : !must, ok ? `Главная: живая цена — бо́льшая из середин лучших заявок (${[L.k ? 'Kraken' : '', L.g ? 'Gate' : ''].filter(Boolean).join(' и ')} онлайн), на экране ${L.hp}` : 'Главная: живая цена — биржи отсюда недоступны (пропущено)', 'Home: the live price is the higher of the Kraken and Gate bid/ask midpoints (online)', JSON.stringify(L));
       }
       // список «пальцем» (шаг цены в стакане), кольцо «Кто сколько держит» рисуется заново, настройка «не гасить экран»
       {
