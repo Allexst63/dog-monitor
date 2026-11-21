@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>DOG Monitor — live DOG•GO•TO•THE•MOON tracker</title>
 <meta name="description" content="Live tracker for DOG•GO•TO•THE•MOON, the Bitcoin rune: price and charts, order books from 7 exchanges in one view, three Fear &amp; Greed indices, DOG against the top meme coins, the top 100 and every 10M+ DOG wallet, coins in profit and loss. Data cross-checked between sources, full report 4 times a day. Unofficial.">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F2EFE9">
@@ -1826,6 +1826,25 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
 .ev.dim{opacity:.34}
 .events .ev{transition:opacity .35s ease}
 @media (prefers-reduced-motion:reduce){dm-s,dm-c,.slid > .pth,.stp.snap .stp-th,.stp.snap .stp-f{transition:none!important}.slid > .pth.go,.stp-th.bump{animation:none}}
+
+/* ---------- v21: smooth order book, one price, the page keeps its size ---------- */
+/* order book: bars glide to their new size (registered custom properties can be animated), the buy/sell split and the
+   «balance near the price» bars too; rows that appear fade in */
+@property --w{syntax:'<percentage>';inherits:false;initial-value:0%}
+@property --c{syntax:'<percentage>';inherits:false;initial-value:0%}
+.ob-r,.ob2 button.h{transition:--w .5s cubic-bezier(.2,.8,.2,1),--c .5s cubic-bezier(.2,.8,.2,1)}
+.obbs-bar i{transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.imbs .bar2 i{transition:flex-grow .5s cubic-bezier(.2,.8,.2,1)}
+.ob-in{animation:obIn .34s cubic-bezier(.2,.8,.2,1) both}
+@keyframes obIn{from{opacity:0}to{opacity:1}}
+/* zoom: the page keeps its size — no pinch or double-tap zoom (the charts still zoom with two fingers), nothing sticks out
+   sideways (a too-wide block would let the phone zoom the page out) */
+html{touch-action:pan-x pan-y}
+html,body{overflow-x:clip}
+@supports not (overflow:clip){body{overflow-x:hidden}}
+/* an open sheet: touches on the dimmed page don't scroll it */
+.sheet-bg{touch-action:none}
+@media (prefers-reduced-motion:reduce){.ob-r,.ob2 button.h,.obbs-bar i,.imbs .bar2 i{transition:none}.ob-in{animation:none}}
 </style>
 </head>
 <body>
@@ -1956,6 +1975,9 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
   };
   const ico = (k, cls = '') => `<svg class="ico ${cls}" viewBox="0 0 24 24" aria-hidden="true"><path d="${ICON[k] || ''}"/></svg>`;
   const RM = (() => { try { return matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } })();
+  // v21: the page keeps its size on iPhone and iPad — Safari's pinch (its gesture* events) doesn't zoom the page; the charts
+  // still zoom with two fingers (they read the touches themselves). Double-tap zoom is off by CSS (touch-action).
+  ['gesturestart', 'gesturechange', 'gestureend'].forEach(ev => document.addEventListener(ev, e => { if (e.cancelable) e.preventDefault(); }, { passive: false }));
 
   // ---------- rolling digits («барабан»): a number that changes by itself (live price, the DOG index, the order book price)
   // rolls only the digits that changed — up when it grows, down when it falls — with a short green or red glow.
@@ -2635,21 +2657,58 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
       sh.style.transform = `translateY(${dy.toFixed(1)}px)`;
       bg.style.opacity = Math.max(0, 1 - Math.max(0, dy) / Math.max(240, sh.offsetHeight)).toFixed(3);
     });
-    const end = e => {
-      if (!D || e.pointerId !== D.id) return;
-      const d = D; D = null;
-      if (e.type !== 'pointercancel' && (d.dy > 100 || (d.dy > 24 && d.v > 0.5))) {
+    // let go: far enough or fast enough — the sheet slides away, else springs back
+    const release = (dy, v, cancel) => {
+      if (!cancel && (dy > 100 || (dy > 24 && v > 0.5))) {
         sh.style.transition = 'transform .24s cubic-bezier(.32,.72,0,1)'; bg.style.transition = 'opacity .24s ease';
         sh.style.transform = 'translateY(100%)'; bg.style.opacity = '0';
         clearTimeout(closeSheet.t);
         closeSheet.t = setTimeout(() => closeSheet(true), 240);
+        haptic();
       } else {
         sh.style.transition = 'transform .45s cubic-bezier(.32,.72,0,1)'; bg.style.transition = 'opacity .45s ease';
         sh.style.transform = ''; bg.style.opacity = '';
       }
     };
+    const end = e => {
+      if (!D || e.pointerId !== D.id) return;
+      const d = D; D = null;
+      release(d.dy, d.v, e.type === 'pointercancel');
+    };
     sh.addEventListener('pointerup', end);
     sh.addEventListener('pointercancel', end);
+    // v21: on a phone the sheet also slides down from anywhere in its body — once the body is scrolled to the top — so it closes
+    // with the thumb in the middle of the screen, no need to reach the ✕. The gesture is the sheet's alone: the page under it
+    // and the browser don't move (the first move is claimed at once — later iOS wouldn't let it go). Charts, the price-step list
+    // and other things that follow the finger keep their own gestures.
+    const body = $('#sheet-body');
+    let T = null;
+    const own = t => t && t.closest && t.closest('canvas, .vsw, input, textarea, select, [data-nodrag], svg:not(.ico)');
+    body.addEventListener('touchstart', e => {
+      T = null;
+      if (e.touches.length !== 1 || !isPhone() || own(e.target)) return;
+      const t = e.touches[0];
+      T = { x0: t.clientX, y0: t.clientY, ly: t.clientY, lt: performance.now(), v: 0, dy: 0, top: body.scrollTop <= 0, on: false, off: false };
+    }, { passive: true });
+    body.addEventListener('touchmove', e => {
+      if (!T || T.off) return;
+      const t = e.touches[0];
+      if (e.touches.length !== 1) { if (T.on) release(0, 0, true); T.off = true; return; }
+      if (!T.on) {
+        const dx = t.clientX - T.x0, dy = t.clientY - T.y0;
+        if (!T.top || body.scrollTop > 0 || dy <= 0 || Math.abs(dx) > Math.abs(dy)) { T.off = true; return; }
+        T.on = true;
+        sh.style.animation = 'none'; bg.style.animation = 'none'; sh.style.transition = 'none'; bg.style.transition = 'none';
+      }
+      if (e.cancelable) e.preventDefault();
+      const now = performance.now(), d = Math.max(0, t.clientY - T.y0 - 4);
+      T.v = (t.clientY - T.ly) / Math.max(1, now - T.lt); T.ly = t.clientY; T.lt = now; T.dy = d;
+      sh.style.transform = `translateY(${d.toFixed(1)}px)`;
+      bg.style.opacity = Math.max(0, 1 - d / Math.max(240, sh.offsetHeight)).toFixed(3);
+    }, { passive: false });
+    const tEnd = e => { const d = T; T = null; if (d && d.on) release(d.dy, d.v, e.type === 'touchcancel'); };
+    body.addEventListener('touchend', tEnd);
+    body.addEventListener('touchcancel', tEnd);
   })();
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape') return;
@@ -2764,7 +2823,10 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
   }
   const heroKey = R => { const L = R.rows[R.rows.length - 1]; return [R.tf, S.chartMode, R.rows.length, R.rows[0][0], L[0], L[4]].join('|'); };
   const HTF_KIND = { '15m': '15-minute candles', '1h': 'hourly candles', '4h': '4-hour candles', '1d': 'daily candles', '1w': 'weekly candles' };
-  const nowPx = () => { const s = V(); return livePrice() || ((s || {}).price || {}).mid || null; };
+  // without the live price (no connection, an archived report) — the same rule from the report's books: the higher of the Kraken
+  // and Gate mids, so «Home» and the order book still show one number
+  const pxRep = s => { const b = (s || {}).books || {}, m = ['kraken', 'gate'].map(k => { const x = b[k]; return x && !x.off && x.bid > 0 && x.ask > x.bid ? (x.bid + x.ask) / 2 : null; }).filter(Boolean); return m.length ? Math.max(...m) : (((s || {}).price || {}).mid || null); };
+  const nowPx = () => { const s = V(); return livePx() || pxRep(s); };
   const chg24 = () => { const lc = liveChg(); if (lc != null) return lc; const s = V(); return s && s.price && s.price.chg24 != null ? s.price.chg24 : null; };
   // the live price rolls («барабан»); with a finger on the chart (and right after it) the numbers are set at once
   let heroScr = false, heroPx = null;
@@ -2867,6 +2929,7 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
       if (!HC) return;
       let lr = null; try { lr = HC.chart.timeScale().getVisibleLogicalRange(); } catch (e) { }
       const L = HC.rows.length;
+      if (rClamp(HC.chart, L, lr)) return;
       if (lr && lr.from < Math.max(MORE_AT, lr.to - lr.from) && chCanMore(HC.tf)) chMore(HC.tf);
       chMoreUi();
       lastSync(HC.el, HC.chart, lr, L);
@@ -2898,12 +2961,22 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     if (!lr) return;
     const len = lr.to - lr.from, f0 = lr.from, t0 = performance.now(), D = RM ? 1 : 380;
     const step = now => {
-      const end = endAt(); if (end == null) return;
+      const end = endAt(len); if (end == null) return;
       const k = Math.min(1, (now - t0) / D), e = 1 - Math.pow(1 - k, 3), f = f0 + (end - len - f0) * e;
       try { chart.timeScale().setVisibleLogicalRange({ from: f, to: f + len }); } catch (er) { return; }
       if (k < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
+  }
+  // v21: room on the right like TradingView — the newest candle sits a few candles in from the right edge (hGap), and the chart
+  // can be pulled left a little further (up to ~30% of the width, hGapMax), never so far that the candles leave the screen
+  const hGap = len => Math.max(2, len * 0.06), hGapMax = len => Math.max(5, len * 0.3);
+  function rClamp(chart, L, lr) {
+    if (!lr) return false;
+    const len = lr.to - lr.from, mx = L - 0.5 + hGapMax(len);
+    if (lr.to <= mx + 0.01) return false;
+    try { chart.timeScale().setVisibleLogicalRange({ from: mx - len, to: mx }); } catch (e) { }
+    return true;
   }
   function lastSync(box, chart, lr, L, top) {
     const b = box && box.querySelector(':scope > .ch-last'); if (!b) return;
@@ -2951,7 +3024,7 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
       layout: { background: { type: 'solid', color: 'rgba(0,0,0,0)' }, textColor: C.ink3, fontSize: 11, fontFamily: '"Inter", system-ui, sans-serif', attributionLogo: true },
       grid: { vertLines: { visible: false }, horzLines: { color: hexA(C.line, 0.5) } },
       rightPriceScale: { borderVisible: false, entireTextOnly: true, scaleMargins: hlegMargins(el, candles, wide) },
-      timeScale: { borderVisible: false, timeVisible: intra, secondsVisible: false, fixLeftEdge: true, fixRightEdge: true, rightOffset: 0, lockVisibleTimeRangeOnResize: true, tickMarkFormatter: tickFmt },
+      timeScale: { borderVisible: false, timeVisible: intra, secondsVisible: false, fixLeftEdge: true, fixRightEdge: false, rightOffset: 0, lockVisibleTimeRangeOnResize: true, tickMarkFormatter: tickFmt },
       crosshair: { mode: 0, vertLine: xh, horzLine: xh },
       handleScroll: { mouseWheel: false, pressedMouseMove: true, horzTouchDrag: false, vertTouchDrag: false },
       handleScale: { mouseWheel: false, pinch: false, axisPressedMouseMove: false, axisDoubleClickReset: true },
@@ -2980,10 +3053,10 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
       fill(R.rows);
       const L = R.rows.length;
       if (keep && keep.lr) chart.timeScale().setVisibleLogicalRange({ from: L + keep.lr.from, to: L + keep.lr.to });
-      else chart.timeScale().setVisibleLogicalRange({ from: Math.max(0, L - R.n) - 0.5, to: L - 0.5 });
+      else { const g = hGap(Math.min(L, R.n)); chart.timeScale().setVisibleLogicalRange({ from: Math.max(0, L - R.n) - 0.5 + g, to: L - 0.5 + g }); }
     } catch (e) { try { chart.remove(); } catch (er) { } throw e; }
     const lg = document.createElement('div'); lg.className = 'hleg'; lg.id = 'hleg'; lg.hidden = true; lg.setAttribute('aria-hidden', 'true'); el.appendChild(lg);
-    el.appendChild(lastBtn(() => toEnd(chart, () => HC && HC.chart === chart ? HC.rows.length - 0.5 : null)));
+    el.appendChild(lastBtn(() => toEnd(chart, len => HC && HC.chart === chart ? HC.rows.length - 0.5 + hGap(len) : null)));
     HC = { chart, main, vol, el, key, fill, rows: R.rows, tf: R.tf, intra, Tm, wide, mode, n: R.n, pin: null, moveAt: 0, at: new Map(R.rows.map((r, k) => [Tm(r), k])) };
     if (keep && keep.pinT != null) { const k = R.rows.findIndex(r => r[0] === keep.pinT); if (k >= 0 && k < R.rows.length - 1) HC.pin = k; }
     HC.fit = () => { try { chart.priceScale('right').applyOptions({ scaleMargins: hlegMargins(el, candles, wide) }); } catch (e) { } };
@@ -3057,7 +3130,7 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     const lrNow = () => { try { return tsc().getVisibleLogicalRange(); } catch (e) { return null; } };
     const plotW = () => { try { return tsc().width() || HC.el.clientWidth || 300; } catch (e) { return HC.el.clientWidth || 300; } };
     const setFrom = (from, len) => {
-      const L = HC.rows.length, f = Math.max(-0.5, Math.min(L - 0.5 - len, from));
+      const L = HC.rows.length, f = Math.max(-0.5, Math.min(L - 0.5 - len + hGapMax(len), from));
       try { tsc().setVisibleLogicalRange({ from: f, to: f + len }); } catch (e) { }
       return f;
     };
@@ -3606,6 +3679,8 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
 
   // ---------- live price: Kraken and Gate over WebSocket (public site only) ----------
   function livePrice() { return !S.archived && S.live && S.live.price ? S.live.price : null; }
+  // the live price only while it is live (a silent connection — «Home» and the order book fall back to the books together)
+  function livePx() { return S.live && !S.live.stale ? livePrice() : null; }
   function liveChg() { return livePrice() && S.live.chg24 != null ? S.live.chg24 : null; }
   function applyLive(prev) {
     const lp = livePrice();
@@ -3625,12 +3700,15 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     }
     chLive();
     const st = $('#chstats'); if (st && S.tab === 'charts') st.innerHTML = chStatsHtml();
+    // the order book («All exchanges») takes the new price at once too — it is cut at this very price, so it repaints
+    if (S.tab === 'books' && S.bx === 'all') obSoon();
 
     try { document.title = fpd(lp) + ' · ' + 'DOG Monitor'; } catch (e) { }
     fngTick();
   }
-  // The live price is the middle of the best bid and ask: Kraken DOG/USD and Gate DOG/USDT, averaged — the same price as the
-  // order book's «All exchanges» line — so it moves with the market even when nobody trades on Kraken for a while.
+  // One price for the whole site (v21): the middle of the best bid and ask on Kraken DOG/USD and on Gate DOG/USDT — the HIGHER of
+  // the two. «Home» and the order book («All exchanges») show this very number, and the combined book is cut at it, so no bid
+  // above the price is ever hidden (owner's choice 21.11). It moves with the market even when nobody trades on Kraken for a while.
   // Each connection is watched: no message for 15 s (Kraken: our ping every 10 s and its heartbeats; Gate: our ping every 10 s) —
   // it reconnects at once; coming back to the page, back online or from the background — the same. The price reaches the page at
   // most once a second, so every rolling digit finishes its roll.
@@ -3655,10 +3733,10 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     return L;
   }
   function liveMid() {
-    const m = [], K = LV.socks.k, G = LV.socks.g;
-    if (K && K.ok() && LV.k.bid > 0 && LV.k.ask >= LV.k.bid) m.push((LV.k.bid + LV.k.ask) / 2);
-    if (G && G.ok() && LV.g.bid > 0 && LV.g.ask >= LV.g.bid) m.push((LV.g.bid + LV.g.ask) / 2);
-    return m.length ? m.reduce((x, y) => x + y) / m.length : null;
+    const m = [], K = LV.socks.k, G = LV.socks.g, rest = t => t && Date.now() - t < 25e3;
+    if (((K && K.ok()) || rest(LV.k.rt)) && LV.k.bid > 0 && LV.k.ask >= LV.k.bid) m.push((LV.k.bid + LV.k.ask) / 2);
+    if (((G && G.ok()) || rest(LV.g.rt)) && LV.g.bid > 0 && LV.g.ask >= LV.g.bid) m.push((LV.g.bid + LV.g.ask) / 2);
+    return m.length ? Math.max(...m) : null;
   }
   function livePush() {
     const p = liveMid(), base = ((S.cur || {}).price || {}).mid;
@@ -3666,6 +3744,20 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     const prev = livePrice(), open = LV.k.open > 0 ? LV.k.open : null, km = LV.k.bid > 0 && LV.k.ask >= LV.k.bid ? (LV.k.bid + LV.k.ask) / 2 : null;
     S.live = { price: p, chg24: open ? (p / open - 1) * 100 : (S.live && S.live.chg24 != null ? S.live.chg24 : null), ts: Date.now(), stale: false, last: LV.k.last || null, kmid: km };
     applyLive(prev);
+  }
+  // v21: a connection that is silent (a network that blocks WebSocket, iOS or iPadOS after sleep) — its best bid and ask come from
+  // the exchange's plain order book over HTTP every 10 s instead, so the price never freezes; the connection keeps retrying
+  async function liveRest() {
+    const K = LV.socks.k, G = LV.socks.g, needK = !(K && K.ok()), needG = !(G && G.ok());
+    if ((!needK && !needG) || LV.restRun || document.visibilityState === 'hidden' || Date.now() - (LV.restAt || 0) < 10e3) return;
+    LV.restRun = true; LV.restAt = Date.now();
+    const get = async (url, f) => { try { const r = await fetch(url, { cache: 'no-store' }); if (r.ok) f(await r.json()); } catch (e) { } };
+    await Promise.all([
+      needK && get('https://api.kraken.com/0/public/Depth?pair=DOGUSD&count=1', d => { const x = d && d.result && Object.values(d.result)[0], b = x && x.bids && x.bids[0] ? +x.bids[0][0] : 0, a = x && x.asks && x.asks[0] ? +x.asks[0][0] : 0; if (b > 0 && a >= b) { LV.k.bid = b; LV.k.ask = a; LV.k.rt = Date.now(); } }),
+      needG && get('https://api.gateio.ws/api/v4/spot/order_book?currency_pair=DOG_USDT&interval=0&limit=1', d => { const b = d && d.bids && d.bids[0] ? +d.bids[0][0] : 0, a = d && d.asks && d.asks[0] ? +d.asks[0][0] : 0; if (b > 0 && a >= b) { LV.g.bid = b; LV.g.ask = a; LV.g.rt = Date.now(); } })
+    ]);
+    LV.restRun = false;
+    livePush();
   }
   function liveSoon() {
     const wait = 1000 - (Date.now() - LV.t);
@@ -3696,6 +3788,7 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     const check = () => { LV.socks.k.check(); LV.socks.g.check(); };
     setInterval(() => {
       check();
+      liveRest();
       if (S.live && !S.live.stale && liveMid() == null) { S.live.stale = true; applyLive(null); }    // both silent — «live» goes away
     }, 5e3);
     document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') check(); });
@@ -3785,7 +3878,7 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     const d = (S.fng || {}).dog, C = d && d.now; if (!C || S.archived) return null;
     const pts = C.pts || [], today = new Date().toISOString().slice(0, 10);
     if (C.day !== today || pts.length < 2) return null;
-    const lp = livePrice() || ((S.cur || {}).price || {}).mid; if (!(lp > 0)) return null;
+    const lp = nowPx(); if (!(lp > 0)) return null;
     const L = Math.log(lp); let j = 1;
     while (j < pts.length - 1 && Math.log(pts[j][0]) < L) j++;
     const a = pts[j - 1], b = pts[j], la = Math.log(a[0]), lb = Math.log(b[0]);
@@ -4492,7 +4585,7 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
           <li>Tap a row for details: which exchanges, the exact prices inside the step, how much would need to be bought or sold for the price to reach it.</li>
         </ul>
         <p>While the order book is open, Kraken, Gate, MEXC and BingX push their changes over a live connection (WebSocket), and the book redraws about once a second. Kraken streams up to 500 levels per side this way, Gate and BingX 100 each, MEXC 20; CoinW and DigiFinex are polled every 10 seconds. If a connection fails, the exchange is polled with ordinary requests, while MEXC and BingX fall back to the latest report’s book — marked as such.</p>
-        <p><b>All exchanges combined.</b> The price in the middle is the midpoint between the best bid and ask on Kraken and Gate. Prices differ a little between exchanges, so one exchange’s bid can sit above another’s ask. To keep the book readable as one — bids below the price, asks above — such “wrong-side” orders are left out of the combined book (the note under it says how much); they show in their own exchange’s book. DigiFinex mirrors Gate’s book, so it isn’t added separately. <button type="button" class="lnk" data-info="mirror">About mirrors</button></p>
+        <p><b>All exchanges combined.</b> The price in the middle is the site’s one price — the same number as on Home: the midpoint between the best bid and ask on Kraken and on Gate, whichever of the two is higher. Prices differ a little between exchanges, so one exchange’s bid can sit above another’s ask. Taking the higher price means no bid is ever hidden; to keep the book readable as one — bids below the price, asks above — asks of the cheaper exchange that sit below the price are left out of the combined book (the note under it says how much); they show in their own exchange’s book. DigiFinex mirrors Gate’s book, so it isn’t added separately. <button type="button" class="lnk" data-info="mirror">About mirrors</button></p>
         <p class="note">An order book shows intentions, not trades: an order can be pulled in a second. Not investment advice.</p>`],
     mirror: () => ['A “mirror” order book', `<p>On small exchanges, orders are often placed not by a crowd of people but by a market maker’s program: it copies a big exchange’s order book — the same prices and nearly the same sizes — and, when someone trades against it, immediately covers the trade on the big exchange.</p><p>That’s why a big order on Gate also “appears” on DigiFinex. The money doesn’t double: it’s the same order shown a second time. Adding both books together would overstate demand and supply.</p><p>The site checks this on every update by comparing the two exchanges’ price steps near the price. If half or more match (or a third, including a 5M+ DOG order), the book is treated as a mirror and left out of the combined book and the totals. If the exchange stops copying, it’s counted again automatically.</p><p class="note">The mirror exchange’s own book can still be opened separately — tap its name on the Order book tab.</p>`],
     ob_imb: () => ['Who’s stronger near the price', `<p>Exchanges hold orders: “I’ll buy if the price drops to…” (green) and “I’ll sell if it rises to…” (red). Here all such orders near the price — within 1%, 2%, 5% and 10% — are added up in dollars to show who outweighs whom.</p><p>When buyers clearly outweigh sellers, it’s harder for the price to fall: sellers would have to eat through many orders. And vice versa. But an order can be pulled in a second — it’s the market’s mood right now, not a forecast.</p><p class="note">The line at the bottom builds up while the order book is open: above the middle — more buyers.</p>`],
@@ -4666,7 +4759,7 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
       OB.t = t;
       obHistPush();
     })().catch(() => { }).finally(() => { OB.run = null; });
-    trFetch().then(() => { if (S.tab === 'books' && $('#obtr')) $('#obtr').innerHTML = trHtml(); }).catch(() => { });
+    trFetch().then(() => { if (S.tab === 'books' && $('#obtr')) { $('#obtr')._mh = null; $('#obtr').innerHTML = trHtml(); } }).catch(() => { });
     return OB.run;
   }
   function obLoop() {
@@ -4676,7 +4769,7 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     if (want && !OB.tick) OB.tick = setInterval(obAge, 1000);
     if (!want) { if (OB.tick) { clearInterval(OB.tick); OB.tick = null; } return; }
     if (!OB.trRun && !Object.keys(OB.tr).some(k => Date.now() - OB.tr[k].ft < 60e3)) {
-      OB.trRun = trFetch().then(() => { if (S.tab === 'books' && $('#obtr')) $('#obtr').innerHTML = trHtml(); }).catch(() => { }).finally(() => { OB.trRun = null; });
+      OB.trRun = trFetch().then(() => { if (S.tab === 'books' && $('#obtr')) { $('#obtr')._mh = null; $('#obtr').innerHTML = trHtml(); } }).catch(() => { }).finally(() => { OB.trRun = null; });
     }
     const wait = Math.max(0, OB_POLL - (Date.now() - OB.t));
     OB.timer = setTimeout(async () => {
@@ -4971,6 +5064,15 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     return v;
   }
   const obMidOf = x => x && x.bid && x.ask && x.bid < x.ask ? (x.bid + x.ask) / 2 : null;
+  // the combined book's price = the site's one price: the live price (the higher of the Kraken and Gate mids, see livePrice);
+  // without it — the higher of those two mids in the books themselves (else the median of the others). A live price that
+  // strays more than 1.5% from the books (a connection lagging) is not used.
+  function obPx(mids) {
+    const core = Object.keys(mids || {}).filter(k => (k === 'kraken' || k === 'gate') && mids[k] > 0);
+    const hi = core.length ? Math.max(...core.map(k => mids[k])) : median(Object.values(mids || {}).filter(x => x > 0));
+    const lp = livePx();
+    return lp && (!hi || Math.abs(lp / hi - 1) < 0.015) ? lp : (hi || null);
+  }
   function obSet(s, step, bx) {
     bx = bx || S.bx;
     const live = !S.archived && Object.keys(OB.ex).some(k => obFresh(OB.ex[k]));
@@ -4994,8 +5096,7 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
       const newest = Math.max(...keys.filter(k => fts[k] != null).map(k => fts[k]));
       for (const k of keys.slice()) if (fts[k] != null && newest - fts[k] > OB_LAG) { keys.splice(keys.indexOf(k), 1); delete mids[k]; out.push({ k, why: 'lag', t: fts[k] }); }
     }
-    const core = Object.keys(mids).filter(k => k === 'kraken' || k === 'gate');
-    let mid = median((core.length ? core : Object.keys(mids)).map(k => mids[k])) || (s.price || {}).mid || null;
+    let mid = (bx === 'all' ? obPx(mids) : null) || median(Object.keys(mids).map(k => mids[k])) || (s.price || {}).mid || null;
     if (bx === 'all' && mid) for (const k of keys.slice()) if (mids[k] && Math.abs(mids[k] / mid - 1) > 0.03) { keys.splice(keys.indexOf(k), 1); out.push({ k, why: 'off' }); }
     return { keys, out, mid, live, mids };
   }
@@ -5017,8 +5118,7 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     const cut = { b: 0, a: 0, bv: 0, av: 0 }, best = { b: 0, a: Infinity };
     if (Object.keys(srcs).length > 1) {
       const mids = {}; for (const [k, src] of Object.entries(srcs)) { const m = obMidOf(src); if (m) mids[k] = m; }
-      const core = Object.keys(mids).filter(k => k === 'kraken' || k === 'gate');
-      ref = median((core.length ? core : Object.keys(mids)).map(k => mids[k])) || null;
+      ref = obPx(mids) || null;
     }
     const eps = 1e-12;
     for (const [k, src] of Object.entries(srcs)) {
@@ -5674,9 +5774,62 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     obPaint();
     obLoop();
   }
+  // ---------- smooth repaint (v21): the new HTML is laid over the old DOM instead of replacing it («morph»). Rows that stay keep
+  // their element, so the bars glide to the new size (CSS transitions on --w / --c), nothing flickers, scroll and the finger's
+  // row stay put; new rows fade in; numbers with data-v roll from the old value («барабан»). Rows are matched by data-ob
+  // (side:price), other nodes by place and tag; an element whose HTML hasn't changed since the last paint is skipped at once.
+  // The switches' sliding pill (.pth) and the classes it adds are left alone. ----------
+  const MK_KEEP = ['slid', 'sl-drag', 'ob-in'];
+  const mKey = n => n.nodeType === 1 ? n.getAttribute('data-ob') : null;
+  const mSkip = n => !!n && n.nodeType === 1 && !!n.classList && (n.classList.contains('pth') || n.classList.contains('vth'));
+  function mAttrs(o, n) {
+    for (const { name } of [...o.attributes]) if (!n.hasAttribute(name)) o.removeAttribute(name);
+    for (const { name, value } of n.attributes) {
+      let v = value;
+      if (name === 'class') { const keep = MK_KEEP.filter(c => o.classList.contains(c) && !n.classList.contains(c)); if (keep.length) v = (value + ' ' + keep.join(' ')).trim(); }
+      if (o.getAttribute(name) !== v) o.setAttribute(name, v);
+    }
+  }
+  function mNode(o, n) {
+    if (o.nodeType !== 1) { if (o.nodeValue !== n.nodeValue) o.nodeValue = n.nodeValue; return; }
+    const src = n.outerHTML, nv = n.getAttribute('data-v');
+    if (o._mk === src && (nv == null ? !n.querySelector('[data-v]') : o.getAttribute('data-v') === nv)) return;
+    if (nv != null) {
+      const ov = o.getAttribute('data-v');
+      mAttrs(o, n); o._mk = src;
+      if (ov != null && ov !== nv) {
+        if (o._roll && o._roll.parentNode === o && o._roll._v !== ov) rollBuild(o._roll, ov);     // the strip starts from the shown value
+        rollSet(o, nv, { from: ov, dir: Math.sign(rollNum(nv) - rollNum(ov)) || 0 });
+      }
+      else if (ov == null && o.textContent !== n.textContent) o.textContent = n.textContent;
+      return;
+    }
+    mAttrs(o, n); o._mk = src;
+    mKids(o, n);
+  }
+  function mKids(a, b) {
+    const keyed = new Map();
+    for (let x = a.firstChild; x; x = x.nextSibling) { const k = mKey(x); if (k) keyed.set(k, x); }
+    let cur = a.firstChild;
+    for (const nb of [...b.childNodes]) {
+      while (mSkip(cur)) cur = cur.nextSibling;
+      const k = mKey(nb);
+      let m = null;
+      if (k) { m = keyed.get(k) || null; if (m) keyed.delete(k); }
+      else if (cur && !mKey(cur) && cur.nodeType === nb.nodeType && cur.nodeName === nb.nodeName) m = cur;
+      if (m) { if (m === cur) cur = cur.nextSibling; else a.insertBefore(m, cur); mNode(m, nb); }
+      else {
+        if (nb.nodeType === 1) { nb._mk = nb.outerHTML; if (k && !RM) nb.classList.add('ob-in'); }
+        a.insertBefore(nb, cur);
+      }
+    }
+    while (cur) { const nx = cur.nextSibling; if (!mSkip(cur)) a.removeChild(cur); cur = nx; }
+  }
+  function morph(el, html) { const t = document.createElement('template'); t.innerHTML = html; mKids(el, t.content); }
   function obPaintBook(c) {
     c = c || obCtx();
     const card = $('#obcard'); if (!c || !card) return;
+    if (card.firstElementChild) { morph(card, obCardHtml(c)); OB.painted = Date.now(); return; }
     const sc = $('.scroll', card), sl = sc ? sc.scrollLeft : 0;
     const mp0 = $('#obmidp', card), mc0 = $('#obmidc', card), was = [mp0 && mp0.dataset.v, mc0 && mc0.dataset.v];
     card.innerHTML = obCardHtml(c);
@@ -5704,10 +5857,12 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     const ox = $('#obx'), oh = obChipsHtml(c.s);
     if (ox && ox.dataset.h !== oh) { const xl = ox.scrollLeft; ox.innerHTML = oh; ox.dataset.h = oh; ox.scrollLeft = xl; }
     obPaintBook(c);
-    $('#obmet').innerHTML = obImbHtml(c);
-    const bg = $('#obbig'); if (bg) bg.innerHTML = obBigHtml(c);
-    $('#obfeed').innerHTML = obFeedHtml();
-    $('#obtr').innerHTML = trHtml();
+    // the side blocks change in place too (bars glide, lists don't flicker)
+    const put = (el, h) => { if (!el) return; if (el._mh === h) return; el._mh = h; if (el.firstChild) morph(el, h); else el.innerHTML = h; };
+    put($('#obmet'), obImbHtml(c));
+    put($('#obbig'), obBigHtml(c));
+    put($('#obfeed'), obFeedHtml());
+    put($('#obtr'), trHtml());
     if (S.tab === 'books') drawDepth();
   }
   $('#p-books').addEventListener('click', e => {
@@ -6033,7 +6188,7 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     try { if (ser.rsiPane) chart.priceScale('right', ser.rsiPane).applyOptions({ scaleMargins: { top: 0.1, bottom: 0.08 } }); if (ser.macdPane) chart.priceScale('right', ser.macdPane).applyOptions({ scaleMargins: { top: 0.12, bottom: 0.08 } }); } catch (e) { }
     try {
       if (keep) chart.timeScale().setVisibleLogicalRange({ from: rows.length + keep.from, to: rows.length + keep.to });
-      else { const nB = intra ? (el.clientWidth < 560 ? 70 : 120) : (el.clientWidth < 560 ? 90 : 160); chart.timeScale().setVisibleLogicalRange({ from: Math.max(0, rows.length - nB), to: rows.length + 2 }); }
+      else { const nB = intra ? (el.clientWidth < 560 ? 70 : 120) : (el.clientWidth < 560 ? 90 : 160), g = hGap(nB); chart.timeScale().setVisibleLogicalRange({ from: Math.max(0, rows.length - nB) - 0.5 + g, to: rows.length - 0.5 + g }); }
     } catch (e) { }
     CH.tv = { chart, tf, rows, A, ser, H0, HP, Tm, C, pin: null };
     if (pinT != null) { const k = rows.findIndex(r => r[0] === pinT); if (k >= 0 && k < rows.length - 1) CH.tv.pin = k; }
@@ -6044,15 +6199,16 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     if (ser.rsiPane) mk('tvl-rsi');
     if (ser.macdPane) mk('tvl-macd');
     requestAnimationFrame(() => requestAnimationFrame(tvLabels)); setTimeout(tvLabels, 300);
-    box.appendChild(lastBtn(() => toEnd(chart, () => CH.tv && CH.tv.chart === chart ? CH.tv.rows.length - 1 + 3 : null)));
+    box.appendChild(lastBtn(() => toEnd(chart, len => CH.tv && CH.tv.chart === chart ? CH.tv.rows.length - 0.5 + hGap(len) : null)));
     const onRange = () => {
       cancelAnimationFrame(onRange.f);
       onRange.f = requestAnimationFrame(() => {
         const tv = CH.tv; if (!tv || tv.chart !== chart) return;
         let lr = null; try { lr = chart.timeScale().getVisibleLogicalRange(); } catch (e) { }
+        if (rClamp(chart, tv.rows.length, lr)) return;
         if (lr && lr.from < Math.max(MORE_AT, lr.to - lr.from) && chCanMore(tf)) chMore(tf);
         chMoreUi();
-        lastSync(box, chart, lr, tv.rows.length + 3, el.offsetTop + H0 - 40);
+        lastSync(box, chart, lr, tv.rows.length + 1, el.offsetTop + H0 - 40);
       });
     };
     try { chart.timeScale().subscribeVisibleLogicalRangeChange(onRange); } catch (e) { }
@@ -6777,7 +6933,7 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
   }
   // ---------- average DOG cost per wallet (data/costbasis.json, tools/costbasis.py) ----------
   const costOf = a => { const w = S.cb && S.cb.w && S.cb.w[a]; return w || null; };
-  const curPrice = () => livePrice() || ((V() || {}).price || {}).mid || null;
+  const curPrice = () => nowPx();
   function vsAvg(avg) {
     const p = curPrice(); if (!p || !avg) return null;
     const r = p / avg;
@@ -8135,7 +8291,7 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
     if (tg && (tg.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(tg.tagName))) return;
     if ((e.key === 'r' || e.key === 'R' || e.key === 'к' || e.key === 'К') && $('#story').hidden) { e.preventDefault(); openUpd(true); }
   });
-  try { if (/[?&]debug=1\b/.test(location.search)) window.__dm = { S, UP, buildLive, runUpdate, softRender, CH, CH_OLD, hc: () => HC, hg: () => HG, rollSet, setHero, paintFng, obPaint, live: () => ({ k: LV.socks.k ? LV.socks.k.ok() : false, g: LV.socks.g ? LV.socks.g.ok() : false, price: livePrice(), kq: LV.k, gq: LV.g }) }; } catch (e) { }
+  try { if (/[?&]debug=1\b/.test(location.search)) window.__dm = { S, UP, buildLive, runUpdate, softRender, CH, CH_OLD, hc: () => HC, hg: () => HG, rollSet, setHero, paintFng, obPaint, obCtx, live: () => ({ k: LV.socks.k ? LV.socks.k.ok() : false, g: LV.socks.g ? LV.socks.g.ok() : false, price: livePrice(), kq: LV.k, gq: LV.g }) }; } catch (e) { }
 
   function renderAll() {
     const a = $('#archive');

@@ -38,7 +38,9 @@ jobs:
           npm init -y >/dev/null 2>&1
           npm i --no-audit --no-fund playwright-core@1.48.2 >/dev/null 2>&1
           cd "$GITHUB_WORKSPACE"
-          NODE_PATH="$RUNNER_TEMP/pw/node_modules" node tools/selfcheck.js . "$RUNNER_TEMP/selfcheck.json" --url "$SITE_URL"
+          # не прошло — ещё раз через минуту: биржи и GitHub Pages иногда отвечают с задержкой (письмо — только если и второй раз)
+          chk() { NODE_PATH="$RUNNER_TEMP/pw/node_modules" node tools/selfcheck.js . "$RUNNER_TEMP/selfcheck.json" --url "$SITE_URL"; }
+          chk || { echo "::notice::не прошло — через минуту ещё раз"; sleep 60; chk; }
 
       - name: Итог по пунктам
         if: always()

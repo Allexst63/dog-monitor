@@ -130,7 +130,9 @@ jobs:
           npm init -y >/dev/null 2>&1
           npm i --no-audit --no-fund playwright-core@1.48.2 >/dev/null 2>&1
           cd "$GITHUB_WORKSPACE"
-          NODE_PATH="$RUNNER_TEMP/pw/node_modules" node tools/selfcheck.js . data/selfcheck.json
+          # не прошло — ещё раз через 30 с (живые соединения бирж иногда отвечают с задержкой)
+          chk() { NODE_PATH="$RUNNER_TEMP/pw/node_modules" node tools/selfcheck.js . data/selfcheck.json; }
+          chk || { echo "::notice::не прошло — через 30 с ещё раз"; sleep 30; chk; }
 
       - name: Выкладка на сайт
         run: |

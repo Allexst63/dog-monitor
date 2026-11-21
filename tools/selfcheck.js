@@ -217,6 +217,8 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
         await page.waitForTimeout(400);
       }
     }
+    // стакан собирается из живых соединений бирж — ждём, пока покажет уровни (раньше сразу считали — и раз в день-два ловили 7)
+    await wait(() => document.querySelectorAll('#p-books .ob-r, #p-books [data-lv], #p-books tr').length >= 10, 15000);
     const rows = await page.evaluate(() => document.querySelectorAll('#p-books .ob-r, #p-books [data-lv], #p-books tr').length);
     add(rows >= 10 && await noOverflow(), `Стакан: уровни цен показаны (${rows})`, `Order book: price levels are shown (${rows})`);
     // сводный стакан: все покупки ниже цены, все продажи выше (без «пересечений» между биржами)
@@ -561,6 +563,35 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
           const c = document.querySelector('#sheet [data-close].iconbtn'); if (c) c.click(); await new Promise(x => setTimeout(x, 400)); return { row, on };
         });
         add(st === 'ok' && rg && rg.ok && (aw.skip || aw.row), `Стакан: шаг цены — вести пальцем по списку; кошельки: кольцо рисуется заново, проценты досчитываются (${rg ? rg.mid + ' → ' + rg.end : '—'}); «Keep the screen on» в «More»${aw.on ? ' (на телефоне — ' + aw.on + ')' : ''}`, 'Order book step list by finger; wallets ring redraws and counts up; Keep the screen on setting', JSON.stringify({ st, rg, aw }));
+      // v21: одна цена, плавный стакан (морф), лист уровня смахивается вниз, запас справа у графика, масштаб страницы выключен
+      {
+        await tab('books');
+        await wait(() => document.querySelectorAll('#obcard [data-ob]').length >= 5, 15000);
+        const v = await page.evaluate(async () => {
+          const sl = ms => new Promise(x => setTimeout(x, ms)), D = window.__dm, out = {};
+          const a = document.querySelector('[data-obex="all"]'); if (a) a.click(); await sl(500);
+          const r0 = document.querySelector('#obcard [data-ob]'), k = r0 && r0.dataset.ob; D.obPaint(); await sl(60);
+          out.morph = !!k && document.querySelector(`#obcard [data-ob="${k}"]`) === r0 && /--w/.test(getComputedStyle(r0).transitionProperty);
+          // цена: на «Главном» и в стакане одно число (живая или по стаканам сводки); после тика стакан догоняет за ≤ 0,8 с
+          for (let j = 0; j < 12; j++) { out.book = (document.querySelector('#obmidp') || {}).textContent; out.home = (document.querySelector('#hprice') || {}).textContent; if (out.book && out.book === out.home) break; await sl(300); }
+          out.same = !!out.book && out.book === out.home;
+          // лист уровня: смахнуть вниз из середины — закрывается, страница стоит
+          const row = document.querySelector('#obcard [data-ob]'); row.click(); await sl(600);
+          const body = document.querySelector('#sheet-body'), bx = body.getBoundingClientRect(), x = bx.left + bx.width / 2, y0 = bx.top + Math.min(180, bx.height / 2), sy = scrollY;
+          const T = y => [new Touch({ identifier: 7, target: body, clientX: x, clientY: y })];
+          body.dispatchEvent(new TouchEvent('touchstart', { bubbles: true, cancelable: true, touches: T(y0), targetTouches: T(y0), changedTouches: T(y0) }));
+          for (let j = 1; j <= 10; j++) { body.dispatchEvent(new TouchEvent('touchmove', { bubbles: true, cancelable: true, touches: T(y0 + j * 22), targetTouches: T(y0 + j * 22), changedTouches: T(y0 + j * 22) })); await sl(16); }
+          body.dispatchEvent(new TouchEvent('touchend', { bubbles: true, cancelable: true, touches: [], targetTouches: [], changedTouches: T(y0 + 220) }));
+          await sl(600);
+          out.swipe = document.querySelector('#sheet').hidden && scrollY === sy;
+          out.zoom = getComputedStyle(document.documentElement).touchAction === 'pan-x pan-y' && /maximum-scale=1/.test(document.querySelector('meta[name=viewport]').content);
+          return out;
+        }).catch(e => ({ err: e.message }));
+        await tab('overview');
+        await page.waitForTimeout(600);
+        const h = await page.evaluate(() => { const HC = window.__dm.hc(); const lr = HC && HC.chart.timeScale().getVisibleLogicalRange(); return { gap: lr ? lr.to - (HC.rows.length - 0.5) : null }; }).catch(e => ({ err: e.message }));
+        add(v.morph && v.swipe && v.zoom && h.gap > 0.5 && v.same, `Стакан плавный (строки не пересоздаются), лист уровня смахивается вниз, цена одна (Главное ${v.home} = стакан ${v.book}), у графика запас справа, масштаб страницы выключен`, 'Smooth order book, the level sheet swipes down, one price on Home and in the book, room on the right of the chart, page zoom off', JSON.stringify({ v, h }));
+      }
       }
     }
   } catch (e) {
@@ -639,8 +670,10 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
   if (live) {
     const a = hours(live.ts), top = hours((live.srcTs || {}).top100), hl = hours((live.health || {}).asof);
     const f1 = x => x == null ? '—' : x.toFixed(1).replace('.', ',');
-    add(a != null && a < 11, `Сводка свежая: ${f1(a)} ч назад`, `The report is fresh: ${a == null ? '—' : a.toFixed(1)} h old`);
-    add(top != null && top < 14, `Балансы топ-100 свежие: ${f1(top)} ч назад` + (live.top100Src === 'ordinals' ? ', из блокчейна' : ''), `Top-100 balances are fresh: ${top == null ? '—' : top.toFixed(1)} h old` + (live.top100Src === 'ordinals' ? ', from the blockchain' : ''));
+    // GitHub запускает плановые сводки с опозданием до нескольких часов, а иногда пропускает; сторож (fng.yml, каждый час)
+    // запускает сводку сам, если она старше 7 ч. Поэтому «несвежая» — только старше 16 ч: значит, сломалось по-настоящему
+    add(a != null && a < 16, `Сводка свежая: ${f1(a)} ч назад`, `The report is fresh: ${a == null ? '—' : a.toFixed(1)} h old`);
+    add(top != null && top < 20, `Балансы топ-100 свежие: ${f1(top)} ч назад` + (live.top100Src === 'ordinals' ? ', из блокчейна' : ''), `Top-100 balances are fresh: ${top == null ? '—' : top.toFixed(1)} h old` + (live.top100Src === 'ordinals' ? ', from the blockchain' : ''));
     add(hl != null && hl < 36, `«Как держат DOG» (DOG DATA): срез ${f1(hl)} ч назад`, `“How DOG is held” (DOG DATA): snapshot ${hl == null ? '—' : hl.toFixed(1)} h old`);
     const bk = Object.keys(live.books || {}).length;
     add(bk >= 4, `Стаканы в сводке: ${bk} бирж`, `Order books in the report: ${bk} exchanges`);

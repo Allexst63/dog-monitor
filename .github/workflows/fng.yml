@@ -1,0 +1,105 @@
+name: Страх и жадность (каждый час) и сторож сводки
+
+# Каждый час: (1) сторож — если сводка старше 7 ч (GitHub запускает плановые задачи с опозданием на часы, а иногда
+# пропускает), запускает «Обновление DOG Монитора» сам; (2) свежие индексы страха и жадности: CoinMarketCap обновляет свой
+# в течение дня, а браузеру он не отвечает (нет CORS) — раньше сайт брал его только со сводкой, 4 раза в день, и число
+# отставало на часы. Пишет только data/fng.json (и отметку в data/version.json, чтобы открытые страницы перечитали файлы).
+on:
+  schedule:
+    - cron: '17 * * * *'      # каждый час (UTC); GitHub может запускать с задержкой
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: dogmon-fng
+  cancel-in-progress: false
+
+jobs:
+  fng:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Сторож — сводка старше 7 ч? Запустить свежую
+        continue-on-error: true      # не вышло — индексы обновляются как обычно
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          AGE=$(python3 -c "import json,datetime as d;t=json.load(open('data/version.json'))['ts'];print(int((d.datetime.now(d.timezone.utc)-d.datetime.fromisoformat(t.replace('Z','+00:00'))).total_seconds()//60))")
+          echo "сводке $AGE мин"
+          if [ "$AGE" -gt 420 ]; then
+            BUSY=$(gh run list --workflow daily.yml --limit 5 --json status --jq '[.[] | select(.status != "completed")] | length')
+            if [ "$BUSY" = "0" ]; then gh workflow run daily.yml --ref main -f mode=full && echo "запущена свежая сводка"; else echo "сводка уже идёт или ждёт очереди"; fi
+          fi
+
+      - name: Закрытая часть — есть ли ключ
+        id: ek
+        env:
+          K: ${{ secrets.ENGINE_KEY }}
+        run: if [ -n "$K" ]; then echo "on=1" >> "$GITHUB_OUTPUT"; fi
+
+      - name: Закрытая часть (движок)
+        if: ${{ steps.ek.outputs.on == '1' }}
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          repository: dog-monitor/engine
+          ssh-key: ${{ secrets.ENGINE_KEY }}
+          path: .engine
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Страх и жадность (alternative.me, CoinMarketCap, индекс DOG)
+        id: mood
+        continue-on-error: true      # источник не ответил — на сайте остаётся прошлое число, письма не будет
+        timeout-minutes: 3
+        run: |
+          if [ -f .engine/tools/mood.py ]; then PYTHONPATH=tools python3 tools/quiet.py .engine/tools/mood.py .
+          elif [ -f tools/mood.py ]; then python3 tools/mood.py .
+          else echo "закрытой части нет — пропуск"; fi
+
+      - name: Выкладка
+        if: ${{ steps.mood.outcome == 'success' }}
+        run: |
+          # изменились ли сами числа (время запроса «got» не в счёт) — иначе не коммитим
+          SAME=$(python3 - <<'EOF'
+          import json, subprocess
+          def strip(x):
+              if isinstance(x, dict): return {k: strip(v) for k, v in x.items() if k != 'got'}
+              if isinstance(x, list): return [strip(v) for v in x]
+              return x
+          try: old = json.loads(subprocess.run(['git', 'show', 'HEAD:data/fng.json'], capture_output=True, text=True).stdout)
+          except Exception: old = None
+          print('1' if strip(old) == strip(json.load(open('data/fng.json'))) else '0')
+          EOF
+          )
+          if [ "$SAME" = 1 ]; then echo "индексы не изменились"; git checkout -- data/fng.json; exit 0; fi
+          python3 - <<'EOF'
+          import json, datetime as d
+          p = 'data/version.json'; v = json.load(open(p))
+          v['fng'] = d.datetime.now(d.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+          json.dump(v, open(p, 'w'), ensure_ascii=False)
+          EOF
+          git config user.name "DOG Monitor bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/fng.json data/version.json
+          git commit -m "Страх и жадность (авто, каждый час)"
+          for i in 1 2 3 4 5; do
+            git push origin HEAD:main && exit 0
+            git fetch --depth=20 origin main
+            # пока шёл запуск, легла сводка: version.json — её (новее), fng.json — наш (свежее)
+            if ! git rebase origin/main; then
+              git checkout --ours -- data/version.json 2>/dev/null || true
+              git checkout --theirs -- data/fng.json 2>/dev/null || true
+              git add data/version.json data/fng.json
+              GIT_EDITOR=true git rebase --continue || { git rebase --abort; exit 1; }
+            fi
+          done
+          exit 1
