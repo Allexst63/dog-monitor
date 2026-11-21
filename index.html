@@ -1842,6 +1842,10 @@ dm-c.hd{color:var(--down);transition:color .12s ease}
 html{touch-action:pan-x pan-y}
 html,body{overflow-x:clip}
 @supports not (overflow:clip){body{overflow-x:hidden}}
+/* where the price comes from: «Kraken» or «Gate» (the higher of the two) — small, quiet, next to the price */
+.pxsrc{font-size:11.5px;font-weight:600;color:var(--ink-3);white-space:nowrap}
+.hero-pair .pxsrc{margin-left:8px}
+.hero-pair .pxsrc::before,.ob-mid .pxsrc::before{content:"· ";font-weight:400}
 /* an open sheet: touches on the dimmed page don't scroll it */
 .sheet-bg{touch-action:none}
 @media (prefers-reduced-motion:reduce){.ob-r,.ob2 button.h,.obbs-bar i,.imbs .bar2 i{transition:none}.ob-in{animation:none}}
@@ -2825,8 +2829,18 @@ html,body{overflow-x:clip}
   const HTF_KIND = { '15m': '15-minute candles', '1h': 'hourly candles', '4h': '4-hour candles', '1d': 'daily candles', '1w': 'weekly candles' };
   // without the live price (no connection, an archived report) — the same rule from the report's books: the higher of the Kraken
   // and Gate mids, so «Home» and the order book still show one number
-  const pxRep = s => { const b = (s || {}).books || {}, m = ['kraken', 'gate'].map(k => { const x = b[k]; return x && !x.off && x.bid > 0 && x.ask > x.bid ? (x.bid + x.ask) / 2 : null; }).filter(Boolean); return m.length ? Math.max(...m) : (((s || {}).price || {}).mid || null); };
+  const pxRepOf = s => { const b = (s || {}).books || {}; let hi = null; for (const k of ['kraken', 'gate']) { const x = b[k]; if (x && !x.off && x.bid > 0 && x.ask > x.bid && (!hi || (x.bid + x.ask) / 2 > hi[0])) hi = [(x.bid + x.ask) / 2, k]; } return hi; };
+  const pxRep = s => { const h = pxRepOf(s); return h ? h[0] : (((s || {}).price || {}).mid || null); };
   const nowPx = () => { const s = V(); return livePx() || pxRep(s); };
+  // which exchange the price on screen comes from — 'kraken' | 'gate' (the label under the price and the TradingView button)
+  const pxSrc = () => { if (livePx()) return S.live.src || null; const h = pxRepOf(V()); return h ? h[1] : null; };
+  const SRCN = { kraken: 'Kraken', gate: 'Gate' };
+  function pxSrcSync() {
+    const el = $('#hpsrc'); if (!el) return;
+    const k = $('#p-overview .hero.scrub') ? null : pxSrc(), t = k ? SRCN[k] : '';
+    if (el.textContent !== t) { el.textContent = t; el.title = t ? `The higher of the Kraken and Gate prices — now ${t}` : ''; }
+    el.hidden = !t;
+  }
   const chg24 = () => { const lc = liveChg(); if (lc != null) return lc; const s = V(); return s && s.price && s.price.chg24 != null ? s.price.chg24 : null; };
   // the live price rolls («барабан»); with a finger on the chart (and right after it) the numbers are set at once
   let heroScr = false, heroPx = null;
@@ -2842,6 +2856,7 @@ html,body{overflow-x:clip}
     const w = $('#hwhen'); if (w) w.textContent = when || 'DOG · price in US dollars';
     const h = $('#p-overview .hero'); if (h) h.classList.toggle('scrub', !!scrub);
     const nw = $('#hnow'); if (nw) nw.hidden = !scrub;
+    pxSrcSync();
   }
   function resetHero() { if (!V()) return; setHero(nowPx(), chg24(), '24h', false); }
   function scrubHero(v, tSec, gate) {
@@ -2970,7 +2985,7 @@ html,body{overflow-x:clip}
   }
   // v21: room on the right like TradingView — the newest candle sits a few candles in from the right edge (hGap), and the chart
   // can be pulled left a little further (up to ~30% of the width, hGapMax), never so far that the candles leave the screen
-  const hGap = len => Math.max(2, len * 0.06), hGapMax = len => Math.max(5, len * 0.3);
+  const hGap = len => Math.max(2, len * 0.06), hGapMax = len => Math.max(4, len * 0.15);
   function rClamp(chart, L, lr) {
     if (!lr) return false;
     const len = lr.to - lr.from, mx = L - 0.5 + hGapMax(len);
@@ -3734,15 +3749,18 @@ html,body{overflow-x:clip}
   }
   function liveMid() {
     const m = [], K = LV.socks.k, G = LV.socks.g, rest = t => t && Date.now() - t < 25e3;
-    if (((K && K.ok()) || rest(LV.k.rt)) && LV.k.bid > 0 && LV.k.ask >= LV.k.bid) m.push((LV.k.bid + LV.k.ask) / 2);
-    if (((G && G.ok()) || rest(LV.g.rt)) && LV.g.bid > 0 && LV.g.ask >= LV.g.bid) m.push((LV.g.bid + LV.g.ask) / 2);
-    return m.length ? Math.max(...m) : null;
+    if (((K && K.ok()) || rest(LV.k.rt)) && LV.k.bid > 0 && LV.k.ask >= LV.k.bid) m.push([(LV.k.bid + LV.k.ask) / 2, 'kraken']);
+    if (((G && G.ok()) || rest(LV.g.rt)) && LV.g.bid > 0 && LV.g.ask >= LV.g.bid) m.push([(LV.g.bid + LV.g.ask) / 2, 'gate']);
+    if (!m.length) return null;
+    const hi = m.reduce((a, b) => b[0] > a[0] ? b : a);
+    LV.src = hi[1];
+    return hi[0];
   }
   function livePush() {
     const p = liveMid(), base = ((S.cur || {}).price || {}).mid;
     if (!(p > 0) || (base && Math.abs(p / base - 1) > 0.5)) return;
     const prev = livePrice(), open = LV.k.open > 0 ? LV.k.open : null, km = LV.k.bid > 0 && LV.k.ask >= LV.k.bid ? (LV.k.bid + LV.k.ask) / 2 : null;
-    S.live = { price: p, chg24: open ? (p / open - 1) * 100 : (S.live && S.live.chg24 != null ? S.live.chg24 : null), ts: Date.now(), stale: false, last: LV.k.last || null, kmid: km };
+    S.live = { price: p, src: LV.src || null, chg24: open ? (p / open - 1) * 100 : (S.live && S.live.chg24 != null ? S.live.chg24 : null), ts: Date.now(), stale: false, last: LV.k.last || null, kmid: km };
     applyLive(prev);
   }
   // v21: a connection that is silent (a network that blocks WebSocket, iOS or iPadOS after sleep) — its best bid and ask come from
@@ -3817,7 +3835,7 @@ html,body{overflow-x:clip}
     const hero = `<section class="hero" aria-label="DOG price">
         <div class="hero-head">
           <div class="hero-main">
-            <div class="hero-pair"><span class="hwhen" id="hwhen">DOG · price in US dollars</span><span class="live" id="hlive" hidden><i></i>live</span></div>
+            <div class="hero-pair"><span class="hwhen" id="hwhen">DOG · price in US dollars</span><span class="live" id="hlive" hidden><i></i>live</span><span class="pxsrc" id="hpsrc" hidden></span></div>
             <div class="hero-row"><div class="hero-price tnum en" id="hprice">${fp(p0)}</div><div class="hero-chg"><span class="pill ${dir(c0)}" id="hpill">${pillTxt(c0)}</span><span id="hlabel">24h</span></div></div>
           </div>
           ${heroStats(p0)}
@@ -5069,9 +5087,11 @@ html,body{overflow-x:clip}
   // strays more than 1.5% from the books (a connection lagging) is not used.
   function obPx(mids) {
     const core = Object.keys(mids || {}).filter(k => (k === 'kraken' || k === 'gate') && mids[k] > 0);
-    const hi = core.length ? Math.max(...core.map(k => mids[k])) : median(Object.values(mids || {}).filter(x => x > 0));
+    const hk = core.length ? core.reduce((a, b) => mids[b] > mids[a] ? b : a) : null;
+    const hi = hk ? mids[hk] : median(Object.values(mids || {}).filter(x => x > 0));
     const lp = livePx();
-    return lp && (!hi || Math.abs(lp / hi - 1) < 0.015) ? lp : (hi || null);
+    if (lp && (!hi || Math.abs(lp / hi - 1) < 0.015)) { obPx.src = S.live.src || hk; return lp; }
+    obPx.src = hk; return hi || null;
   }
   function obSet(s, step, bx) {
     bx = bx || S.bx;
@@ -5300,7 +5320,8 @@ html,body{overflow-x:clip}
     const midP = ref.last || ref.mid;
     const chg = !S.archived && liveChg() != null ? liveChg() : (s.price || {}).chg24;
     const spr = ref.bid && ref.ask && ref.ask >= ref.bid ? (ref.ask - ref.bid) / ((ref.ask + ref.bid) / 2) * 100 : null;
-    const midRow = `<div class="ob-mid"><b class="${dir(chg)}" id="obmidp" data-v="${esc(fp(midP))}">${fp(midP)}</b><span class="pill ${dir(chg)}" id="obmidc" data-v="${esc(pillTxt(chg))}">${pillTxt(chg)}</span><span class="s">${spr != null ? 'spread ' + n(spr, 2) + '%' : ''}</span></div>`;
+    const srcK = S.bx === 'all' && !ref.last ? obPx.src : null;
+    const midRow = `<div class="ob-mid"><b class="${dir(chg)}" id="obmidp" data-v="${esc(fp(midP))}">${fp(midP)}</b><span class="pill ${dir(chg)}" id="obmidc" data-v="${esc(pillTxt(chg))}">${pillTxt(chg)}</span>${srcK ? `<span class="pxsrc" title="${esc('The higher of the Kraken and Gate prices — now ' + SRCN[srcK])}">${SRCN[srcK]}</span>` : ''}<span class="s">${spr != null ? 'spread ' + n(spr, 2) + '%' : ''}</span></div>`;
     const unitH = usdU ? 'Value, $' : 'Amount, DOG';
     const tip = r => r.big >= OB_WALL ? ` title="${esc('Wall')}: ${esc(EXN[r.bigBy] || '')} ${qf(r.big)}"` : '';
     const lvs = A.concat(B).map(val).filter(x => x > 0).sort((x, y) => x - y);
@@ -5929,14 +5950,15 @@ html,body{overflow-x:clip}
   const chSrc = tf => tf === '1w' ? '1d' : tf;
   const weekStart = t => t - t % 86400 - ((new Date(t * 1000).getUTCDay() + 6) % 7) * 86400;
   const TV_INT = { '15m': '15', '1h': '60', '4h': '240', '1d': 'D', '1w': 'W' };
-  const tvUrl = tf => 'https://www.tradingview.com/chart/?symbol=KRAKEN%3ADOGUSD&interval=' + (TV_INT[tf] || 'D');
+  // v21: TradingView opens the exchange the price on screen comes from (Gate — GATE:DOGUSDT, otherwise Kraken — KRAKEN:DOGUSD)
+  const tvUrl = tf => 'https://www.tradingview.com/chart/?symbol=' + (pxSrc() === 'gate' ? 'GATE%3ADOGUSDT' : 'KRAKEN%3ADOGUSD') + '&interval=' + (TV_INT[tf] || 'D');
   function tvLinkFor(a) {
     const box = a.closest('#tvchart, #crchart, #pchart');
     return tvUrl(box && box.id === 'tvchart' ? CH.tf : box && box.id === 'pchart' ? S.htf : '1d');
   }
   function tvFix(a) {
     const u = tvLinkFor(a);
-    if (a.getAttribute('href') !== u) { a.setAttribute('href', u); a.target = '_blank'; a.rel = 'noopener'; a.title = 'Open the DOG/USD chart on TradingView'; a.setAttribute('aria-label', a.title); }
+    if (a.getAttribute('href') !== u) { a.setAttribute('href', u); a.target = '_blank'; a.rel = 'noopener'; a.title = 'Open the DOG chart on TradingView (' + (pxSrc() === 'gate' ? 'Gate' : 'Kraken') + ')'; a.setAttribute('aria-label', a.title); }
   }
   ['pointerdown', 'touchstart', 'mouseover', 'focusin', 'click'].forEach(ev => document.addEventListener(ev, e => {
     const a = e.target && e.target.closest ? e.target.closest('a#tv-attr-logo') : null;
@@ -8255,6 +8277,12 @@ html,body{overflow-x:clip}
   const UMAMI_ID = '';
   const statOn = !!UMAMI_ID && /(^|\.)github\.io$/.test(location.hostname) && !/[?&]nostat=1\b/.test(location.search);
   const track = (name, data) => { try { if (statOn && window.umami && typeof window.umami.track === 'function') window.umami.track(name, data); } catch (e) { } };
+  // v21: a script error on a visitor's device goes to the visit counter as an event — the message, the place and the screen
+  // size, nothing personal; each error once, at most 3 per visit. A bug that shows only on someone's phone is seen and fixed.
+  { let n = 0; const seen = new Set();
+    const rep = (m, at) => { m = String(m || '').slice(0, 120); if (!statOn || n >= 3 || !m || m === 'Script error.' || seen.has(m + at)) return; seen.add(m + at); n++; track('js-error', { m, at: String(at || '').slice(0, 60), scr: innerWidth + 'x' + innerHeight }); };
+    addEventListener('error', e => { if (e && e.message) rep(e.message, (String(e.filename || '').split('/').pop() || 'page') + ':' + (e.lineno || 0)); });
+    addEventListener('unhandledrejection', e => { const r = e && e.reason; rep('promise: ' + ((r && (r.message || r)) || ''), ''); }); }
   if (statOn) {
     const sc = document.createElement('script');
     sc.defer = true; sc.src = 'https://cloud.umami.is/script.js';

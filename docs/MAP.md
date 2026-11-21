@@ -4,7 +4,7 @@
 
 ## index.html
 
-index.html — 8469 строк. Разделы (строка начала) и функции раздела (имя:строка).
+index.html — 8497 строк. Разделы (строка начала) и функции раздела (имя:строка).
 
 ### Стили (CSS)
 
@@ -20,76 +20,76 @@ index.html — 8469 строк. Разделы (строка начала) и ф
 
 ### Скрипт (JS)
 
-- **1913: language: English only (the Russian version lives in git history, branch design-v10-ru)** — P:1918, nTitle:1925, nSum:1926, srcTr:1927, bandTr:1929, ico:1976, RM:1977
-- **1982: rolling digits («барабан»): a number that changes by itself (live price, the DOG index, t…** — rollTr:1986, rollNum:1987, rollLh:1988, rollBuild:1993, rollSet:2004
-- **2045: switches: the selected option's background is its own «pill» that glides to the new choic…** — slKey:2050, slBtns:2051, slPlace:2052, slScan:2078
-- **2144: a list of choices (the order book's price step): the chosen row has a highlight that glid…** — vswPlace:2146, vswPick:2158
-- **2221: formatting** — grp:2223, n:2224, fp:2229, dol:2238, fpd:2239, sg:2240, dir:2246, cls:2247, dcls:2248, short:2249, mdog:2250, usd:2251, usdM:2261, m1:2262, m1usd:2263, m1s:2264, toDate:2267, dtl:2281, tl:2282, dml:2283, sameDay:2284, when:2285, ago:2291, dayName:2300, isFull:2307
-- **2309: owner labels** — nameTr:2311, noteTr:2350, chkTr:2374, ownName:2380, avatar:2385, kindTag:2390, whoTxt:2392
-- **2394: view data** — V:2395, skelHtml:2396, topStale:2397, staleTxt:2403, topSince:2404, prevLabel:2408, biggestWall:2412, wallText:2423
-- **2432: navigation** — navHtml:2433, setBadge:2439, tbSync:2440, setTab:2441
-- **2563: status** — setStatus:2564
-- **2593: bottom sheet** — SH:2595, isPhone:2596, sheetReset:2597, openSheet:2602, closeSheet:2616, copyBtn:2717, toast:2731
-- **2738: charts** — niceTicks:2739, svgEl:2747, attachCross:2748
-- **2784: price: chart data** — priceRows:2785, priceSeries:2811, pillTxt:2812
-- **2813: Home: price and chart — Kraken candles by interval, as on Charts (15m · 1h · 4h · 1d · 1w)** — heroRows:2818, heroKey:2824, pxRep:2828, nowPx:2829, chg24:2830, setHero:2833, resetHero:2846, scrubHero:2847, chartLabel:2853
-- **2858: price: TradingView Lightweight Charts (Apache-2.0)** — lwRedraw:2862, ut:2884, fuDM:2885, tickFmt:2886, killChart:2894, addSer:2895, heroAt:2901, heroPin:2907, hlegSet:2918, hwhatSync:2926, lastBtn:2951, toEnd:2959, hGap:2973, rClamp:2974, lastSync:2981, heroGrow:2991, hlegMargins:3008, drawLW:3012
-- **3076: Home chart height: first screen shows indexes, price and the whole chart** — fitHomeChart:3078
-- **3099: light tick under the finger when it moves to another candle** — haptic:3101
-- **3115: Home chart by finger — like exchange apps**
-- **3262: other (own SVG) charts: a sideways finger never scrolls the page** — drawPrice:3286, drawPriceSvg:3314, lineChart:3346
-- **3380: moon** — moonSvg:3381
-- **3394: daily summary in English, built from the same data as the report (tools/dogmon.py highlig…** — alertsEn:3395, isExK:3428, briefOf:3429
-- **3445: stories** — dOf:3446, treItem:3447, buildStories:3452, sparkSvg:3504, storyKey:3513, markSeen:3514, SF:3522, openStory:3523, closeStory:3543, showSlide:3565, nextSlide:3584, prevSlide:3590, nextStory:3595, prevStory:3596, pauseStory:3597, resumeStory:3604, springStory:3612
-- **3674: news** — freshNews:3675
-- **3680: live price: Kraken and Gate over WebSocket (public site only)** — livePrice:3681, livePx:3683, liveChg:3684, applyLive:3685, liveSock:3716, liveMid:3735, livePush:3741, liveRest:3750, liveSoon:3762, startLive:3767
-- **3798: HOME** — histDelta:3799, heroStats:3808, renderOverview:3811, refreshHomeParts:3845
-- **3850: fear & greed: whole market (alternative.me, CoinMarketCap) and DOG (own index, tools/mood…** — fngZi:3853, fngCol:3854, fngName:3855, fngDay:3856, capS:3857, gaugeSvg:3858, fngMarket:3870, fngCmc:3874
-- **3875: DOG index "now": read off the server's curve for today (the index as a function of DOG's …** — dogLive:3877, fngNow:3889, fngTick:3890, fngSheetLive:3895, fngHtml:3914, paintFng:3930, fngLive:3945, fngSpark:3957, fngKv:3964, FNG_SCALE:3965, fngMktChart:3969, fngMarketSheet:3976, fngCmcSheet:3988, fngDmy:4001
-- **4002: index chart with price (DOG or bitcoin): tap or slide — date, index and price** — btcFmt:4005, btcNowMap:4006, pxMap:4007, fngGe:4011, fngLe:4012, fngTurns:4013, fngTurnsList:4025, ficPath:4031, fngChart:4033, ficRead:4053, ficSet:4060, ficAt:4074, fngDogSheet:4099, tile:4152, moodOf:4153, xTxt:4161, whNow:4162, whSince:4171, tilesHtml:4172, evHtml:4183, bigK:4186, bigMin:4187, bigLab:4188, stpHtml:4189, stpPaint:4196, stpSet:4204, summaryHtml:4233, briefSheet:4243, exchangesHtml:4251, mirNoteHtml:4266, monY:4271, treChart:4272, treasuryHtml:4292
-- **4303: Home → DOG and meme coins: six cards for 7, 30 or 90 days. A new period re-ranks the 12 c…** — monoSpline:4310, hmSpark:4330, hmData:4337, hmKey:4351, hmX:4352, hmLine:4353, hmArea:4354, hmAria:4355, hmCard:4356, memesMiniHtml:4360, hmPaint:4369, hmSwitch:4376, hmMorph:4415, treSheet:4432, events:4450, hbarsHtml:4459, ageCardHtml:4460, exchCardHtml:4474, histLine:4487, ddSer:4497, serLine:4505, serDelta:4513, statD:4519
-- **4521: "what this means" notes** — infoBtn:4522, hInfo:4523, openInfo:4599, sheetNavSync:4617, animateIntro:4621, openChecks:4647, openMore:4649
-- **4671: ORDER BOOK**
-- **4672: ORDER BOOK: combined book, like an exchange** — toU:4682, stepDec:4683, fpx:4684, pctOf:4685, qf:4686, usdC:4694, amtF:4700, agoS:4701
-- **4703: order book data** — obFresh:4712, obPut:4713, obSeed:4736, obFetch:4746, obLoop:4765
-- **4786: Kraken, Gate, MEXC and BingX live: WebSocket** — gT:4787, wsCan:4795, wsOpen:4796, wsClose:4823, wsWant:4829, wsOn:4834, wsReset:4835, wsSend:4836, wsAlive:4837, wsBook:4843, trLive:4861, krakenMsg:4870, krakenFlush:4887, gateMsg:4897, wsTrades:4906, pbRead:4916, pbStr:4927, mexcMsg:4928, bingxMsg:4955
-- **4972: mirror exchange: a book that repeats another exchange (same orders twice)** — obLad:4974, obMirOf:4981, obSrc:4997, obDeep:5015, obOldDeep:5049, obHybrid:5056, obMidOf:5066, obPx:5070, obSet:5076, obFineStep:5103, obAgg:5104, obRef:5165, obCtx:5169, obRowsN:5174, obBand:5175, obHistPush:5182
-- **5191: feed: big orders added, pulled, resized — while the site is open** — obDiff:5192, obEvText:5217
-- **5226: view: exchanges, book, metrics** — segB:5227, obChipsHtml:5233, obNoteHtml:5242, obSepHtml:5277, obBookHtml:5283, obStatusHtml:5347, obAge:5358, obCardHtml:5363
-- **5375: who is stronger near the price: plain-words book summary** — obFine:5376, obImbHtml:5377, obMetricsHtml:5396, obImbSheet:5445, obBigHtml:5446, obChgHtml:5458
-- **5468: book feed** — obFeedHtml:5469
-- **5478: trades: what actually executed (Kraken and Gate)** — trParse:5481, trPut:5499, trFetch:5515, tls:5524, trHtml:5525
-- **5546: level details (tap a book row)** — obRowSheet:5547, obStepSheet:5587
-- **5599: indicators: moving averages and RSI (Charts tab)** — taSma:5600, taEma:5601, taRsi:5609, drawDepth:5620
-- **5658: each exchange** — depthRow:5659, wallList:5666, exListHtml:5680, exSheet:5692, exCardsHtml:5697, venuesHtml:5736
-- **5752: Order book tab** — renderBooks:5753
-- **5777: smooth repaint (v21): the new HTML is laid over the old DOM instead of replacing it («mor…** — mKey:5783, mSkip:5784, mAttrs:5785, mNode:5793, mKids:5810, morph:5828, obPaintBook:5829, obSoon:5843, obPaint:5854
-- **5920: CHARTS: TradingView-style candles (RSI and MACD below), delta and correlation with bitcoin** — chIntra:5928, chSrc:5929, weekStart:5930, tvUrl:5932, tvLinkFor:5933, tvFix:5937, tvFixAll:5945, hexA:5948, chColors:5949, lwOk:5953, lwSer:5954, lwChart:5955, chKill:5968, lwPanes:5969, chWait:5970, lwFailTxt:5971
-- **5973: Kraken candles** — chStored:5974, chWeekly:5978, chInstant:5990, chFresh:6000, chOhlc:6001
-- **6018: deep history: Kraken keeps 720 candles, older ones come from Gate (DOG/USDT)** — pxDays:6025, chFull:6034, chKeepLost:6042, chCanMore:6050, chLoadingMore:6051, gateRows:6052, chMore:6060, chMoreDone:6096, chMoreUi:6101, chWithLive:6112, chInd:6120
-- **6132: main chart** — chDrawTV:6133, chFill:6235, chGrow:6252, chPin:6268, tvLabels:6274, chLegend:6285, chRead:6297, chLive:6321
-- **6331: DOG and bitcoin since DOG launch** — crSrv:6332, crBtc:6333, corrOf:6360, betaOf:6361, crCalc:6362, corrWord:6378, mvEn:6379, crDraw:6380
-- **6475: DOG and meme coins (data/memes.json, tools/memes.py): change since the start of the period** — mmCol:6479, mmPct:6481, mmCalc:6482, mmTicks:6507, mmDraw:6518, mmPlot:6532, mmShow:6545, mmNote:6566, mmIdx:6573, mmNear:6574
-- **6599: Charts tab** — chStatsHtml:6600
-- **6607: Fear & greed: the history of all three indices. Lives right on the Charts tab (#f3s-in) a…** — f3sR:6613, f3sLinks:6614, fngChartsHtml:6619, f3sKey:6626, paintFngCharts:6627, f3sData:6636, f3Date:6659, f3Ax:6660, f3sPx:6662, f3sRead:6670, f3sPaneIn:6681, f3sPane:6694, f3sPlot:6695, f3sStats:6708, f3sBody:6718, fngAllSheet:6727, f3sPer:6735, f3sSet:6749, f3sFocus:6769, f3sShow:6787, f3sRestore:6794, f3sAt:6799, f3GoBtn:6831, renderCharts:6840, chDrawAll:6872, chLoop:6877
-- **6916: WALLETS** — walletSheet:6917
-- **6934: average DOG cost per wallet (data/costbasis.json, tools/costbasis.py)** — costOf:6935, curPrice:6936, vsAvg:6937, airTxt:6942, costLine:6943, costBlock:6950, holdersCost:6967
-- **6977: balance sparklines (data/wallets.json)** — isEx:6978, balSeries:6979, sparkW:6985
-- **7003: wallets: 24h summary** — walletsSummaryHtml:7004
-- **7027: wallets: who holds DOG** — ownersData:7028, ownersHtml:7041, countTo:7050, tierState:7066, tierAnim:7072, ring1:7091, tiersData:7100, tiersHtml:7129, whSpark:7175, whalesDetail:7185, whalesCardHtml:7245, t100ChgHtml:7261, renderWallets:7269, balanceCols:7314
-- **7350: NEWS** — renderNews:7351
-- **7388: HISTORY** — renderHistory:7389, drawHistCharts:7405
-- **7425: GUIDE** — renderHelp:7457
-- **7466: shared render** — drawCharts:7467
-- **7477: UPDATE NOW: fresh data straight from the page + self-check** — cachedOhlc:7498, pause:7512, num:7513, rnd:7514, sumOf:7515, median:7516, mirScore:7517, isMir:7530, pad2:7531, hmU:7532, isoS:7533, isExK2:7534, upGet:7536, prevSnap:7548
-- **7556: parsing responses** — lvls:7557, parseBook:7567, firstList:7583, addrOf:7592, ohlcRows:7593
-- **7604: calculation, as in tools/dogmon.py** — depthOf:7605, ladderOf:7614, wallsOf:7620, wallChanges:7625, wdKey:7656, entMap:7657, prevTopOf:7668, chartOf:7676
-- **7694: live summary on top of the morning report** — buildLive:7695, sinceItems:7911
-- **7955: startup** — runUpdate:7958, applyUpdate:8003, scheduleSoft:8019, softRender:8024, refreshChart:8049
-- **8064: update UI** — upRowState:8065, srcListHtml:8072, chkLi:8085, updSheetHtml:8086, openUpd:8117, paintUpd:8121, autoTick:8134, isStandalone:8191, isIOS:8192, installRowHtml:8193, themeNow:8212, setTheme:8213, themeSwitch:8221
-- **8227: keep the screen on: on an iPad or a computer the page can stand on the table like a clock…** — awakeOn:8231, wakeSync:8232
-- **8252: visit counts: Umami Cloud — no cookies, nothing personal. Off while UMAMI_ID is empty** — track:8257, siteUrl:8279, renderAll:8296
-- **8307: site data: JSON files in data/, refreshed by the scheduled update** — siteDb:8308
+- **1917: language: English only (the Russian version lives in git history, branch design-v10-ru)** — P:1922, nTitle:1929, nSum:1930, srcTr:1931, bandTr:1933, ico:1980, RM:1981
+- **1986: rolling digits («барабан»): a number that changes by itself (live price, the DOG index, t…** — rollTr:1990, rollNum:1991, rollLh:1992, rollBuild:1997, rollSet:2008
+- **2049: switches: the selected option's background is its own «pill» that glides to the new choic…** — slKey:2054, slBtns:2055, slPlace:2056, slScan:2082
+- **2148: a list of choices (the order book's price step): the chosen row has a highlight that glid…** — vswPlace:2150, vswPick:2162
+- **2225: formatting** — grp:2227, n:2228, fp:2233, dol:2242, fpd:2243, sg:2244, dir:2250, cls:2251, dcls:2252, short:2253, mdog:2254, usd:2255, usdM:2265, m1:2266, m1usd:2267, m1s:2268, toDate:2271, dtl:2285, tl:2286, dml:2287, sameDay:2288, when:2289, ago:2295, dayName:2304, isFull:2311
+- **2313: owner labels** — nameTr:2315, noteTr:2354, chkTr:2378, ownName:2384, avatar:2389, kindTag:2394, whoTxt:2396
+- **2398: view data** — V:2399, skelHtml:2400, topStale:2401, staleTxt:2407, topSince:2408, prevLabel:2412, biggestWall:2416, wallText:2427
+- **2436: navigation** — navHtml:2437, setBadge:2443, tbSync:2444, setTab:2445
+- **2567: status** — setStatus:2568
+- **2597: bottom sheet** — SH:2599, isPhone:2600, sheetReset:2601, openSheet:2606, closeSheet:2620, copyBtn:2721, toast:2735
+- **2742: charts** — niceTicks:2743, svgEl:2751, attachCross:2752
+- **2788: price: chart data** — priceRows:2789, priceSeries:2815, pillTxt:2816
+- **2817: Home: price and chart — Kraken candles by interval, as on Charts (15m · 1h · 4h · 1d · 1w)** — heroRows:2822, heroKey:2828, pxRepOf:2832, pxRep:2833, nowPx:2834, pxSrc:2836, pxSrcSync:2838, chg24:2844, setHero:2847, resetHero:2861, scrubHero:2862, chartLabel:2868
+- **2873: price: TradingView Lightweight Charts (Apache-2.0)** — lwRedraw:2877, ut:2899, fuDM:2900, tickFmt:2901, killChart:2909, addSer:2910, heroAt:2916, heroPin:2922, hlegSet:2933, hwhatSync:2941, lastBtn:2966, toEnd:2974, hGap:2988, rClamp:2989, lastSync:2996, heroGrow:3006, hlegMargins:3023, drawLW:3027
+- **3091: Home chart height: first screen shows indexes, price and the whole chart** — fitHomeChart:3093
+- **3114: light tick under the finger when it moves to another candle** — haptic:3116
+- **3130: Home chart by finger — like exchange apps**
+- **3277: other (own SVG) charts: a sideways finger never scrolls the page** — drawPrice:3301, drawPriceSvg:3329, lineChart:3361
+- **3395: moon** — moonSvg:3396
+- **3409: daily summary in English, built from the same data as the report (tools/dogmon.py highlig…** — alertsEn:3410, isExK:3443, briefOf:3444
+- **3460: stories** — dOf:3461, treItem:3462, buildStories:3467, sparkSvg:3519, storyKey:3528, markSeen:3529, SF:3537, openStory:3538, closeStory:3558, showSlide:3580, nextSlide:3599, prevSlide:3605, nextStory:3610, prevStory:3611, pauseStory:3612, resumeStory:3619, springStory:3627
+- **3689: news** — freshNews:3690
+- **3695: live price: Kraken and Gate over WebSocket (public site only)** — livePrice:3696, livePx:3698, liveChg:3699, applyLive:3700, liveSock:3731, liveMid:3750, livePush:3759, liveRest:3768, liveSoon:3780, startLive:3785
+- **3816: HOME** — histDelta:3817, heroStats:3826, renderOverview:3829, refreshHomeParts:3863
+- **3868: fear & greed: whole market (alternative.me, CoinMarketCap) and DOG (own index, tools/mood…** — fngZi:3871, fngCol:3872, fngName:3873, fngDay:3874, capS:3875, gaugeSvg:3876, fngMarket:3888, fngCmc:3892
+- **3893: DOG index "now": read off the server's curve for today (the index as a function of DOG's …** — dogLive:3895, fngNow:3907, fngTick:3908, fngSheetLive:3913, fngHtml:3932, paintFng:3948, fngLive:3963, fngSpark:3975, fngKv:3982, FNG_SCALE:3983, fngMktChart:3987, fngMarketSheet:3994, fngCmcSheet:4006, fngDmy:4019
+- **4020: index chart with price (DOG or bitcoin): tap or slide — date, index and price** — btcFmt:4023, btcNowMap:4024, pxMap:4025, fngGe:4029, fngLe:4030, fngTurns:4031, fngTurnsList:4043, ficPath:4049, fngChart:4051, ficRead:4071, ficSet:4078, ficAt:4092, fngDogSheet:4117, tile:4170, moodOf:4171, xTxt:4179, whNow:4180, whSince:4189, tilesHtml:4190, evHtml:4201, bigK:4204, bigMin:4205, bigLab:4206, stpHtml:4207, stpPaint:4214, stpSet:4222, summaryHtml:4251, briefSheet:4261, exchangesHtml:4269, mirNoteHtml:4284, monY:4289, treChart:4290, treasuryHtml:4310
+- **4321: Home → DOG and meme coins: six cards for 7, 30 or 90 days. A new period re-ranks the 12 c…** — monoSpline:4328, hmSpark:4348, hmData:4355, hmKey:4369, hmX:4370, hmLine:4371, hmArea:4372, hmAria:4373, hmCard:4374, memesMiniHtml:4378, hmPaint:4387, hmSwitch:4394, hmMorph:4433, treSheet:4450, events:4468, hbarsHtml:4477, ageCardHtml:4478, exchCardHtml:4492, histLine:4505, ddSer:4515, serLine:4523, serDelta:4531, statD:4537
+- **4539: "what this means" notes** — infoBtn:4540, hInfo:4541, openInfo:4617, sheetNavSync:4635, animateIntro:4639, openChecks:4665, openMore:4667
+- **4689: ORDER BOOK**
+- **4690: ORDER BOOK: combined book, like an exchange** — toU:4700, stepDec:4701, fpx:4702, pctOf:4703, qf:4704, usdC:4712, amtF:4718, agoS:4719
+- **4721: order book data** — obFresh:4730, obPut:4731, obSeed:4754, obFetch:4764, obLoop:4783
+- **4804: Kraken, Gate, MEXC and BingX live: WebSocket** — gT:4805, wsCan:4813, wsOpen:4814, wsClose:4841, wsWant:4847, wsOn:4852, wsReset:4853, wsSend:4854, wsAlive:4855, wsBook:4861, trLive:4879, krakenMsg:4888, krakenFlush:4905, gateMsg:4915, wsTrades:4924, pbRead:4934, pbStr:4945, mexcMsg:4946, bingxMsg:4973
+- **4990: mirror exchange: a book that repeats another exchange (same orders twice)** — obLad:4992, obMirOf:4999, obSrc:5015, obDeep:5033, obOldDeep:5067, obHybrid:5074, obMidOf:5084, obPx:5088, obSet:5096, obFineStep:5123, obAgg:5124, obRef:5185, obCtx:5189, obRowsN:5194, obBand:5195, obHistPush:5202
+- **5211: feed: big orders added, pulled, resized — while the site is open** — obDiff:5212, obEvText:5237
+- **5246: view: exchanges, book, metrics** — segB:5247, obChipsHtml:5253, obNoteHtml:5262, obSepHtml:5297, obBookHtml:5303, obStatusHtml:5368, obAge:5379, obCardHtml:5384
+- **5396: who is stronger near the price: plain-words book summary** — obFine:5397, obImbHtml:5398, obMetricsHtml:5417, obImbSheet:5466, obBigHtml:5467, obChgHtml:5479
+- **5489: book feed** — obFeedHtml:5490
+- **5499: trades: what actually executed (Kraken and Gate)** — trParse:5502, trPut:5520, trFetch:5536, tls:5545, trHtml:5546
+- **5567: level details (tap a book row)** — obRowSheet:5568, obStepSheet:5608
+- **5620: indicators: moving averages and RSI (Charts tab)** — taSma:5621, taEma:5622, taRsi:5630, drawDepth:5641
+- **5679: each exchange** — depthRow:5680, wallList:5687, exListHtml:5701, exSheet:5713, exCardsHtml:5718, venuesHtml:5757
+- **5773: Order book tab** — renderBooks:5774
+- **5798: smooth repaint (v21): the new HTML is laid over the old DOM instead of replacing it («mor…** — mKey:5804, mSkip:5805, mAttrs:5806, mNode:5814, mKids:5831, morph:5849, obPaintBook:5850, obSoon:5864, obPaint:5875
+- **5941: CHARTS: TradingView-style candles (RSI and MACD below), delta and correlation with bitcoin** — chIntra:5949, chSrc:5950, weekStart:5951, tvUrl:5954, tvLinkFor:5955, tvFix:5959, tvFixAll:5967, hexA:5970, chColors:5971, lwOk:5975, lwSer:5976, lwChart:5977, chKill:5990, lwPanes:5991, chWait:5992, lwFailTxt:5993
+- **5995: Kraken candles** — chStored:5996, chWeekly:6000, chInstant:6012, chFresh:6022, chOhlc:6023
+- **6040: deep history: Kraken keeps 720 candles, older ones come from Gate (DOG/USDT)** — pxDays:6047, chFull:6056, chKeepLost:6064, chCanMore:6072, chLoadingMore:6073, gateRows:6074, chMore:6082, chMoreDone:6118, chMoreUi:6123, chWithLive:6134, chInd:6142
+- **6154: main chart** — chDrawTV:6155, chFill:6257, chGrow:6274, chPin:6290, tvLabels:6296, chLegend:6307, chRead:6319, chLive:6343
+- **6353: DOG and bitcoin since DOG launch** — crSrv:6354, crBtc:6355, corrOf:6382, betaOf:6383, crCalc:6384, corrWord:6400, mvEn:6401, crDraw:6402
+- **6497: DOG and meme coins (data/memes.json, tools/memes.py): change since the start of the period** — mmCol:6501, mmPct:6503, mmCalc:6504, mmTicks:6529, mmDraw:6540, mmPlot:6554, mmShow:6567, mmNote:6588, mmIdx:6595, mmNear:6596
+- **6621: Charts tab** — chStatsHtml:6622
+- **6629: Fear & greed: the history of all three indices. Lives right on the Charts tab (#f3s-in) a…** — f3sR:6635, f3sLinks:6636, fngChartsHtml:6641, f3sKey:6648, paintFngCharts:6649, f3sData:6658, f3Date:6681, f3Ax:6682, f3sPx:6684, f3sRead:6692, f3sPaneIn:6703, f3sPane:6716, f3sPlot:6717, f3sStats:6730, f3sBody:6740, fngAllSheet:6749, f3sPer:6757, f3sSet:6771, f3sFocus:6791, f3sShow:6809, f3sRestore:6816, f3sAt:6821, f3GoBtn:6853, renderCharts:6862, chDrawAll:6894, chLoop:6899
+- **6938: WALLETS** — walletSheet:6939
+- **6956: average DOG cost per wallet (data/costbasis.json, tools/costbasis.py)** — costOf:6957, curPrice:6958, vsAvg:6959, airTxt:6964, costLine:6965, costBlock:6972, holdersCost:6989
+- **6999: balance sparklines (data/wallets.json)** — isEx:7000, balSeries:7001, sparkW:7007
+- **7025: wallets: 24h summary** — walletsSummaryHtml:7026
+- **7049: wallets: who holds DOG** — ownersData:7050, ownersHtml:7063, countTo:7072, tierState:7088, tierAnim:7094, ring1:7113, tiersData:7122, tiersHtml:7151, whSpark:7197, whalesDetail:7207, whalesCardHtml:7267, t100ChgHtml:7283, renderWallets:7291, balanceCols:7336
+- **7372: NEWS** — renderNews:7373
+- **7410: HISTORY** — renderHistory:7411, drawHistCharts:7427
+- **7447: GUIDE** — renderHelp:7479
+- **7488: shared render** — drawCharts:7489
+- **7499: UPDATE NOW: fresh data straight from the page + self-check** — cachedOhlc:7520, pause:7534, num:7535, rnd:7536, sumOf:7537, median:7538, mirScore:7539, isMir:7552, pad2:7553, hmU:7554, isoS:7555, isExK2:7556, upGet:7558, prevSnap:7570
+- **7578: parsing responses** — lvls:7579, parseBook:7589, firstList:7605, addrOf:7614, ohlcRows:7615
+- **7626: calculation, as in tools/dogmon.py** — depthOf:7627, ladderOf:7636, wallsOf:7642, wallChanges:7647, wdKey:7678, entMap:7679, prevTopOf:7690, chartOf:7698
+- **7716: live summary on top of the morning report** — buildLive:7717, sinceItems:7933
+- **7977: startup** — runUpdate:7980, applyUpdate:8025, scheduleSoft:8041, softRender:8046, refreshChart:8071
+- **8086: update UI** — upRowState:8087, srcListHtml:8094, chkLi:8107, updSheetHtml:8108, openUpd:8139, paintUpd:8143, autoTick:8156, isStandalone:8213, isIOS:8214, installRowHtml:8215, themeNow:8234, setTheme:8235, themeSwitch:8243
+- **8249: keep the screen on: on an iPad or a computer the page can stand on the table like a clock…** — awakeOn:8253, wakeSync:8254
+- **8274: visit counts: Umami Cloud — no cookies, nothing personal. Off while UMAMI_ID is empty** — track:8279, siteUrl:8307, renderAll:8324
+- **8335: site data: JSON files in data/, refreshed by the scheduled update** — siteDb:8336
 
 ## tools/
 
@@ -105,7 +105,7 @@ index.html — 8469 строк. Разделы (строка начала) и ф
 - `mood.py` (411 стр.) — DOG Монитор — «страх и жадность»: два индекса всего рынка и свой индекс для DOG.
 - `newsfeed.py` (114 стр.) — DOG Монитор — кандидаты в новости (для задачи Claude, которая отбирает и пишет их по-русски).
 - `quiet.py` (35 стр.) — Runs a script from the closed part of DOG Monitor (dog-monitor/engine) inside a public GitHub Actions run.
-- `selfcheck.js` (689 стр.) — DOG Монитор — автопроверка сайта в настоящем браузере (телефонный экран).
+- `selfcheck.js` (694 стр.) — DOG Монитор — автопроверка сайта в настоящем браузере (телефонный экран).
 - `sitepub.py` (155 стр.) — Выкладка сводки DOG Монитора на публичный сайт.
 - `siteurl.py` (80 стр.) — DOG Монитор — адрес сайта в одном месте.
 - `whales.py` (292 стр.) — DOG Монитор — кошельки от 10 млн DOG: полный список, кто пришёл и кто ушёл, сверка балансов с блокчейном.

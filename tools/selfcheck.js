@@ -217,9 +217,11 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
         await page.waitForTimeout(400);
       }
     }
-    // стакан собирается из живых соединений бирж — ждём, пока покажет уровни (раньше сразу считали — и раз в день-два ловили 7)
-    await wait(() => document.querySelectorAll('#p-books .ob-r, #p-books [data-lv], #p-books tr').length >= 10, 15000);
-    const rows = await page.evaluate(() => document.querySelectorAll('#p-books .ob-r, #p-books [data-lv], #p-books tr').length);
+    // стакан собирается из живых соединений бирж — ждём, пока покажет уровни; считаем строки любого вида (колонка .ob-r и
+    // «две стороны» .ob2 .h — раньше вторые не считались, и если стакан оставался в этом виде, выходило «7»: письма 19–20.11)
+    const OBR = '#p-books .ob-r, #p-books .ob2 .h[data-ob], #p-books [data-lv], #p-books tr';
+    await wait(s => document.querySelectorAll(s).length >= 10, 15000, OBR);
+    const rows = await page.evaluate(s => document.querySelectorAll(s).length, OBR);
     add(rows >= 10 && await noOverflow(), `Стакан: уровни цен показаны (${rows})`, `Order book: price levels are shown (${rows})`);
     // сводный стакан: все покупки ниже цены, все продажи выше (без «пересечений» между биржами)
     const ob = await page.evaluate(() => { const num = e => parseFloat(e.textContent.replace(',', '.')); const b = [...document.querySelectorAll('#obcard .ob-r.b .p, #obcard .ob2 .h.b .p')].map(num), a = [...document.querySelectorAll('#obcard .ob-r.a .p, #obcard .ob2 .h.a .p')].map(num), m = document.querySelector('#obmidp'); return { b: b.length ? Math.max(...b) : null, a: a.length ? Math.min(...a) : null, m: m ? num(m) : null }; });
@@ -251,7 +253,10 @@ const hours = iso => { const t = Date.parse(iso || ''); return isNaN(t) ? null :
     add(await page.evaluate(() => !!document.querySelector('#tvleg .tv-when')), 'Графики: нажатие на свечу показывает её дату и цены', 'Charts: tapping a candle shows its date and prices');
     // значок TradingView → график DOG/USD
     const tv = await page.evaluate(() => { const a = document.querySelector('#tvchart a#tv-attr-logo'); return a ? a.getAttribute('href') : null; });
-    add(tv && /tradingview\.com\/chart\/\?symbol=KRAKEN%3ADOGUSD/.test(tv), 'Значок TradingView открывает график DOG/USD', 'The TradingView mark opens the DOG/USD chart', tv);
+    // v21: TradingView — та биржа, чья цена на экране (подпись под ценой: Kraken → KRAKEN:DOGUSD, Gate → GATE:DOGUSDT)
+    const tvSrc = await page.evaluate(() => (document.querySelector('#hpsrc') || {}).textContent || '');
+    const tvOk = tv && (/Gate/.test(tvSrc) ? /tradingview\.com\/chart\/\?symbol=GATE%3ADOGUSDT/ : /tradingview\.com\/chart\/\?symbol=KRAKEN%3ADOGUSD/).test(tv);
+    add(tvOk, `Значок TradingView открывает график DOG той биржи, чья цена на экране (${tvSrc || 'Kraken'})`, 'The TradingView mark opens the DOG chart of the exchange whose price is shown', tv + ' · ' + tvSrc);
     // DOG и биткоин
     await page.evaluate(() => { const e = document.querySelector('#crchart'); if (e) e.scrollIntoView({ block: 'center' }); });
     const cr = await wait(() => !!document.querySelector('#crchart canvas') && /BTC/.test((document.querySelector('#crleg') || {}).textContent || ''), 25000);
