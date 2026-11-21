@@ -7473,7 +7473,7 @@ html,body{overflow-x:clip}
         <p><b>Method.</b> The price is the median of the mid-prices of the Kraken, Gate, MEXC and BingX order books (on a live update — of Kraken and Gate). Market cap = price × 100B DOG. The combined order book adds up all exchanges at the chosen step (0.0000001–0.0001); Gate shares its nearest 100 levels exactly and deeper ones in 0.00001 steps; MEXC (nearest 20 levels) and BingX (100 levels) stream live — if that connection fails, they show the latest report and stay out of the live combined book; an exchange whose price differs from the others by more than 3% is left out. A wall is a level of 5M DOG or more. Indicators use Kraken candles: RSI 14 (Wilder), MACD 12/26/9 as a percentage of the price, Bollinger Bands 20/2, simple moving averages 20/50/200. The link to bitcoin is the Pearson correlation of daily log returns; beta is how much DOG moves on average per 1% move in bitcoin (90 days).</p>
         <p><b>Wallet owners.</b> Exchanges and services are labelled using DOG DATA tags, exchange disclosures and flow analysis. A label is an estimate, not a confirmed owner.</p>
         <p><b>Chart</b> built with <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener">Lightweight Charts™ by TradingView</a>.</p>
-        <p><b>This site</b> is an unofficial project, not affiliated with the DOG team, any exchange or C2 Blockchain, and it is not investment advice. It uses no cookies and no analytics; view settings (tab, chart period, theme) are stored only in your browser. For fresh data, your browser requests public data directly from Kraken, Gate, DigiFinex, CoinW, MEXC and BingX, Coinbase and DOG DATA. The Inter font (SIL OFL) and the chart library are hosted on the site itself (jsDelivr is only a fallback for the library).</p>
+        <p><b>This site</b> is an unofficial project, not affiliated with the DOG team, any exchange or C2 Blockchain, and it is not investment advice. It uses no cookies; visits are counted anonymously with Umami (no personal data, nothing that identifies you); view settings (tab, chart period, theme) are stored only in your browser. For fresh data, your browser requests public data directly from Kraken, Gate, DigiFinex, CoinW, MEXC and BingX, Coinbase and DOG DATA. The Inter font (SIL OFL) and the chart library are hosted on the site itself (jsDelivr is only a fallback for the library).</p>
         <p><b>Times</b> on the page are in <span id="tzname">your local time</span>.</p>
       </div></div>`;
   function renderHelp() {
@@ -8274,7 +8274,7 @@ html,body{overflow-x:clip}
   // ---------- visit counts: Umami Cloud — no cookies, nothing personal. Off while UMAMI_ID is empty ----------
   // When on: visitors per day, who is on the site right now (Realtime) and which buttons people press (the list below).
   // Only on the public site (github.io), never in the tests (?nostat=1) or in a copy of the page.
-  const UMAMI_ID = '';
+  const UMAMI_ID = 'de9725a7-15c2-4d9f-990d-25070d91b3d6';   // Umami Cloud, сайт «DOG Monitor» (dog-monitor.github.io), данные в ЕС
   const statOn = !!UMAMI_ID && /(^|\.)github\.io$/.test(location.hostname) && !/[?&]nostat=1\b/.test(location.search);
   const track = (name, data) => { try { if (statOn && window.umami && typeof window.umami.track === 'function') window.umami.track(name, data); } catch (e) { } };
   // v21: a script error on a visitor's device goes to the visit counter as an event — the message, the place and the screen
