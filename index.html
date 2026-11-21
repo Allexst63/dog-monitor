@@ -2944,7 +2944,7 @@ html,body{overflow-x:clip}
       if (!HC) return;
       let lr = null; try { lr = HC.chart.timeScale().getVisibleLogicalRange(); } catch (e) { }
       const L = HC.rows.length;
-      if (rClamp(HC.chart, L, lr)) return;
+      rClamp(HC.chart, L, lr, () => HC ? HC.rows.length : null);
       if (lr && lr.from < Math.max(MORE_AT, lr.to - lr.from) && chCanMore(HC.tf)) chMore(HC.tf);
       chMoreUi();
       lastSync(HC.el, HC.chart, lr, L);
@@ -2986,12 +2986,24 @@ html,body{overflow-x:clip}
   // v21: room on the right like TradingView — the newest candle sits a few candles in from the right edge (hGap), and the chart
   // can be pulled left a little further (up to ~30% of the width, hGapMax), never so far that the candles leave the screen
   const hGap = len => Math.max(2, len * 0.06), hGapMax = len => Math.max(4, len * 0.15);
-  function rClamp(chart, L, lr) {
-    if (!lr) return false;
-    const len = lr.to - lr.from, mx = L - 0.5 + hGapMax(len);
-    if (lr.to <= mx + 0.01) return false;
-    try { chart.timeScale().setVisibleLogicalRange({ from: mx - len, to: mx }); } catch (e) { }
-    return true;
+  // The right edge is soft: while a finger (or the mouse) holds the chart nothing pulls it back — pulling it back under a dragging
+  // finger made the chart shake (the library keeps its own drag anchor). Once the finger is off and the chart has stopped, it glides
+  // back to the allowed room, like a rubber band.
+  const RC = { down: false };
+  ['pointerdown', 'touchstart', 'mousedown'].forEach(ev => addEventListener(ev, () => { RC.down = true; }, { passive: true, capture: true }));
+  ['pointerup', 'pointercancel', 'touchend', 'touchcancel', 'mouseup'].forEach(ev => addEventListener(ev, e => { if (!e.touches || !e.touches.length) RC.down = false; }, { passive: true, capture: true }));
+  function rClamp(chart, L, lr, getL) {
+    clearTimeout(chart._rc);
+    if (!lr || lr.to <= L - 0.5 + hGapMax(lr.to - lr.from) + 0.01) return false;
+    chart._rc = setTimeout(function back() {
+      if (RC.down) { chart._rc = setTimeout(back, 150); return; }
+      const L2 = getL ? getL() : L; if (L2 == null) return;
+      let r = null; try { r = chart.timeScale().getVisibleLogicalRange(); } catch (e) { return; }
+      if (!r) return;
+      const m2 = L2 - 0.5 + hGapMax(r.to - r.from);
+      if (r.to > m2 + 0.01) toEnd(chart, () => m2);
+    }, 180);
+    return false;
   }
   function lastSync(box, chart, lr, L, top) {
     const b = box && box.querySelector(':scope > .ch-last'); if (!b) return;
@@ -6227,7 +6239,7 @@ html,body{overflow-x:clip}
       onRange.f = requestAnimationFrame(() => {
         const tv = CH.tv; if (!tv || tv.chart !== chart) return;
         let lr = null; try { lr = chart.timeScale().getVisibleLogicalRange(); } catch (e) { }
-        if (rClamp(chart, tv.rows.length, lr)) return;
+        rClamp(chart, tv.rows.length, lr, () => CH.tv && CH.tv.chart === chart ? CH.tv.rows.length : null);
         if (lr && lr.from < Math.max(MORE_AT, lr.to - lr.from) && chCanMore(tf)) chMore(tf);
         chMoreUi();
         lastSync(box, chart, lr, tv.rows.length + 1, el.offsetTop + H0 - 40);
